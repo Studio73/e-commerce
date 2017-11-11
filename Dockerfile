@@ -16,6 +16,7 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends \
     		apt-utils \
             ca-certificates \
+            openssh-client \
             curl \
             node-less \
 			python-dev  \
@@ -73,3 +74,4 @@ WORKDIR /opt/odoo/
 COPY entrypoint.py /
 ENTRYPOINT ["python", "/entrypoint.py"]
 CMD ["python", "/opt/odoo/src/odoo/odoo-bin", "-c", "/opt/odoo/src/odoo.conf"]
+USER odoo
