@@ -65,13 +65,13 @@ RUN pip install --no-cache-dir git-aggregator \
 	&& pip install -r /tmp/requirements.txt \
 	&& apt-get -y autoremove \
 	&& rm -Rf /var/lib/apt/lists/* /tmp/*
+COPY entrypoint.py /
 # Odoo manager
 COPY oman/ /tmp/oman/
 WORKDIR /tmp/oman/
 RUN python setup.py install \
 	&& rm -Rf /tmp/*
 WORKDIR /opt/odoo/
-COPY entrypoint.py /
+USER odoo
 ENTRYPOINT ["python", "/entrypoint.py"]
 CMD ["python", "/opt/odoo/src/odoo/odoo-bin", "-c", "/opt/odoo/src/odoo.conf"]
-USER odoo
