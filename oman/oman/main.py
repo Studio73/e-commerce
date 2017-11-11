@@ -34,8 +34,10 @@ def clone_addons(force_update=False):
     repos_setup = glob.glob(
         os.path.join(expandvars('$SETUP_PATH'), 'repos*.yaml')
     )
+    repos_setup.sort()
     conf = kaptan.Kaptan(handler="yaml")
     addons = []
+
     for repo_yaml in repos_setup:
         if force_update:
             output = subprocess.check_call(
@@ -58,6 +60,14 @@ def clone_addons(force_update=False):
                     print "[+] Skipped, %s already cloned..." % repo_exp
     addons.append(os.path.join(odoo_path, 'addons'))
     return addons
+
+
+def copy_ssh_key():
+    ssh_path = os.path.join(expandvars('$SETUP_PATH'), '.ssh/')
+    if os.path.exists(ssh_path):
+        subprocess.check_call(['cp', '-r', ssh_path, '/opt/odoo/'])
+        subprocess.check_call(['chmod', '600', '/opt/odoo/.ssh/id_rsa'])
+        subprocess.check_call(['chmod', '600', '/opt/odoo/.ssh/id_rsa.pub'])
 
 
 def build_conf(addons=[]):
@@ -132,6 +142,7 @@ def main():
 
     if args.init or args.update:
         force = False if args.init else True
+        copy_ssh_key()
         clone_odoo(force)
         addons = clone_addons(force)
         build_conf(addons)
