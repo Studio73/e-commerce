@@ -39,6 +39,7 @@ RUN apt-get update \
             supervisor \
 			vim \
             git \
+            gosu \
 	&& apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false -o APT::AutoRemove::SuggestsImportant=false npm \
 	&& rm -Rf /var/lib/apt/lists/* /tmp/*
 
@@ -72,6 +73,5 @@ WORKDIR /tmp/oman/
 RUN python setup.py install \
 	&& rm -Rf /tmp/*
 WORKDIR /opt/odoo/
-USER odoo
 ENTRYPOINT ["python", "/entrypoint.py"]
 CMD ["python", "/opt/odoo/src/odoo/odoo-bin", "-c", "/opt/odoo/src/odoo.conf"]
