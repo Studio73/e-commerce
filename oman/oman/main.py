@@ -62,6 +62,16 @@ def clone_addons(force_update=False):
     return addons
 
 
+def init_git_conf():
+
+    cfg = open(os.path.expanduser('~/.gitconfig'), 'w+')
+    cfg.writelines([
+        '[user]\n',
+        '\temail = container-saas@studio73.es\n',
+        '\tname = Container SaaS Studio73\n',
+    ])
+
+
 def copy_ssh_key():
     ssh_path = os.path.join(expandvars('$SETUP_PATH'), '.ssh/')
     if os.path.exists(ssh_path):
@@ -104,6 +114,9 @@ def build_conf(addons=[]):
     except psycopg2.OperationalError:
         if expandvars('$LANG') != '$LANG':
             options.append('load_language=%s\n' % expandvars('$LANG'))
+        if not os.environ.get('DEMO', False):
+            options.append('without_demo=True\n')
+
     conf.writelines(options)
     if os.path.exists(os.path.join(expandvars('$SETUP_PATH'), 'odoo.conf')):
         setup_conf = open(
@@ -142,6 +155,7 @@ def main():
 
     if args.init or args.update:
         force = False if args.init else True
+        init_git_conf()
         copy_ssh_key()
         clone_odoo(force)
         addons = clone_addons(force)
