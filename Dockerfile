@@ -36,12 +36,16 @@ RUN apt-get update \
             python-gevent \
             python-renderpm \
             python-watchdog \
-            supervisor \
 			vim \
             git \
             gosu \
-	&& apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false -o APT::AutoRemove::SuggestsImportant=false npm \
+            ruby ruby-dev \
+    && gem install sass -v 3.4.25 \
+    && gem install compass bootstrap-sass \
+	&& apt-get purge -y --auto-remove \
 	&& rm -Rf /var/lib/apt/lists/* /tmp/*
+	# FIX Could not execute command 'sass'
+	# https://www.odoo.com/es_ES/forum/ayuda-1/question/ubuntu-16-04-how-to-install-sass-for-odoo-123090
 
 RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ xenial-pgdg main" >> /etc/apt/sources.list.d/postgres.list \
  	&& curl -SL https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - \
