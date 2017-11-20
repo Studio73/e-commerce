@@ -12,7 +12,7 @@ if __name__ == '__main__':
         )
     if os.environ.get('HOST_GID', False):
         subprocess.call(
-            ['usermod', '-g', '%s' % os.environ.get('HOST_GID'), 'odoo']
+            ['groupmod', '-g', '%s' % os.environ.get('HOST_GID'), 'odoo']
         )
 
     if not os.environ.get('NO_UPDATE', False):
