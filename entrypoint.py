@@ -6,13 +6,17 @@ import sys
 
 if __name__ == '__main__':
     # Hack to fix wrong uid/gid inside container
-    if os.environ.get('HOST_UID', False):
+    uid = subprocess.Popen(['id', '-u'], stdout=subprocess.PIPE).stdout.read()
+    host_uid = os.environ.get('HOST_UID', False)
+    gid = subprocess.Popen(['id', '-g'], stdout=subprocess.PIPE).stdout.read()
+    host_gid = os.environ.get('HOST_GID', False)
+    if host_uid and host_uid != uid:
         subprocess.call(
-            ['usermod', '-u', '%s' % os.environ.get('HOST_UID'), 'odoo']
+            ['usermod', '-u', '%s' % host_uid, 'odoo']
         )
-    if os.environ.get('HOST_GID', False):
+    if host_gid and host_gid != gid:
         subprocess.call(
-            ['groupmod', '-g', '%s' % os.environ.get('HOST_GID'), 'odoo']
+            ['groupmod', '-g', '%s' % host_gid, 'odoo']
         )
 
     if not os.environ.get('NO_UPDATE', False):
