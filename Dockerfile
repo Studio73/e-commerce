@@ -6,9 +6,9 @@ WORKDIR /opt/odoo/
 EXPOSE 8069 8072
 # Avoid werkzeug encoding ANSI_X3.4-1968 warning
 ENV LC_ALL=C.UTF-8 \
-	DATA_PATH='/opt/odoo/data' \
-	SETUP_PATH='/opt/odoo/setup' \
-	SRC_PATH='/opt/odoo/src'
+	DATA='/opt/odoo/data' \
+	SETUP='/opt/odoo/setup' \
+	SRC='/opt/odoo/src'
 VOLUME ["/opt/odoo/data", "/opt/odoo/setup", "/opt/odoo/src"]
 
 RUN apt-get update \
@@ -39,6 +39,7 @@ RUN apt-get update \
 			vim \
             git \
             gosu \
+			cron \
             ruby ruby-dev \
     && gem install sass -v 3.4.25 \
     && gem install compass bootstrap-sass \
