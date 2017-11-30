@@ -18,6 +18,18 @@ if __name__ == '__main__':
         sp.call(
             ['groupmod', '-g', '%s' % host_gid, 'odoo']
         )
+    if os.path.exists(os.path.join(os.environ['SETUP'], 'cron')):
+        sp.call(
+            'printenv > /etc/environment', shell=True
+        )
+        if os.path.exists('/etc/cron.d/cron'):
+            os.remove('/etc/cron.d/cron')
+        sp.call([
+            'cp',
+            os.path.join(os.environ['SETUP'], 'cron'),
+            '/etc/cron.d/cron'
+        ])
+        sp.call(['service', 'cron', 'start'])
 
     args = ['gosu', 'odoo:odoo', 'oman']
     if os.environ.get('UPDATE', False):
