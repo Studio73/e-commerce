@@ -14,13 +14,21 @@ DBNAME = os.environ['DATABASE']
 
 
 def backup():
+    tday = datetime.now().strftime("%A").upper()
+    backup_folder = os.path.join(DATA, 'backup')
     sp.check_call(
         'pg_dump %s | gzip > %s_%s.tar.gz' % (
             DBNAME,
-            os.path.join(os.path.join(DATA, 'backup'), DBNAME),
-            datetime.now().strftime("%A").upper()
+            os.path.join(backup_folder, DBNAME),
+            tday
         ), shell=True
     )
+    # https://orville.thebennettproject.com/articles/tar-removing-leading-slash/
+    sp.check_call([
+        'tar', '-C', DATA, '-cf',
+        os.path.join(backup_folder, '%s-fstore-%s.tar.gz' % (DBNAME, tday)),
+        'data'
+    ])
     return True
 
 
