@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
+# (c) 2017 Pablo Fuentes <pablo@studio73.es>
+# License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
 import argparse
 import glob
-import kaptan
-import os.path
 import subprocess
+import os.path
 
 from os.path import expandvars
+
+import kaptan
 
 from .utils import \
     backup, \
@@ -73,9 +76,12 @@ def clone_addons(force=False):
 
 
 def main():
+    """
+    Main function
+    """
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        '--init',
+        '--start',
         action='store_true',
         help="Clone for first time Odoo & OCA & Others"
     )
@@ -92,7 +98,7 @@ def main():
     args = parser.parse_args()
     if not any([getattr(args, arg) for arg in vars(args)]):
         parser.error('No arguments provided.')
-    if args.init:
+    if args.start:
         init_git_conf()
         copy_ssh_key()
         clone_odoo(False)
