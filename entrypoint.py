@@ -44,23 +44,7 @@ def main():
         ]
         packages = open(pip_file, 'r+').read().splitlines()
         for package in packages:
-            if package not in installed_pip_packages:
-                pip.main(['install', package])
-    # TODO others requirements apt, npm, etc...
-    args = ['gosu', 'odoo:odoo', 'oman']
-    if os.environ.get('UPDATE', False):
-        args += ['--update', 'all']
-    else:
-        args.append('--init')
-    sp.call(args)
-
-    args = ['gosu', 'odoo:odoo'] + sys.argv[1:]
-    sp.call(args)
-            for i in pip.get_installed_distributions()
-        ]
-        packages = open(pip_file, 'r+').read().splitlines()
-        for package in packages:
-            if package not in installed_pip_packages:
+            if package not in installed_pip_packages: # TODO avoid check version?
                 pip.main(['install', package])
     # TODO others requirements apt, npm, etc...
     args = ['gosu', 'odoo:odoo', 'oman']
@@ -69,7 +53,6 @@ def main():
     else:
         args.append('--start')
     sp.call(args)
-
     args = ['gosu', 'odoo:odoo'] + sys.argv[1:]
     sp.call(args)
 
