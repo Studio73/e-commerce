@@ -66,11 +66,16 @@ RUN curl -SLo /tmp/pip.tar.gz https://pypi.python.org/packages/11/b6/abcb525026a
 	&& python setup.py install \
 	&& rm -Rf /tmp/*
 
-RUN pip install --no-cache-dir git-aggregator \
-	&& curl -SLo /tmp/requirements.txt https://raw.githubusercontent.com/odoo/odoo/10.0/requirements.txt \
+RUN curl -SLo /tmp/requirements.txt https://raw.githubusercontent.com/odoo/odoo/10.0/requirements.txt \
 	&& pip install -r /tmp/requirements.txt \
 	&& apt-get -y autoremove \
 	&& rm -Rf /var/lib/apt/lists/* /tmp/*
+
+COPY requirements.txt /tmp/requirements.txt
+RUN pip install -r /tmp/requirements.txt \
+	&& apt-get -y autoremove \
+	&& rm -Rf /var/lib/apt/lists/* /tmp/*
+
 COPY entrypoint.py /
 # Odoo manager
 COPY oman/ /tmp/oman/
