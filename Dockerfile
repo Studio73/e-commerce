@@ -1,5 +1,4 @@
 FROM ubuntu:16.04
-MAINTAINER Pablo Fuentes <pablo@studio73.es>
 
 RUN useradd -md /opt/odoo -s /bin/bash odoo
 WORKDIR /opt/odoo/
@@ -85,3 +84,8 @@ RUN python setup.py install \
 WORKDIR /opt/odoo/
 ENTRYPOINT ["python", "/entrypoint.py"]
 CMD ["python", "/opt/odoo/src/odoo/odoo-bin", "-c", "/opt/odoo/src/odoo.conf"]
+
+LABEL org.label-schema.schema-version="0.1.2" \
+      org.label-schema.vendor="Studio73" \
+      org.label-schema.url="https://www.studio73.es" \
+      org.label-schema.vcs-url="https://github.com/Studio73/dodoo"

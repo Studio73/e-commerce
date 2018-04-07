@@ -13,8 +13,8 @@ import kaptan
 from .utils import \
     backup, \
     build_conf, \
-    copy_ssh_key, \
-    init_git_conf
+    init_git_conf, \
+    gen_ssh_key
 
 
 SRC = os.environ['SRC']
@@ -48,29 +48,25 @@ def clone_addons(force=False):
         os.path.join(SETUP, 'repos*.yaml')
     )
     repos_list.sort()
-    conf = kaptan.Kaptan(handler="yaml")
+    conf_handler = kaptan.Kaptan(handler="yaml")
     addons = []
 
     for repo_yaml in repos_list:
-        if force:
-            output = subprocess.check_call(
-                ['gitaggregate', '-c', repo_yaml, '--expand-env']
-            )
-            if output != 0:
-                raise Exception
-        else:
-            for repo in conf.import_config(repo_yaml).export('dict').keys():
-                repo_exp = expandvars(repo)
-                addons.append(repo_exp)
-                if not os.path.exists(repo_exp):
-                    output = subprocess.check_call(
-                        ['gitaggregate', '-c', repo_yaml,
-                         '-d', repo_exp, '--expand-env']
-                    )
-                    if output != 0:
-                        raise Exception
-                else:
-                    print("[+] Skipping, %s already cloned..." % repo_exp)
+        conf = conf_handler.import_config(repo_yaml).export('dict')
+        for repo, repo_data in conf.items():
+            repo_exp = expandvars(repo)
+            addons.append(repo_exp)
+            if repo_data.get("private", False):
+                gen_ssh_key(repo.split("/")[-1])
+            if force or not os.path.exists(repo_exp):
+                output = subprocess.check_call(
+                    ['gitaggregate', '-c', repo_yaml,
+                        '-d', repo_exp, '--expand-env']
+                )
+                if output != 0:
+                    raise Exception
+            else:
+                print("[+] Skipping, %s already cloned..." % repo_exp)
     addons.append(os.path.join(odoo_path, 'addons'))
     return addons
 
@@ -95,12 +91,17 @@ def main():
         action='store_true',
         help='Backup database'
     )
+    parser.add_argument(
+        '--ssh-key',
+        metavar='repo',
+        nargs=1,
+        help="Generate ssh for private repository"
+    )
     args = parser.parse_args()
     if not any([getattr(args, arg) for arg in vars(args)]):
         parser.error('No arguments provided.')
+    init_git_conf()
     if args.start:
-        init_git_conf()
-        copy_ssh_key()
         clone_odoo(False)
         addons = clone_addons(False)
         build_conf(addons)
@@ -112,6 +113,8 @@ def main():
             build_conf(addons)
     elif args.backup:
         backup()
+    elif args.ssh_key:
+        gen_ssh_key(args.ssh_key[0])
 
 
 if __name__ == '__main__':

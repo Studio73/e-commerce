@@ -2,6 +2,7 @@
 # (c) 2017 Pablo Fuentes <pablo@studio73.es>
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
 import os
+import glob
 import psycopg2
 import subprocess as sp
 
@@ -80,14 +81,6 @@ def build_conf(addons=None):
     conf.close()
 
 
-def copy_ssh_key():
-    ssh_path = os.path.join(SETUP, '.ssh/')
-    if os.path.exists(ssh_path):
-        sp.check_call(['cp', '-r', ssh_path, '/opt/odoo/'])
-        sp.check_call(['chmod', '600', '/opt/odoo/.ssh/id_rsa'])
-        sp.check_call(['chmod', '600', '/opt/odoo/.ssh/id_rsa.pub'])
-
-
 def init_git_conf():
     cfg = open(os.path.expanduser('~/.gitconfig'), 'w+')
     cfg.writelines([
@@ -95,3 +88,34 @@ def init_git_conf():
         '\temail = container-saas@studio73.es\n',
         '\tname = Container SaaS Studio73\n',
     ])
+
+
+def gen_ssh_key(name):  
+    known_hosts = sp.Popen(
+        ['ssh-keygen', '-H', '-F' 'github.com'], stdout=sp.PIPE
+    ).communicate()[0]
+    if not len(known_hosts):
+        sp.check_call(
+            'ssh-keyscan github.com >> ~/.ssh/known_hosts', shell=True
+        )
+    ssh_file = os.path.join(
+        os.path.join(DATA, '.ssh'), name
+    )
+    if not os.path.exists(ssh_file):
+        comment = "%s@%s" % (name, DBNAME)
+        sp.check_call(
+            ['ssh-keygen', '-N', '', '-f', ssh_file, '-C', comment]
+        )
+        build_ssh_conf()
+
+def build_ssh_conf():
+    ssh_folder = os.path.join(DATA, '.ssh')
+    cfg = open(os.path.join(ssh_folder, 'config'), 'w+')
+    identityfiles = glob.glob(os.path.join(ssh_folder, '*.pub'))
+    for identityfile in identityfiles:
+        identityfile = identityfile.split('.pub')[0]
+        cfg.writelines([
+            'Host %s github.com\n' % identityfile.split('/')[-1],
+            '\tHostName github.com\n',
+            '\tIdentityFile %s\n' % identityfile,
+        ])
