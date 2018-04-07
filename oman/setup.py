@@ -5,7 +5,7 @@ import setuptools
 
 setuptools.setup(
     name='oman',
-    version='0.1.2',
+    version='1.0.0',
     license="AGPLv3+",
     author='Consultoria Informatica Studio73 S.L',
     author_email='contacto@studio73.es',

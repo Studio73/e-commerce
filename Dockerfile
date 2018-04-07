@@ -14,32 +14,35 @@ RUN apt-get update \
 	&& apt-get -y upgrade \
     && apt-get install -y --no-install-recommends \
     		apt-utils \
-            ca-certificates \
-            openssh-client \
-            curl \
-            node-less \
-			python-dev  \
      		build-essential \
-			libssl-dev \
+            ca-certificates \
+			cron \
+            curl \
+            git \
+            gosu \
+			libcups2-dev \
 			libffi-dev \
+			libfontconfig1 \
+			libldap2-dev \
+			libjpeg-dev \
+			libsasl2-dev \
+			libssl-dev \
      		libxml2-dev \
 			libxslt1-dev \
-			zlib1g-dev \
-			libldap2-dev \
-			libsasl2-dev \
-			libfontconfig1 \
 			libxrender1 \
 			libxext6 \
+            node-less \
+            openssh-client \
+			python-dev  \
 			python-wheel \
             python-setuptools \
             python-gevent \
             python-renderpm \
             python-watchdog \
+            ruby \
+			ruby-dev \
 			vim \
-            git \
-            gosu \
-			cron \
-            ruby ruby-dev \
+			zlib1g-dev \
     && gem install sass -v 3.4.25 \
     && gem install compass bootstrap-sass \
 	&& apt-get purge -y --auto-remove \
@@ -65,7 +68,10 @@ RUN curl -SLo /tmp/pip.tar.gz https://pypi.python.org/packages/11/b6/abcb525026a
 	&& python setup.py install \
 	&& rm -Rf /tmp/*
 
-RUN curl -SLo /tmp/requirements.txt https://raw.githubusercontent.com/odoo/odoo/10.0/requirements.txt \
+RUN pip install --upgrade https://github.com/aeroo/aeroolib/archive/py2.x.zip
+
+ARG VERSION
+RUN curl -SLo /tmp/requirements.txt https://raw.githubusercontent.com/odoo/odoo/$VERSION/requirements.txt \
 	&& pip install -r /tmp/requirements.txt \
 	&& apt-get -y autoremove \
 	&& rm -Rf /var/lib/apt/lists/* /tmp/*
@@ -85,7 +91,11 @@ WORKDIR /opt/odoo/
 ENTRYPOINT ["python", "/entrypoint.py"]
 CMD ["python", "/opt/odoo/src/odoo/odoo-bin", "-c", "/opt/odoo/src/odoo.conf"]
 
-LABEL org.label-schema.schema-version="0.1.2" \
-      org.label-schema.vendor="Studio73" \
+ARG BUILD_DATE
+ARG VCS_REF
+LABEL org.label-schema.vendor="Studio73" \
       org.label-schema.url="https://www.studio73.es" \
-      org.label-schema.vcs-url="https://github.com/Studio73/dodoo"
+      org.label-schema.vcs-url="https://github.com/Studio73/dodoo" \
+	  org.label-schema.vcs-ref=$VCS_REF \
+	  org.label-schema.build-date=$BUILD_DATE \
+	  org.label-schema.schema-version="1.0.0"

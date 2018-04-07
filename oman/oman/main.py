@@ -17,9 +17,9 @@ from .utils import \
     gen_ssh_key
 
 
-SRC = os.environ['SRC']
-DATA = os.environ['DATA']
-SETUP = os.environ['SETUP']
+SRC = os.environ.get('SRC', "")
+DATA = os.environ.get('DATA', "")
+SETUP = os.environ.get('SETUP', "")
 
 
 def clone_odoo(force=False):
@@ -42,7 +42,9 @@ def clone_odoo(force=False):
         print("[+] Skipping, Odoo already cloned...")
 
 
-def clone_addons(force=False):
+def clone_addons(force=False, dirmatch=None):
+    if dirmatch:
+        dirmatch = dirmatch[0]
     odoo_path = os.path.join(SRC, 'odoo')
     repos_list = glob.glob(
         os.path.join(SETUP, 'repos*.yaml')
@@ -53,12 +55,19 @@ def clone_addons(force=False):
 
     for repo_yaml in repos_list:
         conf = conf_handler.import_config(repo_yaml).export('dict')
-        for repo, repo_data in conf.items():
+        for repo, repo_data in sorted(conf.items(), key=lambda x: x[1].get("order", 9999)):
             repo_exp = expandvars(repo)
             addons.append(repo_exp)
             if repo_data.get("private", False):
                 gen_ssh_key(repo.split("/")[-1])
-            if force or not os.path.exists(repo_exp):
+            update = False
+            if dirmatch:
+                if dirmatch in repo_exp or not os.path.exists(repo_exp):
+                    update = True
+            elif force or not os.path.exists(repo_exp):
+                update = True
+
+            if update:
                 output = subprocess.check_call(
                     ['gitaggregate', '-c', repo_yaml,
                         '-d', repo_exp, '--expand-env']
@@ -75,7 +84,7 @@ def main():
     """
     Main function
     """
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(version='1.0.0')
     parser.add_argument(
         '--start',
         action='store_true',
@@ -85,6 +94,13 @@ def main():
         '--update',
         choices=('odoo', 'addons', 'all'),
         help='Update Odoo or OCA & Others repositories or all'
+    )
+    parser.add_argument(
+        '--dirmatch',
+        '-d',
+        metavar='container',
+        nargs=1,
+        help='Update only the directories'
     )
     parser.add_argument(
         '--backup',
@@ -100,16 +116,17 @@ def main():
     args = parser.parse_args()
     if not any([getattr(args, arg) for arg in vars(args)]):
         parser.error('No arguments provided.')
-    init_git_conf()
     if args.start:
+        init_git_conf()
         clone_odoo(False)
         addons = clone_addons(False)
         build_conf(addons)
     elif args.update:
+        init_git_conf()
         if args.update in ['odoo', 'all']:
             clone_odoo(True)
         if args.update in ['addons', 'all']:
-            addons = clone_addons(True)
+            addons = clone_addons(True, args.dirmatch)
             build_conf(addons)
     elif args.backup:
         backup()

@@ -22,16 +22,6 @@ def main():
         sp.call(
             ['groupmod', '-g', '%s' % host_gid, 'odoo']
         )
-    # SSH
-    ssh_path = os.path.join(os.environ['DATA'], '.ssh')
-    if not os.path.exists(ssh_path):
-        os.makedirs(ssh_path)
-    known_hosts = os.path.join(ssh_path, 'known_hosts')
-    if not os.path.exists(known_hosts):
-        sp.check_call(['touch', known_hosts])
-    ssh_symbolic_path = '/opt/odoo/.ssh'
-    if not os.path.exists(ssh_symbolic_path):
-        sp.check_call(['ln', '-s', ssh_path, ssh_symbolic_path])
 
     # Cron jobs
     if os.path.exists(os.path.join(os.environ['SETUP'], 'cron')):

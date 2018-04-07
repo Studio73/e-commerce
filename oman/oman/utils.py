@@ -8,10 +8,10 @@ import subprocess as sp
 
 from datetime import datetime
 
-SRC = os.environ['SRC']
-DATA = os.environ['DATA']
-SETUP = os.environ['SETUP']
-DBNAME = os.environ['DATABASE']
+SRC = os.environ.get('SRC', "")
+DATA = os.environ.get('DATA', "")
+SETUP = os.environ.get('SETUP', "")
+DBNAME = os.environ.get('DATABASE', "")
 
 
 def backup():
@@ -89,8 +89,19 @@ def init_git_conf():
         '\tname = Container SaaS Studio73\n',
     ])
 
+def check_ssh():
+    ssh_path = os.path.join(os.environ['DATA'], '.ssh')
+    if not os.path.exists(ssh_path):
+        os.makedirs(ssh_path)
+    known_hosts = os.path.join(ssh_path, 'known_hosts')
+    if not os.path.exists(known_hosts):
+        sp.check_call(['touch', known_hosts])
+    ssh_symbolic_path = os.path.join(os.environ['HOME'], '.ssh')
+    if not os.path.exists(ssh_symbolic_path):
+        sp.check_call(['ln', '-s', ssh_path, ssh_symbolic_path])
 
 def gen_ssh_key(name):  
+    check_ssh()
     known_hosts = sp.Popen(
         ['ssh-keygen', '-H', '-F' 'github.com'], stdout=sp.PIPE
     ).communicate()[0]
