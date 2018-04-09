@@ -77,6 +77,10 @@ RUN curl -SLo /tmp/requirements.txt https://raw.githubusercontent.com/odoo/odoo/
 	&& rm -Rf /var/lib/apt/lists/* /tmp/*
 
 COPY requirements.txt /tmp/requirements.txt
+RUN git clone https://github.com/acsone/git-aggregator.git /tmp/git-aggregator && \
+	cd /tmp/git-aggregator && \
+	git pull --no-edit --quiet --depth 200 origin refs/pull/20/head && \
+	python setup.py install
 RUN pip install -r /tmp/requirements.txt \
 	&& apt-get -y autoremove \
 	&& rm -Rf /var/lib/apt/lists/* /tmp/*
@@ -98,4 +102,4 @@ LABEL org.label-schema.vendor="Studio73" \
       org.label-schema.vcs-url="https://github.com/Studio73/dodoo" \
 	  org.label-schema.vcs-ref=$VCS_REF \
 	  org.label-schema.build-date=$BUILD_DATE \
-	  org.label-schema.schema-version="1.0.0"
+	  org.label-schema.schema-version="1.0.1"

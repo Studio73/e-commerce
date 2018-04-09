@@ -1,6 +1,5 @@
 cachetools==2.0.1
 deepdiff==3.3.0
-git-aggregator==1.2.0
 num2words==0.5.6
 unicodecsv==0.13.0
 Unidecode==0.4.18
