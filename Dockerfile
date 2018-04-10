@@ -61,18 +61,18 @@ RUN curl -SLo /tmp/wkhtmltox.tar.xz https://github.com/wkhtmltopdf/wkhtmltopdf/r
 	&& mv /tmp/wkhtmltox/bin/* /usr/local/bin \
 	&& rm -Rf /tmp/*
 
-# Force install pip 9.0.1
-RUN curl -SLo /tmp/pip.tar.gz https://pypi.python.org/packages/11/b6/abcb525026a4be042b486df43905d6893fb04f05aac21c32c638e939e447/pip-9.0.1.tar.gz#md5=35f01da33009719497f01a4ba69d63c9 \
+# Force install latest pip from https://pypi.python.org/pypi/pip/X.X.X
+RUN curl -SLo /tmp/pip.tar.gz https://pypi.python.org/packages/c4/44/e6b8056b6c8f2bfd1445cc9990f478930d8e3459e9dbf5b8e2d2922d64d3/pip-9.0.3.tar.gz#md5=b15b33f9aad61f88d0f8c866d16c55d8 \
 	&& tar -xf /tmp/pip.tar.gz -C /tmp \
-	&& cd /tmp/pip-9.0.1/ \
+	&& cd /tmp/pip-9.0.3/ \
 	&& python setup.py install \
 	&& rm -Rf /tmp/*
 
-RUN pip install --upgrade https://github.com/aeroo/aeroolib/archive/py2.x.zip
+RUN pip install --no-cache-dir --upgrade https://github.com/aeroo/aeroolib/archive/py2.x.zip
 
 ARG VERSION
 RUN curl -SLo /tmp/requirements.txt https://raw.githubusercontent.com/odoo/odoo/$VERSION/requirements.txt \
-	&& pip install -r /tmp/requirements.txt \
+	&& pip install --no-cache-dir -r /tmp/requirements.txt \
 	&& apt-get -y autoremove \
 	&& rm -Rf /var/lib/apt/lists/* /tmp/*
 
@@ -81,7 +81,7 @@ RUN git clone https://github.com/acsone/git-aggregator.git /tmp/git-aggregator &
 	cd /tmp/git-aggregator && \
 	git pull --no-edit --quiet --depth 200 origin refs/pull/20/head && \
 	python setup.py install
-RUN pip install -r /tmp/requirements.txt \
+RUN pip install --no-cache-dir -r /tmp/requirements.txt \
 	&& apt-get -y autoremove \
 	&& rm -Rf /var/lib/apt/lists/* /tmp/*
 
@@ -102,4 +102,4 @@ LABEL org.label-schema.vendor="Studio73" \
       org.label-schema.vcs-url="https://github.com/Studio73/dodoo" \
 	  org.label-schema.vcs-ref=$VCS_REF \
 	  org.label-schema.build-date=$BUILD_DATE \
-	  org.label-schema.schema-version="1.0.1"
+	  org.label-schema.schema-version="1.0.2"
