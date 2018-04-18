@@ -2,7 +2,8 @@
 import os.path
 import subprocess as sp
 import sys
-import pip
+from pip._internal import get_installed_distributions  # pylint: disable=E0611,E0401
+from pip._internal import main as pip_main  # pylint: disable=E0611,E0401
 
 
 def main():
@@ -41,12 +42,12 @@ def main():
     if os.path.exists(pip_file):
         installed_pip_packages = [
             "%s==%s" % (i.key, i.version)
-            for i in pip.get_installed_distributions()
+            for i in get_installed_distributions()
         ]
         packages = open(pip_file, 'r+').read().splitlines()
         for package in packages:
             if package not in installed_pip_packages: # TODO avoid check version?
-                pip.main(['install', package])
+                pip_main(['install', package])
     # TODO others requirements apt, npm, etc...
     args = ['gosu', 'odoo:odoo', 'oman']
     if os.environ.get('UPDATE', False):
