@@ -3,12 +3,6 @@ FROM ubuntu:16.04
 RUN useradd -md /opt/odoo -s /bin/bash odoo
 WORKDIR /opt/odoo/
 EXPOSE 8069 8072
-# Avoid werkzeug encoding ANSI_X3.4-1968 warning
-ENV LC_ALL=C.UTF-8 \
-	DATA='/opt/odoo/data' \
-	SETUP='/opt/odoo/setup' \
-	SRC='/opt/odoo/src'
-VOLUME ["/opt/odoo/data", "/opt/odoo/setup", "/opt/odoo/src"]
 
 RUN apt-get update \
 	&& apt-get -y upgrade \
@@ -31,6 +25,7 @@ RUN apt-get update \
 			libxslt1-dev \
 			libxrender1 \
 			libxext6 \
+			locales \
             node-less \
             openssh-client \
 			python-dev  \
@@ -50,6 +45,16 @@ RUN apt-get update \
 	# FIX Could not execute command 'sass'
 	# https://www.odoo.com/es_ES/forum/ayuda-1/question/ubuntu-16-04-how-to-install-sass-for-odoo-123090
 
+RUN locale-gen es_ES.UTF-8
+# Avoid werkzeug encoding ANSI_X3.4-1968 warning
+ENV LANG=es_ES.UTF-8 \
+    LANGUAGE=es_ES \
+    LC_ALL=es_ES.UTF-8 \
+    DATA='/opt/odoo/data' \
+    SETUP='/opt/odoo/setup' \
+    SRC='/opt/odoo/src'
+VOLUME ["/opt/odoo/data", "/opt/odoo/setup", "/opt/odoo/src"]
+
 RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ xenial-pgdg main" >> /etc/apt/sources.list.d/postgres.list \
  	&& curl -SL https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - \
  	&& apt-get update \
@@ -62,17 +67,19 @@ RUN curl -SLo /tmp/wkhtmltox.tar.xz https://github.com/wkhtmltopdf/wkhtmltopdf/r
 	&& rm -Rf /tmp/*
 
 # Force install latest pip from https://pypi.python.org/pypi/pip/X.X.X
-RUN curl -SLo /tmp/pip.tar.gz https://pypi.python.org/packages/c4/44/e6b8056b6c8f2bfd1445cc9990f478930d8e3459e9dbf5b8e2d2922d64d3/pip-9.0.3.tar.gz#md5=b15b33f9aad61f88d0f8c866d16c55d8 \
+RUN curl -SLo /tmp/pip.tar.gz https://files.pythonhosted.org/packages/e0/69/983a8e47d3dfb51e1463c1e962b2ccd1d74ec4e236e232625e353d830ed2/pip-10.0.0.tar.gz \
 	&& tar -xf /tmp/pip.tar.gz -C /tmp \
-	&& cd /tmp/pip-9.0.3/ \
+	&& cd /tmp/pip-10.0.0/ \
 	&& python setup.py install \
 	&& rm -Rf /tmp/*
 
 RUN pip install --no-cache-dir --upgrade https://github.com/aeroo/aeroolib/archive/py2.x.zip
+# Force install latest version from master until version 0.5.7 be released
+RUN pip install --no-cache-dir --upgrade https://github.com/savoirfairelinux/num2words/archive/master.zip
 
 ARG VERSION
 RUN curl -SLo /tmp/requirements.txt https://raw.githubusercontent.com/odoo/odoo/$VERSION/requirements.txt \
-	&& pip install --no-cache-dir -r /tmp/requirements.txt \
+	&& pip install --no-cache-dir --ignore-installed -r /tmp/requirements.txt \
 	&& apt-get -y autoremove \
 	&& rm -Rf /var/lib/apt/lists/* /tmp/*
 
