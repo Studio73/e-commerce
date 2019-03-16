@@ -84,7 +84,7 @@ def main():
     """
     Main function
     """
-    parser = argparse.ArgumentParser(version='1.0.0')
+    parser = argparse.ArgumentParser()
     parser.add_argument(
         '--start',
         action='store_true',
@@ -94,6 +94,11 @@ def main():
         '--update',
         choices=('odoo', 'addons', 'all'),
         help='Update Odoo or OCA & Others repositories or all'
+    )
+    parser.add_argument(
+        '--dev',
+        action='store_true',
+        help="Clone OCA & Others repos if not exists"
     )
     parser.add_argument(
         '--dirmatch',
@@ -128,6 +133,8 @@ def main():
         if args.update in ['addons', 'all']:
             addons = clone_addons(True, args.dirmatch)
             build_conf(addons)
+    elif args.dev:
+        build_conf()
     elif args.backup:
         backup()
     elif args.ssh_key:

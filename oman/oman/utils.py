@@ -34,9 +34,7 @@ def backup():
 
 
 def build_conf(addons=None):
-    if addons is None:
-        addons = []
-    conf = open(os.path.join(SRC, 'odoo.conf'), 'w+')
+    conf = open('/tmp/odoo.conf', 'w+')
     db_options = {
         'host': os.environ['PGHOST'],
         'port': os.environ['PGPORT'],
@@ -54,8 +52,9 @@ def build_conf(addons=None):
         'db_name=%s\n' % db_options['name'],
         'dbfilter=%s\n' % db_options['name'],
         'admin_passwd=%s\n' % os.environ['ADMINPASSWORD'],
-        'addons_path=%s\n' % ','.join(addons)
     ]
+    if addons is not None:
+        options.append('addons_path=%s\n' % ','.join(addons))
     # If running for first time and database doesn't exists,
     # force the language to be used on database creation
     try:

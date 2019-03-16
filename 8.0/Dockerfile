@@ -67,15 +67,13 @@ RUN curl -SLo /tmp/wkhtmltox.tar.xz https://github.com/wkhtmltopdf/wkhtmltopdf/r
 	&& rm -Rf /tmp/*
 
 # Force install latest pip from https://pypi.python.org/pypi/pip/X.X.X
-RUN curl -SLo /tmp/pip.tar.gz https://files.pythonhosted.org/packages/e0/69/983a8e47d3dfb51e1463c1e962b2ccd1d74ec4e236e232625e353d830ed2/pip-10.0.0.tar.gz \
+RUN curl -SLo /tmp/pip.tar.gz https://files.pythonhosted.org/packages/45/ae/8a0ad77defb7cc903f09e551d88b443304a9bd6e6f124e75c0fbbf6de8f7/pip-18.1.tar.gz \
 	&& tar -xf /tmp/pip.tar.gz -C /tmp \
-	&& cd /tmp/pip-10.0.0/ \
+	&& cd /tmp/pip-18.1/ \
 	&& python setup.py install \
 	&& rm -Rf /tmp/*
 
 RUN pip install --no-cache-dir --upgrade https://github.com/aeroo/aeroolib/archive/py2.x.zip
-# Force install latest version from master until version 0.5.7 be released
-RUN pip install --no-cache-dir --upgrade https://github.com/savoirfairelinux/num2words/archive/master.zip
 
 ARG VERSION
 RUN curl -SLo /tmp/requirements.txt https://raw.githubusercontent.com/odoo/odoo/$VERSION/requirements.txt \
@@ -83,11 +81,7 @@ RUN curl -SLo /tmp/requirements.txt https://raw.githubusercontent.com/odoo/odoo/
 	&& apt-get -y autoremove \
 	&& rm -Rf /var/lib/apt/lists/* /tmp/*
 
-COPY requirements.txt /tmp/requirements.txt
-RUN git clone https://github.com/acsone/git-aggregator.git /tmp/git-aggregator && \
-	cd /tmp/git-aggregator && \
-	git pull --no-edit --quiet --depth 200 origin refs/pull/20/head && \
-	python setup.py install
+COPY $VERSION/requirements.txt /tmp/requirements.txt
 RUN pip install --no-cache-dir -r /tmp/requirements.txt \
 	&& apt-get -y autoremove \
 	&& rm -Rf /var/lib/apt/lists/* /tmp/*
@@ -100,7 +94,7 @@ RUN python setup.py install \
 	&& rm -Rf /tmp/*
 WORKDIR /opt/odoo/
 ENTRYPOINT ["python", "/entrypoint.py"]
-CMD ["python", "/opt/odoo/src/odoo/odoo-bin", "-c", "/opt/odoo/src/odoo.conf"]
+CMD ["python", "/opt/odoo/src/odoo/odoo-bin", "-c", "/tmp/odoo.conf"]
 
 ARG BUILD_DATE
 ARG VCS_REF

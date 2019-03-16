@@ -1,0 +1,3 @@
+phonenumbers
+git-aggregator==1.5.0
+Werkzeug==0.14.1
