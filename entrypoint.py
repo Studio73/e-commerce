@@ -1,8 +1,14 @@
 #!/usr/bin/python
-import os.path
+import logging
+import os
 import subprocess as sp
 import sys
-import logging
+
+
+try:
+    from subprocess import DEVNULL # py3
+except ImportError:
+    DEVNULL = open(os.devnull, 'wb')
 
 
 def main():
@@ -10,20 +16,18 @@ def main():
     Entrypoint main function
     """
     # Hack to fix wrong uid/gid inside container
-    uid = sp.Popen(['id', '-u'], stdout=sp.PIPE).stdout.read()
     host_uid = os.environ.get('HOST_UID', False)
-    gid = sp.Popen(['id', '-g'], stdout=sp.PIPE).stdout.read()
     host_gid = os.environ.get('HOST_GID', False)
-    if host_uid and host_uid != uid:
-        sp.call(['usermod', '-u', '%s' % host_uid, 'odoo'])
-    if host_gid and host_gid != gid:
-        sp.call(['groupmod', '-g', '%s' % host_gid, 'odoo'])
+    if host_uid and host_uid != os.getuid():
+        sp.call(['usermod', '-u', '%s' % host_uid, 'odoo'], 
+            stdout=DEVNULL, stderr=DEVNULL)
+    if host_gid and host_gid != os.getgid():
+        sp.call(['groupmod', '-g', '%s' % host_gid, 'odoo'], 
+            stdout=DEVNULL, stderr=DEVNULL)
 
     # Cron jobs
     if os.path.exists(os.path.join(os.environ['SETUP'], 'cron')):
-        sp.call(
-            'printenv > /etc/environment', shell=True
-        )
+        sp.call('printenv > /etc/environment', shell=True)
         if os.path.exists('/etc/cron.d/cron'):
             os.remove('/etc/cron.d/cron')
         sp.call([
@@ -44,21 +48,40 @@ def main():
             #Packages like git+https://github.com/ORG/REPO.git
             if package_name[-4:] == '.git': 
                 package_name = package_name.split('/')[-1][:-4]
-            print(package_name)
             if package_name not in installed_pip_packages:
                 sp.call(['pip', 'install', package])
     # TODO others requirements apt, npm, etc...
-    logging.info("asdfasdfasdf")
     args = ['gosu', 'odoo:odoo', 'oman']
     if os.environ.get('DEV', False):
+        # Block SMTP ports
+        for smtp_port in ['25', '465', '587']:
+            try:
+                sp.check_call(
+                    ['iptables', '-C', 'OUTPUT', '-p', 'tcp',
+                     '--dport', smtp_port, '-j', 'DROP'], 
+                    stdout=DEVNULL, stderr=DEVNULL)
+            except sp.CalledProcessError:
+                sp.check_call(
+                    ['iptables', '-A', 'OUTPUT', '-p', 'tcp', 
+                     '--dport', smtp_port, '-j', 'DROP'])
+        db_name = os.environ.get('DATABASE', 'odoo')
+        query = "UPDATE ir_mail_server set active = 'f'"
+        sp.call(
+            ['psql', '-d', db_name, '-c', query], 
+            stdout=DEVNULL, stderr=DEVNULL)
         args.append('--dev')
     elif os.environ.get('UPDATE', False):
         args += ['--update', 'all']
     else:
         args.append('--start')
     sp.call(args)
-    args = ['gosu', 'odoo:odoo'] + sys.argv[1:]
-    sp.call(args)
+    if os.environ.get('DEBUG', False) and 'python' in sys.argv[1]:
+        cmd = [
+            'gosu', 'odoo:odoo', 
+            sys.argv[1], '-m', 'ptvsd', '--host', '0.0.0.0', '--port', '5678']
+        sp.call(cmd + sys.argv[2:])
+    else:
+        sp.call(['gosu', 'odoo:odoo'] + sys.argv[1:])
 
 if __name__ == '__main__':
     main()

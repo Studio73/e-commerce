@@ -38,6 +38,7 @@ RUN apt-get update \
 			ruby-dev \
 			vim \
 			zlib1g-dev \
+			iptables \
     && gem install sass -v 3.4.25 \
     && gem install compass bootstrap-sass \
 	&& apt-get purge -y --auto-remove \

@@ -33,6 +33,7 @@ RUN apt-get update \
 			vim \
 			locales \
             openssh-client \ 
+			iptables \
 			# lxml
      		libxml2-dev \
 		    libxslt1-dev \
@@ -96,5 +97,4 @@ LABEL org.label-schema.vendor="Studio73" \
       org.label-schema.url="https://www.studio73.es" \
       org.label-schema.vcs-url="https://github.com/Studio73/dodoo" \
 	  org.label-schema.vcs-ref=$VCS_REF \
-	  org.label-schema.build-date=$BUILD_DATE \
-	  org.label-schema.schema-version="1.0.3"
+	  org.label-schema.build-date=$BUILD_DATE
