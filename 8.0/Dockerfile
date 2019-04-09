@@ -7,6 +7,7 @@ EXPOSE 8069 8072
 RUN apt-get update \
 	&& apt-get -y upgrade \
     && apt-get install -y --no-install-recommends \
+			software-properties-common \
     		apt-utils \
      		build-essential \
             ca-certificates \
@@ -34,17 +35,18 @@ RUN apt-get update \
             python-gevent \
             python-renderpm \
             python-watchdog \
-            ruby \
-			ruby-dev \
 			vim \
 			zlib1g-dev \
-			iptables \
+			iptables
+# FIX Could not execute command 'sass'
+# https://www.odoo.com/es_ES/forum/ayuda-1/question/ubuntu-16-04-how-to-install-sass-for-odoo-123090
+RUN apt-add-repository ppa:brightbox/ruby-ng \
+	&& apt-get update \
+	&& apt-get install -y --no-install-recommends ruby2.6 ruby2.6-dev \
     && gem install sass -v 3.4.25 \
     && gem install compass bootstrap-sass \
 	&& apt-get purge -y --auto-remove \
 	&& rm -Rf /var/lib/apt/lists/* /tmp/*
-	# FIX Could not execute command 'sass'
-	# https://www.odoo.com/es_ES/forum/ayuda-1/question/ubuntu-16-04-how-to-install-sass-for-odoo-123090
 
 RUN locale-gen es_ES.UTF-8
 # Avoid werkzeug encoding ANSI_X3.4-1968 warning
