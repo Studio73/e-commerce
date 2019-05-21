@@ -1,4 +1,4 @@
 #!/bin/bash
 docker build --build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
              --build-arg VCS_REF=`git rev-parse --short HEAD` \
-             --build-arg VERSION=$1 -f $1/Dockerfile . -t odoo:$1
+             --build-arg VERSION=$1 -f $1/Dockerfile . -t dodoo:$1

@@ -90,14 +90,18 @@ RUN pip install --no-cache-dir -r /tmp/requirements.txt \
 	&& rm -Rf /var/lib/apt/lists/* /tmp/*
 
 COPY entrypoint.py /
-# Odoo manager
-COPY oman/ /tmp/oman/
-WORKDIR /tmp/oman/
-RUN python setup.py install \
+COPY dodoo-tools/ /tmp/dodoo-tools/
+RUN cd /tmp/dodoo-tools/ \
+	&& pip install . \
 	&& rm -Rf /tmp/*
+
+# Avoid "ImportError: No module named odoo" and make pip install persistent
+ENV PYTHONPATH='$PYTHONPATH:/opt/odoo/src/odoo:/opt/odoo/data/.pypi'
+ENV PIP_TARGET=${DATA}/.pypi
+
 WORKDIR /opt/odoo/
 ENTRYPOINT ["python", "/entrypoint.py"]
-CMD ["python", "/opt/odoo/src/odoo/odoo-bin", "-c", "/tmp/odoo.conf"]
+CMD ["/opt/odoo/src/odoo/odoo-bin"]
 
 ARG BUILD_DATE
 ARG VCS_REF
@@ -105,5 +109,4 @@ LABEL org.label-schema.vendor="Studio73" \
       org.label-schema.url="https://www.studio73.es" \
       org.label-schema.vcs-url="https://github.com/Studio73/dodoo" \
 	  org.label-schema.vcs-ref=$VCS_REF \
-	  org.label-schema.build-date=$BUILD_DATE \
-	  org.label-schema.schema-version="1.0.3"
+	  org.label-schema.build-date=$BUILD_DATE
