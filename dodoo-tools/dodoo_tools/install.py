@@ -9,7 +9,7 @@ import subprocess as sp
 import psycopg2
 
 from ._requirements import main as requirements
-from ._utils import DEVNULL, run, build_ssh_conf
+from ._utils import DEVNULL, run, build_ssh_conf, echo
 from .addons import get_addons_path
 from .addons import main as clone_repos
 
@@ -24,76 +24,33 @@ else:
 
 
 def symlink():
-    try:
-        sp.call(
-            [
-                "ln",
-                "-s",
-                os.path.join(os.environ["SRC"], "odoo", "odoo", "odoo-bin"),
-                "/usr/local/bin/odoo",
-            ],
-            stdout=DEVNULL,
-            stderr=DEVNULL,
-        )
-    except sp.CalledProcessError:
-        pass
-
-
-def fix_uid_gid_files():
-    # Hack to fix wrong uid/gid inside container
-    host_uid = os.environ.get("HOST_UID", False)
-    host_gid = os.environ.get("HOST_GID", False)
-    if host_uid and host_uid != os.getuid():
-        sp.call(
-            ["usermod", "-u", "%s" % host_uid, "odoo"],
-            stdout=DEVNULL,
-            stderr=DEVNULL,
-        )
-    if host_gid and host_gid != os.getgid():
-        sp.call(
-            ["groupmod", "-g", "%s" % host_gid, "odoo"],
-            stdout=DEVNULL,
-            stderr=DEVNULL,
-        )
+    odoo_bin = os.path.join(os.environ["SRC"], "odoo", "odoo-bin")
+    run(["ln", "-s", odoo_bin, "/usr/local/bin/odoo"])
 
 
 def set_ssh_environ():
     """
-    Look for /opt/odoo/data/.ssh and creates if doesn't exists
-    Then do `ln -s /opt/odoo/data/.ssh -> ~/.ssh`
+    Create /opt/odoo/data/.ssh if doesn't exists
+    Then `ln -s /opt/odoo/data/.ssh -> ~/.ssh`
     """
     ssh_path = os.path.join(os.environ["DATA"], ".ssh")
     ssh_symlink_path = os.path.join("/opt", "odoo", ".ssh")
     if not os.path.exists(ssh_path):
-        os.makedirs(ssh_path)
+        run(["mkdir", ssh_path], "odoo")
     if not os.path.exists(ssh_symlink_path):
-        sp.check_call(["ln", "-s", ssh_path, ssh_symlink_path])
+        run(["ln", "-s", ssh_path, ssh_symlink_path], "odoo")
     if not os.path.exists("/opt/odoo/.gitconfig"):
         run(["git", "config", "--global", "user.name", "dodoo"], "odoo")
-        run(
-            ["git", "config", "--global", "user.email", "dodoo@studio73.es"],
-            "odoo",
-        )
-    result = run(["ssh-keygen", "-H", "-F" "github.com"], "odoo")
+        run(["git", "config", "--global", "user.email", "dodoo@studio73.es"], "odoo")
+    result = run(["ssh-keygen", "-H", "-F", "github.com"], "odoo", check_call=False)
     if not len(result.out.strip()):
         sp.check_call(
             "ssh-keyscan github.com >> %s"
             % os.path.join(ssh_symlink_path, "known_hosts"),
             shell=True,
+            stderr=DEVNULL,
         )
-        result = run(["ssh-keygen", "-H", "-F" "github.com"], "odoo")
-    identityfiles = glob.glob(os.path.join(ssh_path, "*.pub"))
-    if len(identityfiles):
-        cfg = open(os.path.join(ssh_path, "config"), "w+")
-        for identityfile in identityfiles:
-            identityfile = identityfile.split(".pub")[0]
-            cfg.writelines(
-                [
-                    "Host %s\n" % identityfile.split("/")[-1],
-                    "\tHostName github.com\n",
-                    "\tIdentityFile %s\n" % identityfile,
-                ]
-            )
+    build_ssh_conf()
 
 
 def install_cron():
@@ -107,7 +64,8 @@ def install_cron():
 
 
 def block_outbound_mail():
-    if not os.environ.get("DEV"):
+    block = any([os.environ.get("DEV"), os.environ.get("BLOCK_SMTP")])
+    if not block:
         return True
     for smtp_port in ["25", "465", "587"]:
         p = run(
@@ -121,15 +79,15 @@ def block_outbound_mail():
                 smtp_port,
                 "-j",
                 "DROP",
-            ]
+            ],
+            check_call=False,
         )
         if p.returncode != 0:
             if "you must be root" in p.error:
-                _logger.error(
-                    "The container must have at least NET_ADMIN capabilities"
+                raise Exception(
+                    "The container must have at least NET_ADMIN capabilities\n"
+                    "e.g. docker run --cap-add=NET_ADMIN ..."
                 )
-                _logger.error("e.g. docker run --cap-add=NET_ADMIN ...")
-                sys.exit(-1)
             sp.check_call(
                 [
                     "iptables",
@@ -145,9 +103,7 @@ def block_outbound_mail():
             )
     db_name = os.environ.get("DATABASE", "odoo")
     query = "DELETE from ir_mail_server"
-    sp.call(
-        ["psql", "-d", db_name, "-c", query], stdout=DEVNULL, stderr=DEVNULL
-    )
+    sp.call(["psql", "-d", db_name, "-c", query], stdout=DEVNULL, stderr=DEVNULL)
     return True
 
 
@@ -200,12 +156,12 @@ def build_conf():
 
 
 def main():
-    install_cron()
-    set_ssh_environ()
-    block_outbound_mail()
-    requirements()
+    with echo("🤖 Setting up the container"):
+        install_cron()
+        set_ssh_environ()
+        block_outbound_mail()
+        requirements()
     clone_repos()
-    fix_uid_gid_files()
     build_conf()
     symlink()
 
