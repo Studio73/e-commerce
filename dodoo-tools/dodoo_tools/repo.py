@@ -1,12 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import subprocess as sp
-import requests
+import sys
 
 from os import environ, listdir, path
 
 from .github import GithubAPI
-from ._utils import echo, run, DEVNULL
+from ._utils import echo, run, DEVNULL, build_ssh_conf
+
+
+MERGE_STATUS = {"Not found": "❔", "Merged": "💟", "Not merged": "✅", "Conflicts": "⚠️"}
 
 
 class Repo(object):
@@ -58,28 +61,22 @@ class Repo(object):
             _cmd += args
         return _cmd
 
+    def git_run(self, cmd, args=None, quiet=True, user="odoo"):
+        return run(self.git_cmd(cmd, args, quiet), user)
+
     def clean(self, depth=1, quiet=True):
-        sp.check_call(
-            self.git_cmd("reset", ["--hard", "origin/%s" % self.branch], quiet),
-            stderr=DEVNULL,
-        )
-        sp.check_call(
-            self.git_cmd("checkout", [self.branch], quiet), stderr=DEVNULL
-        )
-        sp.check_call(
-            self.git_cmd("fetch", ["origin", "--depth=%s" % depth], quiet),
-            stderr=DEVNULL,
-        )
-        sp.check_call(self.git_cmd("clean", ["-fdx"], quiet), stderr=DEVNULL)
-        r = run(self.git_cmd("branch"))
+        self.git_run("reset", ["--hard"], quiet)
+        self.git_run("checkout", [self.branch], quiet)
+        self.git_run("fetch", ["origin", "--depth=%s" % depth], quiet)
+        self.git_run("clean", ["-fdx"], quiet)
+        self.git_run("reset", ["--hard", "origin/%s" % self.branch], quiet)
+        r = self.git_run("branch")
         active_branch = "* %s" % self.branch
         for branch in r.out.strip().split("\n"):
             branch = branch.strip()
             if branch == active_branch:
                 continue
-            sp.check_call(
-                self.git_cmd("branch", ["-D", branch], quiet), stderr=DEVNULL
-            )
+            self.git_run("branch", ["-D", branch], quiet)
 
     def do_merges(self, quiet=True):
         prs = {"to_merge": [], "not_merge": {}}
@@ -91,43 +88,37 @@ class Repo(object):
             if status not in ["Not merged", "Not found"]:
                 prs["not_merge"][pr] = status
                 continue
-            sp.check_call(
-                self.git_cmd(
-                    "fetch",
-                    ["origin", "refs/pull/%s/head:%s" % (pr, pr)],
-                    quiet,
-                )
+            self.git_run("fetch", ["origin", "refs/pull/%s/head:%s" % (pr, pr)], quiet)
+            r = self.git_run(
+                "rev-list",
+                ["--count", "--no-merges", "origin/%s..%s" % (self.branch, pr)],
+                False,
             )
-            r = run(
-                self.git_cmd(
-                    "rev-list",
-                    [
-                        "--count",
-                        "--no-merges",
-                        "origin/%s..%s" % (self.branch, pr),
-                    ],
-                    False,
-                )
-            )
-            depth += int(r.out.strip())
+            try:
+                depth += int(r.out.strip())
+            except ValueError:
+                """ Case We're trying to merge a PR
+                while the repo target branch is the same, e.g.,
+                > oca_dependencies.txt
+                    web https://github.com/Studio73/web.git 12.0-add_new_module
+                    #merges web XXX
+                > error
+                    fatal: ambiguous argument 'origin/BRANCH_NAME..PR_NUMBER'
+                """
+                continue
             prs["to_merge"].append(pr)
         if not len(prs["to_merge"]):
             return prs
-        sp.check_call(
-            self.git_cmd("fetch", ["origin", "--depth=%s" % depth], quiet)
-        )
-        sp.check_call(
-            self.git_cmd(
-                "checkout", ["-b", "merges", "origin/%s" % self.branch], quiet
-            )
-        )
-        r = run(self.git_cmd("branch"))
+        self.git_run("fetch", ["origin", "--depth=%s" % depth], quiet)
+        self.git_run("checkout", ["-b", "merges", "origin/%s" % self.branch], quiet)
+        r = self.git_run("branch")
         for pr in prs["to_merge"]:
-            sp.check_call(self.git_cmd("merge", ["--no-edit", pr], quiet))
+            self.git_run("merge", ["--no-edit", pr], quiet)
         return prs
 
     def update(self, quiet=True):
-        with echo("Updating %s" % self.name):
+        self.check_access()
+        with echo("Updating  %s/%s" % (self.org, self.name)):
             self.clean(quiet=quiet)
             merge_status = self.do_merges(quiet)
         if merge_status["not_merge"].keys():
@@ -137,12 +128,13 @@ class Repo(object):
 
     def clone(self, depth=1, **kwargs):
         if not path.exists(self.path) or not listdir(self.path):
-            with echo("Cloning %s" % self.name):
+            self.check_access()
+            with echo("Cloning %s/%s" % (self.org, self.name)):
                 cmd = ["git", "clone", "--quiet"]
                 if depth:
                     cmd += ["--depth", repr(depth)]
                 cmd += ["-b", self.branch, self.url, self.path]
-                sp.check_call(cmd)
+                run(cmd, "odoo")
             self.do_merges()
 
     def check_access(self):
@@ -151,11 +143,19 @@ class Repo(object):
         call = run(["git", "ls-remote", "--exit-code", "-h", self.url], "odoo")
         if call.returncode == 0:
             return True
-        if (
+        if "UNPROTECTED PRIVATE KEY FILE" in call.error:
+            ssh_key = path.join(environ["DATA"], ".ssh", self.name)
+            run(["chmod", "0600", "%s.pub" % ssh_key])
+            run(["chmod", "0600", ssh_key])
+            return self.check_access()
+        elif (
             "Permission denied" in call.error
             or "Could not resolve hostname" in call.error
         ):
-            return False
+            self.ssh_keygen()
+            self.upload_pub_key()
+            build_ssh_conf()
+            return True
         else:
             raise Exception(call.error)
 
@@ -163,7 +163,11 @@ class Repo(object):
         ssh_key = path.join(environ["DATA"], ".ssh", self.name)
         if not path.exists(ssh_key):
             comment = "%s@%s" % (self.name, environ["DATABASE"])
-            run(["ssh-keygen", "-N", "", "-f", ssh_key, "-C", comment], "odoo")
+            r = run(["ssh-keygen", "-N", "", "-f", ssh_key, "-C", comment], "odoo")
+            if r.returncode != 0 and "Permission denied" in r.error:
+                run(["chown", "-R", "odoo:odoo", path.join(environ["DATA"], ".ssh")])
+                run(["ssh-keygen", "-N", "", "-f", ssh_key, "-C", comment], "odoo")
+            run(["chmod", "0600", ssh_key, "%s.pub" % ssh_key])
         return True
 
     def get_pub_key(self):
@@ -182,11 +186,21 @@ class Repo(object):
             "key": self.get_pub_key(),
             "read_only": True,
         }
+        if not self.api.username or not self.api.password:
+            self.api.set_credentials()
         with echo("Uploading %s deploy key" % self.name):
             call = self.api.post("keys", auth=True, **params)
         if call.status_code != 201:  # Created
             print("! API response: %s" % call.json()["message"])
-            return False
+            print("\n*******************************************")
+            print("*   Please, before start you must grant   *")
+            print("*   SSH access to the next repository     *")
+            print("*******************************************\n")
+            print(self.name)
+            print("-" * len(self.name))
+            print(self.get_pub_key())
+            print("")
+            sys.exit(-1)
         return True
 
     def pr_status(self, pr_id):
@@ -201,4 +215,3 @@ class Repo(object):
                 return "Not merged"
             else:
                 return "Conflicts"
-
