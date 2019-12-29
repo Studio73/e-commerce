@@ -79,24 +79,28 @@ class echo(ContextDecorator):
         while not self.stopped:
             time.sleep(0.02)
 
+    def write(self, prefix, msg, keep=False, tme=None):
+        if not tme:
+            tme = round(time.time() - self.start_time, 2)
+        suffix = "" if not keep else "\n"
+        sys.stdout.write(u"\r%s %s - %.2fs.%s" % (prefix, msg, tme, suffix))
+        sys.stdout.flush()
+
     def show(self):
         idx = 0
         spinner = u"⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏"
         spinne_len = len(spinner) - 1
         self.stopped = False
         while self.should_run:
-            sys.stdout.write(u"\r%s %s" % (spinner[idx], self.msg))
-            sys.stdout.flush()
+            self.write(spinner[idx], self.msg)
             time.sleep(0.05)
             idx = idx + 1 if idx < spinne_len else 0
         elapsed_time = round(self.stop_time - self.start_time, 2)
         if self.error:
-            sys.stdout.write("\r! %s - %ss.\n" % (self.msg, elapsed_time))
-            sys.stdout.flush()
+            self.write("!", self.msg, True, elapsed_time)
             print("\n%s\n" % self.error_msg)
         else:
-            sys.stdout.write("\r✔ %s - %ss.\n" % (self.msg, elapsed_time))
-            sys.stdout.flush()
+            self.write("✔", self.msg, True, elapsed_time)
         self.stopped = True
         return True
 
