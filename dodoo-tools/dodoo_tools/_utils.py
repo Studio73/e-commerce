@@ -6,8 +6,12 @@ import getpass
 import subprocess as sp
 import glob
 
-from contextlib import ContextDecorator
-
+try:
+    from contextlib import ContextDecorator  # py3
+except ImportError:
+    from contextdecorator import ContextDecorator
+    reload(sys)
+    sys.setdefaultencoding('utf8')
 try:
     from subprocess import DEVNULL  # py3
 except ImportError:
@@ -24,7 +28,7 @@ class Cmd(object):
         self.error = None
         self.returncode = None
 
-    def run(self):
+    def run(self, check_call=True):
         cmd = self.cmd
         if self.force_user:
             cmd = ["gosu", self.force_user] + cmd
@@ -37,13 +41,15 @@ class Cmd(object):
         out, error = p.communicate()
         self.out = out
         self.error = error
-        self.returncode = p.returncode
+        self.returncode = int(p.returncode)
+        if check_call and self.returncode != 0:
+            raise sp.CalledProcessError(self.returncode, " ".join(self.cmd) , self.error)
         return self.returncode
 
 
-def run(cmd, force_user=False):
+def run(cmd, force_user=False, check_call=False):
     c = Cmd(cmd, force_user)
-    c.run()
+    c.run(check_call)
     return c
 
 
@@ -93,3 +99,23 @@ class echo(ContextDecorator):
             sys.stdout.flush()
         self.stopped = True
         return True
+
+
+def build_ssh_conf():
+    if os.environ.get('DEV'):
+        return True
+    ssh_folder = os.path.join(os.environ["DATA"], ".ssh")
+    identityfiles = glob.glob(os.path.join(ssh_folder, "*.pub"))
+    if len(identityfiles):
+        cfg = open(os.path.join(ssh_folder, "config"), "w+")
+        for identityfile in identityfiles:
+            if "id_rsa" in identityfile:
+                continue
+            identityfile = identityfile.replace(".pub", "")
+            cfg.writelines(
+                [
+                    "Host %s github.com\n" % identityfile.split("/")[-1],
+                    "\tHostName github.com\n",
+                    "\tIdentityFile %s\n" % identityfile,
+                ]
+            )
