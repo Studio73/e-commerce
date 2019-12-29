@@ -7,15 +7,8 @@ import click
 
 from ._requirements import pip_install
 from .cli import cli
-from .repo import Repo
+from .repo import Repo, MERGE_STATUS
 
-
-MERGE_STATUS = {
-    "Not found": "❔",
-    "Merged": "💟",
-    "Not merged": "✅",
-    "Conflicts": "⚠️",
-}
 
 
 def get_dependencies():
@@ -62,16 +55,8 @@ def get_dependencies():
                     repo_path = path.join(src, org, repo_name)
                     repo.path = repo_path
                 dependencies.append(repo)
-    if environ.get("ENTERPRISE"):
-        enter_url = environ.get(
-            "ENTERPRISE_REPO", "git@github.com:Studio73/enterprise.git"
-        )
-        enter_path = path.join(src, "odoo", "enterprise")
-        enter_repo = Repo(enter_url, odoo_version, path=enter_path)
-        enter_repo.odoo_repo = True
-        dependencies.append(enter_repo)
     odoo_url = environ.get("ODOO_REPO", "https://github.com/odoo/odoo.git")
-    odoo_path = path.join(src, "odoo", "odoo", "addons")
+    odoo_path = path.join(src, "odoo")
     odoo_repo = Repo(odoo_url, odoo_version, path=odoo_path)
     odoo_repo.odoo_repo = True
     dependencies.append(odoo_repo)
@@ -79,41 +64,9 @@ def get_dependencies():
 
 
 def get_addons_path():
-    return ",".join([a.path for a in get_dependencies()])
-
-
-def _check_repos_permission(repos):
-    access_granted = False
-    access_error = []
-    username = False
-    password = False
-    for r in repos:
-        if not r.check_access():
-            # Avoid ask for creadentials several times
-            if not username or not password:
-                r.api.set_credentials()
-                username = r.api.username
-                password = r.api.password
-            else:
-                r.api.set_credentials(username, password)
-            r.ssh_keygen()
-            access_granted = True
-            upload_ok = r.upload_pub_key()
-            if not upload_ok:
-                access_error.append(r)
-    if len(access_error):
-        print("\n********************************************")
-        print("*   Please, before start you must grant    *")
-        print("*   SSH access to the next repositories    *")
-        print("********************************************\n")
-        for repo in access_error:
-            print(repo.name)
-            print("-" * len(repo.name))
-            print(repo.get_pub_key())
-            print("")
-        sys.exit(-1)
-    if access_granted:
-        build_ssh_conf()
+    deps = [a.path for a in get_dependencies()]
+    deps[-1] = path.join(deps[-1], "addons")  # ~/src/odoo/ -> ~/src/odoo/addons
+    return ",".join(deps)
 
 
 def main(to_update=False):
@@ -124,9 +77,6 @@ def main(to_update=False):
         _logger.error("Missing Odoo version")
         sys.exit(-1)
     repos = get_dependencies()
-    # ~/src/odoo/addons -> ~/src/odoo/
-    repos[-1].path = repos[-1].path.replace("addons", "")
-    _check_repos_permission(repos)
     if not path.exists(repos[0].path) or not listdir(repos[0].path):
         # First boot and the repository is not cloned yet
         repos[0].clone()
@@ -167,8 +117,8 @@ def update(name):
 
     \b
     NAME has this avaliable options:
-    - 'all': Will update all repositories, including Odoo and Enterprise.
-    - 'all-skip-odoo': Will update all repositories except Odoo & Enterprise.
+    - 'all': Will update all repositories, including Odoo.
+    - 'all-skip-odoo': Will update all repositories except Odoo.
     - <any>: Will update all matching repositories.
     """
     main(name)
@@ -200,9 +150,9 @@ def merge_status(repo_name):
                 else:
                     r.api.set_credentials(username, password)
             repos.append(r)
-    max_len = max([len(r.name) for r in repos])
     if not len(repos):
         return True
+    max_len = max([len(r.name) for r in repos])
     print("-" * max_len)
     for repo in repos:
         print("%s\n%s\n" % (repo.name, "-" * max_len))
