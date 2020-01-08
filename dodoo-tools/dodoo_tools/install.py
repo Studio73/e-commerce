@@ -8,6 +8,7 @@ import subprocess as sp
 
 import psycopg2
 
+from collections import OrderedDict
 from ._requirements import main as requirements
 from ._utils import DEVNULL, run, build_ssh_conf, echo
 from .addons import get_addons_path
@@ -26,6 +27,15 @@ else:
 def symlink():
     odoo_bin = os.path.join(os.environ["SRC"], "odoo", "odoo-bin")
     run(["ln", "-s", odoo_bin, "/usr/local/bin/odoo"])
+    if os.environ.get("DEBUG"):
+        debug_cmd = (
+            "python%s -m ptvsd --host 0.0.0.0 --port 5678 /usr/local/bin/odoo"
+            % sys.version_info.major
+        )
+        debug_odoo = "/usr/local/bin/debug_odoo"
+        with open(debug_odoo, "w") as debug_file:
+            debug_file.write(debug_cmd)
+        run(["chmod", "+x", debug_odoo])
 
 
 def set_ssh_environ():
@@ -57,10 +67,8 @@ def install_cron():
     cron_file = os.path.join(os.environ["SETUP"], "cron")
     if os.path.exists(cron_file):
         sp.call("printenv > /etc/environment", shell=True)
-        if os.path.exists("/etc/cron.d/cron"):
-            os.remove("/etc/cron.d/cron")
-        sp.call(["cp", cron_file, "/etc/cron.d/cron"])
-        sp.call(["service", "cron", "start"])
+        sp.call(["crontab", "-u", "odoo", cron_file])
+        sp.call(["service", "cron", "start"], stdout=DEVNULL, stderr=DEVNULL)
 
 
 def block_outbound_mail():
@@ -136,23 +144,21 @@ def build_conf():
 
     cfg = configparser.ConfigParser()
     cfg.read(os.path.join(os.environ["SETUP"], "odoo.conf"))
-    try:
-        # Override default options with setup/odoo.conf values
-        setup_options = dict(cfg.items("options"))
-        options.update(setup_options)
-    except configparser.NoSectionError:
-        pass
-    if not options.get("addons_path"):
-        options["addons_path"] = get_addons_path()
+    new_conf = OrderedDict({"options": options})
+    for section in list(cfg._sections.keys()):
+        new_conf.setdefault(section, {})
+        new_conf[section].update(dict(cfg.items(section)))
+    if not new_conf["options"].get("addons_path"):
+        new_conf["options"]["addons_path"] = get_addons_path()
 
     odoorc = "/opt/odoo/.odoorc"
     if os.environ["ODOO_VERSION"] == "8.0":
         odoorc = "/opt/odoo/.openerp_serverrc"
 
     with open(odoorc, "w") as odoo_conf:
-        odoo_conf.write("[options]\n")
-        odoo_conf.writelines(["%s=%s\n" % (k, v) for k, v in options.items()])
-    odoo_conf.close()
+        for section, values in new_conf.items():
+            odoo_conf.write("[%s]\n" % section)
+            odoo_conf.writelines(["%s=%s\n" % (k, v) for k, v in values.items()])
 
 
 def main():
