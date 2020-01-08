@@ -5,13 +5,16 @@ import sys
 import getpass
 import subprocess as sp
 import glob
+import click
+from datetime import timedelta
 
 try:
     from contextlib import ContextDecorator  # py3
 except ImportError:
     from contextdecorator import ContextDecorator
+
     reload(sys)
-    sys.setdefaultencoding('utf8')
+    sys.setdefaultencoding("utf8")
 try:
     from subprocess import DEVNULL  # py3
 except ImportError:
@@ -20,36 +23,43 @@ except ImportError:
 
 class Cmd(object):
     def __init__(self, cmd, force_user):
+        if not isinstance(cmd[0], list):
+            cmd = [cmd]
         self.cmd = cmd
-        self.force_user = (
-            force_user if force_user != getpass.getuser() else False
-        )
+        self.force_user = force_user if force_user != getpass.getuser() else False
         self.out = None
         self.error = None
         self.returncode = None
 
-    def run(self, check_call=True):
-        cmd = self.cmd
-        if self.force_user:
-            cmd = ["gosu", self.force_user] + cmd
-        try:
-            p = sp.Popen(
-                cmd, stdout=sp.PIPE, stderr=sp.PIPE, encoding="utf8"
-            )  # py3
-        except TypeError:
-            p = sp.Popen(cmd, stdout=sp.PIPE, stderr=sp.PIPE)
+    def run(self, check_call=True, stdout=sp.PIPE):
+        p_out = None
+        for idx, cmd in enumerate(self.cmd):
+            p_stdout = stdout if idx == len(self.cmd) - 1 else sp.PIPE
+            if self.force_user:
+                cmd = ["gosu", self.force_user] + cmd
+            try:
+                p = sp.Popen(
+                    cmd, stdin=p_out, stdout=p_stdout, stderr=sp.PIPE, encoding="utf8"
+                )  # py3
+            except TypeError:
+                p = sp.Popen(cmd, stdin=p_out, stdout=p_stdout, stderr=sp.PIPE)
+            p_out = p.stdout
         out, error = p.communicate()
-        self.out = out
+        self.out = out and out.strip() or ""
         self.error = error
         self.returncode = int(p.returncode)
         if check_call and self.returncode != 0:
-            raise sp.CalledProcessError(self.returncode, " ".join(self.cmd) , self.error)
+            raise sp.CalledProcessError(
+                self.returncode,
+                " | ".join([" ".join(cmd) for cmd in self.cmd]),
+                self.error,
+            )
         return self.returncode
 
 
-def run(cmd, force_user=False, check_call=False):
+def run(cmd, force_user=False, check_call=False, stdout=sp.PIPE):
     c = Cmd(cmd, force_user)
-    c.run(check_call)
+    c.run(check_call, stdout)
     return c
 
 
@@ -77,13 +87,17 @@ class echo(ContextDecorator):
             self.error_msg = val
         self.should_run = False
         while not self.stopped:
-            time.sleep(0.02)
+            time.sleep(0.05)
 
     def write(self, prefix, msg, keep=False, tme=None):
         if not tme:
             tme = round(time.time() - self.start_time, 2)
+        h, m, s = map(float, str(timedelta(seconds=tme)).split(":"))
+        h = "%sh " % int(h) if h else ""
+        m = "%sm " % int(m) if m else ""
+        s = "%05.2fs" % s
         suffix = "" if not keep else "\n"
-        sys.stdout.write(u"\r%s %s - %.2fs.%s" % (prefix, msg, tme, suffix))
+        sys.stdout.write(u"\r%s %s - %s%s%s%s" % (prefix, msg, h, m, s, suffix))
         sys.stdout.flush()
 
     def show(self):
@@ -92,21 +106,28 @@ class echo(ContextDecorator):
         spinne_len = len(spinner) - 1
         self.stopped = False
         while self.should_run:
-            self.write(spinner[idx], self.msg)
+            self.write(click.style(spinner[idx], fg="blue", bold=True), self.msg)
             time.sleep(0.05)
             idx = idx + 1 if idx < spinne_len else 0
         elapsed_time = round(self.stop_time - self.start_time, 2)
         if self.error:
-            self.write("!", self.msg, True, elapsed_time)
+            self.write(
+                click.style("!", fg="white", bg="red"),
+                click.style(self.msg, fg="white", bg="red"),
+                True,
+                elapsed_time,
+            )
             print("\n%s\n" % self.error_msg)
         else:
-            self.write("✔", self.msg, True, elapsed_time)
+            self.write(
+                click.style("✔", fg="green", bold=True), self.msg, True, elapsed_time
+            )
         self.stopped = True
         return True
 
 
 def build_ssh_conf():
-    if os.environ.get('DEV'):
+    if os.environ.get("DEV"):
         return True
     ssh_folder = os.path.join(os.environ["DATA"], ".ssh")
     identityfiles = glob.glob(os.path.join(ssh_folder, "*.pub"))
