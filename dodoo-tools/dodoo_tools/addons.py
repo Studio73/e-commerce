@@ -10,7 +10,6 @@ from .cli import cli
 from .repo import Repo, MERGE_STATUS
 
 
-
 def get_dependencies():
     src = environ["SRC"]
     odoo_version = environ["ODOO_VERSION"]
@@ -69,7 +68,7 @@ def get_addons_path():
     return ",".join(deps)
 
 
-def main(to_update=False):
+def main(to_update=False, org=False):
     if not environ.get("GIT_REPO"):
         _logger.error("Missing Git repository")
         sys.exit(-1)
@@ -88,13 +87,16 @@ def main(to_update=False):
             continue
         if to_update:
             should_update = False
-            if to_update == "all":
+            if org and to_update == repo.org:
                 should_update = True
-            elif to_update == "all-skip-odoo":
-                if not repo.odoo_repo:
+            else:
+                if to_update == "all":
                     should_update = True
-            elif to_update in repo.name:
-                should_update = True
+                elif to_update == "all-skip-odoo":
+                    if not repo.odoo_repo:
+                        should_update = True
+                elif to_update in repo.name:
+                    should_update = True
             if should_update:
                 repo.update()
     pip_install(
@@ -111,8 +113,14 @@ def addons():
 
 
 @addons.command()
+@click.option(
+    "-o",
+    "--org",
+    is_flag=True,
+    help="Match by organization name instead of repository name",
+)
 @click.argument("name")
-def update(name):
+def update(name, org):
     """Fetch and update sources from Github.
 
     \b
@@ -121,7 +129,7 @@ def update(name):
     - 'all-skip-odoo': Will update all repositories except Odoo.
     - <any>: Will update all matching repositories.
     """
-    main(name)
+    main(name, org)
 
 
 @addons.command()
@@ -138,9 +146,7 @@ def merge_status(repo_name):
     username = False
     password = False
     for r in get_dependencies():
-        if (repo_name and repo_name in r.name) or (
-            not repo_name and len(r.merges)
-        ):
+        if (repo_name and repo_name in r.name) or (not repo_name and len(r.merges)):
             if r.ssh_auth:
                 # Avoid ask for creadentials several times
                 if not username or not password:
