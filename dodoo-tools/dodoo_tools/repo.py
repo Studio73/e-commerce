@@ -157,7 +157,7 @@ class Repo(object):
             build_ssh_conf()
             return True
         else:
-            raise Exception(call.error)
+            raise Exception("%s\n%s" % (self.url, call.error))
 
     def ssh_keygen(self):
         ssh_key = path.join(environ["DATA"], ".ssh", self.name)
