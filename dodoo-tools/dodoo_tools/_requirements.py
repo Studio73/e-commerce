@@ -63,7 +63,7 @@ def pip_install(pip_files):
             if package_name.lower() not in installed_pip_packages:
                 r = run(["pip", "install", "-q", package])
                 if r.returncode != 0:
-                    raise Exception("Error installing %s\n\n %s" % package, r.error)
+                    raise Exception("Error installing %s\n\n %s" % (package, r.error))
                 installed_pip_packages.append(package_name.lower())
 
 
