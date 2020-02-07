@@ -42,7 +42,11 @@ def pip_install(pip_files):
     files2install = cache_files(pip_files, "pip")
     if not files2install:
         return True
-    freeze = run(["pip", "freeze"])
+    if sys.version_info[0] == 3:
+        pip_bin = "pip3"
+    else:
+        pip_bin = "pip"
+    freeze = run([pip_bin, "freeze"])
     installed_pip_packages = [
         p.split("==")[0].lower() for p in freeze.out.strip().split("\n")
     ]
@@ -61,7 +65,7 @@ def pip_install(pip_files):
             if ".git" in package_name:
                 package_name = package_name.split(".git")[0].split("/")[-1]
             if package_name.lower() not in installed_pip_packages:
-                r = run(["pip", "install", "-q", package])
+                r = run([pip_bin, "install", "-q", package])
                 if r.returncode != 0:
                     raise Exception("Error installing %s\n\n %s" % (package, r.error))
                 installed_pip_packages.append(package_name.lower())
