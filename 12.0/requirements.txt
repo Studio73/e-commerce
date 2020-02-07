@@ -1,3 +1,4 @@
+psycopg2-binary # The psycopg2 wheel package will be renamed from release 2.8
 phonenumbers
 ptvsd
 Werkzeug==0.14.1
