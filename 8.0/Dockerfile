@@ -79,6 +79,7 @@ RUN curl -SLo /tmp/pip.tar.gz https://files.pythonhosted.org/packages/45/ae/8a0a
 RUN pip install --no-cache-dir --upgrade https://github.com/aeroo/aeroolib/archive/py2.x.zip
 
 ARG VERSION
+ENV ODOO_VERSION=$VERSION
 RUN curl -SLo /tmp/requirements.txt https://raw.githubusercontent.com/odoo/odoo/$VERSION/requirements.txt \
 	&& pip install --no-cache-dir --ignore-installed -r /tmp/requirements.txt \
 	&& apt-get -y autoremove \
