@@ -75,7 +75,7 @@ RUN curl -SLo /tmp/wkhtmltox.deb https://github.com/wkhtmltopdf/wkhtmltopdf/rele
 	&& rm -Rf /var/lib/apt/lists/* /tmp/*
 
 ARG VERSION
-ENV VERSION=$VERSION
+ENV ODOO_VERSION=$VERSION
 RUN curl -SLo /tmp/requirements.txt https://raw.githubusercontent.com/odoo/odoo/$VERSION/requirements.txt \
 	&& pip3 install --no-cache-dir --ignore-installed -r /tmp/requirements.txt \
 	&& apt-get -y autoremove \
