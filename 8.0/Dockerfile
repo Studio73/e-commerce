@@ -70,9 +70,9 @@ RUN curl -SLo /tmp/wkhtmltox.tar.xz https://github.com/wkhtmltopdf/wkhtmltopdf/r
 	&& rm -Rf /tmp/*
 
 # Force install latest pip from https://pypi.python.org/pypi/pip/X.X.X
-RUN curl -SLo /tmp/pip.tar.gz https://files.pythonhosted.org/packages/45/ae/8a0ad77defb7cc903f09e551d88b443304a9bd6e6f124e75c0fbbf6de8f7/pip-18.1.tar.gz \
+RUN curl -SLo /tmp/pip.tar.gz https://files.pythonhosted.org/packages/8e/76/66066b7bc71817238924c7e4b448abdb17eb0c92d645769c223f9ace478f/pip-20.0.2.tar.gz \
 	&& tar -xf /tmp/pip.tar.gz -C /tmp \
-	&& cd /tmp/pip-18.1/ \
+	&& cd /tmp/pip-20.0.2/ \
 	&& python setup.py install \
 	&& rm -Rf /tmp/*
 
@@ -97,8 +97,8 @@ RUN cd /tmp/dodoo-tools/ \
 	&& rm -Rf /tmp/*
 
 # Avoid "ImportError: No module named odoo" and make pip install persistent
-ENV PYTHONPATH='$PYTHONPATH:/opt/odoo/src/odoo:/opt/odoo/data/.pypi'
-ENV PIP_TARGET=${DATA}/.pypi
+ENV PYTHONPATH='$PYTHONPATH:/opt/odoo/src/odoo:/opt/odoo/data/.cache/pypi'
+ENV PIP_TARGET=${DATA}/.cache/pypi
 
 WORKDIR /opt/odoo/
 ENTRYPOINT ["python", "/entrypoint.py"]

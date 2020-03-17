@@ -161,8 +161,18 @@ def build_conf():
             odoo_conf.writelines(["%s=%s\n" % (k, v) for k, v in values.items()])
 
 
+def migrate_pip_cache():
+    # To remove in next release
+    pip_target = os.environ["PIP_TARGET"]
+    legacy_pip_target = os.path.join(os.environ["DATA"], ".pypi")
+    if not os.path.exists(pip_target) and os.path.exists(legacy_pip_target):
+        run(["mv", legacy_pip_target, pip_target])
+    return True
+
+
 def main():
     with echo("🤖 Setting up the container"):
+        migrate_pip_cache()
         install_cron()
         set_ssh_environ()
         block_outbound_mail()
