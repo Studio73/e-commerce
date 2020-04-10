@@ -1,4 +1,6 @@
 import os
+import random
+import string
 import threading
 import time
 import sys
@@ -144,3 +146,9 @@ def build_ssh_conf():
                     "\tIdentityFile %s\n" % identityfile,
                 ]
             )
+
+def gen_password(length=18):
+    return ''.join(
+        [random.choice(string.ascii_letters + string.digits)
+         for n in range(length)]
+    )

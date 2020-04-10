@@ -17,7 +17,10 @@ def main():
         dodoo_tools._utils.run(["usermod", "-u", str(host_uid), "odoo"])
     if host_gid != os.getgid():
         dodoo_tools._utils.run(["groupmod", "-g", str(host_uid), "odoo"])
-
+    if "dodoo-tools" in sys.argv:
+        # Allow run one-liner commands without instalation
+        # Like -> docker run --rm ... dodoo-tools database restore
+        return sp.call(sys.argv[1:])
     dodoo_tools.install.main()
     cmd = ["gosu", "odoo:odoo"] + sys.argv[1:]
     if os.environ.get("ODOO_VERSION") == "8.0":
