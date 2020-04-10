@@ -1,5 +1,5 @@
 [flake8]
 # Odoo / OCA
-max-line-length = 80
+max-line-length = 88
 # Black docs
 ignore = E501,W503,E203
