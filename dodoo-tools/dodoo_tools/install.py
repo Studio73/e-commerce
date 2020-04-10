@@ -110,8 +110,14 @@ def block_outbound_mail():
                 ]
             )
     db_name = os.environ.get("DATABASE", "odoo")
-    query = "DELETE from ir_mail_server"
-    sp.call(["psql", "-d", db_name, "-c", query], stdout=DEVNULL, stderr=DEVNULL)
+    querys = [
+        "DELETE from ir_mail_server",
+        "DELETE from ir_cron where cron_name = 'Publisher: Update Notification'",
+    ]
+    for query in querys:
+        sp.call(["psql", "-d", db_name, "-c", query], stdout=DEVNULL, stderr=DEVNULL)
+    with open("/etc/hosts", "a") as f:
+        f.write("127.0.0.1 services.openerp.com services.odoo.com\n")
     return True
 
 
