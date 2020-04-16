@@ -5,7 +5,7 @@ import hashlib
 import json
 import os
 import sys
-from ._utils import run
+from ._utils import run, echo
 
 
 
@@ -65,9 +65,8 @@ def pip_install(pip_files):
             if ".git" in package_name:
                 package_name = package_name.split(".git")[0].split("/")[-1]
             if package_name.lower() not in installed_pip_packages:
-                r = run([pip_bin, "install", "-q", package])
-                if r.returncode != 0:
-                    raise Exception("Error installing %s\n\n %s" % (package, r.error))
+                with echo("%s install %s" % (pip_bin, package)):
+                    r = run([pip_bin, "install", "-q", "--no-deps", package])
                 installed_pip_packages.append(package_name.lower())
 
 

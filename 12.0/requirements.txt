@@ -5,4 +5,3 @@ Werkzeug==0.14.1
 Unidecode==1.0.23
 num2words
 xlwt
-Jinja2==2.10.3 # 2.11.0 Isn't working properly with Odoo
