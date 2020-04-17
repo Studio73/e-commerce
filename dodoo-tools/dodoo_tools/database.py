@@ -99,7 +99,18 @@ def restore(dbname, force, filestore, weekday, template):
             )
             if os.path.isfile(fstore_name):
                 fstore_dest = os.path.join(data_path, "data", "filestore")
-                run(["tar", "-xf", fstore_name, "-C", fstore_dest])
+                run(["mkdir", "-p", fstore_dest])
+                run(["tar", "-xf", fstore_name, "-C", "/tmp"])
+                source_path = os.path.join("/tmp", dbname)
+                if not os.path.exists(source_path):
+                    # Old backups data structure
+                    source_path = os.path.join("/tmp", "data", "filestore", dbname)
+                    if not os.path.exists(source_path):
+                        raise Exception("Unknown filestore data structure")
+                run(["mv", source_path, fstore_dest])
+                host_uid = os.environ.get("HOST_UID", "odoo")
+                host_gid = os.environ.get("HOST_GID", "odoo")
+                run(["chown", "-R", "%s:%s" % (host_uid, host_gid), fstore_dest])
 
 
 if __name__ == "__main__":
