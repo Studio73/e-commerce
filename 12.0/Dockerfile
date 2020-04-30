@@ -14,7 +14,7 @@ RUN apt-get update \
 	dirmngr \
 	fonts-noto-cjk \
 	gnupg \
-	libssl1.0-dev \
+	libssl1.0.0 \
 	node-less \
 	python3-pip \
 	python3-pyldap \
@@ -36,6 +36,7 @@ RUN apt-get install -y --no-install-recommends \
 	locales \
 	openssh-client \
 	iptables \
+	zip \
 	# pycups
 	libcups2-dev \
 	# lxml
@@ -59,6 +60,10 @@ ENV LANG=es_ES.UTF-8 \
 	SETUP='/opt/odoo/setup' \
 	SRC='/opt/odoo/src'
 RUN locale-gen es_ES.UTF-8
+RUN mkdir -p /opt/odoo/data && \
+	mkdir -p /opt/odoo/src && \
+	mkdir -p /opt/odoo/setup && \
+	chown -R odoo:odoo /opt/odoo
 VOLUME ["/opt/odoo/data", "/opt/odoo/setup", "/opt/odoo/src"]
 
 RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ bionic-pgdg main" >> /etc/apt/sources.list.d/postgres.list \
