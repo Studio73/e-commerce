@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import os
 import sys
 import requests
 import json
@@ -10,8 +11,8 @@ class GithubAPI(object):
     def __init__(self, org, repo, username=False, password=False):
         self.org = org
         self.repo = repo
-        self.username = username
-        self.password = password
+        self.username = username or os.environ.get("GH_USER")
+        self.password = password or os.environ.get("GH_TOKEN")
         self.url = "https://api.github.com/repos/%s/%s" % (org, repo)
 
     def _build_url(self, endpoint, id=False, auth=False):
@@ -32,7 +33,6 @@ class GithubAPI(object):
     def set_credentials(self, username=False, password=False):
         self.username = username or input("? Github username: ")
         self.password = password or getpass("? Github password: ")
-        print("")
         return True
 
     def get(self, endpoint, id=False, auth=False):

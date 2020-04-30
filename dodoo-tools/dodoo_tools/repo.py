@@ -23,28 +23,37 @@ class Repo(object):
         self.main_repo = False
         self.odoo_repo = False
         self.ssh_auth = self.url.startswith("git@")
-        if self.ssh_auth and not environ.get("DEV"):
-            self.url = self.url.replace("github.com", self.name)
+        self.set_url(url)
         self.api = GithubAPI(self.org, self.name)
 
-    def get_name(self):
+    def set_url(self, url):
+        """Compute correct URL: ssh, https or https+token
         """
-        Extract repository name from Github URL e.g.
+        token = environ.get("GH_TOKEN")
+        self.ssh_auth = url.startswith("git@")
+        if not self.ssh_auth:
+            return
+        if token:
+            self.url = "https://%s@github.com/%s/%s.git" % (token, self.org, self.name)
+        elif not environ.get("DEV"):
+            # Only use ssh keys if productions and token isn't available
+            self.url = url.replace("github.com", self.name)
+
+    def get_name(self):
+        """Extract repository name from Github URL e.g.
         e.g. github.com/Studio73/studio73-addons.git -> studio73-addons
         """
         return self.url.split("/")[-1].replace(".git", "")
 
     def get_org(self):
-        """
-        Extract org name from Github URL e.g.
+        """Extract org name from Github URL e.g.
         github.com/Studio73/studio73-addons/ -> studio73
         git@github.com:Studio73/studio73-addons/ -> studio73
         """
         return self.url.strip("/").split("/")[-2].lower().split(":")[-1]
 
     def get_path(self):
-        """
-        Build path from ORG name
+        """Build path from ORG name
         """
         return path.join(environ["SRC"], self.org, self.name)
 
