@@ -1,4 +1,5 @@
 import os
+import logging
 import random
 import string
 import threading
@@ -21,6 +22,8 @@ try:
     from subprocess import DEVNULL  # py3
 except ImportError:
     DEVNULL = open(os.devnull, "wb")
+
+_logger = logging.getLogger(__name__)
 
 
 class Cmd(object):
@@ -98,32 +101,41 @@ class echo(ContextDecorator):
         h = "%sh " % int(h) if h else ""
         m = "%sm " % int(m) if m else ""
         s = "%05.2fs" % s
-        suffix = "" if not keep else "\n"
-        sys.stdout.write(u"\r%s %s - %s%s%s%s" % (prefix, msg, h, m, s, suffix))
-        sys.stdout.flush()
+        suffix = ""
+        if keep and sys.stdout.isatty():
+            suffix = "\n"
+        text = "%s %s - %s%s%s%s" % (prefix, msg, h, m, s, suffix)
+        if sys.stdout.isatty():
+            sys.stdout.write("\r%s" % text)
+            sys.stdout.flush()
+        else:
+            if prefix == "!":
+                _logger.error(text)
+            else:
+                _logger.info(text)
 
     def show(self):
         idx = 0
-        spinner = u"⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏"
+        spinner = ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"]
         spinne_len = len(spinner) - 1
         self.stopped = False
         while self.should_run:
-            self.write(click.style(spinner[idx], fg="blue", bold=True), self.msg)
+            if sys.stdout.isatty():
+                self.write(click.style(spinner[idx], fg="blue", bold=True), self.msg)
             time.sleep(0.05)
             idx = idx + 1 if idx < spinne_len else 0
         elapsed_time = round(self.stop_time - self.start_time, 2)
+        prefix = ""
+        msg = self.msg
+        if sys.stdout.isatty():
+            if self.error:
+                prefix = click.style("!", fg="white", bg="red")
+                msg = click.style(self.msg, fg="white", bg="red")
+            else:
+                prefix = click.style("✔", fg="green", bold=True)
+        self.write(prefix, msg, True, elapsed_time)
         if self.error:
-            self.write(
-                click.style("!", fg="white", bg="red"),
-                click.style(self.msg, fg="white", bg="red"),
-                True,
-                elapsed_time,
-            )
             print("\n%s\n" % self.error_msg)
-        else:
-            self.write(
-                click.style("✔", fg="green", bold=True), self.msg, True, elapsed_time
-            )
         self.stopped = True
         return True
 
@@ -147,8 +159,8 @@ def build_ssh_conf():
                 ]
             )
 
+
 def gen_password(length=18):
-    return ''.join(
-        [random.choice(string.ascii_letters + string.digits)
-         for n in range(length)]
+    return "".join(
+        [random.choice(string.ascii_letters + string.digits) for n in range(length)]
     )
