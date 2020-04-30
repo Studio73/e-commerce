@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import sys
+import time
+from datetime import timedelta
 from os import environ, listdir, path
 
 import click
@@ -69,6 +71,8 @@ def get_addons_path():
 
 
 def main(to_update=False, org=False):
+    first_boot = False
+    start_time = time.time()
     if not environ.get("GIT_REPO"):
         _logger.error("Missing Git repository")
         sys.exit(-1)
@@ -78,6 +82,7 @@ def main(to_update=False, org=False):
     repos = get_dependencies()
     if not path.exists(repos[0].path) or not listdir(repos[0].path):
         # First boot and the repository is not cloned yet
+        first_boot = True
         repos[0].clone()
         repos = get_dependencies()
     for repo in repos:
@@ -105,6 +110,15 @@ def main(to_update=False, org=False):
             for repo in repos[:-1]  # Skip Odoo requirements.txt
         ]
     )
+    if first_boot:
+        tme = round(time.time() - start_time, 2)
+        h, m, s = map(float, str(timedelta(seconds=tme)).split(":"))
+        h = "%sh " % int(h) if h else ""
+        m = "%sm " % int(m) if m else ""
+        s = "%05.2fs" % s
+        sys.stdout.write(
+            u"\r\nInstalation finished in %s%s%s\n\n" % (h, m, s)
+        )
 
 
 @cli.group()
