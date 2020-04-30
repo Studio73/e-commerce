@@ -66,7 +66,7 @@ def pip_install(pip_files):
                 package_name = package_name.split(".git")[0].split("/")[-1]
             if package_name.lower() not in installed_pip_packages:
                 with echo("%s install %s" % (pip_bin, package)):
-                    r = run([pip_bin, "install", "-q", "--no-deps", package])
+                    r = run([pip_bin, "install", "-q", package])
                 installed_pip_packages.append(package_name.lower())
 
 
