@@ -15,7 +15,6 @@ from .addons import get_addons_path
 from .addons import main as clone_repos
 
 _logger = logging.getLogger(__name__)
-_logger.setLevel(logging.INFO)
 
 
 if sys.version_info[0] == 2:
@@ -167,6 +166,20 @@ def build_conf():
             odoo_conf.writelines(["%s=%s\n" % (k, v) for k, v in values.items()])
 
 
+def install_runbot_build():
+    if os.path.exists("/data/build"):
+        # This is a runbot build
+        run(
+            [
+                "touch",
+                "/data/build/start-%s"
+                % os.environ.get("RUNBOT_NAME", os.environ["DATABASE"]),
+            ]
+        )
+        run(["chown", "-R", "odoo:odoo", "/data/build"])
+        run(["chown", "-R", "odoo:odoo", "/opt/odoo/src"])
+
+
 def migrate_pip_cache():
     # To remove in next release
     pip_target = os.environ["PIP_TARGET"]
@@ -177,7 +190,8 @@ def migrate_pip_cache():
 
 
 def main():
-    with echo("🤖 Setting up the container"):
+    with echo("Configuring the container"):
+        install_runbot_build()
         migrate_pip_cache()
         install_cron()
         set_ssh_environ()
