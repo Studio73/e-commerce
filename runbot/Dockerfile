@@ -21,3 +21,4 @@ RUN apt-get update \
 	&& rm -Rf /var/lib/apt/lists/* /tmp/*
 COPY runbot/entrypoint.sh /
 ENTRYPOINT ["bash", "/entrypoint.sh"]
+CMD ["python3", "/opt/odoo/src/odoo/odoo-bin"]
