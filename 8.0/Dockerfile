@@ -48,7 +48,6 @@ RUN apt-add-repository ppa:brightbox/ruby-ng \
 	&& apt-get purge -y --auto-remove \
 	&& rm -Rf /var/lib/apt/lists/* /tmp/*
 
-RUN locale-gen es_ES.UTF-8
 # Avoid werkzeug encoding ANSI_X3.4-1968 warning
 ENV LANG=es_ES.UTF-8 \
     LANGUAGE=es_ES \
@@ -56,6 +55,11 @@ ENV LANG=es_ES.UTF-8 \
     DATA='/opt/odoo/data' \
     SETUP='/opt/odoo/setup' \
     SRC='/opt/odoo/src'
+RUN locale-gen es_ES.UTF-8
+RUN mkdir -p /opt/odoo/data && \
+	mkdir -p /opt/odoo/src && \
+	mkdir -p /opt/odoo/setup && \
+	chown -R odoo:odoo /opt/odoo
 VOLUME ["/opt/odoo/data", "/opt/odoo/setup", "/opt/odoo/src"]
 
 RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ xenial-pgdg main" >> /etc/apt/sources.list.d/postgres.list \
@@ -102,7 +106,7 @@ ENV PIP_TARGET=${DATA}/.cache/pypi
 
 WORKDIR /opt/odoo/
 ENTRYPOINT ["python", "/entrypoint.py"]
-CMD ["/opt/odoo/src/odoo/odoo-bin"]
+CMD ["python", "/opt/odoo/src/odoo/odoo-bin"]
 
 ARG BUILD_DATE
 ARG VCS_REF
