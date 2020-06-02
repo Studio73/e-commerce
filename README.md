@@ -4,13 +4,22 @@ Dodoo: D(ocker)odoo
 Mandatory environment variables:
 
 * `GIT_REPO`: URL to repository, e.g. https://github.com/Studio73/studio73-addons.git
-* `ODOO_VERSION`: Odoo version (8.0, 10.0, 12.0)
+* `ADMINPASSWORD`: self-explanatory
+* `PGHOST`: self-explanatory
+* `PGUSER`: self-explanatory
+* `PGPASSWORD`: self-explanatory
 
-Available environment variables:
+Optional environment variables:
 
-* `DEV`: Block SMTP ports and other thinks...
+* `PGPORT`: self-explanatory - default 5432
+* `DEV`: Block SMTP ports and other dev stuff
 * `BLOCK_SMTP`: Block SMTP ports
-* `DEBUG`: Enable ptvsd for vscode debugging
+* `DEBUG`: Enable `debug_odoo` script for running odoo throught ptvsd for vscode debugging
 * `DEMO`: When creating database do it with demo data
 * `LANG`: When creating database do it with the selected language
-* `ODOO_REPO`: URL for Odoo repository, default value is Github Odoo URL
+* `ODOO_REPO`: URL for Odoo repository - default Github Odoo URL
+* `GH_USER`: Github user
+* `GH_TOKEN`: Github token
+* `S3_URL`: S3 storage url, e.g. s3.studio73.es
+* `S3_USER`: S3 storage user
+* `S3_SECRET`: S3 storage secret
