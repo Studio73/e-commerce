@@ -89,7 +89,7 @@ RUN curl -SLo /tmp/requirements.txt https://raw.githubusercontent.com/odoo/odoo/
 	&& apt-get -y autoremove \
 	&& rm -Rf /var/lib/apt/lists/* /tmp/*
 
-COPY $VERSION/requirements.txt /tmp/requirements.txt
+COPY py2/requirements.txt /tmp/requirements.txt
 RUN pip install --no-cache-dir -r /tmp/requirements.txt \
 	&& apt-get -y autoremove \
 	&& rm -Rf /var/lib/apt/lists/* /tmp/*
