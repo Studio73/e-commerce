@@ -4,6 +4,7 @@ import os
 import sys
 import requests
 import json
+from builtins import input
 from getpass import getpass
 
 
@@ -31,8 +32,12 @@ class GithubAPI(object):
         return url, basic_auth
 
     def set_credentials(self, username=False, password=False):
-        self.username = username or input("? Github username: ")
-        self.password = password or getpass("? Github password: ")
+        if not username:
+            username = input("? Github username: ")
+        if not password:
+            password = getpass("? Github password: ")
+        self.username = username
+        self.password = password
         return True
 
     def get(self, endpoint, id=False, auth=False):
