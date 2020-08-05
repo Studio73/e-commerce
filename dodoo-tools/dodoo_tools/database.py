@@ -2,9 +2,12 @@
 # Copyright 2019 Studio73 <https://www.studio73.es>
 import os
 import calendar
+
 import click
+
 from datetime import datetime
 from getpass import getpass
+
 from minio import Minio
 
 from ._utils import echo, run
@@ -127,12 +130,13 @@ def download_from_s3(name, dest, ftype):
     url = os.environ.get("S3_URL") or input("? S3 url: ")
     user = os.environ.get("S3_USER") or input("? S3 user: ")
     secret = os.environ.get("S3_SECRET") or getpass("? S3 secret: ")
-    with echo("Downloading database %s %s" % (ftype, name)):
+    with echo("Downloading %s %s" % (ftype, name)):
         client = Minio(url, access_key=user, secret_key=secret, secure=True)
         download_obj = False
         for bucket in client.list_buckets():
             for fil in client.list_objects(bucket.name, recursive=True):
-                if name in fil.object_name:
+                object_name = os.path.split(fil.object_name)[-1]
+                if name == object_name:
                     download_obj = fil
                     break
             if download_obj:
