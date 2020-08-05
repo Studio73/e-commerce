@@ -67,6 +67,11 @@ def backup(dbname, force, filestore):
 @click.option("-s", "--source", help="Project database name to use as source")
 @click.argument("dbname", envvar="DATABASE")
 def restore(dbname, force, filestore, download, weekday, template, location, source):
+    if not os.environ.get("DEV"):
+        answer = input("You are in a production environment! Continue? (y/N) ")
+        if answer != "y":
+            print("Aborted!")
+            return
     source = source or dbname
     location = location or os.path.join(os.environ["DATA"], "backup")
     if weekday is None:
