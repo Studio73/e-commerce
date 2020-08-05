@@ -9,6 +9,7 @@ from datetime import datetime
 from getpass import getpass
 
 from minio import Minio
+from tabulate import tabulate
 
 from ._utils import echo, run
 from .cli import cli
@@ -51,6 +52,38 @@ def backup(dbname, force, filestore):
             fstore_path = os.path.join(os.environ["DATA"], "data", "filestore")
             if os.path.isdir(os.path.join(fstore_path, dbname)):
                 run(["tar", "-C", fstore_path, "-cf", fstore_name, dbname])
+
+
+@database.command()
+@click.option("-f", "--format", default="psql")
+@click.argument("dbname", envvar="DATABASE")
+def list(dbname, format):
+    table = []
+    base_path = os.path.join(os.environ["DATA"], "backup")
+    for i in range(0, 7):
+        weekday = calendar.day_name[int(i)].upper()
+        row = [weekday]
+        backup_file = os.path.join(base_path, "{}_{}.tar.gz".format(dbname, weekday))
+        fstore_file = os.path.join(
+            base_path, "{}-fstore-{}.tar.gz".format(dbname, weekday)
+        )
+        if os.path.exists(backup_file):
+            row += ["X", datetime.fromtimestamp(os.path.getmtime(backup_file))]
+        else:
+            row += ["-", "-"]
+        if os.path.exists(fstore_file):
+            row += ["X", datetime.fromtimestamp(os.path.getmtime(fstore_file))]
+        else:
+            row += ["-", "-"]
+        table.append(row)
+    print(
+        tabulate(
+            table,
+            headers=["Day", "Backup", "Last modified",  "Filestore", "Last modified"],
+            showindex="always",
+            tablefmt=format,
+        )
+    )
 
 
 @database.command()

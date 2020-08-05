@@ -10,6 +10,6 @@ setup(
     url="https://www.studio73.es",
     include_package_data=True,
     packages=find_packages(),
-    install_requires=["click>=7", "minio"],
+    install_requires=["click>=7", "future", "minio", "tabulate"],
     entry_points={"console_scripts": ["dodoo-tools = dodoo_tools.cli:cli"]},
 )
