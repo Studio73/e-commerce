@@ -4,6 +4,7 @@ import os
 import calendar
 
 import click
+import inquirer
 
 from datetime import datetime
 from getpass import getpass
@@ -79,7 +80,7 @@ def list(dbname, format):
     print(
         tabulate(
             table,
-            headers=["Day", "Backup", "Last modified",  "Filestore", "Last modified"],
+            headers=["Day", "Backup", "Last modified", "Filestore", "Last modified"],
             showindex="always",
             tablefmt=format,
         )
@@ -168,19 +169,26 @@ def download_from_s3(name, dest, ftype):
     url = os.environ.get("S3_URL") or input("? S3 url: ")
     user = os.environ.get("S3_USER") or input("? S3 user: ")
     secret = os.environ.get("S3_SECRET") or getpass("? S3 secret: ")
-    with echo("Downloading %s %s" % (ftype, name)):
-        client = Minio(url, access_key=user, secret_key=secret, secure=True)
-        download_obj = False
-        for bucket in client.list_buckets():
-            for fil in client.list_objects(bucket.name, recursive=True):
-                object_name = os.path.split(fil.object_name)[-1]
-                if name == object_name:
-                    download_obj = fil
-                    break
-            if download_obj:
+    client = Minio(url, access_key=user, secret_key=secret, secure=True)
+    download_dict = {}
+    download_obj = False
+    for bucket in client.list_buckets():
+        for fil in client.list_objects(bucket.name, recursive=True):
+            object_name = os.path.split(fil.object_name)[-1]
+            if name == object_name:
+                download_dict[fil.bucket_name] = fil
                 break
-        if not download_obj:
-            raise Exception("%s file not found" % name)
+    if len(download_dict.values()) == 1:
+        download_obj = download_dict.values()[0]
+    elif len(download_dict.values()) > 1:
+        ans = inquirer.list_input(
+            "From which bucket do you want to download?",
+            choices=download_dict.keys(),
+        )
+        download_obj = download_dict[ans]
+    if not download_obj:
+        raise Exception("%s file not found" % name)
+    with echo("Downloading %s %s" % (ftype, name)):
         data = client.get_object(download_obj.bucket_name, download_obj.object_name)
         with open(os.path.join(dest, name), "wb") as file_data:
             for d in data.stream(32 * 1024):
