@@ -109,8 +109,10 @@ def restore(dbname, force, filestore, download, weekday, template, location, sou
     source = source or dbname
     location = location or os.path.join(os.environ["DATA"], "backup")
     if weekday is None:
-        weekday = datetime.today().weekday()
-    day = calendar.day_name[int(weekday)].upper()
+        weekday = int(datetime.today().weekday()) - 1
+        if weekday == -1:  # Monday
+            weekday = 6
+    day = calendar.day_name[weekday].upper()
     backup_name = "%s_%s.tar.gz" % (source, day)
     fstore_name = "%s-fstore-%s.tar.gz" % (source, day)
     if download:
