@@ -14,7 +14,9 @@ Optional environment variables:
 * `PGPORT`: self-explanatory - default 5432
 * `DEV`: Block SMTP ports and other dev stuff
 * `BLOCK_SMTP`: Block SMTP ports
-* `DEBUG`: Enable `debug_odoo` script for running odoo throught ptvsd for vscode debugging
+* `DEBUGGER`: Enable `debug_odoo` script for debugging odoo throught vscode or pycharm
+* `DEBUGGER_HOST`: self-explanatory
+* `DEBUGGER_HOST`: self-explanatory
 * `DEMO`: When creating database do it with demo data
 * `LANG`: When creating database do it with the selected language
 * `ODOO_REPO`: URL for Odoo repository - default Github Odoo URL

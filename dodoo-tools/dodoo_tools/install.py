@@ -26,15 +26,46 @@ else:
 def symlink():
     odoo_bin = os.path.join(os.environ["SRC"], "odoo", "odoo-bin")
     run(["ln", "-s", odoo_bin, "/usr/local/bin/odoo"])
+
+
+def debugger_bin():
+    debugger = os.environ.get("DEBUGGER", False)
     if os.environ.get("DEBUG"):
-        debug_cmd = (
-            "python%s -m ptvsd --host 0.0.0.0 --port 5678 /usr/local/bin/odoo"
-            % sys.version_info.major
+        _logger.warning(
+            "Deprecated env variable DEBUG, use instead DEBUGGER=<ptvsd|pydevd>"
         )
-        debug_odoo = "/usr/local/bin/debug_odoo"
-        with open(debug_odoo, "w") as debug_file:
-            debug_file.write(debug_cmd)
-        run(["chmod", "+x", debug_odoo])
+        debugger = "ptvsd"
+    pyversion = "python{}".format(sys.version_info.major)
+    if debugger == "ptvsd":
+        debugger_host = os.environ.get("DEBUGGER_HOST", "0.0.0.0")
+        debugger_port = os.environ.get("DEBUGGER_PORT", "5678")
+        debug_cmd = "{} -m ptvsd --host {} --port {} /usr/local/bin/odoo\n".format(
+            pyversion, debugger_host, debugger_port
+        )
+    elif debugger == "pydevd":
+        debugger_host = os.environ.get("DEBUGGER_HOST", "localhost")
+        debugger_port = os.environ.get("DEBUGGER_PORT", "12345")
+        debug_cmd = """#!/usr/bin/env {}
+__import__('os').environ['TZ'] = 'UTC'
+import odoo
+import pydevd_pycharm
+if __name__ == "__main__":
+    pydevd_pycharm.settrace('{}', port={}, stdoutToServer=True, stderrToServer=True)
+    odoo.cli.main()
+""".format(
+            pyversion, debugger_host, debugger_port
+
+        )
+    else:
+        raise Exception(
+            "Wrong DEBUGGER option ({}), please choose between (ptvsd|pydevd)".format(
+                debugger
+            )
+        )
+    debug_odoo_bin = "/usr/local/bin/debug_odoo"
+    with open(debug_odoo_bin, "w") as debug_file:
+        debug_file.write(debug_cmd)
+    run(["chmod", "+x", debug_odoo_bin])
 
 
 def set_ssh_environ():
@@ -200,6 +231,7 @@ def main():
     clone_repos()
     build_conf()
     symlink()
+    debugger_bin()
 
 
 if __name__ == "__main__":
