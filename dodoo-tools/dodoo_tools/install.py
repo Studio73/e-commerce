@@ -161,23 +161,13 @@ def build_conf():
         "db_password": os.environ.get("PGPASSWORD", "changeme"),
         "db_name": db_name,
         "dbfilter": db_name,
+        "list_db": False,
         "admin_passwd": os.environ.get("ADMINPASSWORD", "changeme"),
     }
-    try:
-        conn = psycopg2.connect(
-            database=db_name,
-            user=options["db_user"],
-            password=options["db_password"],
-            host=options["db_host"],
-        )
-        conn.close()
-    except psycopg2.DatabaseError:
-        # Only if the database doesn't exists
-        if os.environ.get("LANG"):
-            options["load_language"] = os.environ["LANG"]
-        if not os.environ.get("DEMO"):
-            options["without_demo"] = True
-
+    if os.environ.get("LANG"):
+        options["load_language"] = os.environ["LANG"]
+    if not os.environ.get("DEMO"):
+        options["without_demo"] = True
     cfg = configparser.ConfigParser()
     cfg.read(os.path.join(os.environ["SETUP"], "odoo.conf"))
     new_conf = OrderedDict({"options": options})
