@@ -30,6 +30,8 @@ def symlink():
 
 def debugger_bin():
     debugger = os.environ.get("DEBUGGER", False)
+    if not debugger:
+        return
     if os.environ.get("DEBUG"):
         _logger.warning(
             "Deprecated env variable DEBUG, use instead DEBUGGER=<ptvsd|pydevd>"
