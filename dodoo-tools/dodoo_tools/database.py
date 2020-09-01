@@ -58,7 +58,7 @@ def backup(dbname, force, filestore):
 @database.command()
 @click.option("-f", "--format", default="psql")
 @click.argument("dbname", envvar="DATABASE")
-def list(dbname, format):
+def ls(dbname, format):
     table = []
     base_path = os.path.join(os.environ["DATA"], "backup")
     for i in range(0, 7):
@@ -181,11 +181,10 @@ def download_from_s3(name, dest, ftype):
                 download_dict[fil.bucket_name] = fil
                 break
     if len(download_dict.values()) == 1:
-        download_obj = download_dict.values()[0]
+        download_obj = list(download_dict.values())[0]
     elif len(download_dict.values()) > 1:
         ans = inquirer.list_input(
-            "From which bucket do you want to download?",
-            choices=download_dict.keys(),
+            "From which bucket do you want to download?", choices=download_dict.keys(),
         )
         download_obj = download_dict[ans]
     if not download_obj:
