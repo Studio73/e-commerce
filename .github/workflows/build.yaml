@@ -32,16 +32,4 @@ jobs:
           tags: ${{ matrix.version }}
           build_args: VERSION=${{ matrix.version }}
           add_git_labels: true
-      - name: Build and push runbot
-        if: "!contains(steps.log.outputs.message, 'skip build') && matrix.version == 13.0"
-        uses: docker/build-push-action@v1
-        with:
-          repository: dodoo
-          registry: registry.studio73.es
-          username: ${{ secrets.DOCKER_S73_USERNAME }}
-          password: ${{ secrets.DOCKER_S73_PASSWORD }}
-          dockerfile: runbot/Dockerfile
-          tags: runbot
-          build_args: VERSION=${{ matrix.version }}
-          add_git_labels: true
 

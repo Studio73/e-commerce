@@ -31,11 +31,3 @@ jobs:
           tags: ${{ matrix.version }}
           build_args: VERSION=${{ matrix.version }}
           push: false
-      - name: Test build runbot
-        if: "!contains(steps.log.outputs.message, 'skip build') && matrix.version == 13.0"
-        uses: docker/build-push-action@v1
-        with:
-          repository: dodoo
-          dockerfile: runbot/Dockerfile
-          tags: runbot
-          push: false
