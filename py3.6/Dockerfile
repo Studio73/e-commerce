@@ -93,7 +93,7 @@ RUN curl -SLo /tmp/requirements.txt https://raw.githubusercontent.com/odoo/odoo/
 	&& apt-get -y autoremove \
 	&& rm -Rf /var/lib/apt/lists/* /tmp/*
 
-COPY py3/requirements.txt /tmp/requirements.txt
+COPY py3.6/requirements.txt /tmp/requirements.txt
 RUN pip3 install --no-cache-dir -r /tmp/requirements.txt \
 	&& apt-get -y autoremove \
 	&& rm -Rf /var/lib/apt/lists/* /tmp/*
