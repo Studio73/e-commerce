@@ -11,14 +11,21 @@ jobs:
     if: github.event.pull_request.draft == false
     strategy:
       matrix:
-        version: ["10.0", "11.0", "12.0", "13.0"]
+        version: ["10.0", "11.0", "12.0", "13.0", "14.0"]
     steps:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 2
       - name: Set pyversion
         id: pyversion
-        run: if [ ${{ matrix.version }} == 10.0 ]; then echo ::set-output name=version::py2; else echo ::set-output name=version::py3; fi
+        run: |
+          if [ ${{ matrix.version }} == 10.0 ]; then
+            echo ::set-output name=version::py2;
+          elif [ ${{ matrix.version }} == 11.0 ] || [ ${{ matrix.version }} == 12.0 ]; then
+            echo ::set-output name=version::py3.6;
+          else
+            echo ::set-output name=version::py3.8;
+          fi
       - name: Git log
         id: log
         run: echo "::set-output name=message::$(git log --no-merges -1 --oneline)"

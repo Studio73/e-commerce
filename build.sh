@@ -3,13 +3,18 @@ DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"`
 REF=`git rev-parse --short HEAD`
 VERSION=$1
 TAG=$1
-DEST="py3"
 if [ "$1" == "runbot" ]; then
     VERSION="13.0"
     DEST="runbot"
 fi
-if [ "$VERSION" = "8.0" ] || [ "$VERSION" = "10.0" ]; then
+if [ "$VERSION" = "10.0" ]; then
     DEST="py2"
+fi
+if [ "$VERSION" = "11.0" ] || [ "$VERSION" = "12.0" ]; then
+    DEST="py3.6"
+fi
+if [ "$VERSION" = "13.0" ] || [ "$VERSION" = "14.0" ]; then
+    DEST="py3.8"
 fi
 
 docker build --build-arg BUILD_DATE=$DATE \
