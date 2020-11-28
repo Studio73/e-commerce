@@ -187,6 +187,7 @@ def build_conf():
         for section, values in new_conf.items():
             odoo_conf.write("[%s]\n" % section)
             odoo_conf.writelines(["%s=%s\n" % (k, v) for k, v in values.items()])
+    run(["chown", "-R", "odoo:odoo", odoorc])
 
 
 def install_runbot_build():
