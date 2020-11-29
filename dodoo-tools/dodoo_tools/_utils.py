@@ -140,6 +140,15 @@ class echo(ContextDecorator):
         return True
 
 
+def copy(src, dest, msg=None, user="odoo"):
+    if os.path.exists(src):
+        if msg:
+            with echo(msg):
+                run(["cp", src, dest], user)
+        else:
+            run(["cp", src, dest], user)
+
+
 def build_ssh_conf():
     if os.environ.get("DEV"):
         return True
