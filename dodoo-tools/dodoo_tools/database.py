@@ -6,14 +6,19 @@ import calendar
 import click
 import inquirer
 
-from datetime import datetime
+from datetime import datetime, timedelta
 from getpass import getpass
 
 from minio import Minio
 from tabulate import tabulate
 
-from ._utils import echo, run
+from ._utils import echo, run, copy
 from .cli import cli
+
+
+BACKUP_PATH = os.path.join(os.environ["DATA"], "backup")
+DB_NAME_FORMAT = os.path.join(BACKUP_PATH, "{}_{}.tar.gz")
+FSTORE_NAME_FORMAT = os.path.join(BACKUP_PATH, "{}-fstore-{}.tar.gz")
 
 
 def _database_exists(dbname):
@@ -27,32 +32,58 @@ def database():
 
 
 @database.command()
-@click.option(
-    "-F", "--force", is_flag=True, help="Do not show error if database does not exist"
-)
 @click.option("-f", "--filestore", is_flag=True, help="Backup also the filestore")
+@click.option("-s", "--skip-rotation", is_flag=True, help="Skip database rotation")
 @click.argument("dbname", envvar="DATABASE")
-def backup(dbname, force, filestore):
-    tday = datetime.now().strftime("%A").upper()
-    backup_path = os.path.join(os.environ["DATA"], "backup")
-    if not os.path.isdir(backup_path):
-        run(["mkdir", backup_path], "odoo")
-    with echo("Creating database backup (%s)" % dbname):
-        bpath = os.path.join(backup_path, dbname)
+def backup(dbname, filestore, skip_rotation):
+    if not os.path.isdir(BACKUP_PATH):
+        run(["mkdir", BACKUP_PATH], "odoo")
+    weekday = datetime.now().strftime("%A").upper()
+    with echo("Creating database backup ({} {})".format(dbname, weekday)):
         if not _database_exists(dbname):
-            if not force:
-                raise Exception("Database %s does not exist" % dbname)
-        with open("%s_%s.tar.gz" % (bpath, tday), "w") as bfile:
+            raise Exception("Database %s does not exist" % dbname)
+        with open(DB_NAME_FORMAT.format(dbname, weekday), "w") as bfile:
             run([["pg_dump", "--no-owner", dbname], ["gzip", "--stdout"]], stdout=bfile)
-    if filestore:
-        with echo("Creating filestore backup (%s)" % dbname):
+    base_fs = os.path.join(os.environ["DATA"], "data", "filestore")
+    backup_fstore = FSTORE_NAME_FORMAT.format(dbname, weekday)
+    if filestore and os.path.isdir(os.path.join(base_fs, dbname)):
+        with echo("Creating filestore backup ({} {})".format(dbname, weekday)):
             # https://orville.thebennettproject.com/articles/tar-removing-leading-slash/
-            fstore_name = os.path.join(
-                backup_path, "%s-fstore-%s.tar.gz" % (dbname, tday)
-            )
-            fstore_path = os.path.join(os.environ["DATA"], "data", "filestore")
-            if os.path.isdir(os.path.join(fstore_path, dbname)):
-                run(["tar", "-C", fstore_path, "-cf", fstore_name, dbname])
+            run(["tar", "-C", base_fs, "-cf", backup_fstore, dbname])
+    if not skip_rotation:
+        rotate(dbname)
+
+
+@database.command()
+@click.argument("dbname", envvar="DATABASE")
+def rotate(dbname):
+    """Rotation strategy\n
+        - 1 copy per week of Month. Monday rotate database from last Sunday\n
+        - 1 copy last 3 months. Day 1 rotate database from last day of past month
+    """
+    today = datetime.today()
+    dday = today - timedelta(days=1)
+    wday = dday.strftime("%A").upper()
+    backup_path = DB_NAME_FORMAT.format(dbname, wday)
+    backup_fs_path = FSTORE_NAME_FORMAT.format(dbname, wday)
+    if today.day == 1:
+        # Monthly rotation
+        suffix = "M{}".format(dday.month % 3 or 3)
+        backup_dest = DB_NAME_FORMAT.format(dbname, suffix)
+        fstore_dest = FSTORE_NAME_FORMAT.format(dbname, suffix)
+        msg = "Running database rotation ({})".format(suffix)
+        copy(backup_path, backup_dest, msg)
+        msg = "Running filestore rotation ({})".format(suffix)
+        copy(backup_fs_path, fstore_dest, msg)
+    if today.weekday() == 0:
+        # Weekly rotation
+        suffix = "W{}".format(dday.day // 7)
+        backup_dest = DB_NAME_FORMAT.format(dbname, suffix)
+        fstore_dest = FSTORE_NAME_FORMAT.format(dbname, suffix)
+        msg = "Running database rotation ({})".format(suffix)
+        copy(backup_path, backup_dest, msg)
+        msg = "Running filestore rotation ({})".format(suffix)
+        copy(backup_fs_path, fstore_dest, msg)
 
 
 @database.command()
@@ -64,9 +95,9 @@ def ls(dbname, format):
     for i in range(0, 7):
         weekday = calendar.day_name[int(i)].upper()
         row = [weekday]
-        backup_file = os.path.join(base_path, "{}_{}.tar.gz".format(dbname, weekday))
+        backup_file = os.path.join(base_path, DB_NAME_FORMAT.format(dbname, weekday))
         fstore_file = os.path.join(
-            base_path, "{}-fstore-{}.tar.gz".format(dbname, weekday)
+            base_path, FSTORE_NAME_FORMAT.format(dbname, weekday)
         )
         if os.path.exists(backup_file):
             row += ["X", datetime.fromtimestamp(os.path.getmtime(backup_file))]
@@ -107,19 +138,19 @@ def restore(dbname, force, filestore, download, weekday, template, location, sou
             print("Aborted!")
             return
     source = source or dbname
-    location = location or os.path.join(os.environ["DATA"], "backup")
+    location = location or BACKUP_PATH
     if weekday is None:
         weekday = int(datetime.today().weekday()) - 1
         if weekday == -1:  # Monday
             weekday = 6
     day = calendar.day_name[weekday].upper()
-    backup_name = "%s_%s.tar.gz" % (source, day)
-    fstore_name = "%s-fstore-%s.tar.gz" % (source, day)
+    backup_name = DB_NAME_FORMAT.format(source, day)
+    fstore_name = FSTORE_NAME_FORMAT.format(source, day)
     if download:
         download_from_s3(backup_name, location, "backup")
         if filestore:
             download_from_s3(fstore_name, location, "filestore")
-    with echo("Restoring database backup (%s)" % dbname):
+    with echo("Restoring database backup ({} {})".format(dbname, day)):
         pguser = os.environ["PGUSER"]
         if _database_exists(dbname):
             if not force:
@@ -149,7 +180,7 @@ def restore(dbname, force, filestore, download, weekday, template, location, sou
                 check_call=True,
             )
     if filestore:
-        with echo("Restoring filestore backup (%s)" % dbname):
+        with echo("Restoring filestore backup ({} {})".format(dbname, day)):
             fstore_path = os.path.join(location, fstore_name)
             if os.path.isfile(fstore_path):
                 fstore_dest = os.path.join(os.environ["DATA"], "data", "filestore")
