@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import logging
 import sys
 import time
 from datetime import timedelta
@@ -10,6 +11,8 @@ import click
 from ._requirements import pip_install
 from .cli import cli
 from .repo import Repo, MERGE_STATUS
+
+_logger = logging.getLogger(__name__)
 
 
 def get_dependencies():
@@ -161,14 +164,13 @@ def merge_status(repo_name):
     password = False
     for r in get_dependencies():
         if (repo_name and repo_name in r.name) or (not repo_name and len(r.merges)):
-            if r.ssh_auth:
+            if r.private:
                 # Avoid ask for creadentials several times
-                if not username or not password:
-                    r.api.set_credentials()
-                    username = r.api.username
-                    password = r.api.password
+                if password:
+                    r.api.token = password
                 else:
-                    r.api.set_credentials(username, password)
+                    r.api.set_credentials()
+                    password = r.api.token
             repos.append(r)
     if not len(repos):
         return True

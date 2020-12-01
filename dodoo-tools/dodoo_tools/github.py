@@ -8,43 +8,41 @@ from builtins import input
 from getpass import getpass
 
 
+GITHUB_ENDPOINTS = {"pulls", "keys"}
+
+
 class GithubAPI(object):
-    def __init__(self, org, repo, username=False, password=False):
+    def __init__(self, org, repo, token=None):
         self.org = org
         self.repo = repo
-        self.username = username or os.environ.get("GH_USER")
-        self.password = password or os.environ.get("GH_TOKEN")
+        self.token = token or os.environ.get("GITHUB_TOKEN")
         self.url = "https://api.github.com/repos/%s/%s" % (org, repo)
 
-    def _build_url(self, endpoint, id=False, auth=False):
-        available_endpoints = ["pulls", "keys"]
-        if not endpoint in available_endpoints:
+    def _build_url(self, endpoint, id=None, auth=None):
+        if not endpoint in GITHUB_ENDPOINTS:
             print("Wrong endpoing: %s" % endpoint)
             sys.exit(-1)
-        basic_auth = False
-        if auth:
-            if not self.username and not self.password:
-                self.set_credentials()
-            basic_auth = (self.username, self.password)
         url = "%s/%s" % (self.url, endpoint)
         if id:
             url += "/%s" % id
-        return url, basic_auth
+        headers = {}
+        if auth:
+            headers["Authorization"] = "token {}".format(self.token)
+        return url, headers
 
-    def set_credentials(self, username=False, password=False):
-        if not username:
-            username = input("? Github username: ")
-        if not password:
-            password = getpass("? Github password: ")
-        self.username = username
-        self.password = password
+    def set_credentials(self, token=None):
+        if token:
+            self.token = token
+        elif not self.token:
+            token = getpass("? Github token: ")
+            self.token = token
         return True
 
-    def get(self, endpoint, id=False, auth=False):
-        url, basic_auth = self._build_url(endpoint, id, auth)
-        return requests.get(url, auth=basic_auth)
+    def get(self, endpoint, id=None, auth=None, **kwargs):
+        url, headers = self._build_url(endpoint, id, auth)
+        return requests.get(url, headers=headers)
 
-    def post(self, endpoint, id=False, auth=False, **kwargs):
-        url, basic_auth = self._build_url(endpoint, id, auth)
-        return requests.post(url, auth=basic_auth, data=json.dumps(kwargs))
+    def post(self, endpoint, id=None, auth=None, **kwargs):
+        url, headers = self._build_url(endpoint, id, auth)
+        return requests.post(url, headers=headers, data=json.dumps(kwargs))
 

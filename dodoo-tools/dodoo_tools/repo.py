@@ -22,21 +22,21 @@ class Repo(object):
         self.path = path or self.get_path()
         self.main_repo = False
         self.odoo_repo = False
-        self.ssh_auth = self.url.startswith("git@")
-        self.set_url(url)
+        self.private = self.url.startswith("git@")
         self.api = GithubAPI(self.org, self.name)
+        self.set_url()
 
-    def set_url(self, url):
+    def set_url(self):
         """Compute correct URL: ssh, https or https+token
         """
-        token = environ.get("GH_TOKEN")
-        self.ssh_auth = url.startswith("git@")
-        if not self.ssh_auth:
+        if not self.private:
             return
-        if token:
-            self.url = "https://%s@github.com/%s/%s.git" % (token, self.org, self.name)
-        elif not environ.get("DEV"):
-            # Only use ssh keys if productions and token isn't available
+        if self.env.get("DEV") and self.api.token:
+            self.url = "https://{}@github.com/{}/{}.git".format(
+                self.api.token, self.org, self.name
+            )
+        else:
+            # Only use ssh keys in production env
             self.url = url.replace("github.com", self.name)
 
     def get_name(self):
@@ -147,7 +147,7 @@ class Repo(object):
             self.do_merges()
 
     def check_access(self):
-        if not self.ssh_auth:
+        if not self.private:
             return True
         call = run(["git", "ls-remote", "--exit-code", "-h", self.url], "odoo")
         if call.returncode == 0:
@@ -180,7 +180,7 @@ class Repo(object):
         return True
 
     def get_pub_key(self):
-        if not self.ssh_auth:
+        if not self.private:
             return ""
         ssh_key = path.join(environ["DATA"], ".ssh", "%s.pub" % self.name)
         if not path.exists(ssh_key):
@@ -195,8 +195,6 @@ class Repo(object):
             "key": self.get_pub_key(),
             "read_only": True,
         }
-        if not self.api.username or not self.api.password:
-            self.api.set_credentials()
         with echo("Uploading %s deploy key" % self.name):
             call = self.api.post("keys", auth=True, **params)
         if call.status_code != 201:  # Created
@@ -213,7 +211,7 @@ class Repo(object):
         return True
 
     def pr_status(self, pr_id):
-        call = self.api.get("pulls", pr_id, self.ssh_auth)
+        call = self.api.get("pulls", pr_id, self.private)
         if call.status_code != 200:
             return "Not found"
         else:
