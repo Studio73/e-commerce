@@ -31,7 +31,7 @@ class Repo(object):
         """
         if not self.private:
             return
-        if self.env.get("DEV") and self.api.token:
+        if environ.get("DEV") and self.api.token:
             self.url = "https://{}@github.com/{}/{}.git".format(
                 self.api.token, self.org, self.name
             )
