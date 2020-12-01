@@ -20,8 +20,7 @@ Optional environment variables:
 * `DEMO`: When creating database do it with demo data
 * `LANG`: When creating database do it with the selected language
 * `ODOO_REPO`: URL for Odoo repository - default Github Odoo URL
-* `GH_USER`: Github user
-* `GH_TOKEN`: Github token
+* `GITHUB_TOKEN`: Github token
 * `S3_URL`: S3 storage url, e.g. s3.studio73.es
 * `S3_USER`: S3 storage user
 * `S3_SECRET`: S3 storage secret
