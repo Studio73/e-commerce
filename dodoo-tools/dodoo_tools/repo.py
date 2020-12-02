@@ -31,10 +31,11 @@ class Repo(object):
         """
         if not self.private:
             return
-        if environ.get("DEV") and self.api.token:
-            self.url = "https://{}@github.com/{}/{}.git".format(
-                self.api.token, self.org, self.name
-            )
+        if environ.get("DEV"):
+            if self.api.token:
+                self.url = "https://{}@github.com/{}/{}.git".format(
+                    self.api.token, self.org, self.name
+                )
         else:
             # Only use ssh keys in production env
             self.url = self.url.replace("github.com", self.name)
