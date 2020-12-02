@@ -37,7 +37,7 @@ class Repo(object):
             )
         else:
             # Only use ssh keys in production env
-            self.url = url.replace("github.com", self.name)
+            self.url = self.url.replace("github.com", self.name)
 
     def get_name(self):
         """Extract repository name from Github URL e.g.
