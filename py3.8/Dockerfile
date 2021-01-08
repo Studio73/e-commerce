@@ -53,6 +53,7 @@ RUN apt-get update \
 	zip \
 	# pycups
 	libcups2-dev \
+	cups-client \
 	# lxml
 	libxml2-dev \
 	libxslt1-dev \
