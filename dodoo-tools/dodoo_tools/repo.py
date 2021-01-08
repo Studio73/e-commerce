@@ -78,7 +78,7 @@ class Repo(object):
         self.git_run("reset", ["--hard"], quiet)
         self.git_run("checkout", [self.branch], quiet)
         self.git_run("fetch", ["origin", "--depth=%s" % depth], quiet)
-        self.git_run("clean", ["-fdx"], quiet)
+        self.git_run("clean", ["-fd"], quiet)
         self.git_run("reset", ["--hard", "origin/%s" % self.branch], quiet)
         r = self.git_run("branch")
         active_branch = "* %s" % self.branch
