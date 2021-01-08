@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # Copyright 2020 Studio73 - Pablo Fuentes <pablo@studio73.es>
+import logging
 import os
 import click
 import pkg_resources
@@ -8,6 +9,8 @@ from jinja2 import Environment, FileSystemLoader
 
 from .cli import cli
 from ._utils import echo, gen_password, run
+
+_logger = logging.getLogger(__name__)
 
 
 def _scaffold(name):
@@ -61,5 +64,6 @@ def _scaffold(name):
 @cli.command()
 @click.argument("name", envvar="DO_NAME")
 def scaffold(name):
+    _logger.warning("Deprecated command, use ansible playbook instead")
     with echo("Creating scaffold for {}".format(name)):
         _scaffold(name)
