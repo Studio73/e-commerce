@@ -98,9 +98,6 @@ RUN pip3 install --no-cache-dir -r /tmp/requirements.txt \
 	&& apt-get -y autoremove \
 	&& rm -Rf /var/lib/apt/lists/* /tmp/*
 
-HEALTHCHECK --interval=1m --timeout=10s --retries=2 \
-    CMD curl -f http://localhost:8069/monitoring/status || exit 1
-
 COPY entrypoint.py /
 COPY dodoo-tools/ /tmp/dodoo-tools/
 RUN cd /tmp/dodoo-tools/ \
