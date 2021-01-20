@@ -144,12 +144,17 @@ def restore(dbname, force, filestore, download, weekday, template, location, sou
         if weekday == -1:  # Monday
             weekday = 6
     day = calendar.day_name[weekday].upper()
-    backup_name = DB_NAME_FORMAT.format(source, day)
-    fstore_name = FSTORE_NAME_FORMAT.format(source, day)
+    backup_path = DB_NAME_FORMAT.format(source, day)
+    fstore_path = FSTORE_NAME_FORMAT.format(source, day)
     if download:
-        download_from_s3(backup_name, location, "backup")
+        download_from_s3(os.path.split(backup_path)[-1], location)
         if filestore:
-            download_from_s3(fstore_name, location, "filestore")
+            download_from_s3(os.path.split(fstore_path)[-1], location)
+    if not os.path.isfile(backup_path):
+        raise Exception(
+            "Selected backup %s for %s (%s) does not exist, please check"
+            % (source, day.capitalize(), weekday)
+        )
     with echo("Restoring database backup ({} {})".format(dbname, day)):
         pguser = os.environ["PGUSER"]
         if _database_exists(dbname):
@@ -168,12 +173,6 @@ def restore(dbname, force, filestore, download, weekday, template, location, sou
                 check_call=True,
             )
         else:
-            backup_path = os.path.join(location, backup_name)
-            if not os.path.isfile(backup_path):
-                raise Exception(
-                    "Selected backup %s for %s (%s) does not exist, please check"
-                    % (source, day.capitalize(), weekday)
-                )
             run(["createdb", "-U", pguser, "-O", pguser, dbname], check_call=True)
             run(
                 [["gunzip", "-c", backup_path], ["psql", dbname, "-U", pguser]],
@@ -181,7 +180,6 @@ def restore(dbname, force, filestore, download, weekday, template, location, sou
             )
     if filestore:
         with echo("Restoring filestore backup ({} {})".format(dbname, day)):
-            fstore_path = os.path.join(location, fstore_name)
             if os.path.isfile(fstore_path):
                 fstore_dest = os.path.join(os.environ["DATA"], "data", "filestore")
                 run(["mkdir", "-p", fstore_dest])
@@ -198,7 +196,7 @@ def restore(dbname, force, filestore, download, weekday, template, location, sou
                 run(["chown", "-R", "%s:%s" % (host_uid, host_gid), fstore_dest])
 
 
-def download_from_s3(name, dest, ftype):
+def download_from_s3(name, dest):
     url = os.environ.get("S3_URL") or input("? S3 url: ")
     user = os.environ.get("S3_USER") or input("? S3 user: ")
     secret = os.environ.get("S3_SECRET") or getpass("? S3 secret: ")
@@ -219,8 +217,8 @@ def download_from_s3(name, dest, ftype):
         )
         download_obj = download_dict[ans]
     if not download_obj:
-        raise Exception("%s file not found" % name)
-    with echo("Downloading %s %s" % (ftype, name)):
+        raise Exception("%s file not found in any bucket" % name)
+    with echo("Downloading %s" % (name)):
         data = client.get_object(download_obj.bucket_name, download_obj.object_name)
         with open(os.path.join(dest, name), "wb") as file_data:
             for d in data.stream(32 * 1024):
