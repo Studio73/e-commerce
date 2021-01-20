@@ -4,6 +4,7 @@ import os
 import calendar
 
 import click
+import humanize
 import inquirer
 
 from datetime import datetime, timedelta
@@ -152,10 +153,12 @@ def restore(dbname, force, filestore, download, weekday, template, location, sou
             download_from_s3(os.path.split(fstore_path)[-1], location)
     if not os.path.isfile(backup_path):
         raise Exception(
-            "Selected backup %s for %s (%s) does not exist, please check"
-            % (source, day.capitalize(), weekday)
+            "{} backup for {} ({}) does not exist, please check".format(
+                source, day.capitalize(), weekday
+            )
         )
-    with echo("Restoring database backup ({} {})".format(dbname, day)):
+    backup_size = humanize.naturalsize(os.path.getsize(backup_path))
+    with echo("Restoring database {} ({}) {}".format(dbname, day, backup_size)):
         pguser = os.environ["PGUSER"]
         if _database_exists(dbname):
             if not force:
@@ -179,21 +182,28 @@ def restore(dbname, force, filestore, download, weekday, template, location, sou
                 check_call=True,
             )
     if filestore:
-        with echo("Restoring filestore backup ({} {})".format(dbname, day)):
-            if os.path.isfile(fstore_path):
-                fstore_dest = os.path.join(os.environ["DATA"], "data", "filestore")
-                run(["mkdir", "-p", fstore_dest])
-                run(["tar", "-xf", fstore_path, "-C", "/tmp"])
-                source_path = os.path.join("/tmp", source)
+        if not os.path.isfile(fstore_path):
+            raise Exception(
+                "{} filestore for {} ({}) does not exist, please check".format(
+                    source, day.capitalize(), weekday
+                )
+            )
+
+        fstore_size = humanize.naturalsize(os.path.getsize(fstore_path))
+        with echo("Restoring filestore {} ({}) {}".format(dbname, day, fstore_size)):
+            fstore_dest = os.path.join(os.environ["DATA"], "data", "filestore")
+            run(["mkdir", "-p", fstore_dest])
+            run(["tar", "-xf", fstore_path, "-C", "/tmp"])
+            source_path = os.path.join("/tmp", source)
+            if not os.path.exists(source_path):
+                # Old backups data structure
+                source_path = os.path.join("/tmp", "data", "filestore", source)
                 if not os.path.exists(source_path):
-                    # Old backups data structure
-                    source_path = os.path.join("/tmp", "data", "filestore", source)
-                    if not os.path.exists(source_path):
-                        raise Exception("Unknown filestore data structure")
-                run(["mv", source_path, fstore_dest])
-                host_uid = os.environ.get("HOST_UID", "odoo")
-                host_gid = os.environ.get("HOST_GID", "odoo")
-                run(["chown", "-R", "%s:%s" % (host_uid, host_gid), fstore_dest])
+                    raise Exception("Unknown filestore data structure")
+            run(["mv", source_path, fstore_dest])
+            host_uid = os.environ.get("HOST_UID", "odoo")
+            host_gid = os.environ.get("HOST_GID", "odoo")
+            run(["chown", "-R", "%s:%s" % (host_uid, host_gid), fstore_dest])
 
 
 def download_from_s3(name, dest):
