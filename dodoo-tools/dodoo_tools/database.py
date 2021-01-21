@@ -36,7 +36,8 @@ def database():
 @click.option("-f", "--filestore", is_flag=True, help="Backup also the filestore")
 @click.option("-s", "--skip-rotation", is_flag=True, help="Skip database rotation")
 @click.argument("dbname", envvar="DATABASE")
-def backup(dbname, filestore, skip_rotation):
+@click.pass_context
+def backup(ctx, dbname, filestore, skip_rotation):
     if not os.path.isdir(BACKUP_PATH):
         run(["mkdir", BACKUP_PATH], "odoo")
     weekday = datetime.now().strftime("%A").upper()
@@ -52,7 +53,7 @@ def backup(dbname, filestore, skip_rotation):
             # https://orville.thebennettproject.com/articles/tar-removing-leading-slash/
             run(["tar", "-C", base_fs, "-cf", backup_fstore, dbname])
     if not skip_rotation:
-        rotate(dbname)
+        ctx.invoke(rotate, dbname=dbname)
 
 
 @database.command()
