@@ -1,7 +1,18 @@
-FROM ubuntu:18.04
+FROM python:3.6-slim-buster
+
+# https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/
+SHELL ["/bin/bash", "-xo", "pipefail", "-c"]
 
 RUN useradd -md /opt/odoo -s /bin/bash odoo
 WORKDIR /opt/odoo/
+RUN mkdir -p /opt/odoo/data && \
+	mkdir -p /opt/odoo/src && \
+	mkdir -p /opt/odoo/setup && \
+	chown -R odoo:odoo /opt/odoo
+VOLUME ["/opt/odoo/data", "/opt/odoo/setup", "/opt/odoo/src"]
+ENV DATA='/opt/odoo/data' \
+	SETUP='/opt/odoo/setup' \
+	SRC='/opt/odoo/src'
 EXPOSE 8069 8072
 ENV TZ=Europe/Madrid
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
@@ -14,17 +25,22 @@ RUN apt-get update \
 	dirmngr \
 	fonts-noto-cjk \
 	gnupg \
-	libssl1.0.0 \
+	libssl-dev \
 	node-less \
+	npm \
+	python3-num2words \
 	python3-pip \
+	python3-phonenumbers \
 	python3-pyldap \
 	python3-qrcode \
 	python3-renderpm \
 	python3-setuptools \
+	python3-slugify \
 	python3-vobject \
 	python3-watchdog \
-	xz-utils
-RUN apt-get install -y --no-install-recommends \
+	python3-xlrd \
+	python3-xlwt \
+	xz-utils \
 	# Dodoo
 	python3-dev \
 	apt-utils \
@@ -50,44 +66,51 @@ RUN apt-get install -y --no-install-recommends \
 	# xmlsec l10n-spain
 	libxmlsec1-dev \
 	libxmlsec1-openssl \
+	# psycopg2==2.8.3 error pg_config executable not found
+	libpq-dev \
+	# wkhtmltopdf
+	fontconfig libx11-6 libxcb1 libxext6 libxrender1 xfonts-75dpi xfonts-base \
+	&& curl -SLo /tmp/wkhtmltox.deb https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.stretch_amd64.deb \
+	&& dpkg --force-depends -i /tmp/wkhtmltox.deb\
 	&& apt-get purge -y --auto-remove \
 	&& rm -Rf /var/lib/apt/lists/* /tmp/*
 
+RUN sed -i -e 's/# es_ES.UTF-8 UTF-8/es_ES.UTF-8 UTF-8/' /etc/locale.gen && \
+	locale-gen
 # Avoid werkzeug encoding ANSI_X3.4-1968 warning
 ENV LANG=es_ES.UTF-8 \
 	LANGUAGE=es_ES \
-	LC_ALL=es_ES.UTF-8 \
-	DATA='/opt/odoo/data' \
-	SETUP='/opt/odoo/setup' \
-	SRC='/opt/odoo/src'
-RUN locale-gen es_ES.UTF-8
-RUN mkdir -p /opt/odoo/data && \
-	mkdir -p /opt/odoo/src && \
-	mkdir -p /opt/odoo/setup && \
-	chown -R odoo:odoo /opt/odoo
-VOLUME ["/opt/odoo/data", "/opt/odoo/setup", "/opt/odoo/src"]
+	LC_ALL=es_ES.UTF-8
 
-RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ bionic-pgdg main" >> /etc/apt/sources.list.d/postgres.list \
-	&& curl -SL https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - \
-	&& apt-get update \
-	&& apt-get install -y --no-install-recommends postgresql-client \
-	&& rm -Rf /var/lib/apt/lists/* /tmp/*
+# install latest postgresql-client
+RUN echo 'deb http://apt.postgresql.org/pub/repos/apt/ buster-pgdg main' > /etc/apt/sources.list.d/pgdg.list \
+    && GNUPGHOME="$(mktemp -d)" \
+    && export GNUPGHOME \
+    && repokey='B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8' \
+    && gpg --batch --keyserver keyserver.ubuntu.com --recv-keys "${repokey}" \
+    && gpg --batch --armor --export "${repokey}" > /etc/apt/trusted.gpg.d/pgdg.gpg.asc \
+    && gpgconf --kill all \
+    && rm -rf "$GNUPGHOME" \
+    && apt-get update  \
+    && apt-get install --no-install-recommends -y postgresql-client \
+    && rm -f /etc/apt/sources.list.d/pgdg.list \
+    && rm -rf /var/lib/apt/lists/*
 
-RUN curl -SLo /tmp/wkhtmltox.deb https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.bionic_amd64.deb \
-	&& apt-get update \
-	&& apt-get install -y --no-install-recommends fontconfig libx11-6 libxcb1 libxext6 libxrender1 xfonts-75dpi xfonts-base \
-	&& dpkg --force-depends -i /tmp/wkhtmltox.deb\
-	&& apt-get -y install -f \
-	&& rm -Rf /var/lib/apt/lists/* /tmp/*
+# Install rtlcss (on Debian stretch)
+RUN echo "deb http://deb.nodesource.com/node_8.x stretch main" > /etc/apt/sources.list.d/nodesource.list \
+    && GNUPGHOME="$(mktemp -d)" \
+    && export GNUPGHOME \
+    && repokey='9FD3B784BC1C6FC31A8A0A1C1655A0AB68576280' \
+    && gpg --batch --keyserver keyserver.ubuntu.com --recv-keys "${repokey}" \
+    && gpg --batch --armor --export "${repokey}" > /etc/apt/trusted.gpg.d/nodejs.gpg.asc \
+    && gpgconf --kill all \
+    && rm -rf "$GNUPGHOME" \
+    && apt-get update \
+    && apt-get install --no-install-recommends -y nodejs \
+    && npm install -g rtlcss \
+    && rm -rf /var/lib/apt/lists/*
 
-# Force install latest pip from https://pypi.python.org/pypi/pip/X.X.X
-RUN curl -SLo /tmp/pip.tar.gz https://files.pythonhosted.org/packages/8e/76/66066b7bc71817238924c7e4b448abdb17eb0c92d645769c223f9ace478f/pip-20.0.2.tar.gz \
-	&& tar -xf /tmp/pip.tar.gz -C /tmp \
-	&& cd /tmp/pip-20.0.2/ \
-	&& python3 setup.py install \
-	&& rm -Rf /tmp/*
-
-ARG VERSION
+ARG VERSION=12.0
 ENV ODOO_VERSION=$VERSION
 RUN curl -SLo /tmp/requirements.txt https://raw.githubusercontent.com/odoo/odoo/$VERSION/requirements.txt \
 	&& pip3 install --no-cache-dir --ignore-installed -r /tmp/requirements.txt \

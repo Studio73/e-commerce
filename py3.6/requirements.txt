@@ -1,8 +1,5 @@
-psycopg2-binary # The psycopg2 wheel package will be renamed from release 2.8
 phonenumbers
+psycopg2-binary # The psycopg2 wheel package will be renamed from release 2.8
 ptvsd
 pydevd-pycharm
-Werkzeug==0.14.1
 Unidecode==1.0.23
-num2words
-xlwt
