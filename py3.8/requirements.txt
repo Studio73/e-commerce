@@ -1,5 +1,5 @@
-psycopg2-binary # The psycopg2 wheel package will be renamed from release 2.8
 phonenumbers
-Unidecode==1.0.23
+psycopg2-binary # The psycopg2 wheel package will be renamed from release 2.8
 ptvsd
 pydevd-pycharm
+Unidecode==1.0.23

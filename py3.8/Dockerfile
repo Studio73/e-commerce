@@ -1,5 +1,8 @@
 FROM python:3.8-slim-buster
 
+# https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/
+SHELL ["/bin/bash", "-xo", "pipefail", "-c"]
+
 RUN useradd -md /opt/odoo -s /bin/bash odoo
 WORKDIR /opt/odoo/
 RUN mkdir -p /opt/odoo/data && \
@@ -80,9 +83,6 @@ ENV LANG=es_ES.UTF-8 \
 	LANGUAGE=es_ES \
 	LC_ALL=es_ES.UTF-8
 
-# Install rtlcss (on Debian buster)
-RUN npm install -g rtlcss
-
 # install latest postgresql-client
 RUN echo 'deb http://apt.postgresql.org/pub/repos/apt/ buster-pgdg main' > /etc/apt/sources.list.d/pgdg.list \
     && GNUPGHOME="$(mktemp -d)" \
@@ -95,6 +95,20 @@ RUN echo 'deb http://apt.postgresql.org/pub/repos/apt/ buster-pgdg main' > /etc/
     && apt-get update  \
     && apt-get install --no-install-recommends -y postgresql-client \
     && rm -f /etc/apt/sources.list.d/pgdg.list \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install rtlcss (on Debian stretch)
+RUN echo "deb http://deb.nodesource.com/node_8.x stretch main" > /etc/apt/sources.list.d/nodesource.list \
+    && GNUPGHOME="$(mktemp -d)" \
+    && export GNUPGHOME \
+    && repokey='9FD3B784BC1C6FC31A8A0A1C1655A0AB68576280' \
+    && gpg --batch --keyserver keyserver.ubuntu.com --recv-keys "${repokey}" \
+    && gpg --batch --armor --export "${repokey}" > /etc/apt/trusted.gpg.d/nodejs.gpg.asc \
+    && gpgconf --kill all \
+    && rm -rf "$GNUPGHOME" \
+    && apt-get update \
+    && apt-get install --no-install-recommends -y nodejs \
+    && npm install -g rtlcss \
     && rm -rf /var/lib/apt/lists/*
 
 ARG VERSION
