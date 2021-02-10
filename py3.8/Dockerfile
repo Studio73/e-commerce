@@ -111,7 +111,7 @@ RUN echo "deb http://deb.nodesource.com/node_8.x stretch main" > /etc/apt/source
     && npm install -g rtlcss \
     && rm -rf /var/lib/apt/lists/*
 
-ARG VERSION
+ARG VERSION=14.0
 ENV ODOO_VERSION=$VERSION
 RUN curl -SLo /tmp/requirements.txt https://raw.githubusercontent.com/odoo/odoo/$VERSION/requirements.txt \
 	&& pip3 install --no-cache-dir --ignore-installed -r /tmp/requirements.txt \
