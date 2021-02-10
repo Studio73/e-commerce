@@ -12,6 +12,7 @@ setup(
     packages=find_packages(),
     install_requires=[
         "click>=7",
+        "coloredlogs",
         "future",
         "humanize",
         "inquirer",
