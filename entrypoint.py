@@ -1,14 +1,9 @@
 #!/usr/bin/python
 import os
-import logging
 import subprocess as sp
 import sys
 
 import dodoo_tools
-
-logging.basicConfig(
-    format="%(asctime)s %(levelname)s: %(message)s", level=logging.INFO,
-)
 
 
 def main():
