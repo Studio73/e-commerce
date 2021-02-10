@@ -4,7 +4,7 @@ import os
 import calendar
 
 import click
-import humanize
+import humanfriendly
 import inquirer
 
 from datetime import datetime, timedelta
@@ -158,7 +158,7 @@ def restore(dbname, force, filestore, download, weekday, template, location, sou
                 source, day.capitalize(), weekday
             )
         )
-    backup_size = humanize.naturalsize(os.path.getsize(backup_path))
+    backup_size = humanfriendly.format_size(os.path.getsize(backup_path))
     with echo("Restoring database {} ({}) {}".format(dbname, day, backup_size)):
         pguser = os.environ["PGUSER"]
         if _database_exists(dbname):
@@ -190,7 +190,7 @@ def restore(dbname, force, filestore, download, weekday, template, location, sou
                 )
             )
 
-        fstore_size = humanize.naturalsize(os.path.getsize(fstore_path))
+        fstore_size = humanfriendly.format_size(os.path.getsize(fstore_path))
         with echo("Restoring filestore {} ({}) {}".format(dbname, day, fstore_size)):
             fstore_dest = os.path.join(os.environ["DATA"], "data", "filestore")
             run(["mkdir", "-p", fstore_dest])

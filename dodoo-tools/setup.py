@@ -14,7 +14,6 @@ setup(
         "click>=7",
         "coloredlogs",
         "future",
-        "humanize",
         "inquirer",
         "minio>=7.0.0;python_version>='3.6'",
         "minio==6.0.2;python_version<'3.6'",
