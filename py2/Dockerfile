@@ -42,7 +42,7 @@ RUN apt-get update \
 # https://www.odoo.com/es_ES/forum/ayuda-1/question/ubuntu-16-04-how-to-install-sass-for-odoo-123090
 RUN apt-add-repository -k keyserver.ubuntu.com ppa:brightbox/ruby-ng \
 	&& apt-get update \
-	&& apt-get install -y --no-install-recommends ruby2.6 ruby2.6-dev \
+	&& apt-get install -y --no-install-recommends --fix-missing ruby2.6 ruby2.6-dev \
     && gem install sass -v 3.4.25 \
     && gem install compass bootstrap-sass \
 	&& apt-get purge -y --auto-remove \
