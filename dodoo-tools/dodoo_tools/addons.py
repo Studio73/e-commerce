@@ -95,6 +95,11 @@ def main(to_update=False, org=False, quiet=True):
         # Avoid update current development repository
         if environ.get("DEV") and repo.main_repo:
             continue
+        if not path.exists(repo.path) or not listdir(repo.path):
+            if repo.private:
+                repo.api.set_credentials(token)
+                token = repo.api.token
+            repo.clone(quiet=quiet)
         if to_update:
             should_update = False
             if org and to_update == repo.org:
