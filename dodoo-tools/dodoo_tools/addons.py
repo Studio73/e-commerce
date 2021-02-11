@@ -5,6 +5,7 @@ import sys
 import time
 from datetime import timedelta
 from os import environ, listdir, path
+from tabulate import tabulate
 
 import click
 
@@ -73,9 +74,7 @@ def get_addons_path():
     return ",".join(deps)
 
 
-def main(to_update=False, org=False):
-    first_boot = False
-    start_time = time.time()
+def main(to_update=False, org=False, quiet=True):
     if not environ.get("GIT_REPO"):
         _logger.error("Missing Git repository")
         sys.exit(-1)
@@ -83,13 +82,16 @@ def main(to_update=False, org=False):
         _logger.error("Missing Odoo version")
         sys.exit(-1)
     repos = get_dependencies()
+    token = environ.get("GITHUB_TOKEN", "")
     if not path.exists(repos[0].path) or not listdir(repos[0].path):
         # First boot and the repository is not cloned yet
-        first_boot = True
-        repos[0].clone()
+        if repos[0].private:
+            repos[0].api.set_credentials(token)
+            token = repos[0].api.token
+        repos[0].clone(quiet=quiet)
+        # Compute again repo dependencies
         repos = get_dependencies()
     for repo in repos:
-        repo.clone()
         # Avoid update current development repository
         if environ.get("DEV") and repo.main_repo:
             continue
@@ -106,22 +108,16 @@ def main(to_update=False, org=False):
                 elif to_update in repo.name:
                     should_update = True
             if should_update:
-                repo.update()
+                if repo.private:
+                    repo.api.set_credentials(token)
+                    token = repo.api.token
+                repo.update(quiet)
     pip_install(
         [
             path.join(repo.path, "requirements.txt")
             for repo in repos[:-1]  # Skip Odoo requirements.txt
         ]
     )
-    if first_boot:
-        tme = round(time.time() - start_time, 2)
-        h, m, s = map(float, str(timedelta(seconds=tme)).split(":"))
-        h = "%sh " % int(h) if h else ""
-        m = "%sm " % int(m) if m else ""
-        s = "%05.2fs" % s
-        sys.stdout.write(
-            u"\r\nInstalation finished in %s%s%s\n\n" % (h, m, s)
-        )
 
 
 @cli.group()
@@ -136,8 +132,14 @@ def addons():
     is_flag=True,
     help="Match by organization name instead of repository name",
 )
+@click.option(
+    "-v",
+    "--verbose",
+    is_flag=True,
+    help="Turn on verbosity",
+)
 @click.argument("name")
-def update(name, org):
+def update(name, org, verbose):
     """Fetch and update sources from Github.
 
     \b
@@ -146,7 +148,8 @@ def update(name, org):
     - 'all-skip-odoo': Will update all repositories except Odoo.
     - <any>: Will update all matching repositories.
     """
-    main(name, org)
+    quiet = not verbose
+    main(name, org, quiet)
 
 
 @addons.command()
@@ -161,30 +164,29 @@ def merge_status(repo_name):
     """
     repos = []
     username = False
-    password = False
+    token = environ.get("GITHUB_TOKEN", "")
     for r in get_dependencies():
         if (repo_name and repo_name in r.name) or (not repo_name and len(r.merges)):
             if r.private:
                 # Avoid ask for creadentials several times
-                if password:
-                    r.api.token = password
-                else:
-                    r.api.set_credentials()
-                    password = r.api.token
+                r.api.set_credentials(token)
+                token = r.api.token
             repos.append(r)
     if not len(repos):
         return True
-    max_len = max([len(r.name) for r in repos])
-    print("-" * max_len)
+    table = []
     for repo in repos:
-        print("%s\n%s\n" % (repo.name, "-" * max_len))
-        if repo.merges:
-            for pr in repo.merges:
-                status = repo.pr_status(pr)
-                print("%s: %s %s\n" % (pr, MERGE_STATUS[status], status))
-        else:
-            print("Nothing to check\n")
-        print("-" * max_len)
+        for pr in repo.merges:
+            status = repo.pr_status(pr)
+            table.append([repo.name, pr, "%s %s" % (MERGE_STATUS[status], status)])
+    print(
+        tabulate(
+            table,
+            headers=["Repo", "PR", "Status"],
+            showindex="always",
+            tablefmt="psql",
+        )
+    )
 
 
 if __name__ == "__main__":
