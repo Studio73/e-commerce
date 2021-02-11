@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import logging
+import getpass
 import subprocess as sp
 import sys
 
@@ -9,6 +11,7 @@ from .github import GithubAPI
 from ._utils import echo, run, DEVNULL, build_ssh_conf
 
 
+_logger = logging.getLogger(__name__)
 MERGE_STATUS = {"Not found": "❔", "Merged": "💟", "Not merged": "✅", "Conflicts": "⚠️"}
 
 
@@ -65,16 +68,20 @@ class Repo(object):
             "--work-tree=%s" % self.path,
             cmd,
         ]
-        if quiet:
-            _cmd.append("-q")
         if args:
             _cmd += args
         return _cmd
 
     def git_run(self, cmd, args=None, quiet=True, user="odoo"):
-        return run(self.git_cmd(cmd, args, quiet), user)
+        _cmd = self.git_cmd(cmd, args, quiet)
+        if quiet:
+            result = run(_cmd, user)
+        else:
+            _logger.info(" ".join(_cmd))
+            result = sp.call(_cmd)
+        return result
 
-    def clean(self, depth=1, quiet=True):
+    def clean(self, depth=10, quiet=True):
         self.git_run("reset", ["--hard"], quiet)
         self.git_run("checkout", [self.branch], quiet)
         self.git_run("fetch", ["origin", "--depth=%s" % depth], quiet)
@@ -92,18 +99,18 @@ class Repo(object):
         prs = {"to_merge": [], "not_merge": {}}
         if not len(self.merges):
             return prs
-        depth = 1
+        depth = 10
         for pr in self.merges:
             status = self.pr_status(pr)
             if status not in ["Not merged", "Not found"]:
                 prs["not_merge"][pr] = status
                 continue
             self.git_run("fetch", ["origin", "refs/pull/%s/head:%s" % (pr, pr)], quiet)
-            r = self.git_run(
+            rev_list_cmd = self.git_cmd(
                 "rev-list",
                 ["--count", "--no-merges", "origin/%s..%s" % (self.branch, pr)],
-                False,
             )
+            r = run(rev_list_cmd)
             try:
                 depth += int(r.out.strip())
             except ValueError:
@@ -127,8 +134,12 @@ class Repo(object):
         return prs
 
     def update(self, quiet=True):
+        if not path.exists(self.path) or not listdir(self.path):
+            # If not exists clone instead of update
+            self.clone(quiet=quiet)
+            return
         self.check_access()
-        with echo("Updating  %s/%s" % (self.org, self.name)):
+        with echo("Updating  %s/%s" % (self.org, self.name), tty=quiet):
             self.clean(quiet=quiet)
             merge_status = self.do_merges(quiet)
         if merge_status["not_merge"].keys():
@@ -136,15 +147,23 @@ class Repo(object):
             for pr, status in merge_status["not_merge"].items():
                 print("%s: %s %s\n" % (pr, MERGE_STATUS[status], status))
 
-    def clone(self, depth=1, **kwargs):
+    def clone(self, depth=10, quiet=True, **kwargs):
         if not path.exists(self.path) or not listdir(self.path):
             self.check_access()
-            with echo("Cloning %s/%s" % (self.org, self.name)):
-                cmd = ["git", "clone", "--quiet"]
+            with echo("Cloning %s/%s" % (self.org, self.name), tty=quiet):
+                cmd = ["git", "clone"]
                 if depth:
                     cmd += ["--depth", repr(depth)]
+                if quiet:
+                    cmd.append("--quiet")
                 cmd += ["-b", self.branch, self.url, self.path]
-                run(cmd, "odoo")
+                if quiet:
+                    run(cmd, "odoo")
+                else:
+                    _logger.info(" ".join(cmd))
+                    if getpass.getuser() != "odoo":
+                        cmd = ["gosu", "odoo"] + cmd
+                    sp.call(cmd)
             self.do_merges()
 
     def check_access(self):
