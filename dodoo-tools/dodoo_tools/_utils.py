@@ -69,7 +69,7 @@ def run(cmd, force_user=False, check_call=False, stdout=sp.PIPE):
 
 
 class echo(ContextDecorator):
-    def __init__(self, msg):
+    def __init__(self, msg, tty=None):
         self.msg = msg
         self.should_run = True
         self.start_time = False
@@ -77,6 +77,9 @@ class echo(ContextDecorator):
         self.stopped = True
         self.error = False
         self.error_msg = False
+        self.tty = tty
+        if self.tty is None:
+            self.tty = sys.stdout.isatty()
 
     def __enter__(self):
         self.start_time = time.time()
@@ -102,10 +105,10 @@ class echo(ContextDecorator):
         m = "%sm " % int(m) if m else ""
         s = "%05.2fs" % s
         suffix = ""
-        if keep and sys.stdout.isatty():
+        if keep and self.tty:
             suffix = "\n"
         text = "%s %s - %s%s%s%s" % (prefix, msg, h, m, s, suffix)
-        if sys.stdout.isatty():
+        if self.tty:
             sys.stdout.write("\r%s" % text)
             sys.stdout.flush()
         else:
@@ -120,14 +123,14 @@ class echo(ContextDecorator):
         spinne_len = len(spinner) - 1
         self.stopped = False
         while self.should_run:
-            if sys.stdout.isatty():
+            if self.tty:
                 self.write(click.style(spinner[idx], fg="blue", bold=True), self.msg)
             time.sleep(0.05)
             idx = idx + 1 if idx < spinne_len else 0
         elapsed_time = round(self.stop_time - self.start_time, 2)
         prefix = ""
         msg = self.msg
-        if sys.stdout.isatty():
+        if self.tty:
             if self.error:
                 prefix = click.style("!", fg="white", bg="red")
                 msg = click.style(self.msg, fg="white", bg="red")
