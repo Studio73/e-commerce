@@ -215,6 +215,7 @@ class Repo(object):
             "key": self.get_pub_key(),
             "read_only": True,
         }
+        self.api.set_credentials()
         with echo("Uploading %s deploy key" % self.name):
             call = self.api.post("keys", auth=True, **params)
         if call.status_code != 201:  # Created
@@ -231,6 +232,8 @@ class Repo(object):
         return True
 
     def pr_status(self, pr_id):
+        if self.private:
+            self.api.set_credentials()
         call = self.api.get("pulls", pr_id, self.private)
         if call.status_code != 200:
             return "Not found"

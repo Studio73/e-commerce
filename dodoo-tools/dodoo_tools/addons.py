@@ -82,12 +82,8 @@ def main(to_update=False, org=False, quiet=True):
         _logger.error("Missing Odoo version")
         sys.exit(-1)
     repos = get_dependencies()
-    token = environ.get("GITHUB_TOKEN", "")
     if not path.exists(repos[0].path) or not listdir(repos[0].path):
         # First boot and the repository is not cloned yet
-        if repos[0].private:
-            repos[0].api.set_credentials(token)
-            token = repos[0].api.token
         repos[0].clone(quiet=quiet)
         # Compute again repo dependencies
         repos = get_dependencies()
@@ -96,9 +92,6 @@ def main(to_update=False, org=False, quiet=True):
         if environ.get("DEV") and repo.main_repo:
             continue
         if not path.exists(repo.path) or not listdir(repo.path):
-            if repo.private:
-                repo.api.set_credentials(token)
-                token = repo.api.token
             repo.clone(quiet=quiet)
         if to_update:
             should_update = False
@@ -113,9 +106,6 @@ def main(to_update=False, org=False, quiet=True):
                 elif to_update in repo.name:
                     should_update = True
             if should_update:
-                if repo.private:
-                    repo.api.set_credentials(token)
-                    token = repo.api.token
                 repo.update(quiet)
     pip_install(
         [
@@ -172,10 +162,6 @@ def merge_status(repo_name):
     token = environ.get("GITHUB_TOKEN", "")
     for r in get_dependencies():
         if (repo_name and repo_name in r.name) or (not repo_name and len(r.merges)):
-            if r.private:
-                # Avoid ask for creadentials several times
-                r.api.set_credentials(token)
-                token = r.api.token
             repos.append(r)
     if not len(repos):
         return True
