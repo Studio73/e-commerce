@@ -44,6 +44,7 @@ def get_dependencies():
                 line = line.strip()
                 if not line or line[0] == "#":
                     continue
+                # eg: web https://github.com/OCA/web 14.0 aaabbbccc
                 parts = line.split()
                 repo_name = parts[0]
                 if len(parts) > 1:
@@ -54,11 +55,11 @@ def get_dependencies():
                     branch = parts[2]
                 else:
                     branch = odoo_version
-                repo = Repo(url, branch, merges.get(repo_name, []), repo_name)
                 if len(parts) > 3:
-                    org = parts[3]
-                    repo_path = path.join(src, org, repo_name)
-                    repo.path = repo_path
+                    sha = parts[3]
+                else:
+                    sha = False
+                repo = Repo(url, branch, merges.get(repo_name, []), repo_name, sha=sha)
                 dependencies.append(repo)
     odoo_url = environ.get("ODOO_REPO", "https://github.com/odoo/odoo.git")
     odoo_path = path.join(src, "odoo")

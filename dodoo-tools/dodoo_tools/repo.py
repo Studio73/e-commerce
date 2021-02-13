@@ -16,13 +16,14 @@ MERGE_STATUS = {"Not found": "❔", "Merged": "💟", "Not merged": "✅", "Conf
 
 
 class Repo(object):
-    def __init__(self, url, branch, merges=[], name=None, path=None):
+    def __init__(self, url, branch, merges=[], name=None, path=None, sha=None):
         self.url = url
         self.branch = branch
         self.merges = merges
         self.name = name or self.get_name()
         self.org = self.get_org()
         self.path = path or self.get_path()
+        self.sha = sha
         self.main_repo = False
         self.odoo_repo = False
         self.private = self.url.startswith("git@")
@@ -94,10 +95,20 @@ class Repo(object):
             if branch == active_branch:
                 continue
             self.git_run("branch", ["-D", branch], quiet)
+        if self.sha:
+            log_res = run(self.git_cmd("log"))
+            sha_found = self.sha in log_res.out.strip()
+            while not sha_found:
+                depth += 10
+                self.git_run("fetch", ["origin", "--depth=%s" % depth], quiet)
+                log_res = run(self.git_cmd("log"))
+                if self.sha in log_res.out.strip():
+                    self.git_run("reset", ["--hard", self.sha], quiet)
+                    sha_found = True
 
     def do_merges(self, quiet=True):
         prs = {"to_merge": [], "not_merge": {}}
-        if not len(self.merges):
+        if not len(self.merges) or self.sha:
             return prs
         depth = 10
         for pr in self.merges:
