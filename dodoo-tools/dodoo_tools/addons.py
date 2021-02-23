@@ -112,7 +112,7 @@ def main(to_update=False, org=False, quiet=True):
         [
             path.join(repo.path, "requirements.txt")
             for repo in repos[:-1]  # Skip Odoo requirements.txt
-        ]
+        ], quiet=quiet
     )
 
 

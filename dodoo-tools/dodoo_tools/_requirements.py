@@ -3,10 +3,13 @@
 # Copyright 2019 Studio73 <https://www.studio73.es>
 import hashlib
 import json
+import logging
 import os
+import subprocess as sp
 import sys
 from ._utils import run, echo
 
+_logger = logging.getLogger(__name__)
 
 
 def cache_files(files, key):
@@ -38,7 +41,7 @@ def cache_files(files, key):
     return changed_files
 
 
-def pip_install(pip_files):
+def pip_install(pip_files, quiet=True):
     files2install = cache_files(pip_files, "pip")
     if not files2install:
         return True
@@ -65,8 +68,19 @@ def pip_install(pip_files):
             if ".git" in package_name:
                 package_name = package_name.split(".git")[0].split("/")[-1]
             if package_name.lower() not in installed_pip_packages:
-                with echo("%s install %s" % (pip_bin, package)):
-                    r = run([pip_bin, "install", "-q", package])
+                install_cmd = [
+                    pip_bin, "--disable-pip-version-check", "install", "-U", package
+                ]
+                if quiet:
+                    with echo("%s install %s" % (pip_bin, package)):
+                        r = run(install_cmd)
+                        if "ERROR:" in r.error:
+                            raise Exception(r.error)
+                else:
+                    _logger.info(" ".join(install_cmd))
+                    r = sp.call(install_cmd)
+                    if r != 0:
+                        exit(r)
                 installed_pip_packages.append(package_name.lower())
 
 
