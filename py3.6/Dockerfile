@@ -1,4 +1,4 @@
-FROM python:3.6-slim-buster
+FROM ubuntu:18.04
 
 # https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/
 SHELL ["/bin/bash", "-xo", "pipefail", "-c"]
@@ -25,10 +25,9 @@ RUN apt-get update \
 	dirmngr \
 	fonts-noto-cjk \
 	gnupg \
+	libssl1.0.0 \
 	libssl-dev \
 	node-less \
-	npm \
-	python3-num2words \
 	python3-pip \
 	python3-phonenumbers \
 	python3-pyldap \
@@ -39,7 +38,6 @@ RUN apt-get update \
 	python3-vobject \
 	python3-watchdog \
 	python3-xlrd \
-	python3-xlwt \
 	xz-utils \
 	# Dodoo
 	python3-dev \
@@ -64,13 +62,14 @@ RUN apt-get update \
 	libsasl2-dev \
 	libldap2-dev \
 	# xmlsec l10n-spain
+	pkg-config \
 	libxmlsec1-dev \
 	libxmlsec1-openssl \
 	# psycopg2==2.8.3 error pg_config executable not found
 	libpq-dev \
 	# wkhtmltopdf
 	fontconfig libx11-6 libxcb1 libxext6 libxrender1 xfonts-75dpi xfonts-base \
-	&& curl -SLo /tmp/wkhtmltox.deb https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.stretch_amd64.deb \
+	&& curl -SLo /tmp/wkhtmltox.deb https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.bionic_amd64.deb \
 	&& dpkg --force-depends -i /tmp/wkhtmltox.deb\
 	&& apt-get purge -y --auto-remove \
 	&& rm -Rf /var/lib/apt/lists/* /tmp/*
@@ -83,7 +82,7 @@ ENV LANG=es_ES.UTF-8 \
 	LC_ALL=es_ES.UTF-8
 
 # install latest postgresql-client
-RUN echo 'deb http://apt.postgresql.org/pub/repos/apt/ buster-pgdg main' > /etc/apt/sources.list.d/pgdg.list \
+RUN echo 'deb http://apt.postgresql.org/pub/repos/apt/ bionic-pgdg main' > /etc/apt/sources.list.d/pgdg.list \
     && GNUPGHOME="$(mktemp -d)" \
     && export GNUPGHOME \
     && repokey='B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8' \
@@ -96,8 +95,8 @@ RUN echo 'deb http://apt.postgresql.org/pub/repos/apt/ buster-pgdg main' > /etc/
     && rm -f /etc/apt/sources.list.d/pgdg.list \
     && rm -rf /var/lib/apt/lists/*
 
-# Install rtlcss (on Debian stretch)
-RUN echo "deb http://deb.nodesource.com/node_8.x stretch main" > /etc/apt/sources.list.d/nodesource.list \
+# Install rtlcss (on Ubuntu bionic)
+RUN echo "deb http://deb.nodesource.com/node_8.x bionic main" > /etc/apt/sources.list.d/nodesource.list \
     && GNUPGHOME="$(mktemp -d)" \
     && export GNUPGHOME \
     && repokey='9FD3B784BC1C6FC31A8A0A1C1655A0AB68576280' \
