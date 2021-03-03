@@ -65,6 +65,7 @@ RUN apt-get update \
 	libsasl2-dev \
 	libldap2-dev \
 	# xmlsec l10n-spain
+	pkg-config \
 	libxmlsec1-dev \
 	libxmlsec1-openssl \
 	# psycopg2==2.8.3 error pg_config executable not found
