@@ -41,7 +41,7 @@ def debugger_bin():
     if debugger == "ptvsd":
         debugger_host = os.environ.get("DEBUGGER_HOST", "0.0.0.0")
         debugger_port = os.environ.get("DEBUGGER_PORT", "5678")
-        debug_cmd = "{} -m ptvsd --host {} --port {} /usr/local/bin/odoo\n".format(
+        debug_cmd = "{} -m ptvsd --host {} --port {} /usr/local/bin/odoo $@\n".format(
             pyversion, debugger_host, debugger_port
         )
     elif debugger == "pydevd":
