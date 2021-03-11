@@ -67,25 +67,18 @@ def rotate(dbname):
     dday = today - timedelta(days=1)
     wday = dday.strftime("%A").upper()
     backup_path = DB_NAME_FORMAT.format(dbname, wday)
-    backup_fs_path = FSTORE_NAME_FORMAT.format(dbname, wday)
     if today.day == 1:
         # Monthly rotation
         suffix = "M{}".format(dday.month % 3 or 3)
         backup_dest = DB_NAME_FORMAT.format(dbname, suffix)
-        fstore_dest = FSTORE_NAME_FORMAT.format(dbname, suffix)
         msg = "Running database rotation ({})".format(suffix)
         copy(backup_path, backup_dest, msg)
-        msg = "Running filestore rotation ({})".format(suffix)
-        copy(backup_fs_path, fstore_dest, msg)
     if today.weekday() == 0:
         # Weekly rotation
         suffix = "W{}".format(dday.day // 7)
         backup_dest = DB_NAME_FORMAT.format(dbname, suffix)
-        fstore_dest = FSTORE_NAME_FORMAT.format(dbname, suffix)
         msg = "Running database rotation ({})".format(suffix)
         copy(backup_path, backup_dest, msg)
-        msg = "Running filestore rotation ({})".format(suffix)
-        copy(backup_fs_path, fstore_dest, msg)
 
 
 @database.command()
