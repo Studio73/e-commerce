@@ -82,6 +82,8 @@ def main(to_update=False, org=False, quiet=True):
     if not environ.get("ODOO_VERSION"):
         _logger.error("Missing Odoo version")
         sys.exit(-1)
+    if quiet and environ.get("VERBOSE"):
+        quiet = False
     repos = get_dependencies()
     if not path.exists(repos[0].path) or not listdir(repos[0].path):
         # First boot and the repository is not cloned yet
