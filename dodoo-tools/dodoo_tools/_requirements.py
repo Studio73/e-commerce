@@ -74,7 +74,7 @@ def pip_install(pip_files, quiet=True):
                 if quiet:
                     with echo("%s install %s" % (pip_bin, package)):
                         r = run(install_cmd)
-                        if "ERROR:" in r.error:
+                        if "ERROR:" in r.error and "dependency resolver" not in r.error:
                             raise Exception(r.error)
                 else:
                     _logger.info(" ".join(install_cmd))
