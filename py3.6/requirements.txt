@@ -5,3 +5,5 @@ pydevd-pycharm
 Unidecode==1.0.23
 num2words
 xlwt
+py3o.template
+py3o.formats
