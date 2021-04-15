@@ -24,8 +24,12 @@ else:
 
 
 def symlink():
-    odoo_bin = os.path.join(os.environ["SRC"], "odoo", "odoo-bin")
-    run(["ln", "-s", odoo_bin, "/usr/local/bin/odoo"])
+    if os.environ["ODOO_VERSION"] in ["8.0", "9.0"]:
+        odoo_bin = "openerp-server"
+    else:
+        odoo_bin = "odoo-bin"
+    odoo_path = os.path.join(os.environ["SRC"], "odoo", odoo_bin)
+    run(["ln", "-s", odoo_path, "/usr/local/bin/odoo"])
 
 
 def debugger_bin():
@@ -34,33 +38,41 @@ def debugger_bin():
         return
     if os.environ.get("DEBUG"):
         _logger.warning(
-            "Deprecated env variable DEBUG, use instead DEBUGGER=<ptvsd|pydevd>"
+            "Deprecated env variable DEBUG, use instead DEBUGGER=<debugpy|pydevd>"
         )
-        debugger = "ptvsd"
+        debugger = os.environ.get("DEBUG", False)
     pyversion = "python{}".format(sys.version_info.major)
     if debugger == "ptvsd":
+        debugger = "debugpy"
+        _logger.warning(
+            "ptvsd is deprecated, see https://github.com/microsoft/ptvsd/"
+        )
+    if debugger == "debugpy":
         debugger_host = os.environ.get("DEBUGGER_HOST", "0.0.0.0")
         debugger_port = os.environ.get("DEBUGGER_PORT", "5678")
-        debug_cmd = "{} -m ptvsd --host {} --port {} /usr/local/bin/odoo $@\n".format(
+        debug_cmd = "{} -m debugpy --listen {}:{} /usr/local/bin/odoo $@\n".format(
             pyversion, debugger_host, debugger_port
         )
     elif debugger == "pydevd":
+        if os.environ["ODOO_VERSION"] in ["8.0", "9.0"]:
+            odoo_lib = "openerp"
+        else:
+            odoo_lib = "odoo"
         debugger_host = os.environ.get("DEBUGGER_HOST", "localhost")
         debugger_port = os.environ.get("DEBUGGER_PORT", "12345")
         debug_cmd = """#!/usr/bin/env {}
 __import__('os').environ['TZ'] = 'UTC'
-import odoo
+import {}
 import pydevd_pycharm
 if __name__ == "__main__":
     pydevd_pycharm.settrace('{}', port={}, stdoutToServer=True, stderrToServer=True)
-    odoo.cli.main()
+    {}.cli.main()
 """.format(
-            pyversion, debugger_host, debugger_port
-
+            pyversion, odoo_lib, debugger_host, debugger_port, odoo_lib
         )
     else:
         raise Exception(
-            "Wrong DEBUGGER option ({}), please choose between (ptvsd|pydevd)".format(
+            "Wrong DEBUGGER option ({}), please choose between (debugpy|pydevd)".format(
                 debugger
             )
         )

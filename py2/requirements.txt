@@ -9,5 +9,5 @@ requests==2.18.4
 werkzeug==0.14.1
 zeep==2.5.0
 contextdecorator==0.10.0
-ptvsd
+debugpy
 pydevd-pycharm
