@@ -3,11 +3,7 @@ DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"`
 REF=`git rev-parse --short HEAD`
 VERSION=$1
 TAG=$1
-if [ "$1" == "runbot" ]; then
-    VERSION="13.0"
-    DEST="runbot"
-fi
-if [ "$VERSION" = "10.0" ]; then
+if [ "$VERSION" = "8.0" ] || [ "$VERSION" = "9.0" ] || [ "$VERSION" = "10.0" ]; then
     DEST="py2"
 fi
 if [ "$VERSION" = "11.0" ] || [ "$VERSION" = "12.0" ]; then
