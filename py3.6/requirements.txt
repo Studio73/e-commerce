@@ -2,8 +2,9 @@ phonenumbers
 psycopg2-binary # The psycopg2 wheel package will be renamed from release 2.8
 ptvsd
 pydevd-pycharm
+py-spy
+py3o.template
+py3o.formats
 Unidecode==1.0.23
 num2words
 xlwt
-py3o.template
-py3o.formats

@@ -2,4 +2,5 @@ phonenumbers
 psycopg2-binary # The psycopg2 wheel package will be renamed from release 2.8
 ptvsd
 pydevd-pycharm
+py-spy
 Unidecode==1.0.23
