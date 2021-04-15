@@ -192,7 +192,7 @@ def build_conf():
         new_conf["options"]["addons_path"] = get_addons_path()
 
     odoorc = "/opt/odoo/.odoorc"
-    if os.environ["ODOO_VERSION"] == "8.0":
+    if os.environ["ODOO_VERSION"] in ["8.0", "9.0"]:
         odoorc = "/opt/odoo/.openerp_serverrc"
 
     with open(odoorc, "w") as odoo_conf:
