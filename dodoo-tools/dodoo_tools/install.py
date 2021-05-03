@@ -44,9 +44,7 @@ def debugger_bin():
     pyversion = "python{}".format(sys.version_info.major)
     if debugger == "ptvsd":
         debugger = "debugpy"
-        _logger.warning(
-            "ptvsd is deprecated, see https://github.com/microsoft/ptvsd/"
-        )
+        _logger.warning("ptvsd is deprecated, see https://github.com/microsoft/ptvsd/")
     if debugger == "debugpy":
         debugger_host = os.environ.get("DEBUGGER_HOST", "0.0.0.0")
         debugger_port = os.environ.get("DEBUGGER_PORT", "5678")
@@ -203,17 +201,31 @@ def build_conf():
 
 
 def install_runbot_build():
-    if os.path.exists("/data/build"):
-        # This is a runbot build
+    if os.environ.get("RUNBOT_BUILD") and os.path.exists("/data/build"):
+        run(["touch", "/data/build/start-%s" % os.environ["RUNBOT_BUILD"]], "odoo")
+        org = os.environ["GIT_REPO"].strip("/").split("/")[-2].lower().split(":")[-1]
+        reponame = os.environ["GIT_REPO"].split("/")[-1].replace(".git", "")
         run(
-            [
-                "touch",
-                "/data/build/start-%s"
-                % os.environ.get("RUNBOT_NAME", os.environ["DATABASE"]),
-            ]
+            ["mkdir", "-p", os.path.join(os.environ["SRC"], org)],
+            "odoo",
+            check_call=True,
         )
-        run(["chown", "-R", "odoo:odoo", "/data/build"])
-        run(["chown", "-R", "odoo:odoo", "/opt/odoo/src"])
+        data_dir = os.path.join(os.environ["DATA"], "data")
+        src_dir = os.path.join(os.environ["SRC"], org, reponame)
+        odoo_dir = os.path.join(os.environ["SRC"], "odoo")
+        run(["ln", "-s", "/data/build/datadir", data_dir], "odoo", check_call=True)
+        run(["ln", "-s", "/data/build/%s" % reponame, src_dir], "odoo", check_call=True)
+        if os.path.exists("/data/build/odoo"):
+            run(["ln", "-s", "/data/build/odoo", odoo_dir], "odoo", check_call=True)
+        if os.path.exists("/data/build/odoo.conf"):
+            run(
+                ["cp", "/data/build/odoo.conf", os.environ["SETUP"]],
+                "odoo",
+                check_call=True,
+            )
+        ssh_dir = "/opt/odoo/.ssh"
+        if os.path.exists("/data/build/.ssh") and not os.path.exists(ssh_dir):
+            run(["ln", "-s", "/data/build/.ssh", ssh_dir], "odoo", check_call=True)
 
 
 def migrate_pip_cache():

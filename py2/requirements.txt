@@ -1,4 +1,5 @@
 cachetools==2.0.1
+coverage
 deepdiff==3.3.0
 num2words==0.5.8
 unicodecsv==0.13.0
