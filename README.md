@@ -24,3 +24,4 @@ Optional environment variables:
 * `S3_URL`: S3 storage url, e.g. s3.studio73.es
 * `S3_USER`: S3 storage user
 * `S3_SECRET`: S3 storage secret
+* `GIT_IDENTITY_FILE`:  Selects a file from which the identity (private key) for public key authentication is read

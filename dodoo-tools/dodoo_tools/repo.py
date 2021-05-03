@@ -163,6 +163,9 @@ class Repo(object):
             self.check_access()
             with echo("Cloning %s/%s" % (self.org, self.name), tty=quiet):
                 cmd = ["git", "clone"]
+                if environ.get("GIT_IDENTITY_FILE"):
+                    id_file = environ.get("GIT_IDENTITY_FILE")
+                    cmd += ["-c", "core.sshCommand=ssh -i ~/.ssh/%s" % id_file]
                 if depth:
                     cmd += ["--depth", repr(depth)]
                 if quiet:
@@ -180,7 +183,11 @@ class Repo(object):
     def check_access(self):
         if not self.private:
             return True
-        call = run(["git", "ls-remote", "--exit-code", "-h", self.url], "odoo")
+        cmd = ["git"]
+        if environ.get("GIT_IDENTITY_FILE"):
+            cmd += ["-c", "core.sshCommand=ssh -i ~/.ssh/%s" % environ.get("GIT_IDENTITY_FILE")]
+        cmd += ["ls-remote", "--exit-code", "-h", self.url]
+        call = run(cmd, "odoo")
         if call.returncode == 0:
             return True
         if "UNPROTECTED PRIVATE KEY FILE" in call.error:
