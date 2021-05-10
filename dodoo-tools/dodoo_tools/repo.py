@@ -98,13 +98,14 @@ class Repo(object):
         if self.sha:
             log_res = run(self.git_cmd("log"))
             sha_found = self.sha in log_res.out.strip()
-            while not sha_found:
+            while not sha_found or depth <= 1000:
                 depth += 10
                 self.git_run("fetch", ["origin", "--depth=%s" % depth], quiet)
                 log_res = run(self.git_cmd("log"))
                 if self.sha in log_res.out.strip():
-                    self.git_run("reset", ["--hard", self.sha], quiet)
                     sha_found = True
+            if sha_found:
+                self.git_run("reset", ["--hard", self.sha], quiet)
 
     def do_merges(self, quiet=True):
         prs = {"to_merge": [], "not_merge": {}}
