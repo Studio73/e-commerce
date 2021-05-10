@@ -98,7 +98,7 @@ class Repo(object):
         if self.sha:
             log_res = run(self.git_cmd("log"))
             sha_found = self.sha in log_res.out.strip()
-            while not sha_found or depth <= 1000:
+            while not sha_found and depth <= 1000:
                 depth += 10
                 self.git_run("fetch", ["origin", "--depth=%s" % depth], quiet)
                 log_res = run(self.git_cmd("log"))
