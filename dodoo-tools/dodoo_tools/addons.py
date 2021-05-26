@@ -20,7 +20,8 @@ def get_dependencies():
     src = environ["SRC"]
     odoo_version = environ["ODOO_VERSION"]
     repo_url = environ.get("GIT_REPO")
-    main_repo = Repo(repo_url, odoo_version)
+    repo_branch = environ.get("BRANCH", odoo_version)
+    main_repo = Repo(repo_url, repo_branch)
     main_repo.main_repo = True
     dependencies = [main_repo]
     merges = {}
