@@ -228,15 +228,6 @@ def install_runbot_build():
             run(["ln", "-s", "/data/build/.ssh", ssh_dir], "odoo", check_call=True)
 
 
-def migrate_pip_cache():
-    # To remove in next release
-    pip_target = os.environ["PIP_TARGET"]
-    legacy_pip_target = os.path.join(os.environ["DATA"], ".pypi")
-    if not os.path.exists(pip_target) and os.path.exists(legacy_pip_target):
-        run(["mv", legacy_pip_target, pip_target])
-    return True
-
-
 def migrate_odoo_src():
     odoo_src = os.path.join(os.environ["SRC"], "odoo")
     odoo_bin = os.path.join(odoo_src, "odoo-bin")
@@ -255,7 +246,6 @@ def migrate_odoo_src():
 def main():
     with echo("Configuring the container"):
         install_runbot_build()
-        migrate_pip_cache()
         migrate_odoo_src()
         install_cron()
         set_ssh_environ()
