@@ -28,7 +28,7 @@ def symlink():
         odoo_bin = "openerp-server"
     else:
         odoo_bin = "odoo-bin"
-    odoo_path = os.path.join(os.environ["SRC"], "odoo", odoo_bin)
+    odoo_path = os.path.join(os.environ["SRC"], "odoo", "odoo", odoo_bin)
     run(["ln", "-s", odoo_path, "/usr/local/bin/odoo"])
 
 
