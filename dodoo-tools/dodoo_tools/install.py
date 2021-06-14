@@ -237,10 +237,26 @@ def migrate_pip_cache():
     return True
 
 
+def migrate_odoo_src():
+    odoo_src = os.path.join(os.environ["SRC"], "odoo")
+    odoo_bin = os.path.join(odoo_src, "odoo-bin")
+    odoo_git = os.path.join(odoo_src, ".git")
+    if os.path.exists(odoo_bin) and os.path.exists(odoo_git):
+        odoo_tmp_src = os.path.join(os.environ["SRC"], "_odoo_tmp")
+        run(["mv", odoo_src, odoo_tmp_src], "odoo", check_call=True)
+        run(["mkdir", odoo_src], "odoo")
+        run(
+            ["mv", odoo_tmp_src, os.path.join(odoo_src, "odoo")],
+            "odoo",
+            check_call=True,
+        )
+
+
 def main():
     with echo("Configuring the container"):
         install_runbot_build()
         migrate_pip_cache()
+        migrate_odoo_src()
         install_cron()
         set_ssh_environ()
         block_outbound_mail()

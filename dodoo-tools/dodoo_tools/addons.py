@@ -63,8 +63,7 @@ def get_dependencies():
                 repo = Repo(url, branch, merges.get(repo_name, []), repo_name, sha=sha)
                 dependencies.append(repo)
     odoo_url = environ.get("ODOO_REPO", "https://github.com/odoo/odoo.git")
-    odoo_path = path.join(src, "odoo")
-    odoo_repo = Repo(odoo_url, odoo_version, path=odoo_path)
+    odoo_repo = Repo(odoo_url, odoo_version)
     odoo_repo.odoo_repo = True
     dependencies.append(odoo_repo)
     return dependencies
