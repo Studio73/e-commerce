@@ -133,7 +133,7 @@ ENV PIP_TARGET=${DATA}/.cache/pypi
 
 WORKDIR /opt/odoo/
 ENTRYPOINT ["python3", "/entrypoint.py"]
-CMD ["python3", "/opt/odoo/src/odoo/odoo-bin"]
+CMD ["odoo"]
 
 ARG BUILD_DATE
 ARG VCS_REF
