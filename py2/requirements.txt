@@ -12,3 +12,5 @@ zeep==2.5.0
 contextdecorator==0.10.0
 debugpy
 pydevd-pycharm
+py3o.template
+py3o.formats
