@@ -18,6 +18,7 @@ setup(
         "minio>=7.0.0;python_version>='3.6'",
         "minio==6.0.2;python_version<'3.6'",
         "tabulate",
+        "packaging",
     ],
     entry_points={"console_scripts": ["dodoo-tools = dodoo_tools.cli:cli"]},
 )
