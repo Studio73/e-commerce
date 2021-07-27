@@ -19,7 +19,7 @@ jobs:
         run: |
           if [ ${{ matrix.version }} == 10.0 ]; then
             echo ::set-output name=version::py2;
-          elif [ ${{ matrix.version }} == 11.0 ] || [ ${{ matrix.version }} == 12.0 ]; then
+          elif [ ${{ matrix.version }} == 11.0 ] || [ ${{ matrix.version }} == 12.0 ] || [ ${{ matrix.version }} == 13.0 ]; then
             echo ::set-output name=version::py3.6;
           else
             echo ::set-output name=version::py3.8;
