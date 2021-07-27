@@ -101,7 +101,7 @@ RUN cd /tmp/dodoo-tools/ \
 	&& rm -Rf /tmp/*
 
 # Avoid "ImportError: No module named odoo" and make pip install persistent
-ENV PYTHONPATH='$PYTHONPATH:/opt/odoo/src/odoo:/opt/odoo/data/.cache/pypi'
+ENV PYTHONPATH='$PYTHONPATH:/opt/odoo/src/odoo/odoo:/opt/odoo/data/.cache/pypi'
 ENV PIP_TARGET=${DATA}/.cache/pypi
 
 WORKDIR /opt/odoo/

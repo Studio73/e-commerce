@@ -1,6 +1,6 @@
 coverage
 phonenumbers
-psycopg2-binary # The psycopg2 wheel package will be renamed from release 2.8
+psycopg2-binary==2.7.7  # The psycopg2 wheel package will be renamed from release 2.8
 debugpy
 pydevd-pycharm
 py-spy

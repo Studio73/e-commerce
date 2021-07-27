@@ -1,7 +1,8 @@
 coverage
 phonenumbers
-psycopg2-binary # The psycopg2 wheel package will be renamed from release 2.8
+psycopg2-binary==2.8.5 # The psycopg2 wheel package will be renamed from release 2.8
 debugpy
 pydevd-pycharm
 py-spy
+python-stdnum>=1.16 # Fix conflict between Odoo and OCA/intrastat-extrastrat
 Unidecode==1.0.23
