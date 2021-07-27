@@ -40,6 +40,7 @@ def cache_files(files, key):
             changed_files.append(f)
     json_cache[key] = key_cache
     if changed_files:
+        run(["chown", "-R", "odoo:odoo", cache_dir])
         with open(install_json, "w") as fil:
             fil.write(json.dumps(json_cache, indent=4))
     return changed_files
@@ -57,7 +58,7 @@ def pip_install(pip_files, quiet=True):
         installed_pip_packages[p.name.lower()] = p
     packages2install = {}
     for pip_file in files2install:
-        packages = open(pip_file, "r+").read().splitlines()
+        packages = open(pip_file, "r").read().splitlines()
         for package in packages:
             package = package.strip()
             # Skip comments or empty lines
@@ -119,11 +120,12 @@ def pip_install(pip_files, quiet=True):
         ]
         if quiet:
             with echo("%s install %s" % (pip_bin, package)):
-                r = run(install_cmd)
+                r = run(install_cmd, "odoo")
                 if "ERROR:" in r.error and "dependency resolver" not in r.error:
                     raise Exception(r.error)
         else:
             _logger.info(" ".join(install_cmd))
+            install_cmd = ["gosu", "odoo:odoo"] + install_cmd
             r = sp.call(install_cmd)
             if r != 0:
                 exit(r)
