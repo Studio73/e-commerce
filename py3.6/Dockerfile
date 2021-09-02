@@ -51,6 +51,7 @@ RUN apt-get update \
 	openssh-client \
 	iptables \
 	zip \
+	pixz \
 	# pycups
 	libcups2-dev \
 	cups-client \
@@ -65,6 +66,8 @@ RUN apt-get update \
 	pkg-config \
 	libxmlsec1-dev \
 	libxmlsec1-openssl \
+	# pyzbar server-ux
+	libzbar0 \
 	# psycopg2==2.8.3 error pg_config executable not found
 	libpq-dev \
 	# wkhtmltopdf

@@ -37,7 +37,8 @@ RUN apt-get update \
             python-watchdog \
 			vim \
 			zlib1g-dev \
-			iptables
+			iptables \
+			pixz
 # FIX Could not execute command 'sass'
 # https://www.odoo.com/es_ES/forum/ayuda-1/question/ubuntu-16-04-how-to-install-sass-for-odoo-123090
 RUN apt-add-repository -k keyserver.ubuntu.com ppa:brightbox/ruby-ng \

@@ -6,3 +6,4 @@ pydevd-pycharm
 py-spy
 python-stdnum>=1.16 # Fix conflict between Odoo and OCA/intrastat-extrastrat
 Unidecode==1.0.23
+vatnumber
