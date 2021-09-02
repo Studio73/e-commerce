@@ -9,6 +9,7 @@ import inquirer
 
 from datetime import datetime, timedelta
 from getpass import getpass
+from os.path import join as pjoin
 
 from minio import Minio
 from tabulate import tabulate
@@ -17,9 +18,11 @@ from ._utils import echo, run, copy
 from .cli import cli
 
 
-BACKUP_PATH = os.path.join(os.environ["DATA"], "backup")
-DB_NAME_FORMAT = os.path.join(BACKUP_PATH, "{}_{}.tar.gz")
-FSTORE_NAME_FORMAT = os.path.join(BACKUP_PATH, "{}-fstore-{}.tar.gz")
+BACKUP_PATH = pjoin(os.environ["DATA"], "backup")
+XZ_DB_NAME = pjoin(BACKUP_PATH, "{}_{}.tar.xz").format
+XZ_FSTORE_NAME = pjoin(BACKUP_PATH, "{}-fstore-{}.tar.xz").format
+GZIP_DB_NAME = pjoin(BACKUP_PATH, "{}_{}.tar.gz").format
+GZIP_FSTORE_NAME = pjoin(BACKUP_PATH, "{}-fstore-{}.tar.gz").format
 
 
 def _database_exists(dbname):
@@ -44,14 +47,17 @@ def backup(ctx, dbname, filestore, skip_rotation):
     with echo("Creating database backup ({} {})".format(dbname, weekday)):
         if not _database_exists(dbname):
             raise Exception("Database %s does not exist" % dbname)
-        with open(DB_NAME_FORMAT.format(dbname, weekday), "w") as bfile:
-            run([["pg_dump", "--no-owner", dbname], ["gzip", "--stdout"]], stdout=bfile)
-    base_fs = os.path.join(os.environ["DATA"], "data", "filestore")
-    backup_fstore = FSTORE_NAME_FORMAT.format(dbname, weekday)
-    if filestore and os.path.isdir(os.path.join(base_fs, dbname)):
+        run(
+            [
+                ["pg_dump", "-Ft", "--no-owner", dbname],
+                ["pixz", "-7k", "-o", XZ_DB_NAME(dbname, weekday)],
+            ]
+        )
+    base_fs = pjoin(os.environ["DATA"], "data", "filestore")
+    if filestore and os.path.isdir(pjoin(base_fs, dbname)):
         with echo("Creating filestore backup ({} {})".format(dbname, weekday)):
-            # https://orville.thebennettproject.com/articles/tar-removing-leading-slash/
-            run(["tar", "-C", base_fs, "-cf", backup_fstore, dbname])
+            backup_fstore = XZ_FSTORE_NAME(dbname, weekday)
+            run(["tar", "-I", "pixz -7k", "-C",  base_fs, "-cf", backup_fstore, dbname])
     if not skip_rotation:
         ctx.invoke(rotate, dbname=dbname)
 
@@ -60,23 +66,23 @@ def backup(ctx, dbname, filestore, skip_rotation):
 @click.argument("dbname", envvar="DATABASE")
 def rotate(dbname):
     """Rotation strategy\n
-        - 1 copy per week of Month. Monday rotate database from last Sunday\n
-        - 1 copy last 3 months. Day 1 rotate database from last day of past month
+    - 1 copy per week of Month. Monday rotate database from last Sunday\n
+    - 1 copy last 3 months. Day 1 rotate database from last day of past month
     """
     today = datetime.today()
     dday = today - timedelta(days=1)
     wday = dday.strftime("%A").upper()
-    backup_path = DB_NAME_FORMAT.format(dbname, wday)
+    backup_path = XZ_DB_NAME(dbname, wday)
     if today.day == 1:
         # Monthly rotation
         suffix = "M{}".format(dday.month % 3 or 3)
-        backup_dest = DB_NAME_FORMAT.format(dbname, suffix)
+        backup_dest = XZ_DB_NAME(dbname, suffix)
         msg = "Running database rotation ({})".format(suffix)
         copy(backup_path, backup_dest, msg)
     if today.weekday() == 0:
         # Weekly rotation
         suffix = "W{}".format(dday.day // 7)
-        backup_dest = DB_NAME_FORMAT.format(dbname, suffix)
+        backup_dest = XZ_DB_NAME(dbname, suffix)
         msg = "Running database rotation ({})".format(suffix)
         copy(backup_path, backup_dest, msg)
 
@@ -86,22 +92,28 @@ def rotate(dbname):
 @click.argument("dbname", envvar="DATABASE")
 def ls(dbname, format):
     table = []
-    base_path = os.path.join(os.environ["DATA"], "backup")
+    base_path = pjoin(os.environ["DATA"], "backup")
     for i in range(0, 7):
         weekday = calendar.day_name[int(i)].upper()
         row = [weekday]
-        backup_file = os.path.join(base_path, DB_NAME_FORMAT.format(dbname, weekday))
-        fstore_file = os.path.join(
-            base_path, FSTORE_NAME_FORMAT.format(dbname, weekday)
-        )
+        backup_file = pjoin(base_path, XZ_DB_NAME(dbname, weekday))
+        fstore_file = pjoin(base_path, XZ_FSTORE_NAME(dbname, weekday))
         if os.path.exists(backup_file):
             row += ["X", datetime.fromtimestamp(os.path.getmtime(backup_file))]
         else:
-            row += ["-", "-"]
+            backup_file = pjoin(base_path, GZIP_DB_NAME(dbname, weekday))
+            if os.path.exists(backup_file):
+                row += ["X", datetime.fromtimestamp(os.path.getmtime(backup_file))]
+            else:
+                row += ["-", "-"]
         if os.path.exists(fstore_file):
             row += ["X", datetime.fromtimestamp(os.path.getmtime(fstore_file))]
         else:
-            row += ["-", "-"]
+            fstore_file = pjoin(base_path, GZIP_FSTORE_NAME(dbname, weekday))
+            if os.path.exists(fstore_file):
+                row += ["X", datetime.fromtimestamp(os.path.getmtime(fstore_file))]
+            else:
+                row += ["-", "-"]
         table.append(row)
     print(
         tabulate(
@@ -134,23 +146,33 @@ def restore(dbname, force, filestore, download, weekday, template, location, sou
             return
     source = source or dbname
     location = location or BACKUP_PATH
+    if not os.path.isdir(location):
+        run(["mkdir", "-p", location], "odoo")
     if weekday is None:
         weekday = int(datetime.today().weekday()) - 1
         if weekday == -1:  # Monday
             weekday = 6
     day = calendar.day_name[weekday].upper()
-    backup_path = DB_NAME_FORMAT.format(source, day)
-    fstore_path = FSTORE_NAME_FORMAT.format(source, day)
     if download:
-        download_from_s3(os.path.split(backup_path)[-1], location)
+        backup_path = XZ_DB_NAME(source, day)
+        if not download_from_s3(os.path.split(backup_path)[-1], location):
+            backup_path = GZIP_DB_NAME(source, day)
+            download_from_s3(os.path.split(backup_path)[-1], location)
         if filestore:
-            download_from_s3(os.path.split(fstore_path)[-1], location)
+            fstore_path = XZ_FSTORE_NAME(source, day)
+            if not download_from_s3(os.path.split(fstore_path)[-1], location):
+                fstore_path = GZIP_FSTORE_NAME(source, day)
+                download_from_s3(os.path.split(fstore_path)[-1], location)
+
+    backup_path = XZ_DB_NAME(source, day)
     if not os.path.isfile(backup_path):
-        raise Exception(
-            "{} backup for {} ({}) does not exist, please check".format(
-                source, day.capitalize(), weekday
+        backup_path = GZIP_DB_NAME(source, day)
+        if not os.path.isfile(backup_path):
+            raise Exception(
+                "{} backup for {} ({}) does not exist, please check".format(
+                    source, day.capitalize(), weekday
+                )
             )
-        )
     backup_size = humanfriendly.format_size(os.path.getsize(backup_path))
     with echo("Restoring database {} ({}) {}".format(dbname, day, backup_size)):
         pguser = os.environ["PGUSER"]
@@ -171,27 +193,38 @@ def restore(dbname, force, filestore, download, weekday, template, location, sou
             )
         else:
             run(["createdb", "-U", pguser, "-O", pguser, dbname], check_call=True)
-            run(
-                [["gunzip", "-c", backup_path], ["psql", dbname, "-U", pguser]],
-                check_call=True,
-            )
-    if filestore:
-        if not os.path.isfile(fstore_path):
-            raise Exception(
-                "{} filestore for {} ({}) does not exist, please check".format(
-                    source, day.capitalize(), weekday
+            if ".tar.gz" in backup_path:
+                run(
+                    [["gunzip", "-c", backup_path], ["psql", dbname, "-U", pguser]],
+                    check_call=True,
                 )
-            )
-
+            else:
+                run(
+                    [
+                        ["xz", "-dkc", backup_path],
+                        ["pg_restore", "-Ox", "-U", pguser, "-d", dbname],
+                    ],
+                    check_call=True,
+                )
+    if filestore:
+        fstore_path = XZ_FSTORE_NAME(source, day)
+        if not os.path.isfile(fstore_path):
+            fstore_path = GZIP_FSTORE_NAME(source, day)
+            if not os.path.isfile(fstore_path):
+                raise Exception(
+                    "{} filestore for {} ({}) does not exist, please check".format(
+                        source, day.capitalize(), weekday
+                    )
+                )
         fstore_size = humanfriendly.format_size(os.path.getsize(fstore_path))
         with echo("Restoring filestore {} ({}) {}".format(dbname, day, fstore_size)):
-            fstore_dest = os.path.join(os.environ["DATA"], "data", "filestore")
+            fstore_dest = pjoin(os.environ["DATA"], "data", "filestore")
             run(["mkdir", "-p", fstore_dest])
             run(["tar", "-xf", fstore_path, "-C", "/tmp"])
-            source_path = os.path.join("/tmp", source)
+            source_path = pjoin("/tmp", source)
             if not os.path.exists(source_path):
                 # Old backups data structure
-                source_path = os.path.join("/tmp", "data", "filestore", source)
+                source_path = pjoin("/tmp", "data", "filestore", source)
                 if not os.path.exists(source_path):
                     raise Exception("Unknown filestore data structure")
             run(["mv", source_path, fstore_dest])
@@ -217,16 +250,18 @@ def download_from_s3(name, dest):
         download_obj = list(download_dict.values())[0]
     elif len(download_dict.values()) > 1:
         ans = inquirer.list_input(
-            "From which bucket do you want to download?", choices=download_dict.keys(),
+            "From which bucket do you want to download?",
+            choices=download_dict.keys(),
         )
         download_obj = download_dict[ans]
     if not download_obj:
-        raise Exception("%s file not found in any bucket" % name)
+        return False
     with echo("Downloading %s" % (name)):
         data = client.get_object(download_obj.bucket_name, download_obj.object_name)
-        with open(os.path.join(dest, name), "wb") as file_data:
+        with open(pjoin(dest, name), "wb") as file_data:
             for d in data.stream(32 * 1024):
                 file_data.write(d)
+    return True
 
 
 if __name__ == "__main__":
