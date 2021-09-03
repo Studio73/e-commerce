@@ -1,7 +1,9 @@
+chardet==3.0.4 # Required for pdfminer.six which by default installs v4.0.0
 coverage
 phonenumbers
 psycopg2-binary==2.8.5 # The psycopg2 wheel package will be renamed from release 2.8
 debugpy
+pdfminer.six # Required to fix installation issue with chardet
 pydevd-pycharm
 py-spy
 python-stdnum>=1.16 # Fix conflict between Odoo and OCA/intrastat-extrastrat
