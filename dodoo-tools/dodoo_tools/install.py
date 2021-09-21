@@ -5,15 +5,15 @@ import logging
 import os
 import sys
 import subprocess as sp
+import time
 
 import psycopg2
 
 from collections import OrderedDict
-from ._requirements import main as requirements
-from ._utils import DEVNULL, run, build_ssh_conf, echo
+from ._utils import DEVNULL, run, build_ssh_conf, echo, format_time
 from .addons import get_addons_path
 from .addons import main as clone_repos
-
+from .cli import cli
 _logger = logging.getLogger(__name__)
 
 
@@ -175,9 +175,8 @@ def build_conf():
         "dbfilter": db_name,
         "list_db": False,
         "admin_passwd": os.environ.get("ADMINPASSWORD", "changeme"),
+        "load_language": os.environ.get("LANG", "es_ES"),
     }
-    if os.environ.get("LANG"):
-        options["load_language"] = os.environ["LANG"]
     if not os.environ.get("DEMO"):
         options["without_demo"] = True
     cfg = configparser.ConfigParser()
@@ -200,34 +199,6 @@ def build_conf():
     run(["chown", "-R", "odoo:odoo", odoorc])
 
 
-def install_runbot_build():
-    if os.environ.get("RUNBOT_BUILD") and os.path.exists("/data/build"):
-        run(["touch", "/data/build/start-%s" % os.environ["RUNBOT_BUILD"]], "odoo")
-        org = os.environ["GIT_REPO"].strip("/").split("/")[-2].lower().split(":")[-1]
-        reponame = os.environ["GIT_REPO"].split("/")[-1].replace(".git", "")
-        run(
-            ["mkdir", "-p", os.path.join(os.environ["SRC"], org)],
-            "odoo",
-            check_call=True,
-        )
-        data_dir = os.path.join(os.environ["DATA"], "data")
-        src_dir = os.path.join(os.environ["SRC"], org, reponame)
-        odoo_dir = os.path.join(os.environ["SRC"], "odoo")
-        run(["ln", "-s", "/data/build/datadir", data_dir], "odoo", check_call=True)
-        run(["ln", "-s", "/data/build/%s" % reponame, src_dir], "odoo", check_call=True)
-        if os.path.exists("/data/build/odoo"):
-            run(["ln", "-s", "/data/build/odoo", odoo_dir], "odoo", check_call=True)
-        if os.path.exists("/data/build/odoo.conf"):
-            run(
-                ["cp", "/data/build/odoo.conf", os.environ["SETUP"]],
-                "odoo",
-                check_call=True,
-            )
-        ssh_dir = "/opt/odoo/.ssh"
-        if os.path.exists("/data/build/.ssh") and not os.path.exists(ssh_dir):
-            run(["ln", "-s", "/data/build/.ssh", ssh_dir], "odoo", check_call=True)
-
-
 def migrate_odoo_src():
     odoo_src = os.path.join(os.environ["SRC"], "odoo")
     odoo_bin = os.path.join(odoo_src, "odoo-bin")
@@ -244,17 +215,28 @@ def migrate_odoo_src():
 
 
 def main():
-    with echo("Configuring the container"):
-        install_runbot_build()
-        migrate_odoo_src()
-        install_cron()
-        set_ssh_environ()
-        block_outbound_mail()
-        requirements()
-    clone_repos()
-    build_conf()
-    symlink()
-    debugger_bin()
+    start_time = time.time()
+    if os.environ.get("GITHUB_ACTIONS"):
+        clone_repos()
+        build_conf()
+        symlink()
+    else:
+        with echo("Configuring the container"):
+            migrate_odoo_src()
+            install_cron()
+            set_ssh_environ()
+            block_outbound_mail()
+        clone_repos()
+        build_conf()
+        symlink()
+        debugger_bin() 
+    elapsed_time = format_time(round(time.time() - start_time, 2))
+    _logger.info("Ready in %s" % elapsed_time)
+
+
+@cli.command()
+def install():
+    main()
 
 
 if __name__ == "__main__":
