@@ -62,24 +62,22 @@ class Repo(object):
         """
         return path.join(environ["SRC"], self.org, self.name)
 
-    def git_cmd(self, cmd, args=None, quiet=True):
-        _cmd = [
-            "git",
-            "--git-dir=%s" % path.join(self.path, ".git"),
-            "--work-tree=%s" % self.path,
-            cmd,
-        ]
-        if args:
-            _cmd += args
-        return _cmd
-
-    def git_run(self, cmd, args=None, quiet=True, user="odoo"):
-        _cmd = self.git_cmd(cmd, args, quiet)
+    def git_run(self, cmd, args=None, quiet=True, **kwargs):
+        if args is None:
+            args = []
+        cwd = kwargs.get("cwd", self.path)
+        user = kwargs.get("user", "odoo")
+        _cmd = ["git", cmd] + args 
         if quiet:
-            result = run(_cmd, user)
+            result = run(_cmd, user, cwd=cwd)
         else:
-            _logger.info(" ".join(_cmd))
-            result = sp.call(_cmd)
+            cmd_str = " ".join(_cmd)
+            if self.api.token and self.api.token in cmd_str:
+                cmd_str = cmd_str.replace(self.api.token, "***")
+            _logger.info(cmd_str)
+            if getpass.getuser() != user:
+                _cmd = ["gosu", user] + _cmd
+            result = sp.call(_cmd, cwd=cwd)
         return result
 
     def clean(self, depth=10, quiet=True):
@@ -96,12 +94,12 @@ class Repo(object):
                 continue
             self.git_run("branch", ["-D", branch], quiet)
         if self.sha:
-            log_res = run(self.git_cmd("log"))
+            log_res = run(["git", "log"], cwd=self.path)
             sha_found = self.sha in log_res.out.strip()
             while not sha_found and depth <= 1000:
                 depth += 10
                 self.git_run("fetch", ["origin", "--depth=%s" % depth], quiet)
-                log_res = run(self.git_cmd("log"))
+                log_res = run(["git", "log"], cwd=self.path)
                 if self.sha in log_res.out.strip():
                     sha_found = True
             if sha_found:
@@ -118,11 +116,10 @@ class Repo(object):
                 prs["not_merge"][pr] = status
                 continue
             self.git_run("fetch", ["origin", "refs/pull/%s/head:%s" % (pr, pr)], quiet)
-            rev_list_cmd = self.git_cmd(
-                "rev-list",
-                ["--count", "--no-merges", "origin/%s..%s" % (self.branch, pr)],
-            )
-            r = run(rev_list_cmd)
+            rev_list_cmd = [
+                "git", "rev-list", "--count", "--no-merges", "origin/%s..%s" % (self.branch, pr)
+            ]
+            r = run(rev_list_cmd, cwd=self.path)
             try:
                 depth += int(r.out.strip())
             except ValueError:
@@ -163,26 +160,20 @@ class Repo(object):
         if not path.exists(self.path) or not listdir(self.path):
             self.check_access()
             with echo("Cloning %s/%s" % (self.org, self.name), tty=quiet):
-                cmd = ["git", "clone"]
+                args = []
                 if environ.get("GIT_IDENTITY_FILE"):
                     id_file = environ.get("GIT_IDENTITY_FILE")
-                    cmd += ["-c", "core.sshCommand=ssh -i ~/.ssh/%s" % id_file]
+                    args += ["-c", "core.sshCommand=ssh -i ~/.ssh/%s" % id_file]
                 if depth:
-                    cmd += ["--depth", repr(depth)]
+                    args += ["--depth", repr(depth)]
                 if quiet:
-                    cmd.append("--quiet")
-                cmd += ["-b", self.branch, self.url, self.path]
-                if quiet:
-                    run(cmd, "odoo")
-                else:
-                    _logger.info(" ".join(cmd))
-                    if getpass.getuser() != "odoo":
-                        cmd = ["gosu", "odoo"] + cmd
-                    sp.call(cmd)
-            self.do_merges()
+                    args.append("--quiet")
+                args += ["-b", self.branch, self.url, self.path]
+                self.git_run("clone", args, quiet, cwd=None)
+            self.do_merges(quiet)
 
     def check_access(self):
-        if not self.private:
+        if not self.private or environ.get("GITHUB_ACTIONS"):
             return True
         cmd = ["git"]
         if environ.get("GIT_IDENTITY_FILE"):
