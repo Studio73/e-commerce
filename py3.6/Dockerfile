@@ -33,7 +33,6 @@ RUN apt-get update \
 	python3-pyldap \
 	python3-qrcode \
 	python3-renderpm \
-	python3-setuptools \
 	python3-slugify \
 	python3-vobject \
 	python3-watchdog \
@@ -112,12 +111,15 @@ RUN echo "deb http://deb.nodesource.com/node_8.x bionic main" > /etc/apt/sources
     && npm install -g rtlcss \
     && rm -rf /var/lib/apt/lists/*
 
-RUN pip3 install --upgrade pip
+RUN pip3 install --upgrade pip \
+    && pip3 install --upgrade "setuptools<58.0.0"
+RUN echo "setuptools<58.0.0" >> /tmp/constraints.txt
+    # setuptools<58.0.0 fixes setup command: use_2to3 is invalid.
 
 ARG VERSION=12.0
 ENV ODOO_VERSION=$VERSION
 RUN curl -SLo /tmp/requirements.txt https://raw.githubusercontent.com/odoo/odoo/$VERSION/requirements.txt \
-	&& pip3 install --no-cache-dir --ignore-installed -r /tmp/requirements.txt \
+	&& pip3 install --no-cache-dir --ignore-installed -r /tmp/requirements.txt -c /tmp/constraints.txt \
 	&& apt-get -y autoremove \
 	&& rm -Rf /var/lib/apt/lists/* /tmp/*
 
