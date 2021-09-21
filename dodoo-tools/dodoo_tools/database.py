@@ -26,8 +26,14 @@ GZIP_FSTORE_NAME = pjoin(BACKUP_PATH, "{}-fstore-{}.tar.gz").format
 
 
 def _database_exists(dbname):
-    r = run([["psql", "-l"], ["grep", "-w", dbname], ["wc", "-l"]], check_call=True)
-    return r.out != "0"
+    try:
+        run(
+            [["psql", "-lqt"], ["cut", "-d", "|", "-f", "1"], ["grep", "-w", dbname]],
+            check_call=True,
+        )
+    except Exception:
+        return False
+    return True
 
 
 @cli.group()
@@ -57,7 +63,7 @@ def backup(ctx, dbname, filestore, skip_rotation):
     if filestore and os.path.isdir(pjoin(base_fs, dbname)):
         with echo("Creating filestore backup ({} {})".format(dbname, weekday)):
             backup_fstore = XZ_FSTORE_NAME(dbname, weekday)
-            run(["tar", "-I", "pixz -7k", "-C",  base_fs, "-cf", backup_fstore, dbname])
+            run(["tar", "-I", "pixz -7k", "-C", base_fs, "-cf", backup_fstore, dbname])
     if not skip_rotation:
         ctx.invoke(rotate, dbname=dbname)
 
