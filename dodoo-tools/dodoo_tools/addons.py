@@ -9,7 +9,7 @@ from tabulate import tabulate
 
 import click
 
-from ._requirements import pip_install
+from ._requirements import install as requirements
 from .cli import cli
 from .repo import Repo, MERGE_STATUS
 
@@ -110,12 +110,8 @@ def main(to_update=False, org=False, quiet=True):
                     should_update = True
             if should_update:
                 repo.update(quiet)
-    pip_install(
-        [
-            path.join(repo.path, "requirements.txt")
-            for repo in repos[:-1]  # Skip Odoo requirements.txt
-        ], quiet=quiet
-    )
+    req_paths = [environ["SETUP"]] + [repo.path for repo in repos[:-1]] # Skip Odoo requirements.txt
+    requirements(req_paths, quiet=quiet)  
 
 
 @cli.group()

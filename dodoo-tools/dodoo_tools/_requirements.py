@@ -11,7 +11,7 @@ import sys
 from packaging.requirements import Requirement
 from packaging.version import Version
 
-from ._utils import run, echo
+from ._utils import run, echo, DEVNULL
 
 _logger = logging.getLogger(__name__)
 
@@ -44,6 +44,39 @@ def cache_files(files, key):
         with open(install_json, "w") as fil:
             fil.write(json.dumps(json_cache, indent=4))
     return changed_files
+
+
+def print_run(msg, cmd, quiet):
+    if quiet:
+        with echo(msg):
+            r = run(cmd)
+            returncode = r.returncode
+    else:
+        _logger.info(" ".join(cmd))
+        returncode = sp.call(cmd)
+    if returncode:
+        exit(returncode)
+
+
+def apt_install(apt_files, quiet=True):
+    files2install = filter(lambda x: os.path.exists(x), apt_files)
+    if not files2install:
+        return True
+    packages2install = []
+    for apt_file in files2install:
+        packages = open(apt_file, "r").read().splitlines()
+        for package in packages:
+            package = package.strip()
+            # Skip comments or empty lines
+            if not package or package[0] == "#" or package in packages2install:
+                continue
+            if sp.call(["dpkg", "-s", package], stdout=DEVNULL, stderr=DEVNULL):
+                packages2install.append(package)
+    if packages2install:
+        print_run("apt update", ["apt", "update"], quiet)
+    for package in packages2install:
+        install_cmd = ["apt", "install", "-y", package]
+        print_run("apt install %s" % package, install_cmd, quiet)
 
 
 def pip_install(pip_files, quiet=True):
@@ -131,10 +164,11 @@ def pip_install(pip_files, quiet=True):
                 exit(r)
 
 
-def main():
-    # TODO: others requirements apt, npm, ...
-    pip_install([os.path.join(os.environ["SETUP"], "pip.txt")])
+def install(base_paths, quiet=True):
+    # TODO: others requirements npm, ...
+    apt_install([os.path.join(p, "apt.txt") for p in base_paths], quiet)
+    pip_install([os.path.join(p, "requirements.txt") for p in base_paths], quiet)
 
 
 if __name__ == "__main__":
-    main()
+    install([os.environ["SETUP"]])
