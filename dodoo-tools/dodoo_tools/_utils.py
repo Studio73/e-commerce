@@ -10,6 +10,7 @@ import subprocess as sp
 import glob
 import click
 from datetime import timedelta
+from tabulate import tabulate
 
 try:
     from contextlib import ContextDecorator  # py3
@@ -36,7 +37,7 @@ class Cmd(object):
         self.error = None
         self.returncode = None
 
-    def run(self, check_call=True, stdout=sp.PIPE):
+    def run(self, check_call=True, stdout=sp.PIPE, cwd=None):
         p_out = None
         for idx, cmd in enumerate(self.cmd):
             p_stdout = stdout if idx == len(self.cmd) - 1 else sp.PIPE
@@ -44,10 +45,10 @@ class Cmd(object):
                 cmd = ["gosu", self.force_user] + cmd
             try:
                 p = sp.Popen(
-                    cmd, stdin=p_out, stdout=p_stdout, stderr=sp.PIPE, encoding="utf8"
+                    cmd, stdin=p_out, stdout=p_stdout, stderr=sp.PIPE, encoding="utf8", cwd=cwd
                 )  # py3
             except TypeError:
-                p = sp.Popen(cmd, stdin=p_out, stdout=p_stdout, stderr=sp.PIPE)
+                p = sp.Popen(cmd, stdin=p_out, stdout=p_stdout, stderr=sp.PIPE, cwd=cwd)
             p_out = p.stdout
         out, error = p.communicate()
         self.out = out and out.strip() or ""
@@ -62,9 +63,9 @@ class Cmd(object):
         return self.returncode
 
 
-def run(cmd, force_user=False, check_call=False, stdout=sp.PIPE):
+def run(cmd, force_user=False, check_call=False, stdout=sp.PIPE, cwd=None):
     c = Cmd(cmd, force_user)
-    c.run(check_call, stdout)
+    c.run(check_call, stdout, cwd)
     return c
 
 
@@ -100,14 +101,11 @@ class echo(ContextDecorator):
     def write(self, prefix, msg, keep=False, tme=None):
         if not tme:
             tme = round(time.time() - self.start_time, 2)
-        h, m, s = map(float, str(timedelta(seconds=tme)).split(":"))
-        h = "%sh " % int(h) if h else ""
-        m = "%sm " % int(m) if m else ""
-        s = "%05.2fs" % s
+        tme_text = format_time(tme)
         suffix = ""
         if keep and self.tty:
             suffix = "\n"
-        text = "%s %s - %s%s%s%s" % (prefix, msg, h, m, s, suffix)
+        text = "%s %s - %s%s" % (prefix, msg, tme_text, suffix)
         if self.tty:
             sys.stdout.write("\r%s" % text)
             sys.stdout.flush()
@@ -141,6 +139,18 @@ class echo(ContextDecorator):
             print("\n%s\n" % self.error_msg)
         self.stopped = True
         return True
+
+
+def format_time(tme):
+    h, m, s = map(float, str(timedelta(seconds=tme)).split(":"))
+    h = "%sh " % int(h) if h else ""
+    m = "%sm " % int(m) if m else ""
+    s = "%05.2fs" % s
+    return "%s%s%s" % (h, m, s)
+
+
+def print_table(rows, headers=[]):
+    print(tabulate(rows, headers=headers, tablefmt="psql"))
 
 
 def copy(src, dest, msg=None, user="odoo"):
