@@ -130,14 +130,15 @@ RUN pip3 install --no-cache-dir -r /tmp/requirements.txt \
 	&& rm -Rf /var/lib/apt/lists/* /tmp/*
 
 COPY entrypoint.py /
+COPY ci/ /ci
 COPY dodoo-tools/ /tmp/dodoo-tools/
 RUN cd /tmp/dodoo-tools/ \
 	&& pip3 install . \
 	&& rm -Rf /tmp/*
 
 # Avoid "ImportError: No module named odoo" and make pip install persistent
-ENV PYTHONPATH='$PYTHONPATH:/opt/odoo/src/odoo/odoo:/opt/odoo/data/.cache/pypi'
-ENV PIP_TARGET=${DATA}/.cache/pypi
+ENV PYTHONPATH="$PYTHONPATH:$SRC/odoo/odoo:$DATA/.cache/pypi"
+ENV PIP_TARGET="$DATA/.cache/pypi"
 
 WORKDIR /opt/odoo/
 ENTRYPOINT ["python3", "/entrypoint.py"]
