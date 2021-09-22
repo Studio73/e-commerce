@@ -149,6 +149,9 @@ class Repo(object):
             return
         self.check_access()
         with echo("Updating  %s/%s" % (self.org, self.name), tty=quiet):
+            index_lock = path.join(self.path, ".git", "index.lock")
+            if path.exists(index_lock):
+                run(["rm", "-f", index_lock])
             self.clean(quiet=quiet)
             merge_status = self.do_merges(quiet)
         if merge_status["not_merge"].keys():
