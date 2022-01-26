@@ -113,7 +113,7 @@ def tests():
 def run(addons, database, language, log_level, force_recreate):
     start_time = time.time()
     if not database:
-        database = "{}_test".format(os.environ["DATABASE"])
+        database = "test_{}".format(os.environ["DATABASE"])
     repos = get_dependencies()
     main_repo = list(filter(lambda r: r.main_repo, repos))[0]
     odoo_repo = list(filter(lambda r: r.odoo_repo, repos))[0]
