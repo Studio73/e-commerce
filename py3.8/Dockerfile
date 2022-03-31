@@ -55,6 +55,8 @@ RUN apt-get update \
 	iptables \
 	zip \
 	pixz \
+    # unbuffer
+    expect-dev \
 	# pycups
 	libcups2-dev \
 	cups-client \
@@ -71,6 +73,8 @@ RUN apt-get update \
 	libxmlsec1-openssl \
 	# pyzbar server-ux
 	libzbar0 \
+    # endesive reporting-engine
+    swig \
 	# psycopg2==2.8.3 error pg_config executable not found
 	libpq-dev \
 	# wkhtmltopdf
@@ -115,19 +119,21 @@ RUN echo "deb http://deb.nodesource.com/node_8.x stretch main" > /etc/apt/source
     && npm install -g rtlcss \
     && rm -rf /var/lib/apt/lists/*
 
-RUN pip3 install --upgrade pip
+RUN pip3 install --upgrade pip \
+    && pip3 install --upgrade "setuptools<58.0.0"
+RUN echo "setuptools<58.0.0" >> /tmp/constraints.txt  # setuptools<58.0.0 fixes setup command: use_2to3 is invalid.
 
 ARG VERSION=14.0
 ENV ODOO_VERSION=$VERSION
-RUN curl -SLo /tmp/requirements.txt https://raw.githubusercontent.com/odoo/odoo/$VERSION/requirements.txt \
-	&& pip3 install --no-cache-dir --ignore-installed -r /tmp/requirements.txt \
+RUN curl -SLo /requirements_odoo.txt https://raw.githubusercontent.com/odoo/odoo/$VERSION/requirements.txt \
+    # Fix conflict between Odoo and OCA/intrastat-extrastrat
+    && sed -i 's/python-stdnum==1.8/python-stdnum>=1.16/g' /requirements_odoo.txt \ 
+	&& pip3 install --no-cache-dir --ignore-installed -r /requirements_odoo.txt -c /tmp/constraints.txt \
 	&& apt-get -y autoremove \
 	&& rm -Rf /var/lib/apt/lists/* /tmp/*
 
-COPY py3.8/requirements.txt /tmp/requirements.txt
-RUN pip3 install --no-cache-dir -r /tmp/requirements.txt \
-	&& apt-get -y autoremove \
-	&& rm -Rf /var/lib/apt/lists/* /tmp/*
+COPY py3.8/requirements.txt /requirements.txt
+RUN pip3 install --no-cache-dir -r /requirements.txt
 
 COPY entrypoint.py /
 COPY ci/ /ci
@@ -137,8 +143,10 @@ RUN cd /tmp/dodoo-tools/ \
 	&& rm -Rf /tmp/*
 
 # Avoid "ImportError: No module named odoo" and make pip install persistent
+
+ENV PATH="$PATH:$DATA/.cache/pypi/bin"
 ENV PYTHONPATH="$PYTHONPATH:$SRC/odoo/odoo:$DATA/.cache/pypi"
-ENV PIP_TARGET="$DATA/.cache/pypi"
+ENV PYTHONUSERBASE="$DATA/.cache/pypi"
 
 WORKDIR /opt/odoo/
 ENTRYPOINT ["python3", "/entrypoint.py"]

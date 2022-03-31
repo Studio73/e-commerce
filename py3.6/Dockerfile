@@ -51,6 +51,8 @@ RUN apt-get update \
 	iptables \
 	zip \
 	pixz \
+    # unbuffer
+    expect-dev \
 	# pycups
 	libcups2-dev \
 	cups-client \
@@ -123,10 +125,8 @@ RUN curl -SLo /tmp/requirements.txt https://raw.githubusercontent.com/odoo/odoo/
 	&& apt-get -y autoremove \
 	&& rm -Rf /var/lib/apt/lists/* /tmp/*
 
-COPY py3.6/requirements.txt /tmp/requirements.txt
-RUN pip3 install --no-cache-dir -r /tmp/requirements.txt \
-	&& apt-get -y autoremove \
-	&& rm -Rf /var/lib/apt/lists/* /tmp/*
+COPY py3.6/requirements.txt /requirements.txt
+RUN pip3 install --no-cache-dir -r /requirements.txt
 
 COPY entrypoint.py /
 COPY ci/ /ci
@@ -137,7 +137,8 @@ RUN cd /tmp/dodoo-tools/ \
 
 # Avoid "ImportError: No module named odoo" and make pip install persistent
 ENV PYTHONPATH="$PYTHONPATH:$SRC/odoo/odoo:$DATA/.cache/pypi"
-ENV PIP_TARGET="$DATA/.cache/pypi"
+ENV PYTHONUSERBASE="$DATA/.cache/pypi"
+ENV PATH="$PATH:$DATA/.cache/pypi/bin"
 
 WORKDIR /opt/odoo/
 ENTRYPOINT ["python3", "/entrypoint.py"]
