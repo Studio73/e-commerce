@@ -9,7 +9,7 @@ fi
 if [ "$VERSION" = "11.0" ] || [ "$VERSION" = "12.0" ] || [ "$VERSION" = "13.0" ]; then
     DEST="py3.6"
 fi
-if [ "$VERSION" = "14.0" ]; then
+if [ "$VERSION" = "14.0" ] || [ "$VERSION" = "15.0" ]; then
     DEST="py3.8"
 fi
 
