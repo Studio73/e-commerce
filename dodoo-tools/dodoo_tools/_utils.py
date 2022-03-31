@@ -149,8 +149,8 @@ def format_time(tme):
     return "%s%s%s" % (h, m, s)
 
 
-def print_table(rows, headers=[]):
-    print(tabulate(rows, headers=headers, tablefmt="psql"))
+def print_table(rows, headers=[], showindex=None):
+    print(tabulate(rows, headers=headers, tablefmt="psql", showindex=showindex))
 
 
 def copy(src, dest, msg=None, user="odoo"):
