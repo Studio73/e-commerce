@@ -93,6 +93,9 @@ class Repo(object):
             if branch == active_branch:
                 continue
             self.git_run("branch", ["-D", branch], quiet)
+
+    def do_merges(self, quiet=True):
+        depth = 10
         if self.sha:
             log_res = run(["git", "log"], cwd=self.path)
             sha_found = self.sha in log_res.out.strip()
@@ -104,12 +107,9 @@ class Repo(object):
                     sha_found = True
             if sha_found:
                 self.git_run("reset", ["--hard", self.sha], quiet)
-
-    def do_merges(self, quiet=True):
         prs = {"to_merge": [], "not_merge": {}}
-        if not len(self.merges) or self.sha:
+        if not len(self.merges):
             return prs
-        depth = 10
         for pr in self.merges:
             status = self.pr_status(pr)
             if status not in ["Not merged", "Not found"]:
