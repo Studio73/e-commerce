@@ -144,11 +144,10 @@ def pip_install(pip_files, quiet=True):
             pip_bin,
             "--disable-pip-version-check",
             "install",
-            "--ignore-installed",
             "--upgrade",
-            # Avoid upgrade packages from Odoo requirements.txt
-            "--constraint",
-            os.path.join(os.environ["SRC"], "odoo", "odoo", "requirements.txt"),
+            "--user",
+            "--requirement=/requirements_odoo.txt",  # Avoid upgrade packages from Odoo requirements.txt
+            "--requirement=/requirements.txt",
             package,
         ]
         if quiet:
