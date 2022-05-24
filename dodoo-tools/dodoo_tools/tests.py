@@ -138,6 +138,7 @@ def run(addons, database, language, log_level, force_recreate):
         "--load-language=%s" % language,
         "--language=%s" % language,
         "--stop-after-init",
+        "--workers=0",
     ]
     if not _database_exists(database) or force_recreate:
         sp.call(["dropdb", "--if-exists", database], stdout=DEVNULL, stderr=DEVNULL)
