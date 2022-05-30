@@ -56,14 +56,14 @@ def backup(ctx, dbname, filestore, skip_rotation):
         run(
             [
                 ["pg_dump", "-Ft", "--no-owner", dbname],
-                ["pixz", "-7k", "-o", XZ_DB_NAME(dbname, weekday)],
+                ["pixz", "-5k", "-o", XZ_DB_NAME(dbname, weekday)],
             ]
         )
     base_fs = pjoin(os.environ["DATA"], "data", "filestore")
     if filestore and os.path.isdir(pjoin(base_fs, dbname)):
         with echo("Creating filestore backup ({} {})".format(dbname, weekday)):
             backup_fstore = XZ_FSTORE_NAME(dbname, weekday)
-            run(["tar", "-I", "pixz -7k", "-C", base_fs, "-cf", backup_fstore, dbname])
+            run(["tar", "-I", "pixz -5k", "-C", base_fs, "-cf", backup_fstore, dbname])
     if not skip_rotation:
         ctx.invoke(rotate, dbname=dbname)
 
