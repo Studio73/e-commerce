@@ -12,6 +12,7 @@ import click
 from ._requirements import install as requirements
 from .cli import cli
 from .repo import Repo, MERGE_STATUS
+from ._utils import echo, run
 
 _logger = logging.getLogger(__name__)
 
@@ -21,6 +22,8 @@ def get_dependencies():
     odoo_version = environ["ODOO_VERSION"]
     repo_url = environ.get("GIT_REPO")
     repo_branch = environ.get("BRANCH", odoo_version)
+    if environ.get("GITHUB_HEAD_REF"):
+        repo_branch = environ.get("GITHUB_HEAD_REF")
     main_repo = Repo(repo_url, repo_branch)
     main_repo.main_repo = True
     dependencies = [main_repo]
@@ -110,8 +113,10 @@ def main(to_update=False, org=False, quiet=True):
                     should_update = True
             if should_update:
                 repo.update(quiet)
-    req_paths = [environ["SETUP"]] + [repo.path for repo in repos[:-1]] # Skip Odoo requirements.txt
-    requirements(req_paths, quiet=quiet)  
+    req_paths = [environ["SETUP"]] + [
+        repo.path for repo in repos[:-1]
+    ]  # Skip Odoo requirements.txt
+    requirements(req_paths, quiet=quiet)
 
 
 @cli.group()
@@ -177,6 +182,36 @@ def merge_status(repo_name):
             tablefmt="psql",
         )
     )
+
+
+@addons.command()
+def dump():
+    dbname = environ.get("PGDATABASE", "odoo")
+    dump_name = path.join(
+        environ["DATA"],
+        "backup",
+        "%s_addons_%s.tar.gz" % (dbname, time.strftime("%d_%m_%y")),
+    )
+
+    with echo("Creating addons dump: {}".format(dump_name)):
+        query = (
+            "select name from ir_module_module where state in ('installed', 'to upgrade')"
+        )
+        addons_res = run(["psql", "-t", "-d", dbname, "-c", query])
+        run(["rm", "-rf", path.join("/tmp", dbname)])
+        repos = get_dependencies()
+        for addon in addons_res.out.strip().split():
+            for repo in repos:
+                if repo.odoo_repo:
+                    continue
+                addon_path = path.join(repo.path, addon)
+                if path.exists(addon_path):
+                    org_dest = path.join("/tmp", dbname, repo.org, repo.name)
+                    run(["mkdir", "-p", org_dest])
+                    run(["cp", "-r", addon_path, org_dest])
+                    continue
+        run(["tar", "-cf", dump_name, dbname], cwd="/tmp")
+        run(["rm", "-rf", path.join("/tmp", dbname)])
 
 
 if __name__ == "__main__":
