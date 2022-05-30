@@ -132,8 +132,8 @@ def run(addons, database, language, log_level, force_recreate):
     addons_deps = list(set(addons_deps) - set(local_addons))
     base_cmd = [
         os.path.join(odoo_repo.path, "odoo-bin"),
-        "-d",
-        database,
+        "--database=%s" % database,
+        "--db-filter=%s" % database,
         "--log-level=%s" % log_level,
         "--load-language=%s" % language,
         "--language=%s" % language,
@@ -194,7 +194,7 @@ def run(addons, database, language, log_level, force_recreate):
 
 
 @tests.command()
-@click.option("-f", "--fail-under", default=30, type=int)
+@click.option("-f", "--fail-under", default=50, type=int)
 @click.argument("addons", default="")
 def coverage(addons, fail_under):
     repos = get_dependencies()
