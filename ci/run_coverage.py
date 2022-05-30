@@ -6,7 +6,7 @@ from set_env import set_env
 
 
 @click.command()
-@click.option("-f", "--fail-under", default=20, type=int)
+@click.option("-f", "--fail-under", default=50, type=int)
 @click.argument("addons", default="")
 @click.pass_context
 def main(ctx, addons, fail_under):
