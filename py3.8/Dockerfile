@@ -128,6 +128,7 @@ ENV ODOO_VERSION=$VERSION
 RUN curl -SLo /requirements_odoo.txt https://raw.githubusercontent.com/odoo/odoo/$VERSION/requirements.txt \
     # Fix conflict between Odoo and OCA/intrastat-extrastrat
     && sed -i 's/python-stdnum==1.8/python-stdnum>=1.16/g' /requirements_odoo.txt \ 
+    && sed -i 's/python-stdnum==1.13/python-stdnum>=1.16/g' /requirements_odoo.txt \  
 	&& pip3 install --no-cache-dir --ignore-installed -r /requirements_odoo.txt -c /tmp/constraints.txt \
 	&& apt-get -y autoremove \
 	&& rm -Rf /var/lib/apt/lists/* /tmp/*

@@ -53,6 +53,7 @@ RUN apt-get update \
 	pixz \
     # unbuffer
     expect-dev \
+    tcl8.6 \
 	# pycups
 	libcups2-dev \
 	cups-client \
@@ -120,8 +121,8 @@ RUN echo "setuptools<58.0.0" >> /tmp/constraints.txt
 
 ARG VERSION=12.0
 ENV ODOO_VERSION=$VERSION
-RUN curl -SLo /tmp/requirements.txt https://raw.githubusercontent.com/odoo/odoo/$VERSION/requirements.txt \
-	&& pip3 install --no-cache-dir --ignore-installed -r /tmp/requirements.txt -c /tmp/constraints.txt \
+RUN curl -SLo /requirements_odoo.txt https://raw.githubusercontent.com/odoo/odoo/$VERSION/requirements.txt \
+	&& pip3 install --no-cache-dir --ignore-installed -r /requirements_odoo.txt -c /tmp/constraints.txt \
 	&& apt-get -y autoremove \
 	&& rm -Rf /var/lib/apt/lists/* /tmp/*
 
