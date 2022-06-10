@@ -2,7 +2,7 @@ account-analytic:
   defaults:
     depth: 1
   merges:
-  - origin 2d8aa95a88e49e0154df31e4401d61eff74fcd36
+  - origin 2644a9ff76e1a88fb4e072dfc6fb19b57f1860fc
   remotes:
     origin: https://github.com/OCA/account-analytic.git
 account-closing:
@@ -23,7 +23,7 @@ account-financial-tools:
   defaults:
     depth: 1
   merges:
-  - origin da5e24a2c2a7b68ca64f5de60ace78f89f8ddde0
+  - origin b28d966ae3817eedf16b0121664050b724df5833
   remotes:
     origin: https://github.com/OCA/account-financial-tools.git
 account-invoice-reporting:
@@ -191,7 +191,7 @@ purchase-workflow:
   defaults:
     depth: 1
   merges:
-  - origin 9e7e78c2479bafcfcffe8f5ecb9827ee8a7886c8
+  - origin 43316aa9f9be2a095e64bf3f65c4f03cd822c694
   remotes:
     origin: https://github.com/OCA/purchase-workflow.git
 queue:
@@ -226,7 +226,7 @@ sale-workflow:
   defaults:
     depth: 1
   merges:
-  - origin 6cb0e41fadffac9cf3fa7ea5c355b3c119d732b8
+  - origin 2178c9e65c812b92b8a4a7736b5bdd4f1886e609
   remotes:
     origin: https://github.com/OCA/sale-workflow.git
 server-tools:
@@ -268,7 +268,7 @@ web:
   defaults:
     depth: 1
   merges:
-  - origin e2f1ad592d1f5ab673a76bfb414b2b6f3d03b391
+  - origin 0e896b1d08955760d20ef59e4c24337aa4705e4a
   remotes:
     origin: https://github.com/OCA/web.git
 website:
