@@ -1,0 +1,31 @@
+---
+platform: linux
+
+image_resource:
+  type: registry-image
+  source:
+    repository: python
+    tag: 3.8-slim-buster
+inputs:
+  - name: repo
+outputs:
+  - name: repo
+run:
+  path: /bin/bash
+  args:
+    - -c
+    - |
+      set -e
+      apt-get update
+      apt-get install -y --no-install-recommends git
+      git config --global user.email "pablo@studio73.es" 
+      git config --global user.name "fuentes73"
+      pip3 install requests PyYaml
+      cd repo
+      VERSIONS="14.0 15.0"
+      for VERSION in $VERSIONS; do
+        python3 .ci/scripts/update_repos.py $VERSION all
+        git add .
+        git commit -m "[UPD] $VERSION repos"
+      done
+

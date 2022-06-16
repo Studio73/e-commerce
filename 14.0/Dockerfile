@@ -1,0 +1,129 @@
+FROM ubuntu:20.04 as builder
+SHELL ["/bin/bash", "-xo", "pipefail", "-c"]
+ARG DEBIAN_FRONTEND=noninteractive
+RUN apt-get update \
+	&& apt-get -y upgrade \
+    && apt-get install -y --no-install-recommends \
+    ca-certificates \
+    curl \
+    git \
+    g++ \
+    libpq-dev \
+    python3.8-dev \
+    python3.8-venv \
+    # pycups
+    libcups2-dev \
+    cups-client \
+    # lxml
+    libxml2-dev \
+    libxslt1-dev \
+    zlib1g-dev \
+    # pyldap https://github.com/odoo/odoo/issues/8849#issuecomment-322115976
+    libldap2-dev \
+    libsasl2-dev \
+    # xmlsec l10n-spain
+    pkg-config \
+    libxmlsec1-dev \
+    libxmlsec1-openssl \
+    # pyzbar server-ux
+    libzbar0 \
+    # endesive reporting-engine
+    swig \
+    && rm -rf /var/lib/apt/lists/* /tmp/* \
+    && git config --global user.email "contacto@studio73.es" \
+    && git config --global user.name "Studio73" \
+    && git config --global init.defaultBranch "14.0"
+
+ENV PYTHONUNBUFFERED=1
+ENV VIRTUAL_ENV=/venv
+ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+ENV ODOO_VERSION 14.0
+
+RUN python3 -m venv --copies $VIRTUAL_ENV \
+    && pip3 install wheel git-aggregator
+
+COPY --chown=odoo 14.0/odoo.yaml /odoo/repos.yaml
+RUN cd /odoo && gitaggregate --jobs 8 --config repos.yaml \
+    && find /odoo -name "*.po" | grep -v -E "es.po|en_GB.po|fr.po|pt.po|it.po|de.po|ca.po" | xargs rm \
+    && find /odoo -name "*.pot" | grep -v -E "es.pot|en_GB.pot|fr.pot|pt.pot|it.pot|de.pot|ca.pot" | xargs rm \
+    && find /odoo -name ".git" | xargs rm -rf \
+    # setuptools<58.0.0 fixes setup command: use_2to3 is invalid.
+    && echo "setuptools<58.0.0" >> /odoo/odoo/requirements.txt \
+    # Fix conflict between Odoo and OCA/intrastat-extrastrat
+    && sed -i 's/python-stdnum==1.8/python-stdnum>=1.16/g' /odoo/odoo/requirements.txt \ 
+    # Fix XlsxWriter py3.8 warnings
+    && sed -i 's/XlsxWriter==1.1.2/XlsxWriter==1.2.2/g' /odoo/odoo/requirements.txt \ 
+	&& pip3 install --ignore-installed -r /odoo/odoo/requirements.txt
+
+COPY --chown=odoo 14.0/oca.yaml /oca/repos.yaml
+RUN cd /oca && gitaggregate --jobs 8 --config repos.yaml
+RUN find /oca -name "requirements.txt" -type f | xargs -I {} sh -c 'pip3 install --upgrade-strategy=only-if-needed -c /odoo/odoo/requirements.txt -r {} $0 || exit 255' \
+    && find /oca -name "*.po" | grep -v -E "es.po|en_GB.po|fr.po|pt.po|it.po|de.po|ca.po" | xargs rm \
+    && find /oca -name "*.pot" | grep -v -E "es.pot|en_GB.pot|fr.pot|pt.pot|it.pot|de.pot|ca.pot" | xargs rm \
+    && find /oca -name ".git" | xargs rm -rf \
+    && find /oca -name "setup" | xargs rm -rf \
+    && find $VIRTUAL_ENV -name "*.pyc" -exec rm -f {} \; \
+    && rm -rf /tmp/*
+
+FROM ubuntu:20.04
+# https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/
+SHELL ["/bin/bash", "-xo", "pipefail", "-c"]
+ENV LANG=es_ES.UTF-8 \
+	LANGUAGE=es_ES \
+	LC_ALL=es_ES.UTF-8 \ 
+    TZ=Europe/Madrid
+RUN apt-get update \
+	&& apt-get -y upgrade \
+	&& apt-get install -y --no-install-recommends \
+    ca-certificates \
+    curl \
+    gnupg2 \ 
+    locales \
+    python3.8 \
+    python3.8-venv \
+    && curl -o /tmp/wkhtmltox.deb -sSL https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.focal_amd64.deb \
+    && apt-get install -y --no-install-recommends /tmp/wkhtmltox.deb \
+    && rm -rf /var/lib/apt/lists/* /tmp/*
+
+RUN sed -i -e 's/# es_ES.UTF-8 UTF-8/es_ES.UTF-8 UTF-8/' /etc/locale.gen && locale-gen
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+RUN echo "deb http://apt.postgresql.org/pub/repos/apt focal-pgdg main" > /etc/apt/sources.list.d/pgdg.list \
+    && curl -s https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - \
+    && apt-get update  \
+    && apt-get install --no-install-recommends -y postgresql-client-14 \
+    && rm -f /etc/apt/sources.list.d/pgdg.list \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN useradd -md /opt/odoo -s /bin/bash odoo
+RUN mkdir -p /opt/odoo/data \
+	&& mkdir -p /opt/odoo/src/custom \
+    && chown -R odoo:odoo /opt/odoo
+EXPOSE 8069 8072
+WORKDIR /opt/odoo/
+ENV HOME='/opt/odoo' \
+    DATA='/opt/odoo/data' \
+    SRC='/opt/odoo/src' \
+    VIRTUAL_ENV=/venv
+ENV PATH="$VIRTUAL_ENV/bin:$HOME/bin:$PATH"
+# Avoid "ImportError: No module named odoo" and make pip install persistent
+ENV PYTHONPATH="$PYTHONPATH:$SRC/odoo/odoo"
+ENV ODOO_VERSION=14.0
+
+COPY --chown=odoo --from=builder $VIRTUAL_ENV $VIRTUAL_ENV
+COPY --chown=odoo --from=builder /odoo $SRC/odoo
+COPY --chown=odoo --from=builder /oca $SRC/oca
+COPY --chown=odoo bin $HOME/bin
+COPY --chown=odoo entrypoint.py /
+RUN ln -s $SRC/odoo/odoo/odoo-bin /usr/local/bin/odoo
+
+USER odoo
+ENTRYPOINT ["python3", "/entrypoint.py"]
+CMD ["odoo"]
+
+ARG BUILD_DATE
+LABEL org.opencontainers.image.vendor="Studio73" \
+	  org.opencontainers.image.url="https://www.studio73.es" \
+	  org.opencontainers.image.source="https://github.com/Studio73/dodoo" \
+	  org.opencontainers.image.authors="Pablo Fuentes" \ 
+	  org.opencontainers.image.created=$BUILD_DATE

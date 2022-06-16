@@ -1,0 +1,87 @@
+---
+resources:
+  - name: repo
+    type: git
+    icon: github
+    source:
+      uri: https://github.com/Studio73/dodoo.git
+      branch: master
+      username: ((GITHUB_TOKEN))
+      password: x-oauth-basic
+  - name: sunday
+    type: time
+    icon: clock-outline
+    source:
+      days: [Sunday]
+      start: 04:00
+      stop: 05:00
+      location: Europe/Madrid
+      initial_version: true
+  - name: base-14.0
+    type: registry-image
+    icon: docker
+    source:
+      username: ((REGISTRY_USER))
+      password: ((REGISTRY_SECRET))
+      repository: r.studio73.es/odoo/base
+      tag: "14.0"
+  - name: base-15.0
+    type: registry-image
+    icon: docker
+    source:
+      username: ((REGISTRY_USER))
+      password: ((REGISTRY_SECRET))
+      repository: r.studio73.es/odoo/base
+      tag: "15.0"
+
+jobs:
+  - name: set-self
+    plan:
+      - get: repo
+        trigger: true
+      - set_pipeline: self
+        file: repo/.ci/pipeline.yaml
+  - name: update-repos
+    plan:
+      - get: sunday
+        trigger: true
+      - get: repo
+      - task: update
+        attempts: 3
+        params:
+          GITHUB_TOKEN: ((GITHUB_TOKEN))
+        file: repo/.ci/tasks/update-repos.yaml
+      - put: repo
+        params: {repository: repo}
+  - name: build-base-14.0
+    plan:
+      - get: repo
+        trigger: true
+        passed: [set-self]
+      - task: build-image
+        attempts: 3
+        privileged: true
+        params:
+          ODOO_VERSION: "14.0"
+        file: repo/.ci/tasks/build.yaml
+        output_mapping: {image: "base-14.0"}
+      - put: base-14.0
+        params: 
+          image: base-14.0/image.tar
+          additional_tags: base-14.0/today-tag
+  - name: build-base-15.0
+    plan:
+      - get: repo
+        trigger: true
+        passed: [set-self]
+      - task: build-image
+        attempts: 3
+        privileged: true
+        params:
+          ODOO_VERSION: "15.0"
+        file: repo/.ci/tasks/build.yaml
+        output_mapping: {image: "base-15.0"}
+      - put: base-15.0
+        params: 
+          image: base-15.0/image.tar
+          additional_tags: base-15.0/today-tag

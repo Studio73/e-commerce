@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -ex
+CODE=$1
+find $CODE -name "*.po" | grep -v -E "es.po|en_GB.po|fr.po|pt.po|it.po|de.po|ca.po" | xargs --no-run-if-empty rm
+find $CODE -name "*.pot" | grep -v -E "es.pot|en_GB.pot|fr.pot|pt.pot|it.pot|de.pot|ca.pot" | xargs --no-run-if-empty rm
+find $CODE -name ".git" | xargs --no-run-if-empty rm -rf
+find $CODE -name "setup" | xargs --no-run-if-empty rm -rf
+find $VIRTUAL_ENV -name "*.pyc" -exec rm -f {} \;
+rm -rf /tmp/*
+
