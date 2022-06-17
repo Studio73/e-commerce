@@ -20,6 +20,7 @@ def compute_addons_path():
                     continue
                 repos.append(os.path.dirname(os.path.dirname(addon)))
             addons_path += sorted(list(set(repos)))
+    addons_path.append(os.path.join(src, "odoo", "design-themes"))
     addons_path.append(os.path.join(src, "odoo", "odoo", "addons"))
     return ",".join(addons_path)
 
