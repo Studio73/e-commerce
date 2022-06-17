@@ -1,8 +1,9 @@
-name: Concourse Webhook (Master)
+name: Concourse Webhook (PR)
 on:
-  push:
+  pull_request:
     branches:
       - master
+    types: [opened, synchronize, reopened]
 jobs:
   trigger-resource-check:
     runs-on: ubuntu-20.04
@@ -13,5 +14,6 @@ jobs:
           concourse-url:           https://ci.studio73.dev
           concourse-team:          odoo
           concourse-pipeline:      dodoo
-          concourse-resource:      repo
+          concourse-resource:      pr
           concourse-webhook-token: ${{ secrets.CONCOURSE_WEBHOOK_TOKEN }}
+
