@@ -1,0 +1,39 @@
+---
+name: Concourse Webhook (Master)
+on:
+  push:
+    branches:
+      - master
+jobs:
+  trigger-resource-check:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Trigger resource check
+        uses: gstackio/trigger-concourse-resource-check-action@v1
+        with:
+          concourse-url:           https://ci.studio73.dev
+          concourse-team:          odoo
+          concourse-pipeline:      dodoo
+          concourse-resource:      repo
+          concourse-webhook-token: ${{ secrets.CONCOURSE_WEBHOOK_TOKEN }}
+
+---
+name: Concourse Webhook (PR)
+on:
+  pull_request:
+    branches:
+      - master
+    types: [opened, synchronize, reopened]
+jobs:
+  trigger-resource-check:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Trigger resource check
+        uses: gstackio/trigger-concourse-resource-check-action@v1
+        with:
+          concourse-url:           https://ci.studio73.dev
+          concourse-team:          odoo
+          concourse-pipeline:      dodoo
+          concourse-resource:      pr
+          concourse-webhook-token: ${{ secrets.CONCOURSE_WEBHOOK_TOKEN }}
+

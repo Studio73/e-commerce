@@ -1,13 +1,29 @@
 ---
+resource_types:
+  - name: pull-request
+    type: docker-image
+    source:
+      repository: teliaoss/github-pr-resource
+
 resources:
   - name: repo
     type: git
     icon: github
+    check_every: 24h
+    webhook_token: ((WEBHOOK_TOKEN))
     source:
       uri: https://github.com/Studio73/dodoo.git
       branch: master
       username: ((GITHUB_TOKEN))
       password: x-oauth-basic
+  - name: pr
+    type: pull-request
+    icon: github
+    check_every: 24h
+    webhook_token: ((WEBHOOK_TOKEN))
+    source:
+      repository: Studio73/dodoo
+      access_token: ((GITHUB_TOKEN))
   - name: sunday
     type: time
     icon: clock-outline
@@ -33,6 +49,21 @@ resources:
       password: ((REGISTRY_SECRET))
       repository: r.studio73.es/odoo/base
       tag: "15.0"
+
+groups:
+  - name: master
+    jobs:
+      - set-self
+      - update-repos
+      - build-base-14.0
+      - build-base-15.0
+  - name: pr
+    jobs:
+      - build-base-14.0-pr
+      - build-base-15.0-pr
+  - name: all
+    jobs:
+      - "*"
 
 jobs:
   - name: set-self
@@ -85,3 +116,41 @@ jobs:
         params: 
           image: base-15.0/image.tar
           additional_tags: base-15.0/today-tag
+  - name: build-base-14.0-pr
+    plan:
+      - get: pr
+        trigger: true
+      - task: build-image
+        attempts: 3
+        privileged: true
+        params:
+          ODOO_VERSION: "14.0"
+        file: repo/.ci/tasks/build.yaml
+        on_failure:
+          put: pr
+          params:
+            path: pr
+            status: failure
+      - put: pr
+        params:
+          path: pr
+          status: success
+  - name: build-base-15.0-pr
+    plan:
+      - get: pr
+        trigger: true
+      - task: build-image
+        attempts: 3
+        privileged: true
+        params:
+          ODOO_VERSION: "15.0"
+        file: repo/.ci/tasks/build.yaml
+        on_failure:
+          put: pr
+          params:
+            path: pr
+            status: failure
+      - put: pr
+        params:
+          path: pr
+          status: success
