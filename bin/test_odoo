@@ -1,0 +1,207 @@
+#!/usr/bin/env python3
+
+import ast
+import glob
+import logging
+import os
+import re
+import subprocess as sp
+import tempfile
+import time
+
+import click
+from tabulate import tabulate
+
+logging.basicConfig(
+    format="%(asctime)s %(levelname)s: %(message)s",
+    level=logging.INFO,
+)
+_logger = logging.getLogger(__name__)
+
+
+def get_addons():
+    addons = {}
+    for manifest in glob.glob("{}/custom/**/__manifest__.py".format(os.environ["SRC"])):
+        fil = os.path.basename(os.path.dirname(manifest))
+        m = ast.literal_eval(open(manifest, "r").read())
+        if m.get("installable", True):
+            addons[fil] = m.get("depends", [])
+    return addons
+
+
+def parse_log(logfile):
+    # '<DATE> ERROR <DATABASE> odoo.modules.loading: Module <MODULE>: 1 failures, 0 errors of 1 tests
+    re_err = re.compile(
+        r"^(?P<date>.*)ERROR(.*)Module(?P<module>.*):(.*) failures,(.*)$"
+    )
+    re_warn = re.compile(
+        r"^(?P<date>.*?)WARNING (?P<database>.*?) (?P<logger>.*?): (?P<warning>.*?)$"
+    )
+    result = {"error": [], "warning": [], "critical": []}
+    logfile.seek(0)
+    for line in logfile.readlines():
+        line = line.strip().decode("UTF-8")
+        if "ERROR" in line:
+            err_match = re_err.match(line)
+            if err_match:
+                result["error"].append(err_match.groupdict()["module"].strip())
+        elif "CRITICAL" in line:
+            result["critical"].append(line)
+        elif "WARNING" in line:
+            # WARNING message
+            warn_match = re_warn.match(line)
+            if warn_match:
+                warn_dict = warn_match.groupdict()
+                warn_logger = warn_dict["logger"].strip()
+                if warn_logger == "odoo.tests.runner":
+                    # Test results: 0 failed, 0 error(s) of 0 tests when loading database
+                    continue
+                warn_msg = warn_dict["warning"].strip()
+                if (warn_logger, warn_msg) not in result["warning"]:
+                    result["warning"].append((warn_logger, warn_msg))
+    return result
+
+
+def print_table(rows, headers=[], showindex=None):
+    click.echo(tabulate(rows, headers=headers, tablefmt="psql", showindex=showindex))
+    click.echo("")
+
+
+@click.group()
+def test():
+    pass
+
+
+@test.command()
+@click.option("-f", "--force-recreate", is_flag=True)
+@click.option("-l", "--log-level", default="info")
+@click.option("-L", "--language", default="en_US")
+@click.option("-d", "--database")
+@click.argument("addons", default="")
+def run(addons, database, language, log_level, force_recreate):
+    start_time = time.time()
+    if not database:
+        database = "test_{}".format(os.environ["PGDATABASE"])
+    addons_dict = get_addons()
+    custom_addons = addons_dict.keys()
+    if addons:
+        addons = [m.strip() for m in addons.split(",") if m.strip() in custom_addons]
+    else:
+        addons = custom_addons
+    if not addons:
+        raise Exception("No addons to test")
+    dependencies = []
+    for a in addons:
+        dependencies += addons_dict[a]
+    # Compute addons dependencies discarting addons from current repo
+    dependencies = list(set(dependencies) - set(custom_addons))
+    base_cmd = [
+        "{}/odoo/odoo/odoo-bin".format(os.environ["SRC"]),
+        "--database=%s" % database,
+        "--db-filter=^%s$" % database,
+        "--log-level=%s" % log_level,
+        "--load-language=%s" % language,
+        "--language=%s" % language,
+        "--stop-after-init",
+        "--workers=0",
+    ]
+    if force_recreate:  # TODO: Check if database exists
+        sp.call(
+            ["dropdb", "--if-exists", database], stdout=sp.DEVNULL, stderr=sp.DEVNULL
+        )
+        install_cmd = base_cmd + ["-i", ",".join(dependencies)]
+        _logger.info("Starting database: {}".format(" ".join(install_cmd)))
+        try:
+            sp.check_call(install_cmd)
+        except sp.CalledProcessError as e:
+            exit(e.returncode)
+    tests_cmd = ["unbuffer", "coverage", "run"]
+    custom_path = os.path.join(os.environ["SRC"], "custom")
+    rcfile = os.path.join(custom_path, ".coveragerc")
+    if os.path.exists(rcfile):
+        tests_cmd += ["--rcfile={}".format(rcfile)]
+    tests_cmd = tests_cmd + base_cmd + ["--init", ",".join(addons), "--test-enable"]
+    _logger.info("Running tests: {}".format(" ".join(tests_cmd)))
+    pipe = sp.Popen(tests_cmd, stderr=sp.STDOUT, stdout=sp.PIPE, cwd=custom_path)
+    logfile = tempfile.TemporaryFile()
+    for line in iter(pipe.stdout.readline, b""):
+        logfile.write(line)
+        click.echo(line.strip().decode("UTF-8", errors="backslashreplace"))
+    result = parse_log(logfile)
+    logfile.close()
+    returncode = pipe.wait()
+    if result.get("critical") or result.get("error"):
+        returncode = 254
+    if result.get("warning"):
+        print_table(result["warning"], ["Logger", "Warning message"], True)
+    print_table(
+        [
+            [a, "❌"] if a in result.get("error", []) else [a, "✅"]
+            for a in sorted(addons)
+        ],
+        ["Module", "Result"],
+        True,
+    )
+    elapsed_time = round(time.time() - start_time, 2)
+    elapsed_time = time.strftime("%Hh %Mm %Ss", time.gmtime(elapsed_time))
+    if returncode != 0:
+        if result.get("error"):
+            _logger.info(
+                "❌ Failed ({}/{}) {}".format(
+                    len(result["error"]), len(addons), elapsed_time
+                )
+            )
+        else:
+            _logger.info("❌ Failed {}".format(elapsed_time))
+    else:
+        _logger.info("✅ Succeed {}".format(elapsed_time))
+    exit(returncode)
+
+
+@test.command()
+@click.option("-f", "--fail-under", default=50, type=int)
+@click.argument("addons", default="")
+def coverage(addons, fail_under):
+    custom_path = os.path.join(os.environ["SRC"], "custom")
+    diff_addons = []
+    if addons:
+        diff_addons = [m.strip() for m in addons.split(",")]
+    #else:
+    #    custom_addons = get_addons().keys()
+    #    diff_addons = get_diff_patch(custom_path, local_addons)
+    coverage_cmd = ["coverage", "report", "-m", "--fail-under={}".format(fail_under)]
+    rcfile = os.path.join(custom_path, ".coveragerc")
+    if os.path.exists(rcfile):
+        coverage_cmd += ["--rcfile={}".format(rcfile)]
+    total = "~"
+    pipe = sp.Popen(coverage_cmd, stderr=sp.STDOUT, stdout=sp.PIPE, cwd=custom_path)
+    for line in iter(pipe.stdout.readline, b""):
+        line = line.strip().decode("UTF-8", errors="backslashreplace")
+        click.echo(line)
+        if "TOTAL" in line:
+            total = line.split()[-1]
+    project_exit = pipe.wait()
+    patch_exit = 0
+    print_table(
+        [["☔Project coverage", "{} {}".format("❌" if project_exit else "✅", total)]]
+    )
+    if diff_addons:
+        diff_addons = ["{}*".format(a) for a in diff_addons]
+        coverage_cmd.append("--include={}".format(",".join(diff_addons)))
+        total = "~"
+        pipe = sp.Popen(
+            coverage_cmd, stderr=sp.STDOUT, stdout=sp.PIPE, cwd=custom_path
+        )
+        for line in iter(pipe.stdout.readline, b""):
+            line = line.strip().decode("UTF-8", errors="backslashreplace")
+            click.echo(line)
+            if "TOTAL" in line:
+                total = line.split()[-1]
+        patch_exit = pipe.wait()
+        print_table(
+            [["☔Patch coverage", "{} {}".format("❌" if patch_exit else "✅", total)]]
+        )
+    exit(project_exit or patch_exit)
+
+if __name__ == "__main__":
+    test()

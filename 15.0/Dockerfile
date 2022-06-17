@@ -39,10 +39,11 @@ ENV VIRTUAL_ENV=/venv
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 ENV ODOO_VERSION 15.0
 
+COPY requirements.txt /requirements.txt
 RUN python3 -m venv --copies $VIRTUAL_ENV \
-    && pip3 install wheel git-aggregator
+    && pip3 install -r requirements.txt
 
-COPY --chown=odoo 15.0/odoo.yaml /odoo/repos.yaml
+COPY 15.0/odoo.yaml /odoo/repos.yaml
 RUN cd /odoo && gitaggregate --jobs 8 --config repos.yaml \
     && find /odoo -name "*.po" | grep -v -E "es.po|en_GB.po|fr.po|pt.po|it.po|de.po|ca.po" | xargs rm \
     && find /odoo -name "*.pot" | grep -v -E "es.pot|en_GB.pot|fr.pot|pt.pot|it.pot|de.pot|ca.pot" | xargs rm \
@@ -53,9 +54,9 @@ RUN cd /odoo && gitaggregate --jobs 8 --config repos.yaml \
     && sed -i 's/python-stdnum==1.13/python-stdnum>=1.16/g' /odoo/odoo/requirements.txt \ 
     # Fix XlsxWriter py3.8 warnings
     && sed -i 's/XlsxWriter==1.1.2/XlsxWriter==1.2.2/g' /odoo/odoo/requirements.txt \ 
-	&& pip3 install --ignore-installed -r /odoo/odoo/requirements.txt
+	&& pip3 install --upgrade-strategy=only-if-needed -r /odoo/odoo/requirements.txt
 
-COPY --chown=odoo 15.0/oca.yaml /oca/repos.yaml
+COPY 15.0/oca.yaml /oca/repos.yaml
 RUN cd /oca && gitaggregate --jobs 8 --config repos.yaml
 RUN find /oca -name "requirements.txt" -type f | xargs -I {} sh -c 'pip3 install --upgrade-strategy=only-if-needed -c /odoo/odoo/requirements.txt -r {} $0 || exit 255' \
     && find /oca -name "*.po" | grep -v -E "es.po|en_GB.po|fr.po|pt.po|it.po|de.po|ca.po" | xargs rm \
