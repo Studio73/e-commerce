@@ -25,7 +25,9 @@ run:
       VERSIONS="14.0 15.0"
       for VERSION in $VERSIONS; do
         python3 .ci/scripts/update_repos.py $VERSION all
-        git add .
-        git commit -m "[UPD] $VERSION repos"
+        if [[ `git status --porcelain` ]]; then
+          git add .
+          git commit -m "[UPD] $VERSION repos"
+        fi
       done
 
