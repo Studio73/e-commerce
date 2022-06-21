@@ -30,6 +30,16 @@ def get_addons():
 
 
 def parse_log(logfile):
+    def strip_ansi_escape(data):
+        """Remove all ANSI escapes from string or bytes.
+
+        If bytes is passed instead of string, it will be converted to string
+        using UTF-8.
+        """
+        if isinstance(data, bytes):
+            data = data.decode("utf-8")
+
+        return re.sub(r"\x1b[^m]*m", "", data)
     # '<DATE> ERROR <DATABASE> odoo.modules.loading: Module <MODULE>: 1 failures, 0 errors of 1 tests
     re_err = re.compile(
         r"^(?P<date>.*)ERROR(.*)Module(?P<module>.*):(.*) failures,(.*)$"
@@ -40,7 +50,7 @@ def parse_log(logfile):
     result = {"error": [], "warning": [], "critical": []}
     logfile.seek(0)
     for line in logfile.readlines():
-        line = line.strip().decode("UTF-8")
+        line = strip_ansi_escape(line.strip())
         if "ERROR" in line:
             err_match = re_err.match(line)
             if err_match:
