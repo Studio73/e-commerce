@@ -61,7 +61,7 @@ def main():
     Entrypoint main function
     """
     build_conf()
-    return sp.call(sys.argv[1:])
+    exit(sp.call(sys.argv[1:]))
 
 if __name__ == "__main__":
     main()
