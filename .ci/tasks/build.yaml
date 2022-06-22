@@ -15,7 +15,7 @@ run:
     - -c
     - |
       export CONTEXT=repo
-      export DOCKERFILE=repo/$ODOO_VERSION/Dockerfile
+      export DOCKERFILE=repo/$ODOO_VERSION.0/Dockerfile
       export BUILD_ARG_BUILD_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
       echo $ODOO_VERSION.$(date -u +"%Y%m%d") > image/today-tag
       build
