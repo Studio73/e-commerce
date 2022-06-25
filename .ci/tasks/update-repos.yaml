@@ -4,8 +4,8 @@ platform: linux
 image_resource:
   type: registry-image
   source:
-    repository: python
-    tag: 3.8-slim-buster
+    repository: r.studio73/odoo/tools
+    tag: latest
 inputs:
   - name: repo
 outputs:
@@ -16,18 +16,12 @@ run:
     - -c
     - |
       set -e
-      apt-get update
-      apt-get install -y --no-install-recommends git
-      git config --global user.email "pablo@studio73.es" 
-      git config --global user.name "fuentes73"
-      pip3 install requests PyYaml
-      cd repo
       VERSIONS="14.0 15.0"
+      ORGS="odoo oca"
+      cd repo
       for VERSION in $VERSIONS; do
-        python3 .ci/scripts/update_repos.py $VERSION all
-        if [[ `git status --porcelain` ]]; then
-          git add .
-          git commit -m "[UPD] $VERSION repos"
-        fi
+        for VERSION in $VERSIONS; do
+          tools repos update --version=$VERSION --config=$VERSION/$ORG.yaml --commit
+        done
       done
 
