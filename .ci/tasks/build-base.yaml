@@ -6,7 +6,7 @@ image_resource:
   source:
     repository: concourse/oci-build-task
 inputs:
-  - name: repo-odoo
+  - name: repo
 outputs:
   - name: image
 run:
@@ -14,8 +14,8 @@ run:
   args:
     - -c
     - |
-      export CONTEXT=repo-odoo/odoo
-      export DOCKERFILE=repo-odoo/odoo/$ODOO_VERSION.0/Dockerfile
+      export CONTEXT=repo/odoo
+      export DOCKERFILE=repo/odoo/$ODOO_VERSION.0/Dockerfile
       export BUILD_ARG_BUILD_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
       echo $ODOO_VERSION.$(date -u +"%Y%m%d") > image/today-tag
       build

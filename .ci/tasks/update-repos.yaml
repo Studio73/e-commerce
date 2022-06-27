@@ -7,9 +7,9 @@ image_resource:
     repository: r.studio73.es/odoo/tools
     tag: latest
 inputs:
-  - name: repo-odoo
+  - name: repo
 outputs:
-  - name: repo-odoo
+  - name: repo
 run:
   path: /bin/bash
   args:
@@ -18,7 +18,7 @@ run:
       set -e
       VERSIONS="14.0 15.0"
       ORGS="odoo oca"
-      cd repo-odoo/odoo
+      cd repo/odoo
       for VERSION in $VERSIONS; do
         for VERSION in $VERSIONS; do
           tools repos update --version=$VERSION --config=$VERSION/$ORG.yaml --commit
