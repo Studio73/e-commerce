@@ -1,6 +1,15 @@
 ---
 meta:
-  x-notify: &notify-handlers
+  x-notify: &notify
+    on_failure:
+      put: notify
+      inputs: [repo-odoo]
+      params: {state: failure}
+    on_error:
+      put: notify
+      inputs: [repo-odoo]
+      params: {state: error}
+  x-notify-pr: &notify-pr
     on_success:
       put: notify
       inputs: [pr]
@@ -63,7 +72,7 @@ resources:
       username: ((GITHUB_TOKEN))
       password: x-oauth-basic
       paths:
-        - oci/*
+        - oci-build/*
   - name: repo-tools
     type: git
     icon: github
@@ -162,6 +171,7 @@ jobs:
       - set_pipeline: self
         file: repo-odoo/.ci/pipeline.yaml
   - name: update-repos
+    <<: *notify
     plan:
       - get: sunday
         trigger: true
@@ -174,6 +184,7 @@ jobs:
       - put: repo-odoo
         params: {repository: repo-odoo}
   - name: build-oci
+    <<: *notify
     plan:
       - get: repo-oci
         trigger: true
@@ -187,12 +198,14 @@ jobs:
         params:
           CONTEXT: repo-oci/oci-build
           IMAGE_ARG_base_image: oci-build-task/image.tar
-        file: repo-odoo/.ci/tasks/build.yaml
+        input_mapping: {repo: repo-oci}
+        file: repo-oci/.ci/tasks/build.yaml
         output_mapping: {image: "oci-build"}
       - put: oci-build
         params: 
           image: oci-build/image.tar
   - name: build-tools
+    <<: *notify
     plan:
       - get: repo-tools
         trigger: true
@@ -202,12 +215,14 @@ jobs:
         privileged: true
         params:
           CONTEXT: repo-tools/tools
-        file: repo-odoo/.ci/tasks/build.yaml
+        input_mapping: {repo: repo-tools}
+        file: repo-tools/.ci/tasks/build.yaml
         output_mapping: {image: "tools"}
       - put: tools 
         params: 
           image: tools/image.tar
   - name: build-base-14
+    <<: *notify
     plan:
       - get: repo-odoo
         trigger: true
@@ -224,6 +239,7 @@ jobs:
           image: base-14/image.tar
           additional_tags: base-14/today-tag
   - name: build-base-15
+    <<: *notify
     plan:
       - get: repo-odoo
         trigger: true
@@ -233,14 +249,14 @@ jobs:
         privileged: true
         params:
           ODOO_VERSION: "15"
-        file: repo-odoo/.ci/tasks/build.yaml
+        file: repo-odoo/.ci/tasks/build-base.yaml
         output_mapping: {image: "base-15"}
       - put: base-15
         params: 
           image: base-15/image.tar
           additional_tags: base-15/today-tag
   - name: build-base-14-pr
-    <<: *notify-handlers
+    <<: *notify-pr
     plan:
       - get: pr
         trigger: true
@@ -255,7 +271,7 @@ jobs:
           ODOO_VERSION: "14"
         file: pr/.ci/tasks/build-base.yaml
   - name: build-base-15-pr
-    <<: *notify-handlers
+    <<: *notify-pr
     plan:
       - get: pr
         trigger: true
