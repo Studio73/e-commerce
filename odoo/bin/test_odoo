@@ -40,6 +40,7 @@ def parse_log(logfile):
             data = data.decode("utf-8")
 
         return re.sub(r"\x1b[^m]*m", "", data)
+
     # '<DATE> ERROR <DATABASE> odoo.modules.loading: Module <MODULE>: 1 failures, 0 errors of 1 tests
     re_err = re.compile(
         r"^(?P<date>.*)ERROR(.*)Module(?P<module>.*):(.*) failures,(.*)$"
@@ -176,7 +177,7 @@ def coverage(addons, fail_under):
     diff_addons = []
     if addons:
         diff_addons = [m.strip() for m in addons.split(",")]
-    #else:
+    # else:
     #    custom_addons = get_addons().keys()
     #    diff_addons = get_diff_patch(custom_path, local_addons)
     coverage_cmd = ["coverage", "report", "-m", "--fail-under={}".format(fail_under)]
@@ -199,9 +200,7 @@ def coverage(addons, fail_under):
         diff_addons = ["{}*".format(a) for a in diff_addons]
         coverage_cmd.append("--include={}".format(",".join(diff_addons)))
         total = "~"
-        pipe = sp.Popen(
-            coverage_cmd, stderr=sp.STDOUT, stdout=sp.PIPE, cwd=custom_path
-        )
+        pipe = sp.Popen(coverage_cmd, stderr=sp.STDOUT, stdout=sp.PIPE, cwd=custom_path)
         for line in iter(pipe.stdout.readline, b""):
             line = line.strip().decode("UTF-8", errors="backslashreplace")
             click.echo(line)
@@ -212,6 +211,7 @@ def coverage(addons, fail_under):
             [["☔Patch coverage", "{} {}".format("❌" if patch_exit else "✅", total)]]
         )
     exit(project_exit or patch_exit)
+
 
 if __name__ == "__main__":
     test()

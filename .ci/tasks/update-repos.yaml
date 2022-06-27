@@ -4,12 +4,12 @@ platform: linux
 image_resource:
   type: registry-image
   source:
-    repository: r.studio73/odoo/tools
+    repository: r.studio73.es/odoo/tools
     tag: latest
 inputs:
-  - name: repo
+  - name: repo-odoo
 outputs:
-  - name: repo
+  - name: repo-odoo
 run:
   path: /bin/bash
   args:
@@ -18,7 +18,7 @@ run:
       set -e
       VERSIONS="14.0 15.0"
       ORGS="odoo oca"
-      cd repo
+      cd repo-odoo/odoo
       for VERSION in $VERSIONS; do
         for VERSION in $VERSIONS; do
           tools repos update --version=$VERSION --config=$VERSION/$ORG.yaml --commit

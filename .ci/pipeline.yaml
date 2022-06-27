@@ -31,16 +31,6 @@ resource_types:
       repository: pix4d/cogito
 
 resources:
-  - name: repo
-    type: git
-    icon: github
-    check_every: 24h
-    webhook_token: ((WEBHOOK_TOKEN))
-    source:
-      uri: https://github.com/Studio73/dodoo.git
-      branch: master
-      username: ((GITHUB_TOKEN))
-      password: x-oauth-basic
   - name: sunday
     type: time
     icon: clock-outline
@@ -50,6 +40,72 @@ resources:
       stop: 05:00
       location: Europe/Madrid
       initial_version: true
+  - name: repo-odoo
+    type: git
+    icon: github
+    check_every: 24h
+    webhook_token: ((WEBHOOK_TOKEN))
+    source:
+      uri: https://github.com/Studio73/dodoo.git
+      branch: master
+      username: ((GITHUB_TOKEN))
+      password: x-oauth-basic
+      paths:
+        - odoo/*
+  - name: repo-oci
+    type: git
+    icon: github
+    check_every: 24h
+    webhook_token: ((WEBHOOK_TOKEN))
+    source:
+      uri: https://github.com/Studio73/dodoo.git
+      branch: master
+      username: ((GITHUB_TOKEN))
+      password: x-oauth-basic
+      paths:
+        - oci/*
+  - name: repo-tools
+    type: git
+    icon: github
+    check_every: 24h
+    webhook_token: ((WEBHOOK_TOKEN))
+    source:
+      uri: https://github.com/Studio73/dodoo.git
+      branch: master
+      username: ((GITHUB_TOKEN))
+      password: x-oauth-basic
+      paths:
+        - tools/*
+  - name: pr
+    type: pull-request
+    icon: github
+    check_every: 24h
+    webhook_token: ((WEBHOOK_TOKEN))
+    source:
+      repository: Studio73/dodoo
+      access_token: ((GITHUB_TOKEN))
+      paths:
+        - odoo/*
+  - name: oci-build
+    type: registry-image
+    icon: docker
+    check_every: 24h
+    source:
+      username: ((REGISTRY_USER))
+      password: ((REGISTRY_SECRET))
+      repository: r.studio73.es/odoo/oci-build
+  - name: oci-build-task
+    type: registry-image
+    icon: docker
+    source:
+      repository: concourse/oci-build-task
+  - name: tools
+    type: registry-image
+    icon: docker
+    source:
+      username: ((REGISTRY_USER))
+      password: ((REGISTRY_SECRET))
+      repository: r.studio73.es/odoo/tools
   - name: base-14
     type: registry-image
     icon: docker
@@ -66,14 +122,6 @@ resources:
       password: ((REGISTRY_SECRET))
       repository: r.studio73.es/odoo/base
       tag: 15
-  - name: pr
-    type: pull-request
-    icon: github
-    check_every: 24h
-    webhook_token: ((WEBHOOK_TOKEN))
-    source:
-      repository: Studio73/dodoo
-      access_token: ((GITHUB_TOKEN))
   - name: notify
     type: cogito
     icon: bell-ring
@@ -85,43 +133,83 @@ resources:
       gchat_webhook: ((GCHAT_CONCOURSE_WEBHOOK))
 
 groups:
+  - name: all
+    jobs:
+      - "*"
   - name: master
     jobs:
       - set-self
       - update-repos
+      - build-tools
+      - build-oci
       - build-base-14
       - build-base-15
   - name: pr
     jobs:
       - build-base-14-pr
       - build-base-15-pr
-  - name: all
-    jobs:
-      - "*"
 
 
 jobs:
   - name: set-self
     plan:
-      - get: repo
+      - get: repo-odoo
+        trigger: true
+      - get: repo-oci
+        trigger: true
+      - get: repo-tools
         trigger: true
       - set_pipeline: self
-        file: repo/.ci/pipeline.yaml
+        file: repo-odoo/.ci/pipeline.yaml
   - name: update-repos
     plan:
       - get: sunday
         trigger: true
-      - get: repo
+      - get: repo-odoo
       - task: update
         attempts: 3
         params:
           GITHUB_TOKEN: ((GITHUB_TOKEN))
-        file: repo/.ci/tasks/update-repos.yaml
-      - put: repo
-        params: {repository: repo}
+        file: repo-odoo/.ci/tasks/update-repos.yaml
+      - put: repo-odoo
+        params: {repository: repo-odoo}
+  - name: build-oci
+    plan:
+      - get: repo-oci
+        trigger: true
+        passed: [set-self]
+      - get: oci-build-task
+        params: {format: oci}
+        trigger: true
+      - task: build-image
+        attempts: 3
+        privileged: true
+        params:
+          CONTEXT: repo-oci/oci-build
+          IMAGE_ARG_base_image: oci-build-task/image.tar
+        file: repo-odoo/.ci/tasks/build.yaml
+        output_mapping: {image: "oci-build"}
+      - put: oci-build
+        params: 
+          image: oci-build/image.tar
+  - name: build-tools
+    plan:
+      - get: repo-tools
+        trigger: true
+        passed: [set-self]
+      - task: build-image
+        attempts: 3
+        privileged: true
+        params:
+          CONTEXT: repo-tools/tools
+        file: repo-odoo/.ci/tasks/build.yaml
+        output_mapping: {image: "tools"}
+      - put: tools 
+        params: 
+          image: tools/image.tar
   - name: build-base-14
     plan:
-      - get: repo
+      - get: repo-odoo
         trigger: true
         passed: [set-self]
       - task: build-image
@@ -129,7 +217,7 @@ jobs:
         privileged: true
         params:
           ODOO_VERSION: "14"
-        file: repo/.ci/tasks/build.yaml
+        file: repo-odoo/.ci/tasks/build-base.yaml
         output_mapping: {image: "base-14"}
       - put: base-14
         params: 
@@ -137,7 +225,7 @@ jobs:
           additional_tags: base-14/today-tag
   - name: build-base-15
     plan:
-      - get: repo
+      - get: repo-odoo
         trigger: true
         passed: [set-self]
       - task: build-image
@@ -145,7 +233,7 @@ jobs:
         privileged: true
         params:
           ODOO_VERSION: "15"
-        file: repo/.ci/tasks/build.yaml
+        file: repo-odoo/.ci/tasks/build.yaml
         output_mapping: {image: "base-15"}
       - put: base-15
         params: 
@@ -162,10 +250,10 @@ jobs:
       - task: build-image
         attempts: 3
         privileged: true
-        input_mapping: {repo: pr}
+        input_mapping: {repo-odoo: pr}
         params:
           ODOO_VERSION: "14"
-        file: pr/.ci/tasks/build.yaml
+        file: pr/.ci/tasks/build-base.yaml
   - name: build-base-15-pr
     <<: *notify-handlers
     plan:
@@ -177,7 +265,7 @@ jobs:
       - task: build-image
         attempts: 3
         privileged: true
-        input_mapping: {repo: pr}
+        input_mapping: {repo-odoo: pr}
         params:
           ODOO_VERSION: "15"
-        file: pr/.ci/tasks/build.yaml
+        file: pr/.ci/tasks/build-base.yaml

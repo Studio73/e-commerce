@@ -1,0 +1,5 @@
+PyYaml
+click
+git-aggregator
+pre-commit
+requests

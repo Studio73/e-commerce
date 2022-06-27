@@ -32,7 +32,7 @@ class ToolsYaml(object):
             print("File not found: {}".format(repos_yaml))
             exit(255)
         stream = open(self.repos_yaml, "r")
-        self.yaml = yaml.safe_load(stream)
+        self.yaml = yaml.safe_load(stream) or {}
         stream.close()
 
     def get_gh_headers(self):
@@ -159,23 +159,23 @@ class ToolsYaml(object):
             tag = "* {}".format(pr["number"])
             title = pr.get("title", "").lower()
             if "[force dev]" in title or "[dev force]" in title:
-                _logger.info("{}\t->\t ✅Added title contains [force dev]".format(tag))
-                prs.append("refs/pull/{}/head".format(pr["number"]))
+                _logger.info("{}\t->\t ✅ Title contains [force dev]".format(tag))
+                prs.append("origin refs/pull/{}/head".format(pr["number"]))
                 continue
             if "[skip dev]" in title or "[dev skip]" in title:
-                _logger.info("{}\t->\t 🔥Skipped title contains [skip dev]".format(tag))
+                _logger.info("{}\t->\t ❌ Title contains [skip dev]".format(tag))
                 continue
             if pr.get("isDraft"):
-                _logger.info("{}\t->\t 🔥Skipped draft PR".format(tag))
+                _logger.info("{}\t->\t ❌ Draft PR".format(tag))
                 continue
             status_check_rollup = (
                 pr["commits"]["nodes"][0]["commit"]["statusCheckRollup"] or {}
             )
             if status_check_rollup.get("state") == "SUCCESS":
-                _logger.info("{}\t->\t ✅Added mergeable PR".format(tag))
-                prs.append("refs/pull/{}/head".format(pr["number"]))
+                _logger.info("{}\t->\t ✅ Mergeable PR".format(tag))
+                prs.append("origin refs/pull/{}/head".format(pr["number"]))
             else:
-                _logger.info("{}\t->\t 🔥Skipped CI status check FAILED".format(tag))
+                _logger.info("{}\t->\t ❌ CI status check FAILED".format(tag))
         return prs
 
     def add_repo(self, org, repo):
@@ -280,16 +280,39 @@ def repos():
 
 
 @repos.command()
+@click.option("--out", default="custom", help="Output directory (default: Custom)")
 @click.option("-r", "--repo", required=True)
 @click.option("-o", "--org", required=True)
 @add_options(_repos_options)
-def add(version, cwd, config, org, repo):
-    if not cwd:
-        cwd = os.getcwd()
-    repos_yaml = os.path.join(cwd, config)
+@click.pass_context
+def download(ctx, version, cwd, config, org, repo, out):
+    """
+    Download repository and add all open PRs to repos.yaml\n
+    Command usefull for CI tasks
+    """
+    if not os.environ.get("SSH_KEY"):
+        _logger.error("Missing SSH_KEY environment variable")
+        exit(255)
+    repos_yaml = "/tmp/repos.yaml"
+    sp.call(["touch", repos_yaml])
     obj = ToolsYaml(version, repos_yaml)
     obj.add_repo(org, repo)
+    obj.update_repos(True)
     obj.save()
+    ssh_cmd = """
+        mkdir -p ~/.ssh
+        echo -e "${SSH_KEY//_/\\n}" > ~/.ssh/id_rsa
+        chmod og-rwx ~/.ssh/id_rsa 
+        ssh-keyscan github.com >> ~/.ssh/known_hosts
+    """
+    sp.call(ssh_cmd, shell=True, executable="/bin/bash")
+    sp.call(["rm", "-rf", out])
+    sp.call(["gitaggregate", "-c", "/tmp/repos.yaml", "-d", repo], cwd="/tmp")
+    sp.call(["mv", "/tmp/{}".format(repo), out])
+    sp.call(["rm", "-rf", "/tmp/repos.yaml"])
+    ctx.invoke(
+        update, version=version, cwd=out, config=config, commit=False, add_open_prs=True
+    )
 
 
 @repos.command()
