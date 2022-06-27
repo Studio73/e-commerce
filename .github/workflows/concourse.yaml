@@ -7,11 +7,27 @@ jobs:
   trigger-resource-check:
     runs-on: ubuntu-20.04
     steps:
-      - name: Trigger resource check
+      - name: Trigger repo/oci-build
         uses: gstackio/trigger-concourse-resource-check-action@v1
         with:
           concourse-url:           https://ci.studio73.dev
           concourse-team:          odoo
           concourse-pipeline:      dodoo
-          concourse-resource:      repo
+          concourse-resource:      repo-oci
+          concourse-webhook-token: ${{ secrets.CONCOURSE_WEBHOOK_TOKEN }}
+      - name: Trigger repo/odoo
+        uses: gstackio/trigger-concourse-resource-check-action@v1
+        with:
+          concourse-url:           https://ci.studio73.dev
+          concourse-team:          odoo
+          concourse-pipeline:      dodoo
+          concourse-resource:      repo-odoo
+          concourse-webhook-token: ${{ secrets.CONCOURSE_WEBHOOK_TOKEN }}
+      - name: Trigger repo/tools
+        uses: gstackio/trigger-concourse-resource-check-action@v1
+        with:
+          concourse-url:           https://ci.studio73.dev
+          concourse-team:          odoo
+          concourse-pipeline:      dodoo
+          concourse-resource:      repo-tools
           concourse-webhook-token: ${{ secrets.CONCOURSE_WEBHOOK_TOKEN }}
