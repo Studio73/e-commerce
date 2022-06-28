@@ -1,15 +1,16 @@
-#!/bin/bash
+#!/bin/sh
 # (c) Studio73 - Pablo Fuentes <pablo@studio73.es>
 
 set -e
-if [[ -z "$ODOO_VERSION" ]]; then
+if [ -z "$ODOO_VERSION" ]; then
     echo "enviroment variable ODOO_VERSION not set"
     exit 1 
 fi
-if [[ -z "$DEV" ]]; then
+if [ -z "$DEV" ]; then
     echo $ODOO_VERSION.$(date -u +"%Y%m%d") > image/today-tag
 else
     echo $ODOO_VERSION-dev.$(date -u +"%Y%m%d") > image/today-tag
 fi
+export BUILD_ARG_BUILD_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 build
 
