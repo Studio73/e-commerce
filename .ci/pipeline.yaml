@@ -202,7 +202,6 @@ jobs:
         privileged: true
         params:
           CONTEXT: repo/oci-build
-          IMAGE_ARG_base_image: base-image/image.tar
         file: repo/.ci/tasks/build.yaml
         output_mapping: {image: oci-build}
       - put: oci-build
