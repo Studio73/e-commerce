@@ -4,7 +4,10 @@ platform: linux
 image_resource:
   type: registry-image
   source:
-    repository: concourse/oci-build-task
+    username: ((REGISTRY_USER))
+    password: ((REGISTRY_SECRET))
+    repository: r.studio73.es/odoo/oci-build
+    tag: latest
 inputs:
   - name: repo
 outputs:
@@ -16,6 +19,6 @@ run:
     - |
       export CONTEXT=repo/odoo
       export DOCKERFILE=repo/odoo/$ODOO_VERSION.0/Dockerfile
-      export BUILD_ARG_BUILD_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-      echo $ODOO_VERSION.$(date -u +"%Y%m%d") > image/today-tag
-      build
+      build_tag
+caches:
+  - path: cache
