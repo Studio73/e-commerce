@@ -113,11 +113,13 @@ resources:
       username: ((REGISTRY_USER))
       password: ((REGISTRY_SECRET))
       repository: r.studio73.es/odoo/oci-build
+      tag: latest
   - name: oci-build-task
     type: registry-image
     icon: docker
     source:
       repository: concourse/oci-build-task
+      tag: latest
   - name: tools
     type: registry-image
     icon: docker
@@ -125,6 +127,7 @@ resources:
       username: ((REGISTRY_USER))
       password: ((REGISTRY_SECRET))
       repository: r.studio73.es/odoo/tools
+      tag: latest
   - name: base-14
     type: registry-image
     icon: docker
@@ -195,11 +198,12 @@ jobs:
       - task: build-image
         attempts: 3
         privileged: true
+        input_mapping: {base-image: oci-build-task}
         params:
-          CONTEXT: repo-oci/oci-build
-          IMAGE_ARG_base_image: oci-build-task/image.tar
+          CONTEXT: repo/oci-build
+          IMAGE_ARG_base_image: base-image/image.tar
         file: repo/.ci/tasks/build.yaml
-        output_mapping: {image: "oci-build"}
+        output_mapping: {image: oci-build}
       - put: oci-build
         params: 
           image: oci-build/image.tar

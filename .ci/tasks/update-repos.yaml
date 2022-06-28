@@ -4,6 +4,8 @@ platform: linux
 image_resource:
   type: registry-image
   source:
+    username: ((REGISTRY_USER))
+    password: ((REGISTRY_SECRET))
     repository: r.studio73.es/odoo/tools
     tag: latest
 inputs:

@@ -7,6 +7,7 @@ image_resource:
     repository: concourse/oci-build-task
 inputs:
   - name: repo
+  - name: base-image
 outputs:
   - name: image
 run:
