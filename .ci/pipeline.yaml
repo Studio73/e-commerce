@@ -117,12 +117,14 @@ resources:
   - name: oci-build-task
     type: registry-image
     icon: docker
+    check_every: 24h
     source:
       repository: concourse/oci-build-task
       tag: latest
   - name: tools
     type: registry-image
     icon: docker
+    check_every: 24h
     source:
       username: ((REGISTRY_USER))
       password: ((REGISTRY_SECRET))
@@ -131,6 +133,7 @@ resources:
   - name: base-14
     type: registry-image
     icon: docker
+    check_every: 24h
     source:
       username: ((REGISTRY_USER))
       password: ((REGISTRY_SECRET))
@@ -139,6 +142,7 @@ resources:
   - name: base-15
     type: registry-image
     icon: docker
+    check_every: 24h
     source:
       username: ((REGISTRY_USER))
       password: ((REGISTRY_SECRET))
@@ -170,7 +174,6 @@ groups:
       - build-base-14-pr
       - build-base-15-pr
 
-
 jobs:
   - name: update-repos
     <<: *notify
@@ -193,12 +196,10 @@ jobs:
         - get: repo-oci
           trigger: true
         - get: oci-build-task
-          params: {format: oci}
           trigger: true
       - task: build-image
         attempts: 3
         privileged: true
-        input_mapping: {base-image: oci-build-task}
         params:
           CONTEXT: repo/oci-build
           IMAGE_ARG_base_image: base-image/image.tar
