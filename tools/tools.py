@@ -168,6 +168,9 @@ class ToolsYaml(object):
             if pr.get("isDraft"):
                 _logger.info("{}\t->\t ❌ Draft PR".format(tag))
                 continue
+            if pr.get("mergeable") == "CONFLICTING":
+                _logger.info("{}\t->\t ❌ PR with conflicts".format(tag))
+                continue
             status_check_rollup = (
                 pr["commits"]["nodes"][0]["commit"]["statusCheckRollup"] or {}
             )
@@ -306,10 +309,8 @@ def download(ctx, version, cwd, config, org, repo, out):
         ssh-keyscan github.com >> ~/.ssh/known_hosts
     """
     sp.call(ssh_cmd, shell=True, executable="/bin/bash")
-    sp.call(["rm", "-rf", out])
     sp.call(["gitaggregate", "-c", "/tmp/repos.yaml", "-d", repo], cwd="/tmp")
-    sp.call(["mv", "/tmp/{}".format(repo), out])
-    sp.call(["rm", "-rf", "/tmp/repos.yaml"])
+    sp.call("cp -r {} {}".format(os.path.join("/tmp", repo, "*"), out), shell=True)
     ctx.invoke(
         update, version=version, cwd=out, config=config, commit=False, add_open_prs=True
     )
