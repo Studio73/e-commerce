@@ -37,7 +37,6 @@ def build_conf():
         "dbfilter": db_name,
         "list_db": False,
         "admin_passwd": "changeme",
-        "load_language": "es_ES",
         "addons_path": compute_addons_path(),
     }
     if not os.environ.get("DEMO"):
