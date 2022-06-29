@@ -1,5 +1,6 @@
-coverage
 click
+click-odoo-contrib
+coverage
 git-aggregator 
 tabulate
 wheel 
