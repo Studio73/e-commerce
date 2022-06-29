@@ -46,7 +46,6 @@ RUN python3 -m venv --copies $VIRTUAL_ENV \
 COPY 14.0/odoo.yaml /odoo/repos.yaml
 RUN cd /odoo && gitaggregate --jobs 8 --config repos.yaml \
     && find /odoo -name "*.po" | grep -v -E "es.po|en_GB.po|fr.po|pt.po|it.po|de.po|ca.po" | xargs rm \
-    && find /odoo -name "*.pot" | grep -v -E "es.pot|en_GB.pot|fr.pot|pt.pot|it.pot|de.pot|ca.pot" | xargs rm \
     && find /odoo -name ".git" | xargs rm -rf \
     # setuptools<58.0.0 fixes setup command: use_2to3 is invalid.
     && echo "setuptools<58.0.0" >> /odoo/odoo/requirements.txt \
@@ -60,7 +59,6 @@ COPY 14.0/oca.yaml /oca/repos.yaml
 RUN cd /oca && gitaggregate --jobs 8 --config repos.yaml
 RUN find /oca -name "requirements.txt" -type f | xargs -I {} sh -c 'pip3 install --upgrade-strategy=only-if-needed -c /odoo/odoo/requirements.txt -r {} $0 || exit 255' \
     && find /oca -name "*.po" | grep -v -E "es.po|en_GB.po|fr.po|pt.po|it.po|de.po|ca.po" | xargs rm \
-    && find /oca -name "*.pot" | grep -v -E "es.pot|en_GB.pot|fr.pot|pt.pot|it.pot|de.pot|ca.pot" | xargs rm \
     && find /oca -name ".git" | xargs rm -rf \
     && find /oca -name "setup" | xargs rm -rf \
     && find $VIRTUAL_ENV -name "*.pyc" -exec rm -f {} \; \
