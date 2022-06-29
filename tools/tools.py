@@ -4,6 +4,7 @@ import logging
 import os
 import re
 import subprocess as sp
+import sys
 from collections import OrderedDict
 from pprint import pprint
 
@@ -30,7 +31,7 @@ class ToolsYaml(object):
         self.gh_rate_used = 0
         if not os.path.exists(repos_yaml):
             print("File not found: {}".format(repos_yaml))
-            exit(255)
+            sys.exit(1)
         stream = open(self.repos_yaml, "r")
         self.yaml = yaml.safe_load(stream) or {}
         stream.close()
@@ -40,7 +41,7 @@ class ToolsYaml(object):
         gh_token = os.environ.get("GITHUB_TOKEN")
         if not gh_token:
             _logger.error("Missing GITHUB_TOKEN environment variable")
-            exit(255)
+            sys.exit(1)
         headers = {
             "Authorization": "token {}".format(gh_token),
             "Accept": "application/vnd.github.v3+json",
@@ -60,7 +61,7 @@ class ToolsYaml(object):
             _logger.error("Github query error:")
 
             click.echo(pprint(data))
-            exit(255)
+            sys.exit(1)
         self.gh_rate_limit = r.headers["X-RateLimit-Limit"]
         self.gh_rate_remaing = r.headers["X-RateLimit-Remaining"]
         self.gh_rate_used = r.headers["X-RateLimit-Used"]
@@ -115,11 +116,11 @@ class ToolsYaml(object):
         if not isinstance(gh_commit, dict):
             _logger.error("{} not a valid value".format(gh_commit))
             _logger.error(data)
-            exit(255)
+            sys.exit(1)
         new_sha = gh_commit.get("oid", "asdf")
         if not re.findall("[0-9a-f]{5,40}", new_sha):
             _logger.error("{} not a valid commit".format(gh_commit))
-            exit(255)
+            sys.exit(1)
         _logger.info(
             "* commit\t->\t{}  # {}".format(new_sha, gh_commit.get("committedDate", ""))
         )
@@ -295,7 +296,7 @@ def download(ctx, version, cwd, config, org, repo, out):
     """
     if not os.environ.get("SSH_KEY"):
         _logger.error("Missing SSH_KEY environment variable")
-        exit(255)
+        sys.exit(1)
     repos_yaml = "/tmp/repos.yaml"
     sp.call(["touch", repos_yaml])
     obj = ToolsYaml(version, repos_yaml)
