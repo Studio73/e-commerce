@@ -2,5 +2,6 @@ click
 click-odoo-contrib
 coverage
 git-aggregator 
+pdfminer.six
 tabulate
 wheel 
