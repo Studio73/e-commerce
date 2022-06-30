@@ -78,6 +78,7 @@ RUN apt-get update \
     curl \
     gnupg2 \ 
     locales \
+    node-less \
     # unbuffer
     expect-dev \
     python3.8 \

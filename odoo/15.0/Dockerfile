@@ -78,6 +78,9 @@ RUN apt-get update \
     curl \
     gnupg2 \ 
     locales \
+    node-less \
+    # unbuffer
+    expect-dev \
     python3.8 \
     python3.8-venv \
     && curl -o /tmp/wkhtmltox.deb -sSL https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.focal_amd64.deb \
