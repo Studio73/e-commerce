@@ -1,4 +1,5 @@
 #!/bin/bash
+# (c) Studio73 - Pablo Fuentes <pablo@studio73.es>
 
 set -ex
 mkdir -p ~/.ssh
