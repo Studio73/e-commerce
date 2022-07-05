@@ -132,5 +132,4 @@ LABEL org.opencontainers.image.vendor="Studio73" \
 	  org.opencontainers.image.url="https://www.studio73.es" \
 	  org.opencontainers.image.source="https://github.com/Studio73/dodoo" \
 	  org.opencontainers.image.authors="Pablo Fuentes" \ 
-	  org.opencontainers.image.created=$BUILD_DATE \
-      com.centurylinklabs.watchtower.lifecycle.post-update="odoo-update"
+	  org.opencontainers.image.created=$BUILD_DATE
