@@ -71,6 +71,18 @@ resources:
       password: x-oauth-basic
       paths:
         - odoo/*
+  - name: repo-proxypass
+    type: git
+    icon: folder-sync
+    check_every: 24h
+    webhook_token: ((WEBHOOK_TOKEN))
+    source:
+      uri: https://github.com/Studio73/dodoo.git
+      branch: master
+      username: ((GITHUB_TOKEN))
+      password: x-oauth-basic
+      paths:
+        - proxypass/*
   - name: repo-oci
     type: git
     icon: folder-sync
@@ -121,6 +133,15 @@ resources:
     source:
       repository: concourse/oci-build-task
       tag: latest
+  - name: proxypass
+    type: registry-image
+    icon: docker
+    check_every: 24h
+    source:
+      username: ((REGISTRY_USER))
+      password: ((REGISTRY_SECRET))
+      repository: r.studio73.es/odoo/proxypass
+      tag: latest
   - name: tools
     type: registry-image
     icon: docker
@@ -165,8 +186,9 @@ groups:
   - name: master
     jobs:
       - update-repos
-      - build-tools
       - build-oci
+      - build-proxypass
+      - build-tools
       - build-base-14
       - build-base-15
   - name: pr
@@ -207,6 +229,23 @@ jobs:
       - put: oci-build
         params: 
           image: oci-build/image.tar
+  - name: build-proxypass
+    <<: *notify
+    plan:
+      - in_parallel:
+        - get: repo
+        - get: repo-proxypass
+          trigger: true
+      - task: build-image
+        attempts: 3
+        privileged: true
+        params:
+          CONTEXT: repo/proxypass
+        file: repo/.ci/tasks/build.yaml
+        output_mapping: {image: "proxypass"}
+      - put: proxypass
+        params:
+          image: proxypass/image.tar
   - name: build-tools
     <<: *notify
     plan:
