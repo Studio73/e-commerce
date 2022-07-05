@@ -67,6 +67,7 @@ RUN find /oca -name "requirements.txt" -type f | xargs -I {} sh -c 'pip3 install
 FROM ubuntu:20.04
 # https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/
 SHELL ["/bin/bash", "-xo", "pipefail", "-c"]
+ARG DEBIAN_FRONTEND=noninteractive
 ENV LANG=es_ES.UTF-8 \
 	LANGUAGE=es_ES \
 	LC_ALL=es_ES.UTF-8 \ 
@@ -83,6 +84,9 @@ RUN apt-get update \
     expect-dev \
     python3.8 \
     python3.8-venv \
+    # pycups
+    libcups2-dev \
+    cups-client \
     && curl -o /tmp/wkhtmltox.deb -sSL https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.focal_amd64.deb \
     && apt-get install -y --no-install-recommends /tmp/wkhtmltox.deb \
     && rm -rf /var/lib/apt/lists/* /tmp/*
