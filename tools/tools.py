@@ -262,7 +262,8 @@ def tools():
 def lint(cwd):
     if not cwd:
         cwd = os.getcwd()
-    return sp.call(["pre-commit", "run", "--all-files"], cwd=cwd)
+    exitcode = sp.call(["pre-commit", "run", "--all-files"], cwd=cwd)
+    sys.exit(exitcode)
 
 
 _repos_options = [
