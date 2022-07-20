@@ -12,6 +12,7 @@ import tempfile
 import time
 
 import click
+from click_odoo_contrib._dbutils import db_exists
 from tabulate import tabulate
 
 logging.basicConfig(
@@ -50,18 +51,20 @@ def parse_log(logfile):
     re_warn = re.compile(
         r"^(?P<date>.*?)WARNING (?P<database>.*?) (?P<logger>.*?): (?P<warning>.*?)$"
     )
+    re_unable2install = re.compile(
+        r'^(.*)Unable to install module "(?P<module>.*?)"(.*)$'
+    )
     result = {"error": [], "warning": [], "critical": []}
     logfile.seek(0)
-    for line in logfile.readlines():
+    for idx, line in enumerate(logfile.readlines()):
         line = strip_ansi_escape(line.strip())
         if "ERROR" in line:
             err_match = re_err.match(line)
             if err_match:
                 result["error"].append(err_match.groupdict()["module"].strip())
         elif "CRITICAL" in line:
-            result["critical"].append(line)
+            result["critical"].append(idx)
         elif "WARNING" in line:
-            # WARNING message
             warn_match = re_warn.match(line)
             if warn_match:
                 warn_dict = warn_match.groupdict()
@@ -72,6 +75,18 @@ def parse_log(logfile):
                 warn_msg = warn_dict["warning"].strip()
                 if (warn_logger, warn_msg) not in result["warning"]:
                     result["warning"].append((warn_logger, warn_msg))
+    for critical_idx in result.get("critical", []):
+        logfile.seek(critical_idx)
+        for line in logfile.readlines():
+            line = strip_ansi_escape(line.strip())
+            # XML Error eg: Element '<xpath expr="...">' cannot be located in parent view
+            if line.startswith("file: "):
+                module = os.path.basename(line.split("/views/")[0])
+                result["error"].append(module)
+            elif re_unable2install.match(line):
+                result["error"].append(
+                    re_unable2install.match(line).groupdict()["module"].strip()
+                )
     return result
 
 
@@ -108,7 +123,31 @@ def run(addons, database, language, log_level, force_recreate):
         dependencies += addons_dict[a]
     # Compute addons dependencies discarting addons from current repo
     dependencies = list(set(dependencies) - set(custom_addons))
-    base_cmd = [
+    if force_recreate or not db_exists(database):
+        sp.call(
+            ["dropdb", "--if-exists", database], stdout=sp.DEVNULL, stderr=sp.DEVNULL
+        )
+        install_cmd = [
+            "click-odoo-initdb",
+            "-m",
+            ",".join(dependencies),
+            "-n",
+            database,
+            "--cache-max-age=7",
+            "--unless-exists",
+        ]
+        _logger.info(
+            "{}: {}".format(
+                click.style("Initializing database", fg="green", bold=True),
+                " ".join(install_cmd),
+            )
+        )
+        try:
+            sp.check_call(install_cmd)
+        except sp.CalledProcessError as e:
+            sys.exit(e.returncode)
+    coverage_cmd = ["unbuffer", "coverage", "run"]
+    odoo_cmd = [
         "{}/odoo/odoo/odoo-bin".format(os.environ["SRC"]),
         "--database=%s" % database,
         "--db-filter=^%s$" % database,
@@ -117,24 +156,20 @@ def run(addons, database, language, log_level, force_recreate):
         "--language=%s" % language,
         "--stop-after-init",
         "--workers=0",
+        "--init",
+        ",".join(addons),
+        "--test-enable",
     ]
-    if force_recreate:  # TODO: Check if database exists
-        sp.call(
-            ["dropdb", "--if-exists", database], stdout=sp.DEVNULL, stderr=sp.DEVNULL
-        )
-        install_cmd = base_cmd + ["-i", ",".join(dependencies)]
-        _logger.info("Starting database: {}".format(" ".join(install_cmd)))
-        try:
-            sp.check_call(install_cmd)
-        except sp.CalledProcessError as e:
-            sys.exit(e.returncode)
-    tests_cmd = ["unbuffer", "coverage", "run"]
     custom_path = os.path.join(os.environ["SRC"], "custom")
     rcfile = os.path.join(custom_path, ".coveragerc")
     if os.path.exists(rcfile):
-        tests_cmd += ["--rcfile={}".format(rcfile)]
-    tests_cmd = tests_cmd + base_cmd + ["--init", ",".join(addons), "--test-enable"]
-    _logger.info("Running tests: {}".format(" ".join(tests_cmd)))
+        coverage_cmd += ["--rcfile={}".format(rcfile)]
+    tests_cmd = coverage_cmd + odoo_cmd
+    _logger.info(
+        "{}: {}".format(
+            click.style("Running tests", fg="green", bold=True), " ".join(tests_cmd)
+        )
+    )
     pipe = sp.Popen(tests_cmd, stderr=sp.STDOUT, stdout=sp.PIPE, cwd=custom_path)
     logfile = tempfile.TemporaryFile()
     for line in iter(pipe.stdout.readline, b""):
@@ -147,11 +182,18 @@ def run(addons, database, language, log_level, force_recreate):
         returncode = 254
     if result.get("warning"):
         print_table(result["warning"], ["Logger", "Warning message"], True)
+    addons_table = []
+    errors = set(result.get("error", []))
+    for addon in sorted(addons):
+        depends = addons_dict[addon]
+        if addon in result.get("error", []):
+            addons_table.append([addon, "❌"])
+        elif any(d in errors for d in depends):
+            addons_table.append([addon, "❌"])
+        else:
+            addons_table.append([addon, "✅"])
     print_table(
-        [
-            [a, "❌"] if a in result.get("error", []) else [a, "✅"]
-            for a in sorted(addons)
-        ],
+        addons_table,
         ["Module", "Result"],
         True,
     )
@@ -179,9 +221,6 @@ def coverage(addons, fail_under):
     diff_addons = []
     if addons:
         diff_addons = [m.strip() for m in addons.split(",")]
-    # else:
-    #    custom_addons = get_addons().keys()
-    #    diff_addons = get_diff_patch(custom_path, local_addons)
     coverage_cmd = ["coverage", "report", "-m", "--fail-under={}".format(fail_under)]
     rcfile = os.path.join(custom_path, ".coveragerc")
     if os.path.exists(rcfile):
