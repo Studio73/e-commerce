@@ -10,9 +10,10 @@ import subprocess as sp
 import sys
 import tempfile
 import time
+from datetime import datetime, timedelta
 
 import click
-from click_odoo_contrib._dbutils import db_exists
+from click_odoo_contrib._dbutils import advisory_lock, pg_connect
 from tabulate import tabulate
 
 logging.basicConfig(
@@ -95,21 +96,46 @@ def print_table(rows, headers=[], showindex=None):
     click.echo("")
 
 
+def purgedb(database):
+    def _dropdb(name):
+        return sp.call(
+            ["dropdb", "--if-exists", name], stdout=sp.DEVNULL, stderr=sp.DEVNULL
+        )
+    _dropdb(database)
+    with pg_connect() as pgcr:
+        name_pat = "test-{}-%".format("_" * 12)
+        date_pat = "test-{}-".format(
+            (datetime.utcnow() - timedelta(7)).strftime("%y%m%d%H%M%S")
+        )
+        with advisory_lock(pgcr, date_pat):
+            pgcr.execute(
+                """
+                SELECT datname FROM pg_database
+                WHERE datname like %s
+                AND datname <= %s
+                ORDER BY datname DESC
+                """,
+                (name_pat, date_pat),
+            )
+            for (datname,) in pgcr.fetchall():
+                _dropdb(datname)
+
+
 @click.group()
 def test():
     pass
 
 
 @test.command()
-@click.option("-f", "--force-recreate", is_flag=True)
-@click.option("-l", "--log-level", default="info")
+@click.option("-l", "--log-level", default="warn")
 @click.option("-L", "--language", default="en_US")
-@click.option("-d", "--database")
 @click.argument("addons", default="")
-def run(addons, database, language, log_level, force_recreate):
+def run(addons, language, log_level):
     start_time = time.time()
-    if not database:
-        database = "test_{}".format(os.environ["PGDATABASE"])
+    database = "test-{}-{}".format(
+        datetime.now().strftime("%y%m%d%H%M%S"),
+        os.environ.get("PGDATABASE", "odoo"),
+    )
     addons_dict = get_addons()
     custom_addons = addons_dict.keys()
     if addons:
@@ -123,29 +149,27 @@ def run(addons, database, language, log_level, force_recreate):
         dependencies += addons_dict[a]
     # Compute addons dependencies discarting addons from current repo
     dependencies = list(set(dependencies) - set(custom_addons))
-    if force_recreate or not db_exists(database):
-        sp.call(
-            ["dropdb", "--if-exists", database], stdout=sp.DEVNULL, stderr=sp.DEVNULL
+    purgedb(database)
+    install_cmd = [
+        "click-odoo-initdb",
+        "-m",
+        ",".join(dependencies),
+        "-n",
+        database,
+        "--cache-max-age=7",
+        "--unless-exists",
+    ]
+    _logger.info(
+        "{}: {}".format(
+            click.style("Initializing database", fg="green", bold=True),
+            " ".join(install_cmd),
         )
-        install_cmd = [
-            "click-odoo-initdb",
-            "-m",
-            ",".join(dependencies),
-            "-n",
-            database,
-            "--cache-max-age=7",
-            "--unless-exists",
-        ]
-        _logger.info(
-            "{}: {}".format(
-                click.style("Initializing database", fg="green", bold=True),
-                " ".join(install_cmd),
-            )
-        )
-        try:
-            sp.check_call(install_cmd)
-        except sp.CalledProcessError as e:
-            sys.exit(e.returncode)
+    )
+    try:
+        sp.check_call(install_cmd)
+    except sp.CalledProcessError as e:
+        purgedb(database)
+        sys.exit(e.returncode)
     coverage_cmd = ["unbuffer", "coverage", "run"]
     odoo_cmd = [
         "{}/odoo/odoo/odoo-bin".format(os.environ["SRC"]),
@@ -210,6 +234,7 @@ def run(addons, database, language, log_level, force_recreate):
             _logger.info("❌ Failed {}".format(elapsed_time))
     else:
         _logger.info("✅ Succeed {}".format(elapsed_time))
+    purgedb(database)
     sys.exit(returncode)
 
 
