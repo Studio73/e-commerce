@@ -312,7 +312,7 @@ def download(ctx, version, cwd, config, org, repo, out):
     """
     sp.call(ssh_cmd, shell=True, executable="/bin/bash")
     sp.call(["gitaggregate", "-c", "/tmp/repos.yaml", "-d", repo], cwd="/tmp")
-    sp.call("cp -r {} {}".format(os.path.join("/tmp", repo, "*"), out), shell=True)
+    sp.call("rsync -az {} {}".format(os.path.join("/tmp", repo), out), shell=True)
     ctx.invoke(
         update, version=version, cwd=out, config=config, commit=False, add_open_prs=True
     )
