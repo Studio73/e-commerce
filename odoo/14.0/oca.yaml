@@ -46,7 +46,7 @@ account-payment:
   defaults:
     depth: 500
   merges:
-  - origin 1983bfc835a3763b191e163ea65865e6454882dc
+  - origin 150144d99af7be0e9cbf0be58a596b87191b2388
   - origin refs/pull/416/head
   remotes:
     origin: https://github.com/OCA/account-payment.git
@@ -134,7 +134,7 @@ hr-holidays:
   defaults:
     depth: 1
   merges:
-  - origin d971d93dbc3534b086615c8994d5eb472d8b3628
+  - origin 177a31e673691a6ae4c3ffd72c26a0b7661a85de
   remotes:
     origin: https://github.com/OCA/hr-holidays.git
 intrastat:
@@ -162,7 +162,7 @@ l10n-spain:
   defaults:
     depth: 1
   merges:
-  - origin 1f0644f93987f16db454f04b284b6ea8edcb97f7
+  - origin 41d20b1dc700cb72c5158d16a299e2c1e37af850
   remotes:
     origin: https://github.com/OCA/l10n-spain.git
 mis-builder:
@@ -183,7 +183,7 @@ product-attribute:
   defaults:
     depth: 1
   merges:
-  - origin b36e5b0af0d2f5ad3e09339efe8fff694ede4996
+  - origin 18aaa57b6b72d8412bbb0a952de728e3c71dcb18
   remotes:
     origin: https://github.com/OCA/product-attribute.git
 product-variant:
@@ -198,7 +198,7 @@ purchase-workflow:
   defaults:
     depth: 1
   merges:
-  - origin 0b3af672c56ba94397842bea5b017d6f55ec0dd4
+  - origin 3d7639166d9e6f2d4528194c4d02337e21b72089
   remotes:
     origin: https://github.com/OCA/purchase-workflow.git
 queue:
@@ -233,7 +233,7 @@ sale-workflow:
   defaults:
     depth: 500
   merges:
-  - origin f66b22d6950e17b82091e05aa45e61a125694b49
+  - origin 3983568e105f6c281be4a474b92fc4a647f04d4e
   - origin refs/pull/1435/head
   remotes:
     origin: https://github.com/OCA/sale-workflow.git
