@@ -182,13 +182,13 @@ class ToolsYaml(object):
                 _logger.info("{}\t->\t ❌ CI status check FAILED".format(tag))
         return prs
 
-    def add_repo(self, org, repo):
-        if repo in self.yaml.items():
+    def add_repo(self, repo_name, repo_url):
+        if repo_name in self.yaml.items():
             return True
-        self.yaml[repo] = {
+        self.yaml[repo_name] = {
             "defaults": {"depth": 1},
             "merges": ["origin {}".format(self.version)],
-            "remotes": {"origin": "git@github.com:{}/{}.git".format(org, repo)},
+            "remotes": {"origin": repo_url},
         }
         return True
 
@@ -266,69 +266,59 @@ def lint(cwd):
     sys.exit(exitcode)
 
 
-_repos_options = [
-    click.option(
-        "--config",
-        default="repos.yaml",
-        help="git-aggregattor config file to update (Default: repos.yaml)",
-    ),
-    click.option("-c", "--cwd", help="Move to directory (Default: current)"),
-    click.option(
-        "-v", "--version", type=click.Choice(AVAILABLE_VERSIONS), required=True
-    ),
-]
-
-
-@tools.group()
-def repos():
-    pass
-
-
-@repos.command()
-@click.option("--out", default="custom", help="Output directory (default: Custom)")
-@click.option("-r", "--repo", required=True)
-@click.option("-o", "--org", required=True)
-@add_options(_repos_options)
-@click.pass_context
-def download(ctx, version, cwd, config, org, repo, out):
-    """
-    Download repository and add all open PRs to repos.yaml\n
-    Command usefull for CI tasks
-    """
-    if not os.environ.get("SSH_KEY"):
-        _logger.error("Missing SSH_KEY environment variable")
-        sys.exit(1)
-    repos_yaml = "/tmp/repos.yaml"
-    sp.call(["touch", repos_yaml])
-    obj = ToolsYaml(version, repos_yaml)
-    obj.add_repo(org, repo)
-    obj.update_repos(True)
-    obj.save()
-    ssh_cmd = """
-        mkdir -p ~/.ssh
-        echo -e "${SSH_KEY//_/\\n}" > ~/.ssh/id_rsa
-        chmod og-rwx ~/.ssh/id_rsa 
-        ssh-keyscan github.com >> ~/.ssh/known_hosts
-    """
-    sp.call(ssh_cmd, shell=True, executable="/bin/bash")
-    sp.call(["gitaggregate", "-c", "/tmp/repos.yaml", "-d", repo], cwd="/tmp")
-    sp.call("rsync -az {}/ {}".format(os.path.join("/tmp", repo), out), shell=True)
-    ctx.invoke(
-        update, version=version, cwd=out, config=config, commit=False, add_open_prs=True
-    )
-
-
-@repos.command()
+@tools.command()
 @click.option(
     "--add-open-prs",
     is_flag=True,
+    envvar="ADD_OPEN_PRS",
     help="If true instead of update to latest version will look for open PR and add them to the file",
 )
-@click.option("--commit", is_flag=True)
-@add_options(_repos_options)
-def update(version, cwd, config, commit, add_open_prs):
+@click.option("--commit", is_flag=True, envvar="COMMIT")
+@click.option(
+    "-v",
+    "--version",
+    type=click.Choice(AVAILABLE_VERSIONS),
+    required=True,
+    envvar="ODOO_VERSION",
+)
+@click.option(
+    "--config",
+    default="repos.yaml",
+    help="git-aggregattor config file to update",
+)
+@click.option("-c", "--cwd", help="Move to directory")
+def update_repos(cwd, config, version, commit, add_open_prs):
     if not cwd:
         cwd = os.getcwd()
+    elif os.path.exists(cwd):
+        sp.call(["mkdir", "-p", cwd])
+    if add_open_prs:
+        # Update base repo
+        if not os.environ.get("SSH_KEY"):
+            _logger.error("Missing SSH_KEY environment variable")
+            sys.exit(1)
+        ssh_cmd = """
+            mkdir -p ~/.ssh
+            echo -e "${SSH_KEY//_/\\n}" > ~/.ssh/id_rsa
+            chmod og-rwx ~/.ssh/id_rsa 
+            ssh-keyscan github.com >> ~/.ssh/known_hosts
+        """
+        sp.call(
+            ssh_cmd,
+            shell=True,
+            executable="/bin/bash",
+            stdout=sp.DEVNULL,
+            stderr=sp.DEVNULL,
+        )
+        remotes = sp.check_output(["git", "remote", "-v"], cwd=cwd).splitlines()
+        repo_url = remotes[0].decode().split("\t")[-1].split(" ")[0]
+        tmp_repos_yaml = "/tmp/repos.yaml"
+        sp.call(["touch", tmp_repos_yaml])
+        obj = ToolsYaml(version, tmp_repos_yaml)
+        obj.add_repo(".", repo_url)
+        obj.update_repos(add_open_prs)
+        obj.save()
+        sp.call(["gitaggregate", "-c", tmp_repos_yaml], cwd=cwd)
     repos_yaml = os.path.join(cwd, config)
     obj = ToolsYaml(version, repos_yaml)
     obj.update_repos(add_open_prs)
