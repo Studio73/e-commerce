@@ -312,6 +312,8 @@ def update_repos(cwd, config, version, commit, add_open_prs):
         )
         remotes = sp.check_output(["git", "remote", "-v"], cwd=cwd).splitlines()
         repo_url = remotes[0].decode().split("\t")[-1].split(" ")[0]
+        # Convert https -> git+ssl
+        repo_url = repo_url.replace("https://github.com/", "git@github.com:")
         tmp_repos_yaml = "/tmp/repos.yaml"
         sp.call(["touch", tmp_repos_yaml])
         obj = ToolsYaml(version, tmp_repos_yaml)
