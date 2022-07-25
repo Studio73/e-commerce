@@ -1,7 +1,7 @@
 # (c) Studio73 - Pablo Fuentes <pablo@studio73.es>
 FROM python:3.8-slim-buster
 
-RUN apt-get update && apt-get install -y --no-install-recommends git openssh-client rsync
+RUN apt-get update && apt-get install -y --no-install-recommends git openssh-client
 RUN mkdir /src /cache
 VOLUME ["/src", "/cache"]
 ENV PRE_COMMIT_HOME=/cache
