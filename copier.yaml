@@ -39,7 +39,7 @@ org_name:
 repo_name:
   type: str
   default: "{{ project_name }}-addons"
-  help: Repository name, usually project name + _addons
+  help: Repository name, usually project name + -addons
 
 docker_image_base:
   type: str
