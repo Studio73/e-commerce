@@ -1,6 +1,6 @@
 .PHONY: Build tools
 build:
-	DOCKER_BUILDKIT=1 docker build -t odoo/proxypass . 
+	DOCKER_BUILDKIT=1 docker build -t odoo/proxypass .
 
 .PHONY: Push tools
 push:
