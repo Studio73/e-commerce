@@ -2,4 +2,3 @@
 # (c) Studio73 - Pablo Fuentes <pablo@studio73.es>
 
 click-odoo-update --watcher-max-seconds=120 || exit 75
-

@@ -52,7 +52,7 @@ def build_conf():
     with open("/opt/odoo/.odoorc", "w") as odoo_conf:
         for section, values in new_conf.items():
             odoo_conf.write("[%s]\n" % section)
-            odoo_conf.writelines(["%s=%s\n" % (k, v) for k, v in values.items()])
+            odoo_conf.writelines(["{}={}\n".format(k, v) for k, v in values.items()])
 
 
 def main():
@@ -61,6 +61,7 @@ def main():
     """
     build_conf()
     sys.exit(sp.call(sys.argv[1:]))
+
 
 if __name__ == "__main__":
     main()

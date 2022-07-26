@@ -50,9 +50,9 @@ RUN cd /odoo && gitaggregate --jobs 8 --config repos.yaml \
     # setuptools<58.0.0 fixes setup command: use_2to3 is invalid.
     && echo "setuptools<58.0.0" >> /odoo/odoo/requirements.txt \
     # Fix conflict between Odoo and OCA/intrastat-extrastrat
-    && sed -i 's/python-stdnum==1.8/python-stdnum>=1.16/g' /odoo/odoo/requirements.txt \ 
+    && sed -i 's/python-stdnum==1.8/python-stdnum>=1.16/g' /odoo/odoo/requirements.txt \
     # Fix XlsxWriter py3.8 warnings
-    && sed -i 's/XlsxWriter==1.1.2/XlsxWriter==1.2.2/g' /odoo/odoo/requirements.txt \ 
+    && sed -i 's/XlsxWriter==1.1.2/XlsxWriter==1.2.2/g' /odoo/odoo/requirements.txt \
 	&& pip3 install --upgrade-strategy=only-if-needed -r /odoo/odoo/requirements.txt
 
 COPY 14.0/oca.yaml /oca/repos.yaml
@@ -70,14 +70,14 @@ SHELL ["/bin/bash", "-xo", "pipefail", "-c"]
 ARG DEBIAN_FRONTEND=noninteractive
 ENV LANG=es_ES.UTF-8 \
 	LANGUAGE=es_ES \
-	LC_ALL=es_ES.UTF-8 \ 
+	LC_ALL=es_ES.UTF-8 \
     TZ=Europe/Madrid
 RUN apt-get update \
 	&& apt-get -y upgrade \
 	&& apt-get install -y --no-install-recommends \
     ca-certificates \
     curl \
-    gnupg2 \ 
+    gnupg2 \
     locales \
     node-less \
     # unbuffer
@@ -131,5 +131,5 @@ ARG BUILD_DATE
 LABEL org.opencontainers.image.vendor="Studio73" \
 	  org.opencontainers.image.url="https://www.studio73.es" \
 	  org.opencontainers.image.source="https://github.com/Studio73/dodoo" \
-	  org.opencontainers.image.authors="Pablo Fuentes" \ 
+	  org.opencontainers.image.authors="Pablo Fuentes" \
 	  org.opencontainers.image.created=$BUILD_DATE

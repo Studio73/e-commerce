@@ -1,8 +1,8 @@
 click
 click-odoo-contrib
 coverage
-git-aggregator 
+git-aggregator
 pdfminer.six
 pycups
 tabulate
-wheel 
+wheel

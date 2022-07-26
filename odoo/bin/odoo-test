@@ -45,7 +45,7 @@ def parse_log(logfile):
 
         return re.sub(r"\x1b[^m]*m", "", data)
 
-    # '<DATE> ERROR <DATABASE> odoo.modules.loading: Module <MODULE>: 1 failures, 0 errors of 1 tests
+    # '<DATE> ERROR <DATABASE> odoo.modules.loading: Module <MODULE>: 1 failures...
     re_err = re.compile(
         r"^(?P<date>.*)ERROR(.*)Module(?P<module>.*):(.*) failures,(.*)$"
     )
@@ -91,7 +91,9 @@ def parse_log(logfile):
     return result
 
 
-def print_table(rows, headers=[], showindex=None):
+def print_table(rows, headers=None, showindex=None):
+    if headers is None:
+        headers = []
     click.echo(tabulate(rows, headers=headers, tablefmt="psql", showindex=showindex))
     click.echo("")
 
@@ -101,6 +103,7 @@ def purgedb(database):
         return sp.call(
             ["dropdb", "--if-exists", name], stdout=sp.DEVNULL, stderr=sp.DEVNULL
         )
+
     _dropdb(database)
     with pg_connect() as pgcr:
         name_pat = "test-{}-%".format("_" * 12)
