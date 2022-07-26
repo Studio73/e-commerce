@@ -12,4 +12,3 @@ COPY --chmod="+x" tools.py /usr/local/bin/tools
 RUN git config --global user.email "pablo@studio73.es" && \
     git config --global user.name "fuentes73"
 CMD ["/bin/bash"]
-

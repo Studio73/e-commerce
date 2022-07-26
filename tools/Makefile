@@ -1,6 +1,6 @@
 .PHONY: Build tools
 build:
-	DOCKER_BUILDKIT=1 docker build -t odoo/tools . 
+	DOCKER_BUILDKIT=1 docker build -t odoo/tools .
 
 .PHONY: Push tools
 push:

@@ -271,7 +271,8 @@ def lint(cwd):
     "--add-open-prs",
     is_flag=True,
     envvar="ADD_OPEN_PRS",
-    help="If true instead of update to latest version will look for open PR and add them to the file",
+    help="If true instead of update to latest version "
+    "will look for open PR and add them to the file",
 )
 @click.option("--commit", is_flag=True, envvar="COMMIT")
 @click.option(
@@ -300,7 +301,7 @@ def update_repos(cwd, config, version, commit, add_open_prs):
         ssh_cmd = """
             mkdir -p ~/.ssh
             echo -e "${SSH_KEY//_/\\n}" > ~/.ssh/id_rsa
-            chmod og-rwx ~/.ssh/id_rsa 
+            chmod og-rwx ~/.ssh/id_rsa
             ssh-keyscan github.com >> ~/.ssh/known_hosts
         """
         sp.call(
