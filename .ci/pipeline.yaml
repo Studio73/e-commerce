@@ -214,11 +214,11 @@ jobs:
     <<: *notify
     plan:
       - in_parallel:
-        - get: repo
-        - get: repo-oci
-          trigger: true
-        - get: oci-build-task
-          trigger: true
+          - get: repo
+          - get: repo-oci
+            trigger: true
+          - get: oci-build-task
+            trigger: true
       - task: build-image
         attempts: 3
         privileged: true
@@ -227,15 +227,15 @@ jobs:
         file: repo/.ci/tasks/build.yaml
         output_mapping: {image: oci-build}
       - put: oci-build
-        params: 
+        params:
           image: oci-build/image.tar
   - name: build-proxypass
     <<: *notify
     plan:
       - in_parallel:
-        - get: repo
-        - get: repo-proxypass
-          trigger: true
+          - get: repo
+          - get: repo-proxypass
+            trigger: true
       - task: build-image
         attempts: 3
         privileged: true
@@ -250,9 +250,9 @@ jobs:
     <<: *notify
     plan:
       - in_parallel:
-        - get: repo
-        - get: repo-tools
-          trigger: true
+          - get: repo
+          - get: repo-tools
+            trigger: true
       - task: build-image
         attempts: 3
         privileged: true
@@ -260,16 +260,16 @@ jobs:
           CONTEXT: repo/tools
         file: repo/.ci/tasks/build.yaml
         output_mapping: {image: "tools"}
-      - put: tools 
-        params: 
+      - put: tools
+        params:
           image: tools/image.tar
   - name: build-base-14
     <<: *notify
     plan:
       - in_parallel:
-        - get: repo
-        - get: repo-odoo
-          trigger: true
+          - get: repo
+          - get: repo-odoo
+            trigger: true
       - task: build-image
         attempts: 3
         privileged: true
@@ -278,16 +278,16 @@ jobs:
         file: repo/.ci/tasks/build-base.yaml
         output_mapping: {image: "base-14"}
       - put: base-14
-        params: 
+        params:
           image: base-14/image.tar
           additional_tags: base-14/today-tag
   - name: build-base-15
     <<: *notify
     plan:
       - in_parallel:
-        - get: repo
-        - get: repo-odoo
-          trigger: true
+          - get: repo
+          - get: repo-odoo
+            trigger: true
       - task: build-image
         attempts: 3
         privileged: true
@@ -296,7 +296,7 @@ jobs:
         file: repo/.ci/tasks/build-base.yaml
         output_mapping: {image: "base-15"}
       - put: base-15
-        params: 
+        params:
           image: base-15/image.tar
           additional_tags: base-15/today-tag
   - name: build-base-14-pr

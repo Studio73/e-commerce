@@ -26,4 +26,3 @@ run:
           tools repos update --version=$VERSION --config=$VERSION/$ORG.yaml --commit
         done
       done
-

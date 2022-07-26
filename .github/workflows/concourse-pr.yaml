@@ -11,9 +11,8 @@ jobs:
       - name: Trigger resource check
         uses: gstackio/trigger-concourse-resource-check-action@v1
         with:
-          concourse-url:           https://ci.studio73.dev
-          concourse-team:          odoo
-          concourse-pipeline:      dodoo
-          concourse-resource:      pr
+          concourse-url: https://ci.studio73.dev
+          concourse-team: odoo
+          concourse-pipeline: dodoo
+          concourse-resource: pr
           concourse-webhook-token: ${{ secrets.CONCOURSE_WEBHOOK_TOKEN }}
-
