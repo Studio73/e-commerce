@@ -1,6 +1,7 @@
 exclude: |
-  odoo.yaml |
-  oca.yaml
+  (?x)
+  ^odoo/.*/odoo.yaml$ |
+  ^odoo/.*/oca.yaml$
 repos:
   - repo: https://github.com/psf/black
     rev: 22.3.0
