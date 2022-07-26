@@ -1,6 +1,6 @@
 .PHONY: Build oci-build
 build:
-	DOCKER_BUILDKIT=1 docker build -t odoo/oci-build . 
+	DOCKER_BUILDKIT=1 docker build -t odoo/oci-build .
 
 .PHONY: Push oci-build
 push:

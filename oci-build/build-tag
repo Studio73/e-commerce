@@ -4,7 +4,7 @@
 set -e
 if [ -z "$ODOO_VERSION" ]; then
     echo "enviroment variable ODOO_VERSION not set"
-    exit 1 
+    exit 1
 fi
 if [ -z "$DEV" ]; then
     echo $ODOO_VERSION.$(date -u +"%Y%m%d") > image/today-tag
@@ -13,4 +13,3 @@ else
 fi
 export BUILD_ARG_BUILD_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 build
-
