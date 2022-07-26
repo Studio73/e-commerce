@@ -1,0 +1,12 @@
+---
+platform: linux
+
+run:
+  path: python3
+  args:
+    - /entrypoint.py
+    - bash
+    - -ceux
+    - |
+      odoo-test run
+      odoo-test coverage

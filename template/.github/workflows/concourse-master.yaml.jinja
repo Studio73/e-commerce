@@ -1,0 +1,17 @@
+name: Concourse (Master)
+on:
+  push:
+    branches:
+      - {{ odoo_version }}.0
+jobs:
+  trigger-resource-check:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Trigger repo
+        uses: gstackio/trigger-concourse-resource-check-action@v1
+        with:
+          concourse-url: https://ci.studio73.dev
+          concourse-team: {{ ci_team }}
+          concourse-pipeline: {{ project_name }}
+          concourse-resource: repo
+          concourse-webhook-token: {% raw %}${{ secrets.CONCOURSE_WEBHOOK_TOKEN }}{% endraw %}

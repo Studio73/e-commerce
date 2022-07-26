@@ -1,0 +1,257 @@
+---
+meta:
+  x-notify: &notify
+    on_failure:
+      put: notify
+      inputs: [repo]
+      params: {state: failure}
+    on_error:
+      put: notify
+      inputs: [repo]
+      params: {state: error}
+  x-notify-pr: &notify-pr
+    on_success:
+      put: notify-pr
+      inputs: [pr]
+      params: {state: success}
+    on_failure:
+      put: notify-pr
+      inputs: [pr]
+      params: {state: failure}
+    on_error:
+      put: notify-pr
+      inputs: [pr]
+      params: {state: error}
+    on_abort:
+      put: notify-pr
+      inputs: [pr]
+      params: {state: error}
+  x-db-conn: &db-conn
+    params:
+      PGUSER: "ci"
+      PGDATABASE: "{{ project_name }}"
+      PGHOST: ((PGHOST))
+      PGPORT: ((PGPORT))
+      PGPASSWORD: ((PGPASSWORD))
+  x-build-params: &build-params
+      UNPACK_ROOTFS: true
+      CONTEXT: repo
+      ODOO_VERSION: "14"
+      IMAGE_ARG_base_image: odoo/image.tar
+      BUILD_ARG_SSH_KEY: ((GITHUB_SSH_KEY))
+  x-build: &build
+    privileged: true
+    file: repo/.ci/tasks/build.yaml
+    params:
+      <<: *build-params
+
+resource_types:
+  - name: pull-request
+    type: docker-image
+    check_every: 24h
+    source:
+      repository: teliaoss/github-pr-resource
+  - name: cogito
+    type: registry-image
+    check_every: 24h
+    source:
+      repository: pix4d/cogito
+
+resources:
+  - name: daily
+    type: time
+    icon: clock-outline
+    source:
+      days: [Sunday, Monday, Tuesday, Wednesday, Thursday]
+      start: 14:00
+      stop: 14:30
+      location: Europe/Madrid
+      initial_version: true
+  - name: nightly
+    type: time
+    icon: clock-outline
+    source:
+      days: [Sunday, Monday, Tuesday, Wednesday, Thursday]
+      start: 21:00
+      stop: 22:00
+      location: Europe/Madrid
+      initial_version: true
+  - name: repo
+    type: git
+    icon: github
+    check_every: 24h
+    webhook_token: ((WEBHOOK_TOKEN))
+    source:
+      uri: https://github.com/{{ org_name }}/{{ repo_name }}.git
+      branch: "14.0"
+      username: ((GITHUB_TOKEN))
+      password: x-oauth-basic
+  - name: pr
+    type: pull-request
+    icon: github
+    check_every: 24h
+    webhook_token: ((WEBHOOK_TOKEN))
+    source:
+      repository: {{ org_name }}/{{ repo_name }}
+      access_token: ((GITHUB_TOKEN))
+  - name: notify
+    type: cogito
+    icon: bell-ring
+    check_every: 24h
+    source:
+      owner: {{ org_name }}
+      repo: {{ repo_name }}
+      access_token: ((GITHUB_TOKEN))
+      gchat_webhook: ((GCHAT_CONCOURSE_WEBHOOK))
+  - name: notify-pr
+    type: cogito
+    icon: bell-ring
+    check_every: 24h
+    source:
+      owner: {{ org_name }}
+      repo: {{ repo_name }}
+      access_token: ((GITHUB_TOKEN))
+      gchat_webhook: ((GCHAT_PRS_WEBHOOK))
+  - name: odoo
+    type: registry-image
+    icon: docker
+    source:
+      username: ((REGISTRY_USER))
+      password: ((REGISTRY_SECRET))
+      repository: {{ docker_image_base }}
+      tag: {{ odoo_version }}
+  - name: {{ project_name }}
+    type: registry-image
+    icon: docker
+    source:
+      username: ((REGISTRY_USER))
+      password: ((REGISTRY_SECRET))
+      repository: {{ docker_image_project }}
+      tag: {{ odoo_version }}
+  - name: {{ project_name }}-dev
+    type: registry-image
+    icon: docker
+    source:
+      username: ((REGISTRY_USER))
+      password: ((REGISTRY_SECRET))
+      repository: {{ docker_image_project }}
+      tag: {{ odoo_version }}-dev
+
+groups:
+  - name: all
+    jobs:
+      - "*"
+  - name: master
+    jobs:
+      - update-repos
+      - build-dev
+      - build
+  - name: pr
+    jobs:
+      - lint
+      - tests
+
+jobs:
+  - name: update-repos
+    <<: *notify
+    plan:
+      - get: nightly
+        trigger: true
+      - get: repo
+      - get: odoo
+        params: {format: oci}
+      - task: update
+        attempts: 3
+        params:
+          GITHUB_TOKEN: ((GITHUB_TOKEN))
+          COMMIT: true
+          ODOO_VERSION: {{ odoo_version }}.0
+        file: repo/.ci/tasks/update-repos.yaml
+      - task: build
+        <<: *build
+      - task: tests
+        <<: *db-conn
+        image: image
+        file: repo/.ci/tasks/tests.yaml
+      - put: repo
+        params: {repository: repo}
+  - name: build
+    <<: *notify
+    plan:
+      - get: repo
+        trigger: true
+      - get: odoo
+        params: {format: oci}
+      - task: build
+        <<: *build
+        output_mapping: {image: "{{ project_name }}"}
+      - task: tests
+        <<: *db-conn
+        image: {{ project_name }}
+        file: repo/.ci/tasks/tests.yaml
+      - put: {{ project_name }}
+        params:
+          image: {{ project_name }}/image.tar
+          additional_tags: {{ project_name }}/today-tag
+  - name: build-dev
+    <<: *notify
+    plan:
+      - get: repo
+      - get: daily
+        trigger: true
+      - get: nightly
+        trigger: true
+        passed: [update-repos]
+      - get: odoo
+        params: {format: oci}
+      - task: update-repos
+        params:
+          GITHUB_TOKEN: ((GITHUB_TOKEN))
+          SSH_KEY: ((GITHUB_SSH_KEY))
+          ADD_OPEN_PRS: true
+          ODOO_VERSION: {{ odoo_version }}.0
+        file: repo/.ci/tasks/update-repos.yaml
+      - task: build-dev
+        <<: *build
+        params:
+          <<: *build-params
+          DEV: True
+        output_mapping: {image: "{{ project_name }}-dev"}
+      - task: tests
+        <<: *db-conn
+        image: {{ project_name }}-dev
+        file: repo/.ci/tasks/tests.yaml
+      - put: {{ project_name }}-dev
+        params:
+          image: {{ project_name }}-dev/image.tar
+          additional_tags: {{ project_name }}-dev/today-tag
+  - name: lint
+    <<: *notify-pr
+    plan:
+      - get: pr
+        trigger: true
+      - put: notify-pr
+        inputs: [pr]
+        params: {state: pending}
+      - task: lint
+        file: pr/.ci/tasks/lint.yaml
+  - name: tests
+    <<: *notify-pr
+    plan:
+      - in_parallel:
+          - get: pr
+            trigger: true
+            passed: [lint]
+          - get: odoo
+            params: {format: oci}
+      - put: notify-pr
+        inputs: [pr]
+        params: {state: pending}
+      - task: build
+        <<: *build
+        input_mapping: {repo: pr}
+        file: pr/.ci/tasks/build.yaml
+      - task: tests
+        <<: *db-conn
+        image: image
+        file: pr/.ci/tasks/tests.yaml

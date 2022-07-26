@@ -1,0 +1,65 @@
+# Configure jinja2 defaults to make syntax highlighters happy
+_templates_suffix: .jinja
+_envops:
+  block_end_string: "%}"
+  block_start_string: "{%"
+  comment_end_string: "#}"
+  comment_start_string: "{#"
+  keep_trailing_newline: true
+  variable_end_string: "}}"
+  variable_start_string: "{{"
+
+_tasks:
+  - rm -f .github/workflows/lint.yaml
+  - rm -f .github/workflows/test.yaml
+  - rm -f .github/workflows/cancel.yaml
+  - rm -f .github/workflows/automerge.yaml
+
+odoo_version:
+  type: int
+  default: 14
+  choices:
+    - 12
+    - 13
+    - 14
+    - 15
+    - 16
+  help: Which Odoo version are we using for this project?
+
+project_name:
+  type: str
+  help: Project name, usually it's the partner name.
+
+org_name:
+  type: str
+  default: Studio73
+  help: Github Organization name
+
+repo_name:
+  type: str
+  default: "{{ project_name }}-addons"
+  help: Repository name, usually project name + _addons
+
+docker_image_base:
+  type: str
+  default: r.studio73.es/odoo/base
+  help: Base Docker image
+
+docker_image_project:
+  type: str
+  default: "r.studio73.es/odoo/{{ project_name }}"
+  help: Project docker image
+
+ci_team:
+  type: str
+  default: odoo
+  help: Concourse pipeline group owner
+
+excluded_pre_commit_addons:
+  type: yaml
+  multiline: true
+  help: Addons to exclude from pre-commit (YAML format)
+
+excluded_coverage_addons:
+  type: str
+  help: Addons (comma separated) to exclude from .coveragerc (Regex format)
