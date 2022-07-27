@@ -13,7 +13,7 @@ Mandatory Postgresql environment variables:
 - `PGPASSWORD`: Postgresql password - default `changeme`
 - `PGPORT`: Postgresql port - default `5432`
 
-## Copier template usage:
+## Copier template usage
 
 ### Bootstrap new repo
 
@@ -29,7 +29,7 @@ git commit -am "[ADD] Dodoo template"
 
 ```
 
-### Intallation to existing repo
+### Bootstrap existing repo
 
 ```bash
 pipx install copier
