@@ -336,7 +336,7 @@ def update_repos(cwd, config, version, commit, add_open_prs):
                     "commit",
                     "--no-verify",
                     "-m",
-                    "[{}][UPD] {}".format(version, config),
+                    "[UPD] {}".format(config),
                 ],
                 cwd=cwd,
             )
