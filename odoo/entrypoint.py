@@ -31,7 +31,7 @@ def build_conf():
         "data_dir": os.environ.get("DATA"),
         "db_host": os.environ.get("PGHOST", "localhost"),
         "db_port": os.environ.get("PGPORT", 5432),
-        "db_user": os.environ.get("PGUSER", "postgres"),
+        "db_user": os.environ.get("PGUSER", "odoo"),
         "db_password": os.environ.get("PGPASSWORD", "changeme"),
         "db_name": db_name,
         "dbfilter": db_name,
