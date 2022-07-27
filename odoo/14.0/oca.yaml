@@ -221,9 +221,10 @@ product-variant:
     origin: https://github.com/OCA/product-variant.git
 purchase-workflow:
   defaults:
-    depth: 1
+    depth: 500
   merges:
   - origin 3d7639166d9e6f2d4528194c4d02337e21b72089
+  - origin refs/pull/1218/head
   remotes:
     origin: https://github.com/OCA/purchase-workflow.git
 queue:
