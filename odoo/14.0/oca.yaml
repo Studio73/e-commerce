@@ -78,6 +78,13 @@ bank-statement-reconcile:
   - origin 2927fd9feebb68866689836fd68ae1654493cc67
   remotes:
     origin: https://github.com/OCA/bank-statement-reconcile.git
+brand:
+  defaults:
+    depth: 1
+  merges:
+  - origin d56908c715c631050309cc5f92722e0c602a69d8
+  remotes:
+    origin: https://github.com/OCA/brand.git
 commission:
   defaults:
     depth: 1
@@ -104,6 +111,7 @@ delivery-carrier:
     depth: 500
   merges:
   - origin 40817bb2316c3cf8080ed1e734fa8308058f5396
+  - origin refs/pull/457/head
   - origin refs/pull/502/head
   remotes:
     origin: https://github.com/OCA/delivery-carrier.git
@@ -112,6 +120,8 @@ e-commerce:
     depth: 500
   merges:
   - origin 97272d87a0e3f089658bc646744645966be34d5c
+  - origin refs/pull/485/head
+  - origin refs/pull/486/head
   - origin refs/pull/549/head
   - origin refs/pull/559/head
   remotes:
@@ -160,11 +170,26 @@ knowledge:
     origin: https://github.com/OCA/knowledge.git
 l10n-spain:
   defaults:
-    depth: 1
+    depth: 500
   merges:
   - origin 41d20b1dc700cb72c5158d16a299e2c1e37af850
+  - origin refs/pull/2411/head
   remotes:
     origin: https://github.com/OCA/l10n-spain.git
+manufacture:
+  defaults:
+    depth: 1
+  merges:
+  - origin 55eec5c674ca750279060c22e6fe067eb63d52bb
+  remotes:
+    origin: https://github.com/OCA/manufacture.git
+margin-analysis:
+  defaults:
+    depth: 1
+  merges:
+  - origin 3fee80e38768ddfa8f95338aa19253ff98672156
+  remotes:
+    origin: https://github.com/OCA/margin-analysis.git
 mis-builder:
   defaults:
     depth: 1
@@ -222,6 +247,13 @@ reporting-engine:
   - origin d27ab5e2b68d8ee20ca0f24bd4a44b977027196a
   remotes:
     origin: https://github.com/OCA/reporting-engine.git
+report-print-send:
+  defaults:
+    depth: 1
+  merges:
+  - origin 00635859b483a283fe647f30a9c80cb55296c929
+  remotes:
+    origin: https://github.com/OCA/report-print-send.git
 sale-reporting:
   defaults:
     depth: 1
@@ -260,6 +292,20 @@ social:
   - origin refs/pull/756/head
   remotes:
     origin: https://github.com/OCA/social.git
+stock-logistics-barcode:
+  defaults:
+    depth: 1
+  merges:
+  - origin d148c3cabe351ee822e057a98315cc555c8791cd
+  remotes:
+    origin: https://github.com/OCA/stock-logistics-barcode.git
+stock-logistics-transport:
+  defaults:
+    depth: 1
+  merges:
+  - origin f620cbc0b8dd0126fc13f682664976bc77106ba5
+  remotes:
+    origin: https://github.com/OCA/stock-logistics-transport.git
 stock-logistics-warehouse:
   defaults:
     depth: 1
