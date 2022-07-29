@@ -36,6 +36,7 @@ meta:
   x-build-params: &build-params
     UNPACK_ROOTFS: true
     CONTEXT: repo
+    ODOO_VERSION: "{{ odoo_version }}"
     IMAGE_ARG_base_image: odoo/image.tar
     BUILD_ARG_SSH_KEY: ((GITHUB_SSH_KEY))
   x-build: &build
