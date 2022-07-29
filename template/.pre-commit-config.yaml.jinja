@@ -16,7 +16,9 @@ exclude: |
   # You don't usually want a bot to modify your legal texts
   (LICENSE.*|COPYING.*)|
   # Don't modify python built&formated repos.yaml
-  ^repos.yaml$
+  ^repos.yaml${% if excluded_pre_commit_addons %}|
+  # Excluded custom addons
+  {{ excluded_pre_commit_addons }}{% endif %}
 default_language_version:
   python: python3
   node: "14.18.0"
