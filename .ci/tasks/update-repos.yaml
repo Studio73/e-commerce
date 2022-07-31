@@ -23,6 +23,6 @@ run:
       cd repo/odoo
       for VERSION in $VERSIONS; do
         for ORG in $ORGS; do
-          tools repos update --version=$VERSION --config=$VERSION/$ORG.yaml --commit
+          tools update-repos --version=$VERSION --config=$VERSION/$ORG.yaml --commit
         done
       done
