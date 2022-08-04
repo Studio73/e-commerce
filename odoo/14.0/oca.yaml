@@ -23,7 +23,7 @@ account-financial-tools:
   defaults:
     depth: 1
   merges:
-  - origin e68d046e0098e78ef85bd21131d4a030285c2875
+  - origin 037d04072771827f8455b611fccabf985ee65c54
   remotes:
     origin: https://github.com/OCA/account-financial-tools.git
 account-invoice-reporting:
@@ -85,13 +85,6 @@ brand:
   - origin d56908c715c631050309cc5f92722e0c602a69d8
   remotes:
     origin: https://github.com/OCA/brand.git
-crm:
-  defaults:
-    depth: 1
-  merges:
-  - origin 91b4145bdcf37d89012cbb14703a517fc436a4d3
-  remotes:
-    origin: https://github.com/OCA/crm.git
 commission:
   defaults:
     depth: 1
@@ -110,14 +103,21 @@ credit-control:
   defaults:
     depth: 1
   merges:
-  - origin 1bb9cb383fe78091fdf3e46c06cf947681e6ba46
+  - origin b49cf00b5a44b7e145169662e73414f8baab5686
   remotes:
     origin: https://github.com/OCA/credit-control.git
+crm:
+  defaults:
+    depth: 1
+  merges:
+  - origin 91b4145bdcf37d89012cbb14703a517fc436a4d3
+  remotes:
+    origin: https://github.com/OCA/crm.git
 delivery-carrier:
   defaults:
     depth: 500
   merges:
-  - origin 40817bb2316c3cf8080ed1e734fa8308058f5396
+  - origin 8161267765c1d484c5497a81308933c27affed67
   - origin refs/pull/457/head
   - origin refs/pull/502/head
   remotes:
@@ -143,7 +143,7 @@ hr-attendance:
   defaults:
     depth: 1
   merges:
-  - origin b2d8542fedb1c4890fdaeab1785f298701d66c45
+  - origin 346a4b4967f5442ad82a6882165c41702a08e511
   remotes:
     origin: https://github.com/OCA/hr-attendance.git
 hr-holidays:
@@ -178,7 +178,7 @@ l10n-spain:
   defaults:
     depth: 500
   merges:
-  - origin a0ad3e50d991ac58b499ea3220dc6240365f2a72
+  - origin 69a5e9c7ea2972d9fc1b273caf3acca8962e1fff
   - origin refs/pull/2411/head
   remotes:
     origin: https://github.com/OCA/l10n-spain.git
@@ -244,7 +244,7 @@ report-print-send:
   defaults:
     depth: 1
   merges:
-  - origin 00635859b483a283fe647f30a9c80cb55296c929
+  - origin 7efed3e1ea0542f03df4ffd92a2fe5af26022811
   remotes:
     origin: https://github.com/OCA/report-print-send.git
 reporting-engine:
@@ -325,7 +325,7 @@ web:
   defaults:
     depth: 1
   merges:
-  - origin cc88147229f06d0d70e875fc018440a03347e9e9
+  - origin 0be9423c40b50a57dfc577503f56586ab6215507
   remotes:
     origin: https://github.com/OCA/web.git
 website:
