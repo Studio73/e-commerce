@@ -208,13 +208,8 @@ jobs:
         params:
           VERSION: "{{ version }}"
           ODOO_VERSION: "{{ odoo_version }}"
-          {%- if version == "community" %}
           BUILD_ARG_SSH_KEY: ((GITHUB_SSH_KEY))
-          IMAGE_ARG_base_image: base-{{ odoo_version }}/image.tar
-          {%- elif version == "enterprise" %}
-          BUILD_ARG_SSH_KEY: ((GITHUB_SSH_KEY))
-          IMAGE_ARG_base_image: community-{{ odoo_version }}/image.tar
-          {%- endif %}
+          IMAGE_ARG_base_image: base-image/image.tar
         output_mapping: {image: "{{ _name }}"}
       - put: {{ _name }}
         params:
@@ -262,11 +257,7 @@ jobs:
           VERSION: "{{ version }}"
           ODOO_VERSION: "{{ odoo_version }}"
           BUILD_ARG_SSH_KEY: ((GITHUB_SSH_KEY))
-          {%- if version == "community" %}
-          IMAGE_ARG_base_image: base-{{ odoo_version }}/image.tar
-          {%- elif version == "enterprise" %}
-          IMAGE_ARG_base_image: community-{{ odoo_version }}-dev/image.tar
-          {%- endif %}
+          IMAGE_ARG_base_image: base-image/image.tar
         output_mapping: {image: "{{ _name }}"}
       - put: {{ _name }}
         params:

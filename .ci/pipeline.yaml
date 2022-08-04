@@ -278,6 +278,8 @@ jobs:
         params:
           VERSION: "base"
           ODOO_VERSION: "14"
+          BUILD_ARG_SSH_KEY: ((GITHUB_SSH_KEY))
+          IMAGE_ARG_base_image: base-image/image.tar
         output_mapping: {image: "base-14"}
       - put: base-14
         params:
@@ -301,7 +303,7 @@ jobs:
           VERSION: "community"
           ODOO_VERSION: "14"
           BUILD_ARG_SSH_KEY: ((GITHUB_SSH_KEY))
-          IMAGE_ARG_base_image: base-14/image.tar
+          IMAGE_ARG_base_image: base-image/image.tar
         output_mapping: {image: "community-14"}
       - put: community-14
         params:
@@ -325,7 +327,7 @@ jobs:
           VERSION: "enterprise"
           ODOO_VERSION: "14"
           BUILD_ARG_SSH_KEY: ((GITHUB_SSH_KEY))
-          IMAGE_ARG_base_image: community-14/image.tar
+          IMAGE_ARG_base_image: base-image/image.tar
         output_mapping: {image: "enterprise-14"}
       - put: enterprise-14
         params:
@@ -347,6 +349,8 @@ jobs:
         params:
           VERSION: "base"
           ODOO_VERSION: "15"
+          BUILD_ARG_SSH_KEY: ((GITHUB_SSH_KEY))
+          IMAGE_ARG_base_image: base-image/image.tar
         output_mapping: {image: "base-15"}
       - put: base-15
         params:
@@ -370,7 +374,7 @@ jobs:
           VERSION: "community"
           ODOO_VERSION: "15"
           BUILD_ARG_SSH_KEY: ((GITHUB_SSH_KEY))
-          IMAGE_ARG_base_image: base-15/image.tar
+          IMAGE_ARG_base_image: base-image/image.tar
         output_mapping: {image: "community-15"}
       - put: community-15
         params:
@@ -394,7 +398,7 @@ jobs:
           VERSION: "enterprise"
           ODOO_VERSION: "15"
           BUILD_ARG_SSH_KEY: ((GITHUB_SSH_KEY))
-          IMAGE_ARG_base_image: community-15/image.tar
+          IMAGE_ARG_base_image: base-image/image.tar
         output_mapping: {image: "enterprise-15"}
       - put: enterprise-15
         params:
@@ -427,7 +431,7 @@ jobs:
           VERSION: "community"
           ODOO_VERSION: "14"
           BUILD_ARG_SSH_KEY: ((GITHUB_SSH_KEY))
-          IMAGE_ARG_base_image: base-14/image.tar
+          IMAGE_ARG_base_image: base-image/image.tar
         output_mapping: {image: "community-14-dev"}
       - put: community-14-dev
         params:
@@ -460,7 +464,7 @@ jobs:
           VERSION: "enterprise"
           ODOO_VERSION: "14"
           BUILD_ARG_SSH_KEY: ((GITHUB_SSH_KEY))
-          IMAGE_ARG_base_image: community-14-dev/image.tar
+          IMAGE_ARG_base_image: base-image/image.tar
         output_mapping: {image: "enterprise-14-dev"}
       - put: enterprise-14-dev
         params:
@@ -492,7 +496,7 @@ jobs:
           VERSION: "community"
           ODOO_VERSION: "15"
           BUILD_ARG_SSH_KEY: ((GITHUB_SSH_KEY))
-          IMAGE_ARG_base_image: base-15/image.tar
+          IMAGE_ARG_base_image: base-image/image.tar
         output_mapping: {image: "community-15-dev"}
       - put: community-15-dev
         params:
@@ -525,7 +529,7 @@ jobs:
           VERSION: "enterprise"
           ODOO_VERSION: "15"
           BUILD_ARG_SSH_KEY: ((GITHUB_SSH_KEY))
-          IMAGE_ARG_base_image: community-15-dev/image.tar
+          IMAGE_ARG_base_image: base-image/image.tar
         output_mapping: {image: "enterprise-15-dev"}
       - put: enterprise-15-dev
         params:
