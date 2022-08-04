@@ -19,7 +19,13 @@ run:
     - |
       set -e
       VERSIONS="14.0 15.0"
-      ORGS="odoo oca"
+      DOW=$(date +%w)
+      if [[ $DOW -eq "0" ]]; then
+        # Update odoo + oca once a week
+        ORGS="odoo oca community enterprise"
+      else
+        ORGS="community enterprise"
+      fi
       cd repo/odoo
       for VERSION in $VERSIONS; do
         for ORG in $ORGS; do

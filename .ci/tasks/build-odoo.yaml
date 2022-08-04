@@ -18,7 +18,7 @@ run:
     - -c
     - |
       export CONTEXT=repo/odoo
-      export DOCKERFILE=repo/odoo/$ODOO_VERSION.0/Dockerfile
+      export DOCKERFILE=repo/odoo/$ODOO_VERSION.0/Dockerfile.$VERSION
       build-tag
 caches:
   - path: cache

@@ -9,30 +9,29 @@ meta:
       put: notify
       inputs: [repo]
       params: {state: error}
-  x-notify-pr: &notify-pr
-    on_success:
-      put: notify
-      inputs: [pr]
-      params: {state: success}
-    on_failure:
-      put: notify
-      inputs: [pr]
-      params: {state: failure}
-    on_error:
-      put: notify
-      inputs: [pr]
-      params: {state: error}
-    on_abort:
-      put: notify
-      inputs: [pr]
-      params: {state: error}
+
+  x-git-source: &git-source
+    uri: https://github.com/Studio73/dodoo.git
+    branch: master
+    username: ((GITHUB_TOKEN))
+    password: x-oauth-basic
+  x-git: &git
+    type: git
+    icon: github
+    check_every: 24h
+    webhook_token: ((WEBHOOK_TOKEN))
+    source:
+      <<: *git-source
+
+  x-registry-image-source: &registry-image-source
+    username: ((REGISTRY_USER))
+    password: ((REGISTRY_SECRET))
+  x-registry-image: &registry-image
+    type: registry-image
+    icon: docker
+    check_every: 24h
 
 resource_types:
-  - name: pull-request
-    type: docker-image
-    check_every: 24h
-    source:
-      repository: teliaoss/github-pr-resource
   - name: cogito
     type: registry-image
     check_every: 24h
@@ -40,135 +39,24 @@ resource_types:
       repository: pix4d/cogito
 
 resources:
-  - name: sunday
+  - name: daily
     type: time
     icon: clock-outline
     source:
-      days: [Sunday]
-      start: 04:00
-      stop: 05:00
+      days: [Sunday, Monday, Tuesday, Wednesday, Thursday]
+      start: 14:00
+      stop: 14:30
       location: Europe/Madrid
       initial_version: true
-  - name: repo
-    type: git
-    icon: github
-    check_every: 24h
-    webhook_token: ((WEBHOOK_TOKEN))
+  - name: nightly
+    type: time
+    icon: clock-outline
     source:
-      uri: https://github.com/Studio73/dodoo.git
-      branch: master
-      username: ((GITHUB_TOKEN))
-      password: x-oauth-basic
-  - name: repo-odoo
-    type: git
-    icon: folder-sync
-    check_every: 24h
-    webhook_token: ((WEBHOOK_TOKEN))
-    source:
-      uri: https://github.com/Studio73/dodoo.git
-      branch: master
-      username: ((GITHUB_TOKEN))
-      password: x-oauth-basic
-      paths:
-        - odoo/*
-  - name: repo-proxypass
-    type: git
-    icon: folder-sync
-    check_every: 24h
-    webhook_token: ((WEBHOOK_TOKEN))
-    source:
-      uri: https://github.com/Studio73/dodoo.git
-      branch: master
-      username: ((GITHUB_TOKEN))
-      password: x-oauth-basic
-      paths:
-        - proxypass/*
-  - name: repo-oci
-    type: git
-    icon: folder-sync
-    check_every: 24h
-    webhook_token: ((WEBHOOK_TOKEN))
-    source:
-      uri: https://github.com/Studio73/dodoo.git
-      branch: master
-      username: ((GITHUB_TOKEN))
-      password: x-oauth-basic
-      paths:
-        - oci-build/*
-  - name: repo-tools
-    type: git
-    icon: folder-sync
-    check_every: 24h
-    webhook_token: ((WEBHOOK_TOKEN))
-    source:
-      uri: https://github.com/Studio73/dodoo.git
-      branch: master
-      username: ((GITHUB_TOKEN))
-      password: x-oauth-basic
-      paths:
-        - tools/*
-  - name: pr
-    type: pull-request
-    icon: github
-    check_every: 24h
-    webhook_token: ((WEBHOOK_TOKEN))
-    source:
-      repository: Studio73/dodoo
-      access_token: ((GITHUB_TOKEN))
-      paths:
-        - odoo/*
-  - name: oci-build
-    type: registry-image
-    icon: docker
-    check_every: 24h
-    source:
-      username: ((REGISTRY_USER))
-      password: ((REGISTRY_SECRET))
-      repository: r.studio73.es/odoo/oci-build
-      tag: latest
-  - name: oci-build-task
-    type: registry-image
-    icon: docker
-    check_every: 24h
-    source:
-      repository: concourse/oci-build-task
-      tag: latest
-  - name: proxypass
-    type: registry-image
-    icon: docker
-    check_every: 24h
-    source:
-      username: ((REGISTRY_USER))
-      password: ((REGISTRY_SECRET))
-      repository: r.studio73.es/odoo/proxypass
-      tag: latest
-  - name: tools
-    type: registry-image
-    icon: docker
-    check_every: 24h
-    source:
-      username: ((REGISTRY_USER))
-      password: ((REGISTRY_SECRET))
-      repository: r.studio73.es/odoo/tools
-      tag: latest
-  - name: base-14
-    type: registry-image
-    icon: docker
-    check_every: 24h
-    source:
-      username: ((REGISTRY_USER))
-      password: ((REGISTRY_SECRET))
-      repository: r.studio73.es/odoo/base
-      tag: 14
-  - name: base-15
-    type: registry-image
-    icon: docker
-    check_every: 24h
-    source:
-      username: ((REGISTRY_USER))
-      password: ((REGISTRY_SECRET))
-      repository: r.studio73.es/odoo/base
-      tag: 15
+      days: [Sunday, Monday, Tuesday, Wednesday, Thursday]
+      start: 21:00
+      stop: 22:00
+      location: Europe/Madrid
+      initial_version: true
   - name: notify
     type: cogito
     icon: bell-ring
@@ -178,53 +66,143 @@ resources:
       repo: dodoo
       access_token: ((GITHUB_TOKEN))
       gchat_webhook: ((GCHAT_CONCOURSE_WEBHOOK))
+  - name: repo
+    <<: *git
+  - name: repo-odoo
+    <<: *git
+    source:
+      <<: *git-source
+      paths:
+        - odoo/*
+  - name: repo-oci-build
+    <<: *git
+    source:
+      <<: *git-source
+      paths:
+        - oci-build/*
+  - name: repo-proxypass
+    <<: *git
+    source:
+      <<: *git-source
+      paths:
+        - proxypass/*
+  - name: repo-tools
+    <<: *git
+    source:
+      <<: *git-source
+      paths:
+        - tools/*
+  - name: oci-build
+    <<: *registry-image
+    source:
+      <<: *registry-image-source
+      repository: r.studio73.es/odoo/oci-build
+      tag: latest
+  - name: proxypass
+    <<: *registry-image
+    source:
+      <<: *registry-image-source
+      repository: r.studio73.es/odoo/proxypass
+      tag: latest
+  - name: tools
+    <<: *registry-image
+    source:
+      <<: *registry-image-source
+      repository: r.studio73.es/odoo/tools
+      tag: latest
+  - name: base-14
+    <<: *registry-image
+    source:
+      <<: *registry-image-source
+      repository: r.studio73.es/odoo/base
+      tag: 14
+  - name: community-14
+    <<: *registry-image
+    source:
+      <<: *registry-image-source
+      repository: r.studio73.es/odoo/community
+      tag: 14
+  - name: community-14-dev
+    <<: *registry-image
+    source:
+      <<: *registry-image-source
+      repository: r.studio73.es/odoo/community
+      tag: 14-dev
+  - name: enterprise-14
+    <<: *registry-image
+    source:
+      <<: *registry-image-source
+      repository: r.studio73.es/odoo/enterprise
+      tag: 14
+  - name: enterprise-14-dev
+    <<: *registry-image
+    source:
+      <<: *registry-image-source
+      repository: r.studio73.es/odoo/enterprise
+      tag: 14-dev
+  - name: base-15
+    <<: *registry-image
+    source:
+      <<: *registry-image-source
+      repository: r.studio73.es/odoo/base
+      tag: 15
+  - name: community-15
+    <<: *registry-image
+    source:
+      <<: *registry-image-source
+      repository: r.studio73.es/odoo/community
+      tag: 15
+  - name: community-15-dev
+    <<: *registry-image
+    source:
+      <<: *registry-image-source
+      repository: r.studio73.es/odoo/community
+      tag: 15-dev
+  - name: enterprise-15
+    <<: *registry-image
+    source:
+      <<: *registry-image-source
+      repository: r.studio73.es/odoo/enterprise
+      tag: 15
+  - name: enterprise-15-dev
+    <<: *registry-image
+    source:
+      <<: *registry-image-source
+      repository: r.studio73.es/odoo/enterprise
+      tag: 15-dev
 
 groups:
   - name: all
     jobs:
       - "*"
-  - name: master
+  - name: odoo
     jobs:
       - update-repos
-      - build-oci
+      - "build-base-*"
+      - "build-community-*"
+      - "build-enterprise-*"
+  - name: tools
+    jobs:
+      - update-repos
+      - build-oci-build
       - build-proxypass
       - build-tools
-      - build-base-14
-      - build-base-15
-  - name: pr
-    jobs:
-      - build-base-14-pr
-      - build-base-15-pr
 
 jobs:
-  - name: update-repos
-    <<: *notify
-    plan:
-      - get: sunday
-        trigger: true
-      - get: repo
-      - task: update
-        attempts: 3
-        params:
-          GITHUB_TOKEN: ((GITHUB_TOKEN))
-        file: repo/.ci/tasks/update-repos.yaml
-      - put: repo
-        params: {repository: repo}
-  - name: build-oci
+  # Build tools docker images
+  - name: build-oci-build
     <<: *notify
     plan:
       - in_parallel:
           - get: repo
-          - get: repo-oci
+          - get: repo-oci-build
             trigger: true
-          - get: oci-build-task
-            trigger: true
-      - task: build-image
+      - task: build
         attempts: 3
         privileged: true
         params:
           CONTEXT: repo/oci-build
-        file: repo/.ci/tasks/build.yaml
+        file: repo/.ci/tasks/build-tools.yaml
         output_mapping: {image: oci-build}
       - put: oci-build
         params:
@@ -236,13 +214,13 @@ jobs:
           - get: repo
           - get: repo-proxypass
             trigger: true
-      - task: build-image
+      - task: build
         attempts: 3
         privileged: true
         params:
           CONTEXT: repo/proxypass
-        file: repo/.ci/tasks/build.yaml
-        output_mapping: {image: "proxypass"}
+        file: repo/.ci/tasks/build-tools.yaml
+        output_mapping: {image: proxypass}
       - put: proxypass
         params:
           image: proxypass/image.tar
@@ -253,16 +231,31 @@ jobs:
           - get: repo
           - get: repo-tools
             trigger: true
-      - task: build-image
+      - task: build
         attempts: 3
         privileged: true
         params:
           CONTEXT: repo/tools
-        file: repo/.ci/tasks/build.yaml
-        output_mapping: {image: "tools"}
+        file: repo/.ci/tasks/build-tools.yaml
+        output_mapping: {image: tools}
       - put: tools
         params:
           image: tools/image.tar
+  # Update repos YAML
+  - name: update-repos
+    <<: *notify
+    plan:
+      - get: nightly
+        trigger: true
+      - get: repo
+      - task: update
+        attempts: 3
+        params:
+          GITHUB_TOKEN: ((GITHUB_TOKEN))
+        file: repo/.ci/tasks/update-repos.yaml
+      - put: repo
+        params: {repository: repo}
+  # Build Odoo docker images
   - name: build-base-14
     <<: *notify
     plan:
@@ -270,17 +263,63 @@ jobs:
           - get: repo
           - get: repo-odoo
             trigger: true
-      - task: build-image
-        attempts: 3
+      - task: build
         privileged: true
+        file: repo/.ci/tasks/build-odoo.yaml
         params:
+          VERSION: "base"
           ODOO_VERSION: "14"
-        file: repo/.ci/tasks/build-base.yaml
         output_mapping: {image: "base-14"}
       - put: base-14
         params:
           image: base-14/image.tar
           additional_tags: base-14/today-tag
+  - name: build-community-14
+    <<: *notify
+    plan:
+      - in_parallel:
+          - get: repo
+          - get: repo-odoo
+            trigger: true
+            passed: [build-base-14]
+          - get: base-14
+            params: {format: oci}
+      - task: build
+        privileged: true
+        file: repo/.ci/tasks/build-odoo.yaml
+        params:
+          VERSION: "community"
+          ODOO_VERSION: "14"
+          BUILD_ARG_SSH_KEY: ((GITHUB_SSH_KEY))
+          IMAGE_ARG_base_image: base-14/image.tar
+        output_mapping: {image: "community-14"}
+      - put: community-14
+        params:
+          image: community-14/image.tar
+          additional_tags: community-14/today-tag
+  - name: build-enterprise-14
+    <<: *notify
+    plan:
+      - in_parallel:
+          - get: repo
+          - get: repo-odoo
+            trigger: true
+            passed: [build-community-14]
+          - get: community-14
+            params: {format: oci}
+      - task: build
+        privileged: true
+        file: repo/.ci/tasks/build-odoo.yaml
+        params:
+          VERSION: "enterprise"
+          ODOO_VERSION: "14"
+          BUILD_ARG_SSH_KEY: ((GITHUB_SSH_KEY))
+          IMAGE_ARG_base_image: community-14/image.tar
+        output_mapping: {image: "enterprise-14"}
+      - put: enterprise-14
+        params:
+          image: enterprise-14/image.tar
+          additional_tags: enterprise-14/today-tag
   - name: build-base-15
     <<: *notify
     plan:
@@ -288,44 +327,183 @@ jobs:
           - get: repo
           - get: repo-odoo
             trigger: true
-      - task: build-image
-        attempts: 3
+      - task: build
         privileged: true
+        file: repo/.ci/tasks/build-odoo.yaml
         params:
+          VERSION: "base"
           ODOO_VERSION: "15"
-        file: repo/.ci/tasks/build-base.yaml
         output_mapping: {image: "base-15"}
       - put: base-15
         params:
           image: base-15/image.tar
           additional_tags: base-15/today-tag
-  - name: build-base-14-pr
-    <<: *notify-pr
+  - name: build-community-15
+    <<: *notify
     plan:
-      - get: pr
-        trigger: true
-      - put: notify
-        inputs: [pr]
-        params: {state: pending}
-      - task: build-image
-        attempts: 3
+      - in_parallel:
+          - get: repo
+          - get: repo-odoo
+            trigger: true
+            passed: [build-base-15]
+          - get: base-15
+            params: {format: oci}
+      - task: build
         privileged: true
-        input_mapping: {repo: pr}
+        file: repo/.ci/tasks/build-odoo.yaml
         params:
-          ODOO_VERSION: "14"
-        file: pr/.ci/tasks/build-base.yaml
-  - name: build-base-15-pr
-    <<: *notify-pr
-    plan:
-      - get: pr
-        trigger: true
-      - put: notify
-        inputs: [pr]
-        params: {state: pending}
-      - task: build-image
-        attempts: 3
-        privileged: true
-        input_mapping: {repo: pr}
-        params:
+          VERSION: "community"
           ODOO_VERSION: "15"
-        file: pr/.ci/tasks/build-base.yaml
+          BUILD_ARG_SSH_KEY: ((GITHUB_SSH_KEY))
+          IMAGE_ARG_base_image: base-15/image.tar
+        output_mapping: {image: "community-15"}
+      - put: community-15
+        params:
+          image: community-15/image.tar
+          additional_tags: community-15/today-tag
+  - name: build-enterprise-15
+    <<: *notify
+    plan:
+      - in_parallel:
+          - get: repo
+          - get: repo-odoo
+            trigger: true
+            passed: [build-community-15]
+          - get: community-15
+            params: {format: oci}
+      - task: build
+        privileged: true
+        file: repo/.ci/tasks/build-odoo.yaml
+        params:
+          VERSION: "enterprise"
+          ODOO_VERSION: "15"
+          BUILD_ARG_SSH_KEY: ((GITHUB_SSH_KEY))
+          IMAGE_ARG_base_image: community-15/image.tar
+        output_mapping: {image: "enterprise-15"}
+      - put: enterprise-15
+        params:
+          image: enterprise-15/image.tar
+          additional_tags: enterprise-15/today-tag
+  # Build Odoo DEV docker images
+  - name: build-community-14-dev
+    <<: *notify
+    plan:
+      - get: repo
+      - get: daily
+        trigger: true
+      - get: nightly
+        trigger: true
+      - get: base-14
+        params: {format: oci}
+      - task: update-repos
+        params:
+          GITHUB_TOKEN: ((GITHUB_TOKEN))
+          VERSION: "community"
+          ODOO_VERSION: "14.0"
+        file: repo/.ci/tasks/update-repos-dev.yaml
+      - task: build
+        privileged: true
+        file: repo/.ci/tasks/build-odoo.yaml
+        params:
+          DEV: True
+          VERSION: "community"
+          ODOO_VERSION: "14"
+          BUILD_ARG_SSH_KEY: ((GITHUB_SSH_KEY))
+          IMAGE_ARG_base_image: base-14/image.tar
+        output_mapping: {image: "community-14-dev"}
+      - put: community-14-dev
+        params:
+          image: community-14-dev/image.tar
+          additional_tags: community-14-dev/today-tag
+  - name: build-enterprise-14-dev
+    <<: *notify
+    plan:
+      - get: repo
+      - get: daily
+        trigger: true
+      - get: nightly
+        trigger: true
+        passed: [build-community-14-dev]
+      - get: community-14-dev
+        params: {format: oci}
+      - task: update-repos
+        params:
+          GITHUB_TOKEN: ((GITHUB_TOKEN))
+          VERSION: "enterprise"
+          ODOO_VERSION: "14.0"
+        file: repo/.ci/tasks/update-repos-dev.yaml
+      - task: build
+        privileged: true
+        file: repo/.ci/tasks/build-odoo.yaml
+        params:
+          DEV: True
+          VERSION: "enterprise"
+          ODOO_VERSION: "14"
+          BUILD_ARG_SSH_KEY: ((GITHUB_SSH_KEY))
+          IMAGE_ARG_base_image: community-14-dev/image.tar
+        output_mapping: {image: "enterprise-14-dev"}
+      - put: enterprise-14-dev
+        params:
+          image: enterprise-14-dev/image.tar
+          additional_tags: enterprise-14-dev/today-tag
+  - name: build-community-15-dev
+    <<: *notify
+    plan:
+      - get: repo
+      - get: daily
+        trigger: true
+      - get: nightly
+        trigger: true
+      - get: base-15
+        params: {format: oci}
+      - task: update-repos
+        params:
+          GITHUB_TOKEN: ((GITHUB_TOKEN))
+          VERSION: "community"
+          ODOO_VERSION: "15.0"
+        file: repo/.ci/tasks/update-repos-dev.yaml
+      - task: build
+        privileged: true
+        file: repo/.ci/tasks/build-odoo.yaml
+        params:
+          DEV: True
+          VERSION: "community"
+          ODOO_VERSION: "15"
+          BUILD_ARG_SSH_KEY: ((GITHUB_SSH_KEY))
+          IMAGE_ARG_base_image: base-15/image.tar
+        output_mapping: {image: "community-15-dev"}
+      - put: community-15-dev
+        params:
+          image: community-15-dev/image.tar
+          additional_tags: community-15-dev/today-tag
+  - name: build-enterprise-15-dev
+    <<: *notify
+    plan:
+      - get: repo
+      - get: daily
+        trigger: true
+      - get: nightly
+        trigger: true
+        passed: [build-community-15-dev]
+      - get: community-15-dev
+        params: {format: oci}
+      - task: update-repos
+        params:
+          GITHUB_TOKEN: ((GITHUB_TOKEN))
+          VERSION: "enterprise"
+          ODOO_VERSION: "15.0"
+        file: repo/.ci/tasks/update-repos-dev.yaml
+      - task: build
+        privileged: true
+        file: repo/.ci/tasks/build-odoo.yaml
+        params:
+          DEV: True
+          VERSION: "enterprise"
+          ODOO_VERSION: "15"
+          BUILD_ARG_SSH_KEY: ((GITHUB_SSH_KEY))
+          IMAGE_ARG_base_image: community-15-dev/image.tar
+        output_mapping: {image: "enterprise-15-dev"}
+      - put: enterprise-15-dev
+        params:
+          image: enterprise-15-dev/image.tar
+          additional_tags: enterprise-15-dev/today-tag
