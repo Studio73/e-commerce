@@ -5,6 +5,9 @@ import subprocess as sp
 import sys
 from collections import OrderedDict
 
+MEMORY_SOFT = 640
+MEMORY_HARD = 768
+
 
 def compute_addons_path():
     src = os.environ["SRC"]
@@ -27,6 +30,7 @@ def compute_addons_path():
 
 def build_conf():
     db_name = os.environ.get("PGDATABASE", os.environ.get("DATABASE", "odoo"))
+    workers = os.environ.get("ODOO_WORKERS", 1)
     options = {
         "data_dir": os.environ.get("DATA"),
         "db_host": os.environ.get("PGHOST", "localhost"),
@@ -38,6 +42,11 @@ def build_conf():
         "list_db": False,
         "admin_passwd": "changeme",
         "addons_path": compute_addons_path(),
+        "workers": workers,
+        "limit_time_cpu": 4800,
+        "limit_time_real": 9600,
+        "limit_memory_soft": (workers * MEMORY_SOFT) * 1024 * 1024,
+        "limit_memory_hard": (workers * MEMORY_HARD) * 1024 * 1024,
     }
     if not os.environ.get("DEMO"):
         options["without_demo"] = True
