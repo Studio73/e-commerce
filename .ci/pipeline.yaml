@@ -170,6 +170,12 @@ resources:
       <<: *registry-image-source
       repository: r.studio73.es/odoo/enterprise
       tag: 15-dev
+  - name: ubuntu
+    type: registry-image
+    icon: docker
+    source:
+      repository: ubuntu
+      tag: "20.04"
 
 groups:
   - name: all
@@ -263,7 +269,10 @@ jobs:
           - get: repo
           - get: repo-odoo
             trigger: true
+          - get: ubuntu
+            params: {format: oci}
       - task: build
+        input_mapping: {base-image: ubuntu}
         privileged: true
         file: repo/.ci/tasks/build-odoo.yaml
         params:
@@ -285,6 +294,7 @@ jobs:
           - get: base-14
             params: {format: oci}
       - task: build
+        input_mapping: {base-image: base-14}
         privileged: true
         file: repo/.ci/tasks/build-odoo.yaml
         params:
@@ -308,6 +318,7 @@ jobs:
           - get: community-14
             params: {format: oci}
       - task: build
+        input_mapping: {base-image: community-14}
         privileged: true
         file: repo/.ci/tasks/build-odoo.yaml
         params:
@@ -327,7 +338,10 @@ jobs:
           - get: repo
           - get: repo-odoo
             trigger: true
+          - get: ubuntu
+            params: {format: oci}
       - task: build
+        input_mapping: {base-image: ubuntu}
         privileged: true
         file: repo/.ci/tasks/build-odoo.yaml
         params:
@@ -349,6 +363,7 @@ jobs:
           - get: base-15
             params: {format: oci}
       - task: build
+        input_mapping: {base-image: base-15}
         privileged: true
         file: repo/.ci/tasks/build-odoo.yaml
         params:
@@ -372,6 +387,7 @@ jobs:
           - get: community-15
             params: {format: oci}
       - task: build
+        input_mapping: {base-image: community-15}
         privileged: true
         file: repo/.ci/tasks/build-odoo.yaml
         params:
@@ -388,13 +404,14 @@ jobs:
   - name: build-community-14-dev
     <<: *notify
     plan:
-      - get: repo
-      - get: daily
-        trigger: true
-      - get: nightly
-        trigger: true
-      - get: base-14
-        params: {format: oci}
+      - in_parallel:
+          - get: repo
+          - get: daily
+            trigger: true
+          - get: nightly
+            trigger: true
+          - get: base-14
+            params: {format: oci}
       - task: update-repos
         params:
           GITHUB_TOKEN: ((GITHUB_TOKEN))
@@ -402,6 +419,7 @@ jobs:
           ODOO_VERSION: "14.0"
         file: repo/.ci/tasks/update-repos-dev.yaml
       - task: build
+        input_mapping: {base-image: base-14}
         privileged: true
         file: repo/.ci/tasks/build-odoo.yaml
         params:
@@ -418,14 +436,15 @@ jobs:
   - name: build-enterprise-14-dev
     <<: *notify
     plan:
-      - get: repo
-      - get: daily
-        trigger: true
-      - get: nightly
-        trigger: true
-        passed: [build-community-14-dev]
-      - get: community-14-dev
-        params: {format: oci}
+      - in_parallel:
+          - get: repo
+          - get: daily
+            trigger: true
+          - get: nightly
+            trigger: true
+            passed: [build-community-14-dev]
+          - get: community-14-dev
+            params: {format: oci}
       - task: update-repos
         params:
           GITHUB_TOKEN: ((GITHUB_TOKEN))
@@ -433,6 +452,7 @@ jobs:
           ODOO_VERSION: "14.0"
         file: repo/.ci/tasks/update-repos-dev.yaml
       - task: build
+        input_mapping: {base-image: community-14-dev}
         privileged: true
         file: repo/.ci/tasks/build-odoo.yaml
         params:
@@ -449,13 +469,14 @@ jobs:
   - name: build-community-15-dev
     <<: *notify
     plan:
-      - get: repo
-      - get: daily
-        trigger: true
-      - get: nightly
-        trigger: true
-      - get: base-15
-        params: {format: oci}
+      - in_parallel:
+          - get: repo
+          - get: daily
+            trigger: true
+          - get: nightly
+            trigger: true
+          - get: base-15
+            params: {format: oci}
       - task: update-repos
         params:
           GITHUB_TOKEN: ((GITHUB_TOKEN))
@@ -463,6 +484,7 @@ jobs:
           ODOO_VERSION: "15.0"
         file: repo/.ci/tasks/update-repos-dev.yaml
       - task: build
+        input_mapping: {base-image: base-15}
         privileged: true
         file: repo/.ci/tasks/build-odoo.yaml
         params:
@@ -479,14 +501,15 @@ jobs:
   - name: build-enterprise-15-dev
     <<: *notify
     plan:
-      - get: repo
-      - get: daily
-        trigger: true
-      - get: nightly
-        trigger: true
-        passed: [build-community-15-dev]
-      - get: community-15-dev
-        params: {format: oci}
+      - in_parallel:
+          - get: repo
+          - get: daily
+            trigger: true
+          - get: nightly
+            trigger: true
+            passed: [build-community-15-dev]
+          - get: community-15-dev
+            params: {format: oci}
       - task: update-repos
         params:
           GITHUB_TOKEN: ((GITHUB_TOKEN))
@@ -494,6 +517,7 @@ jobs:
           ODOO_VERSION: "15.0"
         file: repo/.ci/tasks/update-repos-dev.yaml
       - task: build
+        input_mapping: {base-image: community-15-dev}
         privileged: true
         file: repo/.ci/tasks/build-odoo.yaml
         params:

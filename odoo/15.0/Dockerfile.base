@@ -1,4 +1,5 @@
-FROM ubuntu:20.04 as builder
+ARG  base_image=ubuntu:20.04
+FROM ${base_image} as builder
 SHELL ["/bin/bash", "-xo", "pipefail", "-c"]
 ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get update \

@@ -10,6 +10,7 @@ image_resource:
     tag: latest
 inputs:
   - name: repo
+  - name: base-image
 outputs:
   - name: image
 run:

@@ -110,6 +110,12 @@ resources:
       tag: {{ odoo_version }}-dev
   {%- endif %}
   {%- endfor %}{% endfor %}
+  - name: ubuntu
+    type: registry-image
+    icon: docker
+    source:
+      repository: ubuntu
+      tag: "20.04"
 
 groups:
   - name: all
@@ -186,8 +192,17 @@ jobs:
           {%- else %}
           - get: repo-odoo
             trigger: true
+          - get: ubuntu
+            params: {format: oci}
           {%- endif %}
       - task: build
+        {%- if version == "community" %}
+        input_mapping: {base-image: base-{{ odoo_version }}}
+        {%- elif version == "enterprise" %}
+        input_mapping: {base-image: community-{{ odoo_version }}}
+        {%- else %}
+        input_mapping: {base-image: ubuntu}
+        {%- endif %}
         privileged: true
         file: repo/.ci/tasks/build-odoo.yaml
         params:
@@ -212,21 +227,22 @@ jobs:
   - name: build-{{ _name }}
     <<: *notify
     plan:
-      - get: repo
-      - get: daily
-        trigger: true
-      {%- if version == "community" %}
-      - get: nightly
-        trigger: true
-      - get: base-{{ odoo_version }}
-        params: {format: oci}
-      {%- elif version == "enterprise" %}
-      - get: nightly
-        trigger: true
-        passed: [build-community-{{ odoo_version }}-dev]
-      - get: community-{{ odoo_version }}-dev
-        params: {format: oci}
-      {%- endif %}
+      - in_parallel:
+          - get: repo
+          - get: daily
+            trigger: true
+          {%- if version == "community" %}
+          - get: nightly
+            trigger: true
+          - get: base-{{ odoo_version }}
+            params: {format: oci}
+          {%- elif version == "enterprise" %}
+          - get: nightly
+            trigger: true
+            passed: [build-community-{{ odoo_version }}-dev]
+          - get: community-{{ odoo_version }}-dev
+            params: {format: oci}
+          {%- endif %}
       - task: update-repos
         params:
           GITHUB_TOKEN: ((GITHUB_TOKEN))
@@ -234,6 +250,11 @@ jobs:
           ODOO_VERSION: "{{ odoo_version }}.0"
         file: repo/.ci/tasks/update-repos-dev.yaml
       - task: build
+        {%- if version == "community" %}
+        input_mapping: {base-image: base-{{ odoo_version }}}
+        {%- elif version == "enterprise" %}
+        input_mapping: {base-image: community-{{ odoo_version }}-dev}
+        {%- endif %}
         privileged: true
         file: repo/.ci/tasks/build-odoo.yaml
         params:
