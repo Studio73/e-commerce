@@ -1,0 +1,14 @@
+studio73-private-addons:
+  defaults:
+    depth: 1
+  merges:
+  - origin 1e5f54d61137a2954108c18f5bb1e62fa6ec1847
+  remotes:
+    origin: git@github.com:Studio73/studio73-private-addons.git
+website-addons:
+  defaults:
+    depth: 1
+  merges:
+  - origin 732a78203841b4fc52f4edd811b38f3bcc2b4d64
+  remotes:
+    origin: git@github.com:Studio73/website-addons.git
