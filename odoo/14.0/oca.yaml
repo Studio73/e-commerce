@@ -85,6 +85,13 @@ brand:
   - origin d56908c715c631050309cc5f92722e0c602a69d8
   remotes:
     origin: https://github.com/OCA/brand.git
+crm:
+  defaults:
+    depth: 1
+  merges:
+  - origin 91b4145bdcf37d89012cbb14703a517fc436a4d3
+  remotes:
+    origin: https://github.com/OCA/crm.git
 commission:
   defaults:
     depth: 1
@@ -308,9 +315,10 @@ stock-logistics-warehouse:
     origin: https://github.com/OCA/stock-logistics-warehouse.git
 stock-logistics-workflow:
   defaults:
-    depth: 1
+    depth: 500
   merges:
   - origin be05882f06a1a87545a2908d6d128752c4c141cf
+  - origin refs/pull/1005/head
   remotes:
     origin: https://github.com/OCA/stock-logistics-workflow.git
 web:
