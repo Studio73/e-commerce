@@ -30,8 +30,8 @@ class ToolsYaml(object):
         self.gh_rate_limit = 0
         self.gh_rate_used = 0
         if not os.path.exists(repos_yaml):
-            print("File not found: {}".format(repos_yaml))
-            sys.exit(1)
+            _logger.info("Nothing to do, file not found: {}".format(repos_yaml))
+            sys.exit(0)
         stream = open(self.repos_yaml, "r")
         self.yaml = yaml.safe_load(stream) or {}
         stream.close()
@@ -268,6 +268,52 @@ def lint(cwd):
 
 @tools.command()
 @click.option(
+    "-v",
+    "--version",
+    type=click.Choice(AVAILABLE_VERSIONS),
+    required=True,
+    envvar="ODOO_VERSION",
+)
+@click.option("-c", "--cwd", help="Move to directory")
+def aggregate_prs(cwd, version):
+    if not cwd:
+        cwd = os.getcwd()
+    elif not os.path.exists(cwd):
+        _logger.error("Target directory doesn't exists")
+        sys.exit(1)
+    # Update base repo
+    if not os.environ.get("SSH_KEY"):
+        _logger.error("Missing SSH_KEY environment variable")
+        sys.exit(1)
+    ssh_cmd = """
+        mkdir -p ~/.ssh
+        echo -e "${SSH_KEY//_/\\n}" > ~/.ssh/id_rsa
+        chmod og-rwx ~/.ssh/id_rsa
+        ssh-keyscan github.com >> ~/.ssh/known_hosts
+    """
+    sp.call(
+        ssh_cmd,
+        shell=True,
+        executable="/bin/bash",
+        stdout=sp.DEVNULL,
+        stderr=sp.DEVNULL,
+    )
+    remotes = sp.check_output(["git", "remote", "-v"], cwd=cwd).splitlines()
+    repo_url = remotes[0].decode().split("\t")[-1].split(" ")[0]
+    # Convert https -> git+ssl
+    repo_url = repo_url.replace("https://github.com/", "git@github.com:")
+    tmp_repos_yaml = "/tmp/repos.yaml"
+    sp.call(["touch", tmp_repos_yaml])
+    obj = ToolsYaml(version, tmp_repos_yaml)
+    obj.add_repo(".", repo_url)
+    obj.update_repos(True)
+    obj.save()
+    sp.call(["gitaggregate", "-c", tmp_repos_yaml], cwd=cwd)
+    return True
+
+
+@tools.command()
+@click.option(
     "--add-open-prs",
     is_flag=True,
     envvar="ADD_OPEN_PRS",
@@ -291,37 +337,9 @@ def lint(cwd):
 def update_repos(cwd, config, version, commit, add_open_prs):
     if not cwd:
         cwd = os.getcwd()
-    elif os.path.exists(cwd):
-        sp.call(["mkdir", "-p", cwd])
-    if add_open_prs:
-        # Update base repo
-        if not os.environ.get("SSH_KEY"):
-            _logger.error("Missing SSH_KEY environment variable")
-            sys.exit(1)
-        ssh_cmd = """
-            mkdir -p ~/.ssh
-            echo -e "${SSH_KEY//_/\\n}" > ~/.ssh/id_rsa
-            chmod og-rwx ~/.ssh/id_rsa
-            ssh-keyscan github.com >> ~/.ssh/known_hosts
-        """
-        sp.call(
-            ssh_cmd,
-            shell=True,
-            executable="/bin/bash",
-            stdout=sp.DEVNULL,
-            stderr=sp.DEVNULL,
-        )
-        remotes = sp.check_output(["git", "remote", "-v"], cwd=cwd).splitlines()
-        repo_url = remotes[0].decode().split("\t")[-1].split(" ")[0]
-        # Convert https -> git+ssl
-        repo_url = repo_url.replace("https://github.com/", "git@github.com:")
-        tmp_repos_yaml = "/tmp/repos.yaml"
-        sp.call(["touch", tmp_repos_yaml])
-        obj = ToolsYaml(version, tmp_repos_yaml)
-        obj.add_repo(".", repo_url)
-        obj.update_repos(add_open_prs)
-        obj.save()
-        sp.call(["gitaggregate", "-c", tmp_repos_yaml], cwd=cwd)
+    elif not os.path.exists(cwd):
+        _logger.error("Target directory doesn't exists")
+        sys.exit(1)
     repos_yaml = os.path.join(cwd, config)
     obj = ToolsYaml(version, repos_yaml)
     obj.update_repos(add_open_prs)
