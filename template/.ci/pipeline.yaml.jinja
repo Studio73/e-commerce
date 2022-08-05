@@ -37,7 +37,7 @@ meta:
     UNPACK_ROOTFS: true
     CONTEXT: repo
     ODOO_VERSION: "{{ odoo_version }}"
-    IMAGE_ARG_base_image: odoo/image.tar
+    IMAGE_ARG_base_image: odoo-{{ odoo_edition }}/image.tar
     BUILD_ARG_SSH_KEY: ((GITHUB_SSH_KEY))
   x-build: &build
     privileged: true
@@ -112,7 +112,7 @@ resources:
       repo: {{ repo_name }}
       access_token: ((GITHUB_TOKEN))
       gchat_webhook: ((GCHAT_PRS_WEBHOOK))
-  - name: odoo
+  - name: odoo-{{ odoo_edition }}
     type: registry-image
     icon: docker
     source:
@@ -143,7 +143,6 @@ groups:
       - "*"
   - name: master
     jobs:
-      - update-repos
       - build-dev
       - build
   - name: pr
@@ -152,35 +151,12 @@ groups:
       - tests
 
 jobs:
-  - name: update-repos
-    <<: *notify
-    plan:
-      - get: nightly
-        trigger: true
-      - get: repo
-      - get: odoo
-        params: {format: oci}
-      - task: update
-        attempts: 3
-        params:
-          GITHUB_TOKEN: ((GITHUB_TOKEN))
-          COMMIT: true
-          ODOO_VERSION: {{ odoo_version }}.0
-        file: repo/.ci/tasks/update-repos.yaml
-      - task: build
-        <<: *build
-      - task: tests
-        <<: *db-conn
-        image: image
-        file: repo/.ci/tasks/tests.yaml
-      - put: repo
-        params: {repository: repo}
   - name: build
     <<: *notify
     plan:
       - get: repo
         trigger: true
-      - get: odoo
+      - get: odoo-{{ odoo_edition }}
         params: {format: oci}
       - task: build
         <<: *build
@@ -201,16 +177,13 @@ jobs:
         trigger: true
       - get: nightly
         trigger: true
-        passed: [update-repos]
-      - get: odoo
+      - get: odoo-{{ odoo_edition }}
         params: {format: oci}
-      - task: update-repos
+      - task: aggregate-prs
         params:
-          GITHUB_TOKEN: ((GITHUB_TOKEN))
           SSH_KEY: ((GITHUB_SSH_KEY))
-          ADD_OPEN_PRS: true
           ODOO_VERSION: {{ odoo_version }}.0
-        file: repo/.ci/tasks/update-repos.yaml
+        file: repo/.ci/tasks/aggregate-prs.yaml
       - task: build-dev
         <<: *build
         params:
@@ -242,7 +215,7 @@ jobs:
           - get: pr
             trigger: true
             passed: [lint]
-          - get: odoo
+          - get: odoo-{{ odoo_edition }}
             params: {format: oci}
       - put: notify-pr
         inputs: [pr]

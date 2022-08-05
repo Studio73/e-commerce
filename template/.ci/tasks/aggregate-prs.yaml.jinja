@@ -6,14 +6,14 @@ image_resource:
   source:
     username: ((REGISTRY_USER))
     password: ((REGISTRY_SECRET))
-    repository: r.studio73.es/odoo/oci-build
-    tag: latest
+    repository: r.studio73.es/odoo/tools
 inputs:
   - name: repo
-  - name: odoo
 outputs:
-  - name: image
+  - name: repo
 run:
-  path: build-tag
-caches:
-  - path: cache
+  path: tools
+  args:
+    - aggregate-prs
+    - --version={{ odoo_version }}.0
+    - --cwd=repo
