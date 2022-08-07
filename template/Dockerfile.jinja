@@ -1,5 +1,5 @@
 ARG  base_image=r.studio73.es/odoo/{{ odoo_edition }}:{{ odoo_version }}
-FROM ${base_image} as builder
+FROM ${base_image}
 COPY --chown=odoo ./requirements.txt $SRC/custom/requirements.txt
 RUN install-requirements $SRC/custom
 COPY --chown=odoo . $SRC/custom
