@@ -127,6 +127,9 @@ groups:
       {%- for version in versions %}
       - "build-{{ version }}-*"
       {%- endfor %}
+  - name: dev
+    jobs:
+      - "*-dev"
   - name: tools
     jobs:
       - update-repos
@@ -179,21 +182,23 @@ jobs:
           - get: repo
           {%- if version == "community" %}
           - get: repo-odoo
-            trigger: true
-            passed: [build-base-{{ odoo_version }}]
           - get: base-{{ odoo_version }}
             params: {format: oci}
+            trigger: true
+            passed: [build-base-{{ odoo_version }}]
           {%- elif version == "enterprise" %}
           - get: repo-odoo
-            trigger: true
-            passed: [build-community-{{ odoo_version }}]
           - get: community-{{ odoo_version }}
             params: {format: oci}
+            trigger: true
+            passed: [build-community-{{ odoo_version }}]
           {%- else %}
           - get: repo-odoo
             trigger: true
           - get: ubuntu
             params: {format: oci}
+          - get: nightly
+            passed: [update-repos]
           {%- endif %}
       - task: build
         {%- if version == "community" %}
@@ -224,19 +229,27 @@ jobs:
     plan:
       - in_parallel:
           - get: repo
+          {%- if version == "community" %}
           - get: daily
             trigger: true
-          {%- if version == "community" %}
           - get: nightly
-            trigger: true
+            passed:
+              - update-repos
+              - build-base-{{ odoo_version }}
           - get: base-{{ odoo_version }}
-            params: {format: oci}
-          {%- elif version == "enterprise" %}
-          - get: nightly
             trigger: true
+            params: {format: oci}
+            passed: [build-base-{{ odoo_version }}]
+          {%- elif version == "enterprise" %}
+          - get: daily
+            trigger: true
+            passed: [build-community-{{ odoo_version }}-dev]
+          - get: nightly
             passed: [build-community-{{ odoo_version }}-dev]
           - get: community-{{ odoo_version }}-dev
             params: {format: oci}
+            trigger: true
+            passed: [build-community-{{ odoo_version }}-dev]
           {%- endif %}
       - task: update-repos
         params:

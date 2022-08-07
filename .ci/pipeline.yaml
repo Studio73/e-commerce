@@ -187,6 +187,9 @@ groups:
       - "build-base-*"
       - "build-community-*"
       - "build-enterprise-*"
+  - name: dev
+    jobs:
+      - "*-dev"
   - name: tools
     jobs:
       - update-repos
@@ -271,6 +274,8 @@ jobs:
             trigger: true
           - get: ubuntu
             params: {format: oci}
+          - get: nightly
+            passed: [update-repos]
       - task: build
         input_mapping: {base-image: ubuntu}
         privileged: true
@@ -291,10 +296,10 @@ jobs:
       - in_parallel:
           - get: repo
           - get: repo-odoo
-            trigger: true
-            passed: [build-base-14]
           - get: base-14
             params: {format: oci}
+            trigger: true
+            passed: [build-base-14]
       - task: build
         input_mapping: {base-image: base-14}
         privileged: true
@@ -315,10 +320,10 @@ jobs:
       - in_parallel:
           - get: repo
           - get: repo-odoo
-            trigger: true
-            passed: [build-community-14]
           - get: community-14
             params: {format: oci}
+            trigger: true
+            passed: [build-community-14]
       - task: build
         input_mapping: {base-image: community-14}
         privileged: true
@@ -342,6 +347,8 @@ jobs:
             trigger: true
           - get: ubuntu
             params: {format: oci}
+          - get: nightly
+            passed: [update-repos]
       - task: build
         input_mapping: {base-image: ubuntu}
         privileged: true
@@ -362,10 +369,10 @@ jobs:
       - in_parallel:
           - get: repo
           - get: repo-odoo
-            trigger: true
-            passed: [build-base-15]
           - get: base-15
             params: {format: oci}
+            trigger: true
+            passed: [build-base-15]
       - task: build
         input_mapping: {base-image: base-15}
         privileged: true
@@ -386,10 +393,10 @@ jobs:
       - in_parallel:
           - get: repo
           - get: repo-odoo
-            trigger: true
-            passed: [build-community-15]
           - get: community-15
             params: {format: oci}
+            trigger: true
+            passed: [build-community-15]
       - task: build
         input_mapping: {base-image: community-15}
         privileged: true
@@ -413,9 +420,13 @@ jobs:
           - get: daily
             trigger: true
           - get: nightly
-            trigger: true
+            passed:
+              - update-repos
+              - build-base-14
           - get: base-14
+            trigger: true
             params: {format: oci}
+            passed: [build-base-14]
       - task: update-repos
         params:
           GITHUB_TOKEN: ((GITHUB_TOKEN))
@@ -444,11 +455,13 @@ jobs:
           - get: repo
           - get: daily
             trigger: true
+            passed: [build-community-14-dev]
           - get: nightly
-            trigger: true
             passed: [build-community-14-dev]
           - get: community-14-dev
             params: {format: oci}
+            trigger: true
+            passed: [build-community-14-dev]
       - task: update-repos
         params:
           GITHUB_TOKEN: ((GITHUB_TOKEN))
@@ -478,9 +491,13 @@ jobs:
           - get: daily
             trigger: true
           - get: nightly
-            trigger: true
+            passed:
+              - update-repos
+              - build-base-15
           - get: base-15
+            trigger: true
             params: {format: oci}
+            passed: [build-base-15]
       - task: update-repos
         params:
           GITHUB_TOKEN: ((GITHUB_TOKEN))
@@ -509,11 +526,13 @@ jobs:
           - get: repo
           - get: daily
             trigger: true
+            passed: [build-community-15-dev]
           - get: nightly
-            trigger: true
             passed: [build-community-15-dev]
           - get: community-15-dev
             params: {format: oci}
+            trigger: true
+            passed: [build-community-15-dev]
       - task: update-repos
         params:
           GITHUB_TOKEN: ((GITHUB_TOKEN))
