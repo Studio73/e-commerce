@@ -9,7 +9,7 @@ account-closing:
   defaults:
     depth: 1
   merges:
-  - origin 3aa6c3312db13d6917160523e4b0c1d7a5c7ed59
+  - origin 554599743172dba09fa9857e2cd398c99ecbbf13
   remotes:
     origin: https://github.com/OCA/account-closing.git
 account-financial-reporting:
@@ -30,14 +30,14 @@ account-invoice-reporting:
   defaults:
     depth: 1
   merges:
-  - origin 362d21dfb97d58dfee6ec6899cbf6b5031060513
+  - origin 07906f482852372c5ba75a38c3620bc33951a1f6
   remotes:
     origin: https://github.com/OCA/account-invoice-reporting.git
 account-invoicing:
   defaults:
     depth: 1
   merges:
-  - origin c6d4b5924d232b69374e48b3855a167d5aa27a1d
+  - origin 8acc18b1abe8ae6ebfd59b60516fa1152f7c5f0b
   remotes:
     origin: https://github.com/OCA/account-invoicing.git
 account-payment:
@@ -51,7 +51,7 @@ account-reconcile:
   defaults:
     depth: 1
   merges:
-  - origin 4b37cb1fc69271d599fa9975820b12e5ae60c9b3
+  - origin 2f05b67cae4ef2561413251f1f85c24793ac55f5
   remotes:
     origin: https://github.com/OCA/account-reconcile.git
 bank-payment:
@@ -72,7 +72,7 @@ bank-statement-reconcile:
   defaults:
     depth: 1
   merges:
-  - origin 4b37cb1fc69271d599fa9975820b12e5ae60c9b3
+  - origin 2f05b67cae4ef2561413251f1f85c24793ac55f5
   remotes:
     origin: https://github.com/OCA/bank-statement-reconcile.git
 commission:
@@ -156,7 +156,7 @@ l10n-spain:
   defaults:
     depth: 1
   merges:
-  - origin 50f408fdd49fd99ac084cf9425525351d388bc37
+  - origin 30afa92ae2ee4c6f476bdb53b5614f5ebb33208d
   remotes:
     origin: https://github.com/OCA/l10n-spain.git
 mis-builder:
