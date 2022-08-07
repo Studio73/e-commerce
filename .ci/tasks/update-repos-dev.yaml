@@ -17,5 +17,5 @@ run:
   args:
     - update-repos
     - --cwd=repo
-    - --config=$ODOO_VERSION/$VERSION.yaml
+    - --config="$ODOO_VERSION/$VERSION.yaml"
     - --add-open-prs
