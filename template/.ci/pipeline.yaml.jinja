@@ -169,6 +169,7 @@ jobs:
         trigger: true
       - task: aggregate-prs
         params:
+          GITHUB_TOKEN: ((GITHUB_TOKEN))
           SSH_KEY: ((GITHUB_SSH_KEY))
           ODOO_VERSION: {{ odoo_version }}.0
         file: repo/.ci/tasks/aggregate-prs.yaml
