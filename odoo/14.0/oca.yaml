@@ -23,7 +23,7 @@ account-financial-tools:
   defaults:
     depth: 1
   merges:
-  - origin 037d04072771827f8455b611fccabf985ee65c54
+  - origin aa9708c05d2fb6335db6f1e67fe6665b4d2c7378
   remotes:
     origin: https://github.com/OCA/account-financial-tools.git
 account-invoice-reporting:
@@ -54,7 +54,7 @@ account-reconcile:
   defaults:
     depth: 1
   merges:
-  - origin 2927fd9feebb68866689836fd68ae1654493cc67
+  - origin 67d66d7ce2dca35784716acaaa025a58690adb25
   remotes:
     origin: https://github.com/OCA/account-reconcile.git
 bank-payment:
@@ -75,7 +75,7 @@ bank-statement-reconcile:
   defaults:
     depth: 1
   merges:
-  - origin 2927fd9feebb68866689836fd68ae1654493cc67
+  - origin 67d66d7ce2dca35784716acaaa025a58690adb25
   remotes:
     origin: https://github.com/OCA/bank-statement-reconcile.git
 brand:
@@ -136,7 +136,7 @@ hr:
   defaults:
     depth: 1
   merges:
-  - origin 9a4ab76f49f6d5107a9913212a08b3b986ca4e20
+  - origin 79c2cc36f2a1e56928696b5f0b119081b0b7fabb
   remotes:
     origin: https://github.com/OCA/hr.git
 hr-attendance:
@@ -178,7 +178,7 @@ l10n-spain:
   defaults:
     depth: 500
   merges:
-  - origin 69a5e9c7ea2972d9fc1b273caf3acca8962e1fff
+  - origin 337fa556972303f9eb3fde085a265cdad18c05fd
   - origin refs/pull/2411/head
   remotes:
     origin: https://github.com/OCA/l10n-spain.git
@@ -200,14 +200,14 @@ mis-builder:
   defaults:
     depth: 1
   merges:
-  - origin 67501cc1d3326a1b1f5b643b08229d35be591853
+  - origin b23f5bac26c89ea7934dedfb8aa1ff6e04e3759c
   remotes:
     origin: https://github.com/OCA/mis-builder.git
 partner-contact:
   defaults:
     depth: 1
   merges:
-  - origin 1b8b42c1c9e7c888909e298de02048e817235b8a
+  - origin f124fa8592698fb81b9fca122b473c6df23355fa
   remotes:
     origin: https://github.com/OCA/partner-contact.git
 product-attribute:
@@ -273,7 +273,7 @@ server-tools:
   defaults:
     depth: 500
   merges:
-  - origin 83b59c32980b9a012ab1aa14ab48f70677784657
+  - origin 8cb1fba0e83a59e599a0a200d406cb63f7e50ddb
   - origin refs/pull/1990/head
   remotes:
     origin: https://github.com/OCA/server-tools.git
