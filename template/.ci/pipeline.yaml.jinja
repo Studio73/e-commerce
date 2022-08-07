@@ -37,7 +37,7 @@ meta:
     UNPACK_ROOTFS: true
     CONTEXT: repo
     ODOO_VERSION: "{{ odoo_version }}"
-    IMAGE_ARG_base_image: odoo-{{ odoo_edition }}/image.tar
+    IMAGE_ARG_base_image: odoo/image.tar
     BUILD_ARG_SSH_KEY: ((GITHUB_SSH_KEY))
   x-build: &build
     privileged: true
@@ -58,24 +58,6 @@ resource_types:
       repository: pix4d/cogito
 
 resources:
-  - name: daily
-    type: time
-    icon: clock-outline
-    source:
-      days: [Sunday, Monday, Tuesday, Wednesday, Thursday]
-      start: 14:00
-      stop: 14:30
-      location: Europe/Madrid
-      initial_version: true
-  - name: nightly
-    type: time
-    icon: clock-outline
-    source:
-      days: [Sunday, Monday, Tuesday, Wednesday, Thursday]
-      start: 21:00
-      stop: 22:00
-      location: Europe/Madrid
-      initial_version: true
   - name: repo
     type: git
     icon: github
@@ -120,6 +102,14 @@ resources:
       password: ((REGISTRY_SECRET))
       repository: {{ docker_image_base }}
       tag: {{ odoo_version }}
+  - name: odoo-{{ odoo_edition }}-dev
+    type: registry-image
+    icon: docker
+    source:
+      username: ((REGISTRY_USER))
+      password: ((REGISTRY_SECRET))
+      repository: {{ docker_image_base }}
+      tag: {{ odoo_version }}-dev
   - name: {{ project_name }}
     type: registry-image
     icon: docker
@@ -160,6 +150,7 @@ jobs:
         params: {format: oci}
       - task: build
         <<: *build
+        input_mapping: {odoo: "odoo-{{ odoo_edition }}"}
         output_mapping: {image: "{{ project_name }}"}
       - task: tests
         <<: *db-conn
@@ -173,12 +164,9 @@ jobs:
     <<: *notify
     plan:
       - get: repo
-      - get: daily
-        trigger: true
-      - get: nightly
-        trigger: true
-      - get: odoo-{{ odoo_edition }}
+      - get: odoo-{{ odoo_edition }}-dev
         params: {format: oci}
+        trigger: true
       - task: aggregate-prs
         params:
           SSH_KEY: ((GITHUB_SSH_KEY))
@@ -189,6 +177,7 @@ jobs:
         params:
           <<: *build-params
           DEV: True
+        input_mapping: {odoo: "odoo-{{ odoo_edition }}-dev"}
         output_mapping: {image: "{{ project_name }}-dev"}
       - task: tests
         <<: *db-conn
@@ -222,7 +211,9 @@ jobs:
         params: {state: pending}
       - task: build
         <<: *build
-        input_mapping: {repo: pr}
+        input_mapping:
+            repo: pr
+            odoo: "odoo-{{ odoo_edition }}"
         file: pr/.ci/tasks/build.yaml
       - task: tests
         <<: *db-conn

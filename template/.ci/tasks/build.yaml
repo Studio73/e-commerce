@@ -10,7 +10,7 @@ image_resource:
     tag: latest
 inputs:
   - name: repo
-  - name: odoo-{{ odoo_edition }}
+  - name: odoo
 outputs:
   - name: image
 run:
