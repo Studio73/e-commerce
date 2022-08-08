@@ -1,0 +1,24 @@
+---
+platform: linux
+
+image_resource:
+  type: registry-image
+  source:
+    username: ((REGISTRY_USER))
+    password: ((REGISTRY_SECRET))
+    repository: r.studio73.es/odoo/{{ odoo_edition }}
+    tag: {{odoo_version}}
+inputs:
+  - name: custom
+    path: /opt/odoo/src/custom
+run:
+  user: root
+  path: python3
+  args:
+    - /entrypoint.py
+    - bash
+    - -ceux
+    - |
+      pip3 install --upgrade-strategy=only-if-needed -c $SRC/odoo/odoo/requirements.txt -r $SRC/custom/requirements.txt
+      odoo-test run
+      odoo-test coverage

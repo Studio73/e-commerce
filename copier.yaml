@@ -16,7 +16,8 @@ _tasks:
   - rm -f .github/workflows/cancel.yaml
   - rm -f .github/workflows/automerge.yaml
   - rm -f .ci/tasks/update-repos.yaml
-  - rm -f repos.yaml
+  - rm -f .ci/tasks/tests.yaml
+  - rm -f ./repos.yaml
 
 odoo_version:
   type: int

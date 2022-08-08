@@ -155,7 +155,7 @@ jobs:
       - task: tests
         <<: *db-conn
         image: {{ project_name }}
-        file: repo/.ci/tasks/tests.yaml
+        file: repo/.ci/tasks/tests-build.yaml
       - put: {{ project_name }}
         params:
           image: {{ project_name }}/image.tar
@@ -183,7 +183,7 @@ jobs:
       - task: tests
         <<: *db-conn
         image: {{ project_name }}-dev
-        file: repo/.ci/tasks/tests.yaml
+        file: repo/.ci/tasks/tests-build.yaml
       - put: {{ project_name }}-dev
         params:
           image: {{ project_name }}-dev/image.tar
@@ -206,17 +206,10 @@ jobs:
             trigger: true
             passed: [lint]
           - get: odoo-{{ odoo_edition }}
-            params: {format: oci}
       - put: notify-pr
         inputs: [pr]
         params: {state: pending}
-      - task: build
-        <<: *build
-        input_mapping:
-            repo: pr
-            odoo: "odoo-{{ odoo_edition }}"
-        file: pr/.ci/tasks/build.yaml
       - task: tests
         <<: *db-conn
-        image: image
-        file: pr/.ci/tasks/tests.yaml
+        input_mapping: {custom: pr}
+        file: pr/.ci/tasks/tests-pr.yaml
