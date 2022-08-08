@@ -1,14 +1,5 @@
 ---
 meta:
-  x-notify: &notify
-    on_failure:
-      put: notify
-      inputs: [repo]
-      params: {state: failure}
-    on_error:
-      put: notify
-      inputs: [repo]
-      params: {state: error}
   x-notify-pr: &notify-pr
     on_success:
       put: notify-pr
@@ -33,6 +24,16 @@ meta:
       PGHOST: ((PGHOST))
       PGPORT: ((PGPORT))
       PGPASSWORD: ((PGPASSWORD))
+{%- if image %}
+  x-notify: &notify
+    on_failure:
+      put: notify
+      inputs: [repo]
+      params: {state: failure}
+    on_error:
+      put: notify
+      inputs: [repo]
+      params: {state: error}
   x-build-params: &build-params
     UNPACK_ROOTFS: true
     CONTEXT: repo
@@ -44,6 +45,7 @@ meta:
     file: repo/.ci/tasks/build.yaml
     params:
       <<: *build-params
+{%- endif %}
 
 resource_types:
   - name: pull-request
@@ -58,6 +60,24 @@ resource_types:
       repository: pix4d/cogito
 
 resources:
+  - name: pr
+    type: pull-request
+    icon: github
+    check_every: 24h
+    webhook_token: ((WEBHOOK_TOKEN))
+    source:
+      repository: {{ org_name }}/{{ repo_name }}
+      access_token: ((GITHUB_TOKEN))
+  - name: notify-pr
+    type: cogito
+    icon: bell-ring
+    check_every: 24h
+    source:
+      owner: {{ org_name }}
+      repo: {{ repo_name }}
+      access_token: ((GITHUB_TOKEN))
+      gchat_webhook: ((GCHAT_PRS_WEBHOOK))
+{%- if image %}
   - name: repo
     type: git
     icon: github
@@ -68,14 +88,6 @@ resources:
       branch: "14.0"
       username: ((GITHUB_TOKEN))
       password: x-oauth-basic
-  - name: pr
-    type: pull-request
-    icon: github
-    check_every: 24h
-    webhook_token: ((WEBHOOK_TOKEN))
-    source:
-      repository: {{ org_name }}/{{ repo_name }}
-      access_token: ((GITHUB_TOKEN))
   - name: notify
     type: cogito
     icon: bell-ring
@@ -85,22 +97,13 @@ resources:
       repo: {{ repo_name }}
       access_token: ((GITHUB_TOKEN))
       gchat_webhook: ((GCHAT_CONCOURSE_WEBHOOK))
-  - name: notify-pr
-    type: cogito
-    icon: bell-ring
-    check_every: 24h
-    source:
-      owner: {{ org_name }}
-      repo: {{ repo_name }}
-      access_token: ((GITHUB_TOKEN))
-      gchat_webhook: ((GCHAT_PRS_WEBHOOK))
   - name: odoo-{{ odoo_edition }}
     type: registry-image
     icon: docker
     source:
       username: ((REGISTRY_USER))
       password: ((REGISTRY_SECRET))
-      repository: {{ docker_image_base }}
+      repository: {{ base_image }}
       tag: {{ odoo_version }}
   - name: odoo-{{ odoo_edition }}-dev
     type: registry-image
@@ -108,7 +111,7 @@ resources:
     source:
       username: ((REGISTRY_USER))
       password: ((REGISTRY_SECRET))
-      repository: {{ docker_image_base }}
+      repository: {{ base_image }}
       tag: {{ odoo_version }}-dev
   - name: {{ project_name }}
     type: registry-image
@@ -116,7 +119,7 @@ resources:
     source:
       username: ((REGISTRY_USER))
       password: ((REGISTRY_SECRET))
-      repository: {{ docker_image_project }}
+      repository: {{ image }}
       tag: {{ odoo_version }}
   - name: {{ project_name }}-dev
     type: registry-image
@@ -124,7 +127,7 @@ resources:
     source:
       username: ((REGISTRY_USER))
       password: ((REGISTRY_SECRET))
-      repository: {{ docker_image_project }}
+      repository: {{ image }}
       tag: {{ odoo_version }}-dev
 
 groups:
@@ -139,8 +142,10 @@ groups:
     jobs:
       - lint
       - tests
+{%- endif %}
 
 jobs:
+{%- if image %}
   - name: build
     <<: *notify
     plan:
@@ -188,6 +193,7 @@ jobs:
         params:
           image: {{ project_name }}-dev/image.tar
           additional_tags: {{ project_name }}-dev/today-tag
+{%- endif %}
   - name: lint
     <<: *notify-pr
     plan:
@@ -205,7 +211,6 @@ jobs:
           - get: pr
             trigger: true
             passed: [lint]
-          - get: odoo-{{ odoo_edition }}
       - put: notify-pr
         inputs: [pr]
         params: {state: pending}

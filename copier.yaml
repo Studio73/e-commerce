@@ -52,15 +52,15 @@ repo_name:
   default: "{{ project_name }}-addons"
   help: Repository name, usually project name + -addons
 
-docker_image_base:
+base_image:
   type: str
   default: "r.studio73.es/odoo/{{ odoo_edition }}"
   help: Base Docker image
 
-docker_image_project:
+image:
   type: str
   default: "r.studio73.es/odoo/{{ project_name }}"
-  help: Project docker image
+  help: Project docker image, leave it empty if you don't want to build an image
 
 ci_team:
   type: str
