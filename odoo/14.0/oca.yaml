@@ -333,6 +333,7 @@ stock-logistics-workflow:
   merges:
   - origin be05882f06a1a87545a2908d6d128752c4c141cf
   - origin refs/pull/1005/head
+  - origin refs/pull/1054/head
   remotes:
     origin: https://github.com/OCA/stock-logistics-workflow.git
 web:
