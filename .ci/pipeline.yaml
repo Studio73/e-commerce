@@ -57,6 +57,15 @@ resources:
       stop: 22:00
       location: Europe/Madrid
       initial_version: true
+  - name: sunday
+    type: time
+    icon: clock-outline
+    source:
+      days: [Sunday]
+      start: 01:00
+      stop: 02:00
+      location: Europe/Madrid
+      initial_version: true
   - name: notify
     type: cogito
     icon: bell-ring
@@ -254,7 +263,7 @@ jobs:
   - name: update-repos
     <<: *notify
     plan:
-      - get: nightly
+      - get: sunday
         trigger: true
       - get: repo
       - task: update
@@ -274,14 +283,14 @@ jobs:
             trigger: true
           - get: ubuntu
             params: {format: oci}
-          - get: nightly
+          - get: sunday
             passed: [update-repos]
       - task: build
         input_mapping: {base-image: ubuntu}
         privileged: true
         file: repo/.ci/tasks/build-odoo.yaml
         params:
-          VERSION: "base"
+          ODOO_EDITION: "base"
           ODOO_VERSION: "14"
           BUILD_ARG_SSH_KEY: ((GITHUB_SSH_KEY))
           IMAGE_ARG_base_image: base-image/image.tar
@@ -295,7 +304,10 @@ jobs:
     plan:
       - in_parallel:
           - get: repo
-          - get: repo-odoo
+          - get: daily
+            trigger: true
+          - get: nightly
+            trigger: true
           - get: base-14
             params: {format: oci}
             trigger: true
@@ -305,7 +317,7 @@ jobs:
         privileged: true
         file: repo/.ci/tasks/build-odoo.yaml
         params:
-          VERSION: "community"
+          ODOO_EDITION: "community"
           ODOO_VERSION: "14"
           BUILD_ARG_SSH_KEY: ((GITHUB_SSH_KEY))
           IMAGE_ARG_base_image: base-image/image.tar
@@ -319,7 +331,6 @@ jobs:
     plan:
       - in_parallel:
           - get: repo
-          - get: repo-odoo
           - get: community-14
             params: {format: oci}
             trigger: true
@@ -329,7 +340,7 @@ jobs:
         privileged: true
         file: repo/.ci/tasks/build-odoo.yaml
         params:
-          VERSION: "enterprise"
+          ODOO_EDITION: "enterprise"
           ODOO_VERSION: "14"
           BUILD_ARG_SSH_KEY: ((GITHUB_SSH_KEY))
           IMAGE_ARG_base_image: base-image/image.tar
@@ -347,14 +358,14 @@ jobs:
             trigger: true
           - get: ubuntu
             params: {format: oci}
-          - get: nightly
+          - get: sunday
             passed: [update-repos]
       - task: build
         input_mapping: {base-image: ubuntu}
         privileged: true
         file: repo/.ci/tasks/build-odoo.yaml
         params:
-          VERSION: "base"
+          ODOO_EDITION: "base"
           ODOO_VERSION: "15"
           BUILD_ARG_SSH_KEY: ((GITHUB_SSH_KEY))
           IMAGE_ARG_base_image: base-image/image.tar
@@ -368,7 +379,10 @@ jobs:
     plan:
       - in_parallel:
           - get: repo
-          - get: repo-odoo
+          - get: daily
+            trigger: true
+          - get: nightly
+            trigger: true
           - get: base-15
             params: {format: oci}
             trigger: true
@@ -378,7 +392,7 @@ jobs:
         privileged: true
         file: repo/.ci/tasks/build-odoo.yaml
         params:
-          VERSION: "community"
+          ODOO_EDITION: "community"
           ODOO_VERSION: "15"
           BUILD_ARG_SSH_KEY: ((GITHUB_SSH_KEY))
           IMAGE_ARG_base_image: base-image/image.tar
@@ -392,7 +406,6 @@ jobs:
     plan:
       - in_parallel:
           - get: repo
-          - get: repo-odoo
           - get: community-15
             params: {format: oci}
             trigger: true
@@ -402,7 +415,7 @@ jobs:
         privileged: true
         file: repo/.ci/tasks/build-odoo.yaml
         params:
-          VERSION: "enterprise"
+          ODOO_EDITION: "enterprise"
           ODOO_VERSION: "15"
           BUILD_ARG_SSH_KEY: ((GITHUB_SSH_KEY))
           IMAGE_ARG_base_image: base-image/image.tar
@@ -420,26 +433,17 @@ jobs:
           - get: daily
             trigger: true
           - get: nightly
-            passed:
-              - update-repos
-              - build-base-14
-          - get: base-14
             trigger: true
+          - get: base-14
             params: {format: oci}
             passed: [build-base-14]
-      - task: update-repos
-        params:
-          GITHUB_TOKEN: ((GITHUB_TOKEN))
-          VERSION: "community"
-          ODOO_VERSION: "14.0"
-        file: repo/.ci/tasks/update-repos-dev.yaml
       - task: build
         input_mapping: {base-image: base-14}
         privileged: true
         file: repo/.ci/tasks/build-odoo.yaml
         params:
           DEV: True
-          VERSION: "community"
+          ODOO_EDITION: "community"
           ODOO_VERSION: "14"
           BUILD_ARG_SSH_KEY: ((GITHUB_SSH_KEY))
           IMAGE_ARG_base_image: base-image/image.tar
@@ -453,28 +457,17 @@ jobs:
     plan:
       - in_parallel:
           - get: repo
-          - get: daily
-            trigger: true
-            passed: [build-community-14-dev]
-          - get: nightly
-            passed: [build-community-14-dev]
           - get: community-14-dev
             params: {format: oci}
             trigger: true
             passed: [build-community-14-dev]
-      - task: update-repos
-        params:
-          GITHUB_TOKEN: ((GITHUB_TOKEN))
-          VERSION: "enterprise"
-          ODOO_VERSION: "14.0"
-        file: repo/.ci/tasks/update-repos-dev.yaml
       - task: build
         input_mapping: {base-image: community-14-dev}
         privileged: true
         file: repo/.ci/tasks/build-odoo.yaml
         params:
           DEV: True
-          VERSION: "enterprise"
+          ODOO_EDITION: "enterprise"
           ODOO_VERSION: "14"
           BUILD_ARG_SSH_KEY: ((GITHUB_SSH_KEY))
           IMAGE_ARG_base_image: base-image/image.tar
@@ -491,26 +484,17 @@ jobs:
           - get: daily
             trigger: true
           - get: nightly
-            passed:
-              - update-repos
-              - build-base-15
-          - get: base-15
             trigger: true
+          - get: base-15
             params: {format: oci}
             passed: [build-base-15]
-      - task: update-repos
-        params:
-          GITHUB_TOKEN: ((GITHUB_TOKEN))
-          VERSION: "community"
-          ODOO_VERSION: "15.0"
-        file: repo/.ci/tasks/update-repos-dev.yaml
       - task: build
         input_mapping: {base-image: base-15}
         privileged: true
         file: repo/.ci/tasks/build-odoo.yaml
         params:
           DEV: True
-          VERSION: "community"
+          ODOO_EDITION: "community"
           ODOO_VERSION: "15"
           BUILD_ARG_SSH_KEY: ((GITHUB_SSH_KEY))
           IMAGE_ARG_base_image: base-image/image.tar
@@ -524,28 +508,17 @@ jobs:
     plan:
       - in_parallel:
           - get: repo
-          - get: daily
-            trigger: true
-            passed: [build-community-15-dev]
-          - get: nightly
-            passed: [build-community-15-dev]
           - get: community-15-dev
             params: {format: oci}
             trigger: true
             passed: [build-community-15-dev]
-      - task: update-repos
-        params:
-          GITHUB_TOKEN: ((GITHUB_TOKEN))
-          VERSION: "enterprise"
-          ODOO_VERSION: "15.0"
-        file: repo/.ci/tasks/update-repos-dev.yaml
       - task: build
         input_mapping: {base-image: community-15-dev}
         privileged: true
         file: repo/.ci/tasks/build-odoo.yaml
         params:
           DEV: True
-          VERSION: "enterprise"
+          ODOO_EDITION: "enterprise"
           ODOO_VERSION: "15"
           BUILD_ARG_SSH_KEY: ((GITHUB_SSH_KEY))
           IMAGE_ARG_base_image: base-image/image.tar

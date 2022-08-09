@@ -1,5 +1,5 @@
-{% set versions = ["base", "community", "enterprise"] -%}
-{% set odoo_versions = ["14", "15"] -%}
+{% set editions = ["base", "community", "enterprise"] -%}
+{% set versions = ["14", "15"] -%}
 {% set tools = ["oci-build", "proxypass", "tools"] -%}
 ---
 meta:
@@ -60,6 +60,15 @@ resources:
       stop: 22:00
       location: Europe/Madrid
       initial_version: true
+  - name: sunday
+    type: time
+    icon: clock-outline
+    source:
+      days: [Sunday]
+      start: 01:00
+      stop: 02:00
+      location: Europe/Madrid
+      initial_version: true
   - name: notify
     type: cogito
     icon: bell-ring
@@ -94,20 +103,20 @@ resources:
       repository: r.studio73.es/odoo/{{ tool }}
       tag: latest
   {%- endfor %}
-  {%- for odoo_version in odoo_versions %}{% for version in versions %}
-  - name: {{ version }}-{{ odoo_version }}
+  {%- for version in versions %}{% for edition in editions %}
+  - name: {{ edition }}-{{ version }}
     <<: *registry-image
     source:
       <<: *registry-image-source
-      repository: r.studio73.es/odoo/{{ version }}
-      tag: {{ odoo_version }}
-  {%- if version != "base" %}
-  - name: {{ version }}-{{ odoo_version }}-dev
+      repository: r.studio73.es/odoo/{{ edition }}
+      tag: {{ version }}
+  {%- if edition != "base" %}
+  - name: {{ edition }}-{{ version }}-dev
     <<: *registry-image
     source:
       <<: *registry-image-source
-      repository: r.studio73.es/odoo/{{ version }}
-      tag: {{ odoo_version }}-dev
+      repository: r.studio73.es/odoo/{{ edition }}
+      tag: {{ version }}-dev
   {%- endif %}
   {%- endfor %}{% endfor %}
   - name: ubuntu
@@ -124,8 +133,8 @@ groups:
   - name: odoo
     jobs:
       - update-repos
-      {%- for version in versions %}
-      - "build-{{ version }}-*"
+      {%- for edition in editions %}
+      - "build-{{ edition }}-*"
       {%- endfor %}
   - name: dev
     jobs:
@@ -162,7 +171,7 @@ jobs:
   - name: update-repos
     <<: *notify
     plan:
-      - get: nightly
+      - get: sunday
         trigger: true
       - get: repo
       - task: update
@@ -173,46 +182,48 @@ jobs:
       - put: repo
         params: {repository: repo}
   # Build Odoo docker images
-  {%- for odoo_version in odoo_versions %}{% for version in versions %}
-    {%- set _name = '{}-{}'.format(version, odoo_version) %}
+  {%- for version in versions %}{% for edition in editions %}
+    {%- set _name = '{}-{}'.format(edition, version) %}
   - name: build-{{ _name }}
     <<: *notify
     plan:
       - in_parallel:
           - get: repo
-          {%- if version == "community" %}
-          - get: repo-odoo
-          - get: base-{{ odoo_version }}
+          {%- if edition == "community" %}
+          - get: daily
+            trigger: true
+          - get: nightly
+            trigger: true
+          - get: base-{{ version }}
             params: {format: oci}
             trigger: true
-            passed: [build-base-{{ odoo_version }}]
-          {%- elif version == "enterprise" %}
-          - get: repo-odoo
-          - get: community-{{ odoo_version }}
+            passed: [build-base-{{ version }}]
+          {%- elif edition == "enterprise" %}
+          - get: community-{{ version }}
             params: {format: oci}
             trigger: true
-            passed: [build-community-{{ odoo_version }}]
+            passed: [build-community-{{ version }}]
           {%- else %}
           - get: repo-odoo
             trigger: true
           - get: ubuntu
             params: {format: oci}
-          - get: nightly
+          - get: sunday
             passed: [update-repos]
           {%- endif %}
       - task: build
-        {%- if version == "community" %}
-        input_mapping: {base-image: base-{{ odoo_version }}}
-        {%- elif version == "enterprise" %}
-        input_mapping: {base-image: community-{{ odoo_version }}}
+        {%- if edition == "community" %}
+        input_mapping: {base-image: base-{{ version }}}
+        {%- elif edition == "enterprise" %}
+        input_mapping: {base-image: community-{{ version }}}
         {%- else %}
         input_mapping: {base-image: ubuntu}
         {%- endif %}
         privileged: true
         file: repo/.ci/tasks/build-odoo.yaml
         params:
-          VERSION: "{{ version }}"
-          ODOO_VERSION: "{{ odoo_version }}"
+          ODOO_EDITION: "{{ edition }}"
+          ODOO_VERSION: "{{ version }}"
           BUILD_ARG_SSH_KEY: ((GITHUB_SSH_KEY))
           IMAGE_ARG_base_image: base-image/image.tar
         output_mapping: {image: "{{ _name }}"}
@@ -222,53 +233,39 @@ jobs:
           additional_tags: {{ _name }}/today-tag
   {%- endfor %}{% endfor %}
   # Build Odoo DEV docker images
-  {%- for odoo_version in odoo_versions %}{% for version in versions[1:] %}
-  {%- set _name = '{}-{}-dev'.format(version, odoo_version) %}
+  {%- for version in versions %}{% for edition in editions[1:] %}
+  {%- set _name = '{}-{}-dev'.format(edition, version) %}
   - name: build-{{ _name }}
     <<: *notify
     plan:
       - in_parallel:
           - get: repo
-          {%- if version == "community" %}
+          {%- if edition == "community" %}
           - get: daily
             trigger: true
           - get: nightly
-            passed:
-              - update-repos
-              - build-base-{{ odoo_version }}
-          - get: base-{{ odoo_version }}
             trigger: true
+          - get: base-{{ version }}
             params: {format: oci}
-            passed: [build-base-{{ odoo_version }}]
-          {%- elif version == "enterprise" %}
-          - get: daily
-            trigger: true
-            passed: [build-community-{{ odoo_version }}-dev]
-          - get: nightly
-            passed: [build-community-{{ odoo_version }}-dev]
-          - get: community-{{ odoo_version }}-dev
+            passed: [build-base-{{ version }}]
+          {%- elif edition == "enterprise" %}
+          - get: community-{{ version }}-dev
             params: {format: oci}
             trigger: true
-            passed: [build-community-{{ odoo_version }}-dev]
+            passed: [build-community-{{ version }}-dev]
           {%- endif %}
-      - task: update-repos
-        params:
-          GITHUB_TOKEN: ((GITHUB_TOKEN))
-          VERSION: "{{ version }}"
-          ODOO_VERSION: "{{ odoo_version }}.0"
-        file: repo/.ci/tasks/update-repos-dev.yaml
       - task: build
-        {%- if version == "community" %}
-        input_mapping: {base-image: base-{{ odoo_version }}}
-        {%- elif version == "enterprise" %}
-        input_mapping: {base-image: community-{{ odoo_version }}-dev}
+        {%- if edition == "community" %}
+        input_mapping: {base-image: base-{{ version }}}
+        {%- elif edition == "enterprise" %}
+        input_mapping: {base-image: community-{{ version }}-dev}
         {%- endif %}
         privileged: true
         file: repo/.ci/tasks/build-odoo.yaml
         params:
           DEV: True
-          VERSION: "{{ version }}"
-          ODOO_VERSION: "{{ odoo_version }}"
+          ODOO_EDITION: "{{ edition }}"
+          ODOO_VERSION: "{{ version }}"
           BUILD_ARG_SSH_KEY: ((GITHUB_SSH_KEY))
           IMAGE_ARG_base_image: base-image/image.tar
         output_mapping: {image: "{{ _name }}"}

@@ -2,13 +2,13 @@ studio73-enterprise-addons:
   defaults:
     depth: 1
   merges:
-  - origin 3a6d78f40e4b79c2e465da14cc5abdee0f37136d
+  - origin 14.0
   remotes:
     origin: git@github.com:Studio73/studio73-enterprise-addons.git
 zenterprise:
   defaults:
     depth: 1
   merges:
-  - origin 78906d2613a038085813ce14fce0de7000c7022e
+  - origin 14.0
   remotes:
     origin: git@github.com:Studio73/enterprise.git
