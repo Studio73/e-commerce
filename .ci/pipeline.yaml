@@ -283,6 +283,12 @@ jobs:
             trigger: true
           - get: ubuntu
             params: {format: oci}
+      - task: update-repo
+        params:
+          GITHUB_TOKEN: ((GITHUB_TOKEN))
+          ODOO_EDITION: "base"
+          ODOO_VERSION: "14.0"
+        file: repo/.ci/tasks/update-repo.yaml
       - task: build
         input_mapping: {base-image: ubuntu}
         privileged: true
@@ -310,6 +316,12 @@ jobs:
             params: {format: oci}
             trigger: true
             passed: [build-base-14]
+      - task: update-repo
+        params:
+          GITHUB_TOKEN: ((GITHUB_TOKEN))
+          ODOO_EDITION: "community"
+          ODOO_VERSION: "14.0"
+        file: repo/.ci/tasks/update-repo.yaml
       - task: build
         input_mapping: {base-image: base-14}
         privileged: true
@@ -333,6 +345,12 @@ jobs:
             params: {format: oci}
             trigger: true
             passed: [build-community-14]
+      - task: update-repo
+        params:
+          GITHUB_TOKEN: ((GITHUB_TOKEN))
+          ODOO_EDITION: "enterprise"
+          ODOO_VERSION: "14.0"
+        file: repo/.ci/tasks/update-repo.yaml
       - task: build
         input_mapping: {base-image: community-14}
         privileged: true
@@ -356,6 +374,12 @@ jobs:
             trigger: true
           - get: ubuntu
             params: {format: oci}
+      - task: update-repo
+        params:
+          GITHUB_TOKEN: ((GITHUB_TOKEN))
+          ODOO_EDITION: "base"
+          ODOO_VERSION: "15.0"
+        file: repo/.ci/tasks/update-repo.yaml
       - task: build
         input_mapping: {base-image: ubuntu}
         privileged: true
@@ -383,6 +407,12 @@ jobs:
             params: {format: oci}
             trigger: true
             passed: [build-base-15]
+      - task: update-repo
+        params:
+          GITHUB_TOKEN: ((GITHUB_TOKEN))
+          ODOO_EDITION: "community"
+          ODOO_VERSION: "15.0"
+        file: repo/.ci/tasks/update-repo.yaml
       - task: build
         input_mapping: {base-image: base-15}
         privileged: true
@@ -406,6 +436,12 @@ jobs:
             params: {format: oci}
             trigger: true
             passed: [build-community-15]
+      - task: update-repo
+        params:
+          GITHUB_TOKEN: ((GITHUB_TOKEN))
+          ODOO_EDITION: "enterprise"
+          ODOO_VERSION: "15.0"
+        file: repo/.ci/tasks/update-repo.yaml
       - task: build
         input_mapping: {base-image: community-15}
         privileged: true
@@ -433,6 +469,13 @@ jobs:
           - get: base-14
             params: {format: oci}
             passed: [build-base-14]
+      - task: update-repo
+        params:
+          GITHUB_TOKEN: ((GITHUB_TOKEN))
+          ODOO_EDITION: "community"
+          ODOO_VERSION: "14.0"
+          ADD_OPEN_PRS: true
+        file: repo/.ci/tasks/update-repo.yaml
       - task: build
         input_mapping: {base-image: base-14}
         privileged: true
@@ -457,6 +500,13 @@ jobs:
             params: {format: oci}
             trigger: true
             passed: [build-community-14-dev]
+      - task: update-repo
+        params:
+          GITHUB_TOKEN: ((GITHUB_TOKEN))
+          ODOO_EDITION: "enterprise"
+          ODOO_VERSION: "14.0"
+          ADD_OPEN_PRS: true
+        file: repo/.ci/tasks/update-repo.yaml
       - task: build
         input_mapping: {base-image: community-14-dev}
         privileged: true
@@ -484,6 +534,13 @@ jobs:
           - get: base-15
             params: {format: oci}
             passed: [build-base-15]
+      - task: update-repo
+        params:
+          GITHUB_TOKEN: ((GITHUB_TOKEN))
+          ODOO_EDITION: "community"
+          ODOO_VERSION: "15.0"
+          ADD_OPEN_PRS: true
+        file: repo/.ci/tasks/update-repo.yaml
       - task: build
         input_mapping: {base-image: base-15}
         privileged: true
@@ -508,6 +565,13 @@ jobs:
             params: {format: oci}
             trigger: true
             passed: [build-community-15-dev]
+      - task: update-repo
+        params:
+          GITHUB_TOKEN: ((GITHUB_TOKEN))
+          ODOO_EDITION: "enterprise"
+          ODOO_VERSION: "15.0"
+          ADD_OPEN_PRS: true
+        file: repo/.ci/tasks/update-repo.yaml
       - task: build
         input_mapping: {base-image: community-15-dev}
         privileged: true
