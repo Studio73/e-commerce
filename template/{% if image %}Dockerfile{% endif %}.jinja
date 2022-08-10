@@ -1,5 +1,12 @@
 ARG  base_image=r.studio73.es/odoo/{{ odoo_edition }}:{{ odoo_version }}
 FROM ${base_image}
+{%- if apt_list %}
+USER root
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends {{ apt_list }} \
+    && rm -rf /var/lib/apt/lists/* /tmp/* \
+USER odoo
+{%- endif %}
 COPY --chown=odoo ./requirements.txt $SRC/custom/requirements.txt
 RUN install-requirements $SRC/custom
 COPY --chown=odoo . $SRC/custom

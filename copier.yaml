@@ -62,6 +62,11 @@ image:
   default: "r.studio73.es/odoo/{{ project_name }}"
   help: Project docker image, leave it empty if you don't want to build an image
 
+apt_list:
+  when: "{{ image }}"
+  type: str
+  help: Linux packages to add to the Dockerfile (Space separated)
+
 ci_team:
   type: str
   default: odoo
