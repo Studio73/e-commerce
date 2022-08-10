@@ -208,8 +208,6 @@ jobs:
             trigger: true
           - get: ubuntu
             params: {format: oci}
-          - get: sunday
-            passed: [update-repos]
           {%- endif %}
       - task: build
         {%- if edition == "community" %}

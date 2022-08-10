@@ -283,8 +283,6 @@ jobs:
             trigger: true
           - get: ubuntu
             params: {format: oci}
-          - get: sunday
-            passed: [update-repos]
       - task: build
         input_mapping: {base-image: ubuntu}
         privileged: true
@@ -358,8 +356,6 @@ jobs:
             trigger: true
           - get: ubuntu
             params: {format: oci}
-          - get: sunday
-            passed: [update-repos]
       - task: build
         input_mapping: {base-image: ubuntu}
         privileged: true
