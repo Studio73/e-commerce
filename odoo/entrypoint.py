@@ -30,7 +30,7 @@ def compute_addons_path():
 
 def build_conf():
     db_name = os.environ.get("PGDATABASE", os.environ.get("DATABASE", "odoo"))
-    workers = os.environ.get("ODOO_WORKERS", 1)
+    workers = int(os.environ.get("ODOO_WORKERS", 1)) or 1
     options = {
         "data_dir": os.environ.get("DATA"),
         "db_host": os.environ.get("PGHOST", "localhost"),
