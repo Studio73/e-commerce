@@ -2,7 +2,7 @@ account-analytic:
   defaults:
     depth: 1
   merges:
-  - origin 8886aa8c15239a92e2779433206aceef312af863
+  - origin d1b8a962e2084f2ecd2f339fc82d2b566b263d4b
   remotes:
     origin: https://github.com/OCA/account-analytic.git
 account-closing:
@@ -37,7 +37,7 @@ account-invoicing:
   defaults:
     depth: 1
   merges:
-  - origin c9772cda45046711d58b3d0e5f75af3b822445d1
+  - origin b0b3ec5cc1f13f91c507e255d7c861ea72baba87
   remotes:
     origin: https://github.com/OCA/account-invoicing.git
 account-payment:
@@ -58,7 +58,7 @@ bank-payment:
   defaults:
     depth: 1
   merges:
-  - origin 867e0ae6f5861f1a7f5d118050f1a2e8119d2aac
+  - origin b8fb3629accb722a6a95fd633aa42865bf7a428f
   remotes:
     origin: https://github.com/OCA/bank-payment.git
 bank-statement-import:
@@ -100,7 +100,7 @@ delivery-carrier:
   defaults:
     depth: 1
   merges:
-  - origin c1a9f0a98848b42c84fc6d1eceaa056aca854176
+  - origin 56ee0db8159cdb559fed17c76df81b248342b6a6
   remotes:
     origin: https://github.com/OCA/delivery-carrier.git
 e-commerce:
@@ -156,7 +156,7 @@ l10n-spain:
   defaults:
     depth: 1
   merges:
-  - origin 30f9431b53daa8948cf3d525ad6bb0bbcb894438
+  - origin 362a5f6a3cb7d0dba32978e774c1a14db6e956d7
   remotes:
     origin: https://github.com/OCA/l10n-spain.git
 mis-builder:
@@ -226,14 +226,14 @@ sale-workflow:
   defaults:
     depth: 1
   merges:
-  - origin 1cb763e6f72439188fb9d7bbbd6d3ca766bf1cf4
+  - origin 16da65849f5a79b428822ce9e55dfb6b06843697
   remotes:
     origin: https://github.com/OCA/sale-workflow.git
 server-tools:
   defaults:
     depth: 1
   merges:
-  - origin f02a57079bc0b813d7493ee56ddf3de72a26a98b
+  - origin c3c1ee8b87518e0c674ab30a1adb1ac1fd4e449a
   remotes:
     origin: https://github.com/OCA/server-tools.git
 server-ux:
@@ -254,7 +254,7 @@ stock-logistics-warehouse:
   defaults:
     depth: 1
   merges:
-  - origin e689f3e6fa15060932ff4a70c933145b10eadfc2
+  - origin 3b76875278f94111f171e706d4cef1cdda69be67
   remotes:
     origin: https://github.com/OCA/stock-logistics-warehouse.git
 stock-logistics-workflow:
