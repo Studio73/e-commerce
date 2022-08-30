@@ -1,8 +1,11 @@
 click
 click-odoo-contrib
 coverage
+debugpy
 git-aggregator
+inotify
 pdfminer.six
 pycups
+pydevd-pycharm
 tabulate
 wheel

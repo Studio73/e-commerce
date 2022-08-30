@@ -3,7 +3,8 @@ exclude: |
   ^odoo/.*/community.yaml$ |
   ^odoo/.*/enterprise.yaml$ |
   ^odoo/.*/oca.yaml$ |
-  ^odoo/.*/odoo.yaml$
+  ^odoo/.*/odoo.yaml$ |
+  ^odoo/bin/odoo-debug$
 repos:
   - repo: https://github.com/psf/black
     rev: 22.3.0
