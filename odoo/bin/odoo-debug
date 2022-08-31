@@ -22,7 +22,7 @@ def debug_pycharm(port):
 
 if __name__ == "__main__":
     debugger = os.environ.get("DEBUGGER", "debugpy")
-    port = os.environ.get("DEBUGGER_PORT", "5678")
+    port = int(os.environ.get("DEBUGGER_PORT", "5678"))
     if debugger == "debugpy":
         debug_vscode(port)
     elif debugger == "pydevd":
