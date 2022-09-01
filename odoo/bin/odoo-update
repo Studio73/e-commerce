@@ -1,4 +1,63 @@
-#!/bin/sh
+#!/bin/env python3
 # (c) Studio73 - Pablo Fuentes <pablo@studio73.es>
 
-click-odoo-update --watcher-max-seconds=120 || exit 75
+import click
+from click_odoo import env_options
+from click_odoo_contrib.update import OdooEnvironmentWithUpdate
+
+
+class env_options_db(env_options):
+    def _db_exists(self, dbname):
+        return bool(dbname)
+
+
+@click.command()
+@env_options_db(
+    with_rollback=False,
+    database_must_exist=False,
+    with_addons_path=True,
+    environment_manager=OdooEnvironmentWithUpdate,
+)
+@click.option("--i18n-overwrite", is_flag=True, help="Overwrite existing translations")
+@click.option("--update-all", is_flag=True, help="Force a complete upgrade (-u base)")
+@click.option(
+    "--ignore-addons",
+    help=(
+        "A comma-separated list of addons to ignore. "
+        "These will not be updated if their checksum has changed. "
+        "Use with care."
+    ),
+)
+@click.option(
+    "--ignore-core-addons",
+    is_flag=True,
+    help=(
+        "If this option is set, Odoo CE and EE addons are not updated. "
+        "This is normally safe, due the Odoo stable policy."
+    ),
+)
+@click.option(
+    "--if-exists", is_flag=True, help="Don't report error if database doesn't exist"
+)
+@click.option(
+    "--watcher-max-seconds",
+    default=120,
+    type=float,
+    help=(
+        "Max DB lock seconds allowed before aborting the update process. "
+        "Default: 0 (disabled)."
+    ),
+)
+@click.option(
+    "--list-only",
+    is_flag=True,
+    help="Log the list of addons to update without actually updating them.",
+)
+def main(**args):
+    """Copy of click-odoo-update with the only difference that doesn't
+    try to check if the database exists and the watcher is enabled by default (120s)
+    """
+    pass
+
+if __name__ == "__main__":  # pragma: no cover
+    main()
