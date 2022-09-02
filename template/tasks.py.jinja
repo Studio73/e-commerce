@@ -1,0 +1,106 @@
+import os
+
+from invoke import task
+from dotenv import dotenv_values
+
+PROJECT = "{{ project_name }}"
+DOCKER_REGISTRY = "r.studio73.es"
+DOCKER_IMAGE = "odoo/{{ project_name }}:{{ odoo_version }}"
+
+
+@task
+def build(c):
+    c.run("docker buildx build -t {} .".format(DOCKER_IMAGE))
+    c.run("docker tag {} {}/{}".format(DOCKER_IMAGE, DOCKER_REGISTRY, DOCKER_IMAGE))
+
+
+@task
+def pull(c):
+    c.run("docker pull {}/{}".format(DOCKER_REGISTRY, DOCKER_IMAGE))
+
+
+@task
+def run(c, port="8069"):
+    exec(c, "odoo", port)
+
+
+@task
+def dev(c, port="8069"):
+    exec(c, "odoo --dev=all", port)
+
+
+@task
+def debug(c):
+    exec(c, "odoo-debug")
+
+
+@task
+def update(c):
+    exec(c, "odoo-update")
+
+
+@task
+def shell(c):
+    exec(c, "odoo shell --no-xmlrpc", None)
+
+
+@task
+def lint(c):
+    if not os.path.exists(".git/hooks/pre-commit"):
+        c.run("pre-commit install")
+    c.run("pre-commit run -a")
+
+
+@task
+def test(c):
+    exec(c, "bash -c 'odoo-test run && odoo-test coverage'", None)
+
+
+@task
+def exec(c, cmd="bash", port="8069"):
+    home = os.path.expanduser("~")
+    cwd = os.getcwd()
+
+    def get_env():
+        pwd = os.getcwd()
+        while pwd != "/":
+            if ".env" in os.listdir(pwd):
+                return os.path.join(pwd, ".env")
+            pwd = os.path.dirname(pwd)
+        return False
+
+    env_file = get_env()
+    if not env_file:
+        print(".env not found")
+        exit(75)
+    config = dotenv_values(env_file)
+    dockercmd = [
+        "docker",
+        "run",
+        "--rm",
+        "-it",
+        "--net={}".format(config.get("NET", "bridge")),
+        "--name={}".format(PROJECT),
+        "--env-file={}".format(env_file),
+        "--env=PGDATABASE={}".format(PROJECT),
+        "--volume={}/.config/dodoo/data:/opt/odoo/data".format(home),
+        "--volume={}/.config/dodoo/backup:/opt/odoo/backup".format(home),
+        "--volume={}:/opt/odoo/src/custom".format(cwd),
+    ]
+    volume_base_path = os.path.dirname(os.path.dirname(cwd))
+    for volume in config.get("VOLUMES", "").split(","):
+        if not volume:
+            continue
+        volume_src = os.path.join(volume_base_path, volume)
+        volume_dest = os.path.join("/opt/odoo/src", volume)
+        if not os.path.exists(volume_src):
+            print("{}: Path not found".format(volume_src))
+            exit(75)
+        dockercmd += ["--volume={}:{}".format(volume_src, volume_dest)]
+    if port:
+        dockercmd += ["--publish={}:8069".format(config.get("PORT", port))]
+    if cmd == "odoo-debug":
+        debugger_port = config.get("DEBUGGER_PORT", "5678")
+        dockercmd += ["--publish={}:{}".format(debugger_port, debugger_port)]
+    dockercmd += ["{}/{}".format(DOCKER_REGISTRY, DOCKER_IMAGE), cmd]
+    c.run(" ".join(dockercmd), pty=True)
