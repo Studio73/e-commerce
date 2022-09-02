@@ -55,3 +55,52 @@ copier update
 git add .
 git commit -am "[UPD] Dodoo template"
 ```
+
+## Development
+
+### Installation
+
+```bash
+pip install --user invoke python-dotenv
+mkdir -p ~/.config/dodoo/{data,backup}
+```
+
+Create environment file `.env`. This file can be located in the project directory (make
+sure that is git ignored) or in a parent directory.
+
+```bash
+...
+ODOO_LIST_DB=True
+ODOO_LIMIT_MEMORY_HARD=46843545600
+ODOO_LIMIT_MEMORY_SOFT=41474836480
+ODOO_UNACCENT=True
+ODOO_WORKERS=0
+ODOO_MAX_CRON_THREADS=0
+...
+```
+
+Available environment variables
+
+- `NET`: docker network - default `bridge`
+- `VOLUMES`: Comma separated relative path to `/opt/odoo/src` to mount as a volume into
+  the container, e.g.: `oca/web,studio73/studio73-private-addons`
+- `PORT`: Default port to publish, can be overwritten with `invoke ... --port=...` -
+  default `8096`
+- `DEBUGGER_PORT`: Debugger port to publish - default `5678`
+
+### Usage
+
+```bash
+cd project
+# List all available tasks
+inv --list
+
+# Start a bash into the project container
+inv exec
+# Run odoo
+inv run
+# Run odoo in dev mode
+inv dev
+# Run odoo with the debugger activated
+inv debug
+```
