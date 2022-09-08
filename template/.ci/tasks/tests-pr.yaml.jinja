@@ -19,6 +19,6 @@ run:
     - bash
     - -ceux
     - |
-      pip3 install --upgrade-strategy=only-if-needed -c $SRC/odoo/odoo/requirements.txt -r $SRC/custom/requirements.txt
+      install-requirements /opt/odoo/src/custom
       odoo-test run
       odoo-test coverage
