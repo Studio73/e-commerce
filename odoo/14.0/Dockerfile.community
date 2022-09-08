@@ -18,3 +18,4 @@ RUN clean-repo /code
 FROM ${base_image}
 COPY --chown=odoo --from=builder /code $SRC/studio73
 RUN install-requirements $SRC/studio73
+RUN clean-repo $SRC/studio73

@@ -4,4 +4,3 @@
 set -ex
 CODE=$1
 find $CODE -name "requirements.txt" -type f | xargs -I {} sh -c 'pip3 install --upgrade-strategy=only-if-needed -c $SRC/odoo/odoo/requirements.txt -r {} $0 || exit 255'
-clean-repo $CODE
