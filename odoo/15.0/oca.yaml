@@ -195,7 +195,7 @@ project:
   merges:
   - origin b3767fef09805bdc390a039956d646010b097653
   remotes:
-    origin: https://github.com/OCA/product-variant.git
+    origin: https://github.com/OCA/project.git
 purchase-workflow:
   defaults:
     depth: 1
