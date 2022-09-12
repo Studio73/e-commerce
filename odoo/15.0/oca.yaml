@@ -21,9 +21,10 @@ account-financial-reporting:
     origin: https://github.com/OCA/account-financial-reporting.git
 account-financial-tools:
   defaults:
-    depth: 1
+    depth: 500
   merges:
-  - origin e666ef56d35e4483bbc39f45351997f2768cbf46
+  - origin 428d526a5b74be6dddf53e4682f5c2afbd4d560f
+  - origin refs/pull/1403/head
   remotes:
     origin: https://github.com/OCA/account-financial-tools.git
 account-invoice-reporting:
@@ -49,9 +50,10 @@ account-payment:
     origin: https://github.com/OCA/account-payment.git
 account-reconcile:
   defaults:
-    depth: 1
+    depth: 500
   merges:
   - origin 2f05b67cae4ef2561413251f1f85c24793ac55f5
+  - origin refs/pull/466/head
   remotes:
     origin: https://github.com/OCA/account-reconcile.git
 bank-payment:
@@ -187,6 +189,13 @@ product-variant:
   - origin 2b9dad06123625194c4610511d6d4a76517e5c4f
   remotes:
     origin: https://github.com/OCA/product-variant.git
+project:
+  defaults:
+    depth: 1
+  merges:
+  - origin b3767fef09805bdc390a039956d646010b097653
+  remotes:
+    origin: https://github.com/OCA/product-variant.git
 purchase-workflow:
   defaults:
     depth: 1
@@ -273,8 +282,9 @@ web:
     origin: https://github.com/OCA/web.git
 website:
   defaults:
-    depth: 1
+    depth: 500
   merges:
   - origin 299be7d7d10aff6b0f6b93a76bc8e49d978bba90
+  - origin refs/pull/906/head
   remotes:
     origin: https://github.com/OCA/website.git
