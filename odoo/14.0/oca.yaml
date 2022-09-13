@@ -133,7 +133,6 @@ e-commerce:
     depth: 500
   merges:
   - origin 81b51276cb8d521fb40550538b200f4e3f01ea6b
-  - origin refs/pull/485/head
   - origin refs/pull/486/head
   - origin refs/pull/559/head
   remotes:
