@@ -1,4 +1,5 @@
 import os
+import uuid
 
 from dotenv import dotenv_values
 from invoke import task
@@ -21,27 +22,27 @@ def pull(c):
 
 @task
 def run(c, port="8069"):
-    exec(c, "odoo", port)
+    exec(c, "odoo", port=port, name=None)
 
 
 @task
 def dev(c, port="8069"):
-    exec(c, "odoo --dev=all", port)
+    exec(c, "odoo --dev=all", port=port, name=None)
 
 
 @task
-def debug(c):
-    exec(c, "odoo-debug")
+def debug(c, port="8069"):
+    exec(c, "odoo-debug", port=port, name=None)
 
 
 @task
 def update(c):
-    exec(c, "odoo-update")
+    exec(c, "odoo-update", port=None, name=None)
 
 
 @task
 def shell(c):
-    exec(c, "odoo shell --no-xmlrpc", None)
+    exec(c, "odoo shell --no-xmlrpc", port=None, name=None)
 
 
 @task
@@ -53,11 +54,14 @@ def lint(c):
 
 @task
 def test(c):
-    exec(c, "bash -c 'odoo-test run && odoo-test coverage'", None)
+    exec(c, "bash -c 'odoo-test run && odoo-test coverage'", port=None, name=None)
 
 
 @task
-def exec(c, cmd="bash", port="8069"):
+def exec(c, cmd="bash", port="8069", name=PROJECT):
+    if not name:
+        _id= str(uuid.uuid4()).split("-")[0]
+        name = "{}_{}".format(PROJECT, _id)
     home = os.path.expanduser("~")
     cwd = os.getcwd()
 
@@ -80,7 +84,7 @@ def exec(c, cmd="bash", port="8069"):
         "--rm",
         "-it",
         "--net={}".format(config.get("NET", "bridge")),
-        "--name={}".format(PROJECT),
+        "--name={}".format(name),
         "--env-file={}".format(env_file),
         "--env=PGDATABASE={}".format(PROJECT),
         "--volume={}/.config/dodoo/data:/opt/odoo/data".format(home),
