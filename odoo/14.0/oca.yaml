@@ -46,6 +46,7 @@ account-invoicing:
   merges:
   - origin 325d65225edf3b9515002e1c782445b0217429ca
   - origin refs/pull/1138/head
+  - origin refs/pull/1181/head
   remotes:
     origin: https://github.com/OCA/account-invoicing.git
 account-payment:
@@ -135,6 +136,7 @@ e-commerce:
   - origin 81b51276cb8d521fb40550538b200f4e3f01ea6b
   - origin refs/pull/486/head
   - origin refs/pull/559/head
+  - origin refs/pull/651/head
   remotes:
     origin: https://github.com/OCA/e-commerce.git
 hr:
