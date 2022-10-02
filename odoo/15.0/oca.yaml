@@ -77,6 +77,13 @@ bank-statement-reconcile:
   - origin 3ba654e7f4f67ddaafd79639fa8ed8c7524139da
   remotes:
     origin: https://github.com/OCA/bank-statement-reconcile.git
+brand:
+  defaults:
+    depth: 1
+  merges:
+  - origin 6f1f778ef2a02177f862ecc2d98c46861c812e06
+  remotes:
+    origin: https://github.com/OCA/brand.git
 commission:
   defaults:
     depth: 1
@@ -158,7 +165,7 @@ l10n-spain:
   defaults:
     depth: 500
   merges:
-  - origin dbdb1402c0aefc3058ad3c32c7624770ab25d8c7
+  - origin 279167b0be43ba1e3ebc043ef62a687290ca6cb9
   - origin refs/pull/2149/head
   remotes:
     origin: https://github.com/OCA/l10n-spain.git
