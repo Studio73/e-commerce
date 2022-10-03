@@ -25,6 +25,11 @@ meta:
     webhook_token: ((WEBHOOK_TOKEN))
     source:
       <<: *git-source
+  x-git-paths: &git-paths
+    - odoo/bin/*
+    - odoo/entrypoint.py
+    - odoo/requirements.txt
+
 
   x-registry-image-source: &registry-image-source
     username: ((REGISTRY_USER))
@@ -80,12 +85,15 @@ resources:
       gchat_webhook: ((GCHAT_CONCOURSE_WEBHOOK))
   - name: repo
     <<: *git
-  - name: repo-odoo
+  {%- for version in versions %}
+  - name: repo-odoo-{{ version }}
     <<: *git
     source:
       <<: *git-source
       paths:
-        - odoo/*
+        - *git-paths
+        - odoo/{{ version }}.0/*
+  {%- endfor %}
   {%- for tool in tools %}
   - name: repo-{{ tool }}
     <<: *git
@@ -204,7 +212,7 @@ jobs:
             trigger: true
             passed: [build-community-{{ version }}]
           {%- else %}
-          - get: repo-odoo
+          - get: repo-odoo-{{ version }}
             trigger: true
           - get: ubuntu
             params: {format: oci}
