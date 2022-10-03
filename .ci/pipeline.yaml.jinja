@@ -30,7 +30,6 @@ meta:
     - odoo/entrypoint.py
     - odoo/requirements.txt
 
-
   x-registry-image-source: &registry-image-source
     username: ((REGISTRY_USER))
     password: ((REGISTRY_SECRET))
@@ -217,12 +216,6 @@ jobs:
           - get: ubuntu
             params: {format: oci}
           {%- endif %}
-      - task: update-repo
-        params:
-          GITHUB_TOKEN: ((GITHUB_TOKEN))
-          ODOO_EDITION: "{{ edition }}"
-          ODOO_VERSION: "{{ version }}.0"
-        file: repo/.ci/tasks/update-repo.yaml
       - task: build
         {%- if edition == "community" %}
         input_mapping: {base-image: base-{{ version }}}
