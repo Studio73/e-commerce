@@ -1,6 +1,6 @@
 [run]
 source = .
-omit = *system_site_packages*, *site-packages*, *dist-packages*, *virtualenv*, *tasks.py*, *tests*, *__manifest__.py{% if excluded_addons %}, {% for addon in excluded_addons.split(",") %} {{ addon }}*, {% endfor %}{% endif %}
+omit = *system_site_packages*, *site-packages*, *dist-packages*, *virtualenv*, *tasks.py*, *tests*, *__manifest__.py{% if excluded_addons %}{% for addon in excluded_addons.split(",") %}, {{ addon }}*{% endfor %}{% endif %}
 
 [report]
 show_missing = true
