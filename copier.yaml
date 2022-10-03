@@ -62,21 +62,21 @@ image:
   default: "r.studio73.es/odoo/{{ project_name }}"
   help: Project docker image, leave it empty if you don't want to build an image
 
-apt_list:
-  when: "{{ image }}"
-  type: str
-  help: Linux packages to add to the Dockerfile (Space separated)
-
 ci_team:
   type: str
   default: odoo
   help: Concourse pipeline group owner
 
-excluded_pre_commit_addons:
-  type: yaml
-  multiline: true
-  help: Addons to exclude from pre-commit (YAML format)
+coverage_fail_under:
+  type: int
+  default: 60
+  help: Coverage fail under selected percentage
 
-excluded_coverage_addons:
+apt_list:
+  when: "{{ image }}"
   type: str
-  help: Addons (comma separated) to exclude from .coveragerc (Regex format)
+  help: Linux packages to add to the Dockerfile (Space separated)
+
+excluded_addons:
+  type: str
+  help: Addons (comma separated) to exclude from pre-commit and .coveragerc

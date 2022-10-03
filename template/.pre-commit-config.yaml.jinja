@@ -15,9 +15,11 @@ exclude: |
   # You don't usually want a bot to modify your legal texts
   (LICENSE.*|COPYING.*)|
   # Don't modify python built&formated repos.yaml
-  ^tasks.py${% if excluded_pre_commit_addons %}|
+  ^tasks.py$
+  {%- if excluded_addons %}|
   # Excluded custom addons
-  {{ excluded_pre_commit_addons }}{% endif %}
+  {{ " | ".join(excluded_addons.split(",")) }}
+  {%- endif %}
 default_language_version:
   python: python3
   node: "14.18.0"
