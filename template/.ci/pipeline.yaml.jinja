@@ -85,7 +85,7 @@ resources:
     webhook_token: ((WEBHOOK_TOKEN))
     source:
       uri: https://github.com/{{ org_name }}/{{ repo_name }}.git
-      branch: "14.0"
+      branch: {{ odoo_version }}.0
       username: ((GITHUB_TOKEN))
       password: x-oauth-basic
   - name: notify
@@ -153,6 +153,7 @@ jobs:
         trigger: true
       - get: odoo-{{ odoo_edition }}
         params: {format: oci}
+        trigger: true
       - task: build
         <<: *build
         input_mapping: {odoo: "odoo-{{ odoo_edition }}"}
