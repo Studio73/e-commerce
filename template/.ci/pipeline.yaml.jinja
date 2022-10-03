@@ -85,7 +85,7 @@ resources:
     webhook_token: ((WEBHOOK_TOKEN))
     source:
       uri: https://github.com/{{ org_name }}/{{ repo_name }}.git
-      branch: {{ odoo_version }}.0
+      branch: "{{ odoo_version }}.0"
       username: ((GITHUB_TOKEN))
       password: x-oauth-basic
   - name: notify
