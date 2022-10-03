@@ -77,7 +77,6 @@ resources:
       repo: {{ repo_name }}
       access_token: ((GITHUB_TOKEN))
       gchat_webhook: ((GCHAT_PRS_WEBHOOK))
-{%- if image %}
   - name: repo
     type: git
     icon: github
@@ -88,6 +87,7 @@ resources:
       branch: "{{ odoo_version }}.0"
       username: ((GITHUB_TOKEN))
       password: x-oauth-basic
+{%- if image %}
   - name: notify
     type: cogito
     icon: bell-ring
@@ -145,6 +145,12 @@ groups:
 {%- endif %}
 
 jobs:
+  - name: set-self
+    plan:
+      - get: repo
+        trigger: true
+      - set_pipeline: self
+        file: repo/.ci/pipeline.yaml
 {%- if image %}
   - name: build
     <<: *notify
