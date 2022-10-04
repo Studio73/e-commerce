@@ -23,14 +23,6 @@ jobs:
           concourse-pipeline: dodoo
           concourse-resource: repo-oci-build
           concourse-webhook-token: ${{ secrets.CONCOURSE_WEBHOOK_TOKEN }}
-      - name: Trigger repo/odoo
-        uses: gstackio/trigger-concourse-resource-check-action@v1
-        with:
-          concourse-url: https://ci.studio73.dev
-          concourse-team: odoo
-          concourse-pipeline: dodoo
-          concourse-resource: repo-odoo
-          concourse-webhook-token: ${{ secrets.CONCOURSE_WEBHOOK_TOKEN }}
       - name: Trigger repo/proxypass
         uses: gstackio/trigger-concourse-resource-check-action@v1
         with:
@@ -46,4 +38,20 @@ jobs:
           concourse-team: odoo
           concourse-pipeline: dodoo
           concourse-resource: repo-tools
+          concourse-webhook-token: ${{ secrets.CONCOURSE_WEBHOOK_TOKEN }}
+      - name: Trigger repo/odoo-14
+        uses: gstackio/trigger-concourse-resource-check-action@v1
+        with:
+          concourse-url: https://ci.studio73.dev
+          concourse-team: odoo
+          concourse-pipeline: dodoo
+          concourse-resource: repo-odoo-14
+          concourse-webhook-token: ${{ secrets.CONCOURSE_WEBHOOK_TOKEN }}
+      - name: Trigger repo/odoo-15
+        uses: gstackio/trigger-concourse-resource-check-action@v1
+        with:
+          concourse-url: https://ci.studio73.dev
+          concourse-team: odoo
+          concourse-pipeline: dodoo
+          concourse-resource: repo-odoo-15
           concourse-webhook-token: ${{ secrets.CONCOURSE_WEBHOOK_TOKEN }}

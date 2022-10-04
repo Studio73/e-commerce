@@ -1,0 +1,20 @@
+---
+platform: linux
+
+image_resource:
+  type: registry-image
+  source:
+    username: ((REGISTRY_USER))
+    password: ((REGISTRY_SECRET))
+    repository: r.studio73.es/odoo/tools
+    tag: latest
+inputs:
+  - name: repo
+outputs:
+  - name: repo
+run:
+  path: /bin/bash
+  args:
+    - -c
+    - |
+      tools update-repos --cwd=repo --config=odoo/${ODOO_VERSION}/${ODOO_EDITION}.yaml
