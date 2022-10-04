@@ -6,6 +6,6 @@ git-aggregator
 inotify
 pdfminer.six
 pycups
-pydevd-pycharm
+pydevd-pycharm==212.4746.13
 tabulate
 wheel
