@@ -451,7 +451,7 @@ jobs:
           ODOO_EDITION: "community"
           ODOO_VERSION: "14.0"
           ADD_OPEN_PRS: true
-        file: repo/.ci/tasks/agreggate-prs.yaml
+        file: repo/.ci/tasks/aggregate-prs.yaml
       - task: build
         input_mapping: {base-image: base-14}
         privileged: true
@@ -482,7 +482,7 @@ jobs:
           ODOO_EDITION: "enterprise"
           ODOO_VERSION: "14.0"
           ADD_OPEN_PRS: true
-        file: repo/.ci/tasks/agreggate-prs.yaml
+        file: repo/.ci/tasks/aggregate-prs.yaml
       - task: build
         input_mapping: {base-image: community-14-dev}
         privileged: true
@@ -516,7 +516,7 @@ jobs:
           ODOO_EDITION: "community"
           ODOO_VERSION: "15.0"
           ADD_OPEN_PRS: true
-        file: repo/.ci/tasks/agreggate-prs.yaml
+        file: repo/.ci/tasks/aggregate-prs.yaml
       - task: build
         input_mapping: {base-image: base-15}
         privileged: true
@@ -547,7 +547,7 @@ jobs:
           ODOO_EDITION: "enterprise"
           ODOO_VERSION: "15.0"
           ADD_OPEN_PRS: true
-        file: repo/.ci/tasks/agreggate-prs.yaml
+        file: repo/.ci/tasks/aggregate-prs.yaml
       - task: build
         input_mapping: {base-image: community-15-dev}
         privileged: true

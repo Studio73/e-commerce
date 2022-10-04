@@ -265,7 +265,7 @@ jobs:
           ODOO_EDITION: "{{ edition }}"
           ODOO_VERSION: "{{ version }}.0"
           ADD_OPEN_PRS: true
-        file: repo/.ci/tasks/agreggate-prs.yaml
+        file: repo/.ci/tasks/aggregate-prs.yaml
       - task: build
         {%- if edition == "community" %}
         input_mapping: {base-image: base-{{ version }}}
