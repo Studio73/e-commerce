@@ -196,12 +196,13 @@ class ToolsYaml(object):
         res_yaml = OrderedDict()
         for name, data in self.yaml.items():
             origin = data.get("remotes", {}).get("origin")
-            origin = (
-                origin.replace("git@github.com:", "")
-                .replace("https://github.com/", "")
-                .replace(".git", "")
+            origin_data = re.findall(
+                r"github.com[:|\/](?P<org>\w+)\/(?P<repo>[\w|-]+)", origin
             )
-            org, repo = origin.split("/")
+            if not origin_data:
+                _logger.error("Unable to parse remote origin")
+                exit(1)
+            org, repo = origin_data[0]
             _logger.info("[{}/{}]".format(self.version, repo))
             merges = []
             for merge in data["merges"]:
