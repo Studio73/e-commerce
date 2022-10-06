@@ -308,8 +308,8 @@ def aggregate_prs(cwd, version):
     obj.add_repo(".", repo_url)
     obj.update_repos(True)
     obj.save()
-    sp.call(["gitaggregate", "-c", tmp_repos_yaml], cwd=cwd)
-    return True
+    exitcode = sp.call(["gitaggregate", "-c", tmp_repos_yaml], cwd=cwd)
+    sys.exit(exitcode)
 
 
 @tools.command()
