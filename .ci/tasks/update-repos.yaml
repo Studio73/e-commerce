@@ -18,7 +18,7 @@ run:
     - -c
     - |
       set -e
-      if [[ -z "${ODOO_VERSION}" ]]; then
+      if [ -z "$ODOO_VERSION" ]; then
         tools update-repos --cwd=repo --config=odoo/${ODOO_VERSION}/${ODOO_EDITION}.yaml
       else
         VERSIONS="14.0 15.0"
