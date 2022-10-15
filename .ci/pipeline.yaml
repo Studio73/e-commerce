@@ -95,6 +95,13 @@ resources:
       paths:
         - *git-paths
         - odoo/15.0/*
+  - name: repo-odoo-16
+    <<: *git
+    source:
+      <<: *git-source
+      paths:
+        - *git-paths
+        - odoo/16.0/*
   - name: repo-oci-build
     <<: *git
     source:
@@ -191,6 +198,36 @@ resources:
       <<: *registry-image-source
       repository: r.studio73.es/odoo/enterprise
       tag: 15-dev
+  - name: base-16
+    <<: *registry-image
+    source:
+      <<: *registry-image-source
+      repository: r.studio73.es/odoo/base
+      tag: 16
+  - name: community-16
+    <<: *registry-image
+    source:
+      <<: *registry-image-source
+      repository: r.studio73.es/odoo/community
+      tag: 16
+  - name: community-16-dev
+    <<: *registry-image
+    source:
+      <<: *registry-image-source
+      repository: r.studio73.es/odoo/community
+      tag: 16-dev
+  - name: enterprise-16
+    <<: *registry-image
+    source:
+      <<: *registry-image-source
+      repository: r.studio73.es/odoo/enterprise
+      tag: 16
+  - name: enterprise-16-dev
+    <<: *registry-image
+    source:
+      <<: *registry-image-source
+      repository: r.studio73.es/odoo/enterprise
+      tag: 16-dev
   - name: ubuntu
     type: registry-image
     icon: docker
@@ -468,6 +505,97 @@ jobs:
         params:
           image: enterprise-15/image.tar
           additional_tags: enterprise-15/today-tag
+  - name: build-base-16
+    <<: *notify
+    plan:
+      - in_parallel:
+          - get: repo
+          - get: repo-odoo-16
+            trigger: true
+          - get: ubuntu
+            params: {format: oci}
+      - task: update-repo
+        params:
+          GITHUB_TOKEN: ((GITHUB_TOKEN))
+          ODOO_EDITION: "base"
+          ODOO_VERSION: "16.0"
+        file: repo/.ci/tasks/update-repos.yaml
+      - task: build
+        input_mapping: {base-image: ubuntu}
+        privileged: true
+        file: repo/.ci/tasks/build-odoo.yaml
+        params:
+          ODOO_EDITION: "base"
+          ODOO_VERSION: "16"
+          BUILD_ARG_SSH_KEY: ((GITHUB_SSH_KEY))
+          IMAGE_ARG_base_image: base-image/image.tar
+        output_mapping: {image: "base-16"}
+      - put: base-16
+        params:
+          image: base-16/image.tar
+          additional_tags: base-16/today-tag
+  - name: build-community-16
+    <<: *notify
+    plan:
+      - in_parallel:
+          - get: repo
+          - get: daily
+            trigger: true
+          - get: nightly
+            trigger: true
+          - get: base-16
+            params: {format: oci}
+            trigger: true
+            passed: [build-base-16]
+      - task: update-repo
+        params:
+          GITHUB_TOKEN: ((GITHUB_TOKEN))
+          ODOO_EDITION: "community"
+          ODOO_VERSION: "16.0"
+        file: repo/.ci/tasks/update-repos.yaml
+      - task: build
+        input_mapping: {base-image: base-16}
+        privileged: true
+        file: repo/.ci/tasks/build-odoo.yaml
+        params:
+          ODOO_EDITION: "community"
+          ODOO_VERSION: "16"
+          BUILD_ARG_SSH_KEY: ((GITHUB_SSH_KEY))
+          IMAGE_ARG_base_image: base-image/image.tar
+        output_mapping: {image: "community-16"}
+      - put: community-16
+        params:
+          image: community-16/image.tar
+          additional_tags: community-16/today-tag
+  - name: build-enterprise-16
+    <<: *notify
+    plan:
+      - in_parallel:
+          - get: repo
+          - get: community-16
+            params: {format: oci}
+            trigger: true
+            passed: [build-community-16]
+      - task: update-repo
+        params:
+          GITHUB_TOKEN: ((GITHUB_TOKEN))
+          ODOO_EDITION: "enterprise"
+          ODOO_VERSION: "16.0"
+        file: repo/.ci/tasks/update-repos.yaml
+      - task: build
+        input_mapping: {base-image: community-16}
+        privileged: true
+        file: repo/.ci/tasks/build-odoo.yaml
+        params:
+          ODOO_EDITION: "enterprise"
+          ODOO_VERSION: "16"
+          BUILD_ARG_SSH_KEY: ((GITHUB_SSH_KEY))
+          IMAGE_ARG_base_image: base-image/image.tar
+        output_mapping: {image: "enterprise-16"}
+      - put: enterprise-16
+        params:
+          image: enterprise-16/image.tar
+          additional_tags: enterprise-16/today-tag
   # Build Odoo DEV docker images
   - name: build-community-14-dev
     <<: *notify
@@ -599,3 +727,68 @@ jobs:
         params:
           image: enterprise-15-dev/image.tar
           additional_tags: enterprise-15-dev/today-tag
+  - name: build-community-16-dev
+    <<: *notify
+    plan:
+      - in_parallel:
+          - get: repo
+          - get: daily
+            trigger: true
+          - get: nightly
+            trigger: true
+          - get: base-16
+            params: {format: oci}
+            passed: [build-base-16]
+      - task: aggregate-prs
+        params:
+          GITHUB_TOKEN: ((GITHUB_TOKEN))
+          ODOO_EDITION: "community"
+          ODOO_VERSION: "16.0"
+          ADD_OPEN_PRS: true
+        file: repo/.ci/tasks/update-repos.yaml
+      - task: build
+        input_mapping: {base-image: base-16}
+        privileged: true
+        file: repo/.ci/tasks/build-odoo.yaml
+        params:
+          DEV: True
+          ODOO_EDITION: "community"
+          ODOO_VERSION: "16"
+          BUILD_ARG_SSH_KEY: ((GITHUB_SSH_KEY))
+          IMAGE_ARG_base_image: base-image/image.tar
+        output_mapping: {image: "community-16-dev"}
+      - put: community-16-dev
+        params:
+          image: community-16-dev/image.tar
+          additional_tags: community-16-dev/today-tag
+  - name: build-enterprise-16-dev
+    <<: *notify
+    plan:
+      - in_parallel:
+          - get: repo
+          - get: community-16-dev
+            params: {format: oci}
+            trigger: true
+            passed: [build-community-16-dev]
+      - task: aggregate-prs
+        params:
+          GITHUB_TOKEN: ((GITHUB_TOKEN))
+          ODOO_EDITION: "enterprise"
+          ODOO_VERSION: "16.0"
+          ADD_OPEN_PRS: true
+        file: repo/.ci/tasks/update-repos.yaml
+      - task: build
+        input_mapping: {base-image: community-16-dev}
+        privileged: true
+        file: repo/.ci/tasks/build-odoo.yaml
+        params:
+          DEV: True
+          ODOO_EDITION: "enterprise"
+          ODOO_VERSION: "16"
+          BUILD_ARG_SSH_KEY: ((GITHUB_SSH_KEY))
+          IMAGE_ARG_base_image: base-image/image.tar
+        output_mapping: {image: "enterprise-16-dev"}
+      - put: enterprise-16-dev
+        params:
+          image: enterprise-16-dev/image.tar
+          additional_tags: enterprise-16-dev/today-tag

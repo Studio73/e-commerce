@@ -19,14 +19,19 @@ run:
     - |
       set -e
       if [ -z "$ODOO_VERSION" ]; then
-        VERSIONS="14.0 15.0"
+        VERSIONS="14.0 15.0 16.0"
         ORGS="odoo oca"
         cd repo/odoo
         for VERSION in $VERSIONS; do
           for ORG in $ORGS; do
-            tools update-repos --version=$VERSION --config=$VERSION/$ORG.yaml --commit
+            tools update-repos --version=$VERSION --config=$VERSION/$ORG.yaml
           done
         done
+        if [[ `git status --porcelain` ]]; then
+          git add .
+          git commit -m "[UPD] 14 to 16 repos"
+        fi
+
       else
         tools update-repos --cwd=repo --config=odoo/${ODOO_VERSION}/${ODOO_EDITION}.yaml
       fi
