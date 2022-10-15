@@ -12,7 +12,7 @@ import click
 import requests
 import yaml
 
-AVAILABLE_VERSIONS = ["14.0", "15.0"]
+AVAILABLE_VERSIONS = ["14.0", "15.0", "16.0"]
 
 logging.basicConfig(
     format="%(asctime)s %(levelname)s: %(message)s",
