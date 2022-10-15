@@ -132,6 +132,12 @@ resources:
     source:
       repository: ubuntu
       tag: "20.04"
+  - name: ubuntu-22
+    type: registry-image
+    icon: docker
+    source:
+      repository: ubuntu
+      tag: "22.04"
 
 groups:
   - name: all
@@ -213,8 +219,13 @@ jobs:
           {%- else %}
           - get: repo-odoo-{{ version }}
             trigger: true
+          {%- if version == "16" %}
+          - get: ubuntu-22
+            params: {format: oci}
+          {%- else %}
           - get: ubuntu
             params: {format: oci}
+          {%- endif %}
           {%- endif %}
       - task: update-repo
         params:
@@ -228,7 +239,11 @@ jobs:
         {%- elif edition == "enterprise" %}
         input_mapping: {base-image: community-{{ version }}}
         {%- else %}
+            {%- if version == "16" %}
+        input_mapping: {base-image: ubuntu-22}
+            {%- else %}
         input_mapping: {base-image: ubuntu}
+            {%- endif %}
         {%- endif %}
         privileged: true
         file: repo/.ci/tasks/build-odoo.yaml

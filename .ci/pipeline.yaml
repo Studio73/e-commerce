@@ -234,6 +234,12 @@ resources:
     source:
       repository: ubuntu
       tag: "20.04"
+  - name: ubuntu-22
+    type: registry-image
+    icon: docker
+    source:
+      repository: ubuntu
+      tag: "22.04"
 
 groups:
   - name: all
@@ -512,7 +518,7 @@ jobs:
           - get: repo
           - get: repo-odoo-16
             trigger: true
-          - get: ubuntu
+          - get: ubuntu-22
             params: {format: oci}
       - task: update-repo
         params:
@@ -521,7 +527,7 @@ jobs:
           ODOO_VERSION: "16.0"
         file: repo/.ci/tasks/update-repos.yaml
       - task: build
-        input_mapping: {base-image: ubuntu}
+        input_mapping: {base-image: ubuntu-22}
         privileged: true
         file: repo/.ci/tasks/build-odoo.yaml
         params:
