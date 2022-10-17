@@ -200,7 +200,7 @@ maintenance:
   defaults:
     depth: 1
   merges:
-   - origin: 16b7f45b526c7d51436b453bcc5826d83322c094
+   - origin 16b7f45b526c7d51436b453bcc5826d83322c094
   remotes:
     origin: https://github.com/OCA/maintenance.git
 manufacture:
