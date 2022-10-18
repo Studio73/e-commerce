@@ -142,6 +142,16 @@ class ToolsYaml(object):
                                     commit {
                                         statusCheckRollup {
                                             state
+                                            contexts(first: 10) {
+                                                nodes {
+                                                    __typename
+                                                    ... on StatusContext{
+                                                        description
+                                                        state
+                                                        context
+                                                    }
+                                                }
+                                            }
                                         }
                                     }
                                 }
@@ -175,11 +185,27 @@ class ToolsYaml(object):
             status_check_rollup = (
                 pr["commits"]["nodes"][0]["commit"]["statusCheckRollup"] or {}
             )
-            if status_check_rollup.get("state") == "SUCCESS":
+            checks_passed = []
+            checks = []
+            for context in status_check_rollup.get("contexts", {}).get("nodes") or []:
+                if context["__typename"] == "StatusContext":
+                    if context["state"] == "SUCCESS":
+                        checks_passed.append(True)
+                    elif (
+                        context["state"] == "PENDING"
+                        and context["context"] == "functional"
+                    ):
+                        checks_passed.append(True)
+                    else:
+                        checks_passed.append(False)
+                    checks.append(f"- {context['state']}\t->\t{context['context']}")
+            if all(checks_passed):
                 _logger.info("{}\t->\t ✅ Mergeable PR".format(tag))
                 prs.append("origin refs/pull/{}/head".format(pr["number"]))
             else:
                 _logger.info("{}\t->\t ❌ CI status check FAILED".format(tag))
+            for check in checks:
+                _logger.info(check)
         return prs
 
     def add_repo(self, repo_name, repo_url):
@@ -269,6 +295,12 @@ def lint(cwd):
 
 @tools.command()
 @click.option(
+    "--dry-run",
+    is_flag=True,
+    envvar="DRY_RUN",
+    help="If true only show info throught the screen but dont update the file",
+)
+@click.option(
     "-v",
     "--version",
     type=click.Choice(AVAILABLE_VERSIONS),
@@ -276,44 +308,61 @@ def lint(cwd):
     envvar="ODOO_VERSION",
 )
 @click.option("-c", "--cwd", help="Move to directory")
-def aggregate_prs(cwd, version):
+def aggregate_prs(cwd, version, dry_run):
     if not cwd:
         cwd = os.getcwd()
     elif not os.path.exists(cwd):
         _logger.error("Target directory doesn't exists")
         sys.exit(1)
     # Update base repo
-    if not os.environ.get("SSH_KEY"):
-        _logger.error("Missing SSH_KEY environment variable")
-        sys.exit(1)
-    ssh_cmd = """
-        mkdir -p ~/.ssh
-        echo -e "${SSH_KEY//_/\\n}" > ~/.ssh/id_rsa
-        chmod og-rwx ~/.ssh/id_rsa
-        ssh-keyscan github.com >> ~/.ssh/known_hosts
-    """
-    sp.call(
-        ssh_cmd,
-        shell=True,
-        executable="/bin/bash",
-        stdout=sp.DEVNULL,
-        stderr=sp.DEVNULL,
-    )
+    if not os.path.exists(os.path.expanduser("~/.ssh/id_rsa")):
+        if not os.environ.get("SSH_KEY"):
+            _logger.error("Missing SSH_KEY environment variable")
+            sys.exit(1)
+        ssh_cmd = """
+            mkdir -p ~/.ssh
+            echo -e "${SSH_KEY//_/\\n}" > ~/.ssh/id_rsa
+            chmod og-rwx ~/.ssh/id_rsa
+            ssh-keyscan github.com >> ~/.ssh/known_hosts
+        """
+        sp.call(
+            ssh_cmd,
+            shell=True,
+            executable="/bin/bash",
+            stdout=sp.DEVNULL,
+            stderr=sp.DEVNULL,
+        )
+    #
     remotes = sp.check_output(["git", "remote", "-v"], cwd=cwd).splitlines()
-    repo_url = remotes[0].decode().split("\t")[-1].split(" ")[0]
-    # Convert https -> git+ssl
-    repo_url = repo_url.replace("https://github.com/", "git@github.com:")
+    origin_data = re.findall(
+        r"github.com[:|\/](?P<org>\w+)\/(?P<repo>[\w|-]+)", str(remotes[0])
+    )
+    if not origin_data:
+        _logger.error("Unable to parse remote origin")
+        exit(1)
+    org, repo = origin_data[0]
+    repo_url = f"git@github.com:{org}/{repo}"
     tmp_repos_yaml = "/tmp/repos.yaml"
     sp.call(["touch", tmp_repos_yaml])
     obj = ToolsYaml(version, tmp_repos_yaml)
     obj.add_repo(".", repo_url)
     obj.update_repos(True)
-    obj.save()
-    exitcode = sp.call(["gitaggregate", "-c", tmp_repos_yaml], cwd=cwd)
-    sys.exit(exitcode)
+    if not dry_run:
+        obj.save()
+        # Reformat github remote to avoid to display github token
+        sp.call(["git", "remote", "set-url", "origin", repo_url], cwd=cwd)
+        exitcode = sp.call(["gitaggregate", "-c", tmp_repos_yaml], cwd=cwd)
+        sys.exit(exitcode)
+    sys.exit(0)
 
 
 @tools.command()
+@click.option(
+    "--dry-run",
+    is_flag=True,
+    envvar="DRY_RUN",
+    help="If true only show info throught the screen but dont update the file",
+)
 @click.option(
     "--add-open-prs",
     is_flag=True,
@@ -335,7 +384,7 @@ def aggregate_prs(cwd, version):
     help="git-aggregattor config file to update",
 )
 @click.option("-c", "--cwd", help="Move to directory")
-def update_repos(cwd, config, version, commit, add_open_prs):
+def update_repos(cwd, config, version, commit, add_open_prs, dry_run):
     if not cwd:
         cwd = os.getcwd()
     elif not os.path.exists(cwd):
@@ -345,20 +394,21 @@ def update_repos(cwd, config, version, commit, add_open_prs):
     obj = ToolsYaml(version, repos_yaml)
     obj.update_repos(add_open_prs)
     obj.print_limits()
-    obj.save()
-    if commit:
-        if sp.call(["git", "diff", "--exit-code"], cwd=cwd):
-            sp.call(["git", "add", config], cwd=cwd)
-            sp.call(
-                [
-                    "git",
-                    "commit",
-                    "--no-verify",
-                    "-m",
-                    "[UPD] {}".format(config),
-                ],
-                cwd=cwd,
-            )
+    if not dry_run:
+        obj.save()
+        if commit:
+            if sp.call(["git", "diff", "--exit-code"], cwd=cwd):
+                sp.call(["git", "add", config], cwd=cwd)
+                sp.call(
+                    [
+                        "git",
+                        "commit",
+                        "--no-verify",
+                        "-m",
+                        "[UPD] {}".format(config),
+                    ],
+                    cwd=cwd,
+                )
 
 
 if __name__ == "__main__":
