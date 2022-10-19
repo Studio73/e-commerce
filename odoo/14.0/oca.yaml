@@ -205,9 +205,10 @@ maintenance:
     origin: https://github.com/OCA/maintenance.git
 manufacture:
   defaults:
-    depth: 1
+    depth: 500
   merges:
   - origin cd8ff960c32a77e7341e27579fedd93372d5bb93
+  - origin refs/pull/877/head
   remotes:
     origin: https://github.com/OCA/manufacture.git
 margin-analysis:
