@@ -238,6 +238,13 @@ product-attribute:
   - origin 53a5a37af4f5487f435ef3349b5425e7ca1ac9bc
   remotes:
     origin: https://github.com/OCA/product-attribute.git
+product-configurator:
+  defaults:
+    depth: 1
+  merges:
+  - origin 0e94246f2cef9f64ed6be547fa194f0b5e682c94
+  remotes:
+    origin: https://github.com/OCA/product-configurator.git
 product-variant:
   defaults:
     depth: 500
