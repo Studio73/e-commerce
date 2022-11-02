@@ -296,6 +296,7 @@ sale-workflow:
   - origin 53cb00f656baf4ce642d683202d7769e49719d0f
   - origin refs/pull/1435/head
   - origin refs/pull/2217/head
+  - origin refs/pull/2074/head
   remotes:
     origin: https://github.com/OCA/sale-workflow.git
 server-tools:
