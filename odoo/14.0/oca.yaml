@@ -1,8 +1,9 @@
 account-analytic:
   defaults:
-    depth: 1
+    depth: 500
   merges:
   - origin 4dd0b08910495442c4081571fc00365890139faf
+  - origin refs/pull/495/head
   remotes:
     origin: https://github.com/OCA/account-analytic.git
 account-closing:
