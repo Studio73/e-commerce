@@ -259,7 +259,7 @@ project:
   merges:
   - origin 21dccbc966ec75fcbc5c5cdc43bb279136348729
   remotes:
-    origin: https://github.com/OCA/queue.git
+    origin: https://github.com/OCA/project.git
 purchase-workflow:
   defaults:
     depth: 500
