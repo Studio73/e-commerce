@@ -253,6 +253,13 @@ product-variant:
   - origin refs/pull/256/head
   remotes:
     origin: https://github.com/OCA/product-variant.git
+project:
+  defaults:
+    depth: 1
+  merges:
+  - origin 21dccbc966ec75fcbc5c5cdc43bb279136348729
+  remotes:
+    origin: https://github.com/OCA/queue.git
 purchase-workflow:
   defaults:
     depth: 500
