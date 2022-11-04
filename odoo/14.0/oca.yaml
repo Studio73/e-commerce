@@ -200,6 +200,7 @@ l10n-spain:
   merges:
   - origin 3a8ea68e7bdadc966a067117e403de383c967330
   - origin refs/pull/2411/head
+  - origin refs/pull/2211/head
   remotes:
     origin: https://github.com/OCA/l10n-spain.git
 maintenance:
@@ -252,6 +253,13 @@ product-configurator:
   - origin 0e94246f2cef9f64ed6be547fa194f0b5e682c94
   remotes:
     origin: https://github.com/OCA/product-configurator.git
+product-pack:
+  defaults:
+    depth: 1
+  merges:
+  - origin 57b40944c669633fdd38a11f10fc2cd741bb9319
+  remotes:
+    origin: git@github.com:OCA/product-pack.git
 product-variant:
   defaults:
     depth: 500
