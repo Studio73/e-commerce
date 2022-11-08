@@ -234,9 +234,10 @@ mis-builder:
     origin: https://github.com/OCA/mis-builder.git
 partner-contact:
   defaults:
-    depth: 1
+    depth: 500
   merges:
   - origin b034e83cf83bc0e7846c4e1e9430f8d074d8f47c
+  - origin refs/pull/1391/head
   remotes:
     origin: https://github.com/OCA/partner-contact.git
 product-attribute:
