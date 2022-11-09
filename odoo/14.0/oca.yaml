@@ -259,7 +259,7 @@ product-pack:
   merges:
   - origin 57b40944c669633fdd38a11f10fc2cd741bb9319
   remotes:
-    origin: git@github.com:OCA/product-pack.git
+    origin: https://github.com/OCA/product-pack.git
 product-variant:
   defaults:
     depth: 1
