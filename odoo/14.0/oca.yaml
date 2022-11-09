@@ -210,6 +210,13 @@ maintenance:
   - origin 81246ecd202a24d74dcee2f9df13ad441b3c7cf3
   remotes:
     origin: https://github.com/OCA/maintenance.git
+management-system:
+  defaults:
+    depth: 1
+  merges:
+  - origin 23424a524f36ad0d64d26144f7e02ba1555d85de
+  remotes:
+    origin: https://github.com/OCA/management-system.git
 manufacture:
   defaults:
     depth: 500
