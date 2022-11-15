@@ -7,7 +7,7 @@ from invoke import task
 PROJECT = "{{ project_name }}"
 DOCKER_REGISTRY = "r.studio73.es"
 {%- if image %}
-DOCKER_IMAGE = "odoo/{{ project_name }}:{{ odoo_version }}"
+DOCKER_IMAGE = "{{ image.replace("r.studio73.es/", "") }}:{{ odoo_version }}"
 {%- else %}
 DOCKER_IMAGE = "odoo/{{ odoo_edition }}:{{ odoo_version }}"
 {%- endif %}
