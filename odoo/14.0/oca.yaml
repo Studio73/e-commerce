@@ -384,6 +384,7 @@ stock-logistics-workflow:
   - origin 541ce99a90432132faa045a49ee3529283516c44
   - origin refs/pull/1003/head
   - origin refs/pull/1005/head
+  - origin refs/pull/1132/head
   remotes:
     origin: https://github.com/OCA/stock-logistics-workflow.git
 web:
