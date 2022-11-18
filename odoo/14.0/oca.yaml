@@ -332,9 +332,10 @@ sale-workflow:
     origin: https://github.com/OCA/sale-workflow.git
 server-tools:
   defaults:
-    depth: 1
+    depth: 100
   merges:
   - origin 763451822738a7fd7ec246fd613cb435f59b1f50
+  - origin refs/pull/2465/head
   remotes:
     origin: https://github.com/OCA/server-tools.git
 server-ux:
