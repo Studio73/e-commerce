@@ -120,6 +120,12 @@ resources:
       <<: *git-source
       paths:
         - tools/*
+  - name: repo-agent
+    <<: *git
+    source:
+      <<: *git-source
+      paths:
+        - agent/*
   - name: oci-build
     <<: *registry-image
     source:
@@ -137,6 +143,12 @@ resources:
     source:
       <<: *registry-image-source
       repository: r.studio73.es/odoo/tools
+      tag: latest
+  - name: agent
+    <<: *registry-image
+    source:
+      <<: *registry-image-source
+      repository: r.studio73.es/odoo/agent
       tag: latest
   - name: base-14
     <<: *registry-image
@@ -260,6 +272,7 @@ groups:
       - build-oci-build
       - build-proxypass
       - build-tools
+      - build-agent
 
 jobs:
   # Build tools docker images
@@ -314,6 +327,23 @@ jobs:
       - put: tools
         params:
           image: tools/image.tar
+  - name: build-agent
+    <<: *notify
+    plan:
+      - in_parallel:
+          - get: repo
+          - get: repo-agent
+            trigger: true
+      - task: build
+        attempts: 3
+        privileged: true
+        params:
+          CONTEXT: repo/agent
+        file: repo/.ci/tasks/build-tools.yaml
+        output_mapping: {image: agent}
+      - put: agent
+        params:
+          image: agent/image.tar
   # Update repos YAML
   - name: update-repos
     <<: *notify
