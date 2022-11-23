@@ -146,7 +146,8 @@ def run(addons, language, log_level):
     else:
         addons = custom_addons
     if not addons:
-        raise Exception("No addons to test")
+        _logger.warning("No addons to tests")
+        return True
     dependencies = []
     for a in addons:
         dependencies += addons_dict[a]
@@ -246,6 +247,9 @@ def run(addons, language, log_level):
 @click.argument("addons", default="")
 def coverage(addons, fail_under):
     custom_path = os.path.join(os.environ["SRC"], "custom")
+    if not os.path.exists(os.path.join(custom_path, ".coverage")):
+        _logger.warning("No .coverage to process")
+        return True
     diff_addons = []
     if addons:
         diff_addons = [m.strip() for m in addons.split(",")]
