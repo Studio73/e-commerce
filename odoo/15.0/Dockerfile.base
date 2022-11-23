@@ -127,6 +127,7 @@ RUN ln -s $SRC/odoo/odoo/odoo-bin /usr/local/bin/odoo
 USER odoo
 ENTRYPOINT ["python3", "/entrypoint.py"]
 CMD ["odoo"]
+HEALTHCHECK CMD curl -f http://localhost:8069/web/login || exit 1
 
 ARG BUILD_DATE
 LABEL org.opencontainers.image.vendor="Studio73" \
