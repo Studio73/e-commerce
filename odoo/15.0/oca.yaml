@@ -289,8 +289,9 @@ web:
     origin: https://github.com/OCA/web.git
 website:
   defaults:
-    depth: 1
+    depth: 100
   merges:
   - origin 3dc8c22bcfc1e05740f65a63ff5d4fe7734e44ae
+  - origin refs/pull/926/head
   remotes:
     origin: https://github.com/OCA/website.git
