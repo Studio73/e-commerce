@@ -1,1 +1,13 @@
-* @ioans73 @fuentes73 @Jortolsa-S73
+* @ioans73 @fuentes73
+account_* @Jortolsa-S73,@ferran-S73
+connector_* @hildickethan-S73
+delivery_* @ferran-S73,@hildickethan-S73
+l10n_es_* @Jortolsa-S73,@hildickethan-S73
+mrp_* @ferran-S73,@Willerr-mo-S73
+partner_* @miguel-S73,@Willerr-mo-S73
+product_* @miguel-S73,@Willerr-mo-S73
+purchase_* @ferran-S73,@hildickethan-S73
+res_partner_* @miguel-S73,@Willerr-mo-S73
+sale_* @ferran-S73,@hildickethan-S73
+stock_* @ferran-S73,@hildickethan-S73
+web* @miguel-S73

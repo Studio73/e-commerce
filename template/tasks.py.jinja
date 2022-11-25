@@ -1,5 +1,6 @@
 import os
 import uuid
+import re
 
 from dotenv import dotenv_values
 from invoke import task
@@ -7,7 +8,7 @@ from invoke import task
 PROJECT = "{{ project_name }}"
 DOCKER_REGISTRY = "r.studio73.es"
 {%- if image %}
-DOCKER_IMAGE = "{{ image.replace("r.studio73.es/", "") }}:{{ odoo_version }}"
+DOCKER_IMAGE = "{{ image.replace('r.studio73.es/', '') }}:{{ odoo_version }}"
 {%- else %}
 DOCKER_IMAGE = "odoo/{{ odoo_edition }}:{{ odoo_version }}"
 {%- endif %}
@@ -16,6 +17,7 @@ DOCKER_IMAGE = "odoo/{{ odoo_edition }}:{{ odoo_version }}"
 
 @task
 def build(c):
+    c.run("docker pull {{ base_image }}:{{ odoo_version }}", pty=True)
     c.run("docker buildx build -t {} .".format(DOCKER_IMAGE), pty=True)
     c.run("docker tag {} {}/{}".format(DOCKER_IMAGE, DOCKER_REGISTRY, DOCKER_IMAGE), pty=True)
 
@@ -113,3 +115,55 @@ def exec(c, cmd="bash", port="8069", name=PROJECT):
         dockercmd += ["--publish={}:{}".format(debugger_port, debugger_port)]
     dockercmd += ["{}/{}".format(DOCKER_REGISTRY, DOCKER_IMAGE), cmd]
     c.run(" ".join(dockercmd), pty=True)
+
+
+@task
+def commit(c):
+    result = c.run("pip3 list | grep cz-73 | wc -l", hide="both")
+    if result.stdout.strip() == "0":
+        c.run(
+            "pip3 install --user git+ssh://git@github.com/Studio73/cz_73.git", pty=True
+        )
+    if not os.path.exists(".git/hooks/pre-commit"):
+        c.run("pre-commit install", pty=True)
+    c.run("cz -n cz_73 c", pty=True)
+
+
+@task
+def pr(c):
+    c.run("git push --set-upstream")
+    result = c.run(
+        "git log --pretty=format:'%D' HEAD^ | grep 'origin/' | head -n1 | sed 's@origin/@@' | sed 's@,.*@@'",
+        hide="both",
+    )
+    base = result.stdout.strip()
+    current = c.run("git rev-parse --abbrev-ref HEAD", hide="both").stdout.strip()
+    commits_short = c.run(
+        "git --no-pager log --format=%s origin/{}..HEAD".format(base), hide="both"
+    ).stdout.strip()
+    czs = re.findall(
+        "(?P<type>(\\w)*)(?P<scope>\\(\\w+\\))?(?P<breaking>!)?:", commits_short
+    )
+    _type = "fix"
+    for commit in czs:
+        if commit[3] == "!":
+            _type = "!"
+            break
+        elif commit[0] != "fix":
+            _type = "feat"
+    diff = c.run(
+        "git --no-pager diff --name-only origin/{} HEAD | sort".format(base),
+        hide="both",
+    ).stdout.strip()
+    modules = []
+    for change in diff.split():
+        change_dir = change.split("/")[0]
+        if os.path.isdir(change_dir) and os.path.exists(
+            os.path.join(change_dir, "__manifest__.py")
+        ):
+            modules.append(change_dir)
+    title = "{}\\({}\\):%20{}".format(_type.lower(), base, ",".join(modules))
+    pr_url = "https://github.com/Studio73/{{ repo_name }}/compare/{}...{}?quick_pull=1\\&title={}".format(
+        base, current, title
+    )
+    c.run("python3 -mwebbrowser {}".format(pr_url))
