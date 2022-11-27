@@ -131,7 +131,7 @@ def commit(c):
 
 @task
 def pr(c):
-    c.run("git push --set-upstream")
+    c.run("git push origin $(git rev-parse --abbrev-ref HEAD)")
     result = c.run(
         "git log --pretty=format:'%D' HEAD^ | grep 'origin/' | head -n1 | sed 's@origin/@@' | sed 's@,.*@@'",
         hide="both",
