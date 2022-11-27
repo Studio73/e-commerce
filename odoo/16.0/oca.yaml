@@ -163,7 +163,7 @@ l10n-spain:
   defaults:
     depth: 1
   merges:
-  - origin a04dbf80d1cb1cf39f3c275f18c74abe2dd72b59
+  - origin 0607ea90e0829f2a27cdac52ed6274f1bd342046
   remotes:
     origin: https://github.com/OCA/l10n-spain.git
 mis-builder:
@@ -177,14 +177,14 @@ partner-contact:
   defaults:
     depth: 1
   merges:
-  - origin 46f79f261b3f64aa6d52de06c309ee3283bfb5bc
+  - origin 6e5d89e668de4d0f6be137c7a8796acc0e3bc7d7
   remotes:
     origin: https://github.com/OCA/partner-contact.git
 product-attribute:
   defaults:
     depth: 1
   merges:
-  - origin bf600c88c06863d622f89834e98cca6c382630af
+  - origin 2fd640bb4f2bda27c0206f0a99d434b64e6008d9
   remotes:
     origin: https://github.com/OCA/product-attribute.git
 product-variant:
@@ -205,14 +205,14 @@ purchase-workflow:
   defaults:
     depth: 1
   merges:
-  - origin b5d11268464adb7704c66939df22cf5fc8e9622a
+  - origin 6da280b65b3f7a3bde91bced78ecd47d4161549b
   remotes:
     origin: https://github.com/OCA/purchase-workflow.git
 queue:
   defaults:
     depth: 1
   merges:
-  - origin aa251b0f49cd323edb63886a8cb68f438d305407
+  - origin 887ed2551ced5a1ac2ac1a17063a2deb222f37d5
   remotes:
     origin: https://github.com/OCA/queue.git
 report-print-send:
@@ -226,7 +226,7 @@ reporting-engine:
   defaults:
     depth: 1
   merges:
-  - origin 372e72d2b1f7f74c4718ccdede00989792618171
+  - origin d153fff830ed9425dc8acd4883c9732dec252500
   remotes:
     origin: https://github.com/OCA/reporting-engine.git
 sale-reporting:
@@ -268,14 +268,14 @@ stock-logistics-warehouse:
   defaults:
     depth: 1
   merges:
-  - origin bdd686338c4572cf399bb2ded7133f2c006d7462
+  - origin 6e8ebc998149373c69ab72d9bfff464aa34187f5
   remotes:
     origin: https://github.com/OCA/stock-logistics-warehouse.git
 stock-logistics-workflow:
   defaults:
     depth: 1
   merges:
-  - origin fd8d40ddfff485a03b65754e71ff9a88327e0a0b
+  - origin 8454cb78a861391f31f4b7dca83ca0c1336f821b
   remotes:
     origin: https://github.com/OCA/stock-logistics-workflow.git
 web:
