@@ -1,6 +1,7 @@
 import os
-import uuid
 import re
+import tempfile
+import uuid
 
 from dotenv import dotenv_values
 from invoke import task
@@ -126,17 +127,20 @@ def commit(c):
         )
     if not os.path.exists(".git/hooks/pre-commit"):
         c.run("pre-commit install", pty=True)
-    c.run("cz -n cz_73 c", pty=True)
+    cmd = "cz -n cz_73 c"
+    temp_file: str = os.path.join(
+        tempfile.gettempdir(),
+        "cz.commit{}.backup".format(os.environ.get("USER", "")),
+    )
+    if os.path.isfile(temp_file):
+        cmd += " --retry"
+    c.run(cmd, pty=True)
 
 
 @task
 def pr(c):
     c.run("git push origin $(git rev-parse --abbrev-ref HEAD)")
-    result = c.run(
-        "git log --pretty=format:'%D' HEAD^ | grep 'origin/' | head -n1 | sed 's@origin/@@' | sed 's@,.*@@'",
-        hide="both",
-    )
-    base = result.stdout.strip()
+    base = "{{ odoo_version }}.0"
     current = c.run("git rev-parse --abbrev-ref HEAD", hide="both").stdout.strip()
     commits_short = c.run(
         "git --no-pager log --format=%s origin/{}..HEAD".format(base), hide="both"
@@ -162,7 +166,7 @@ def pr(c):
             os.path.join(change_dir, "__manifest__.py")
         ):
             modules.append(change_dir)
-    title = "{}\\({}\\):%20{}".format(_type.lower(), base, ",".join(modules))
+    title = "{}\\({}\\):%20{}".format(_type.lower(), base, ",".join(list(set(modules))))
     pr_url = "https://github.com/Studio73/{{ repo_name }}/compare/{}...{}?quick_pull=1\\&title={}".format(
         base, current, title
     )
