@@ -6,6 +6,7 @@ from typing import Dict
 
 import aiohttp
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
+from apscheduler.triggers.cron import CronTrigger
 from python_on_whales import DockerClient, docker
 from python_on_whales.components.compose.cli_wrapper import ComposeCLI
 from python_on_whales.exceptions import DockerException
@@ -213,9 +214,16 @@ async def rotate():
 
 async def main():
     scheduler = AsyncIOScheduler()
-    scheduler.add_job(gather, "interval", minutes=15, next_run_time=datetime.now())
-    rotate_next_run = datetime.now().replace(hour=0, minute=0) + timedelta(days=1)
-    scheduler.add_job(rotate, "interval", hours=24, next_run_time=rotate_next_run)
+    scheduler.add_job(
+        gather,
+        CronTrigger.from_crontab("*/15 7-20 * * mon-fri"),
+        next_run_time=datetime.now(),
+    )
+    scheduler.add_job(
+        rotate,
+        CronTrigger.from_crontab("10 0 * * mon-fri"),
+        next_run_time=datetime.now(),
+    )
     scheduler.start()
 
 
