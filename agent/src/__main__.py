@@ -25,6 +25,7 @@ logging.basicConfig(
 
 class DodooContainer(object):
     def __init__(self, name, project, compose, service, labels, image, sha256):
+        self.server_name = os.environ.get("AGENTNAME", os.environ["HOSTNAME"])
         self.name: str = name
         self.project: str = project
         self.compose: ComposeCLI = compose
@@ -44,6 +45,7 @@ class DodooContainer(object):
             async with aiohttp.ClientSession() as session:
                 payload = f"""
 *Rolling update error*
+*Server* {self.server_name}
 *Project* {self.project}
 *Service* {self.service}
 *Name* {self.name}
