@@ -9,7 +9,7 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
 from python_on_whales import DockerClient, docker
 from python_on_whales.components.compose.cli_wrapper import ComposeCLI
-from python_on_whales.exceptions import DockerException
+from python_on_whales.exceptions import DockerException, NoSuchService
 
 POS = ("true", "True", "TRUE", "1", 1)
 NEG = ("false", "False", "FALSE", "0", 0)
@@ -170,7 +170,11 @@ async def gather():
             enable = labels.get("dodoo.enable") in POS
             if not enable:
                 continue
-            ctrs = compose.ps([service])
+            try:
+                ctrs = compose.ps([service])
+            except NoSuchService:
+                logger.debug(f"{project.name}.{service} - Service not found")
+                continue
             if not ctrs:
                 logger.debug(f"{project.name}.{service} - Running containers not found")
                 continue
