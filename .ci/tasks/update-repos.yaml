@@ -29,7 +29,7 @@ run:
         done
         if [[ `git status --porcelain` ]]; then
           git add .
-          git commit -m "[UPD] 14 to 16 repos"
+          git commit -m "feat(odoo): Update 14 to 16 repos"
         fi
 
       else
