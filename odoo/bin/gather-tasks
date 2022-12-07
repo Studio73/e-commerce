@@ -1,0 +1,31 @@
+#!/bin/env python3
+# (c) Studio73 - Pablo Fuentes <pablo@studio73.es>
+import json
+import os
+import re
+import subprocess as sp
+
+
+def main():
+    manifest = {"ta": [], "ti": []}
+    number = 50
+    cmd = "git --no-pager log --decorate=full -n{}".format(number).split()
+    repos = []
+    for src in ["custom", "studio73"]:
+        _src = os.path.join(os.environ["SRC"], src)
+        for repo in os.listdir(_src):
+            _repo = os.path.join(_src, repo)
+            if os.path.exists(os.path.join(_repo, ".git")):
+                repos.append(_repo)
+    for repo in repos:
+        logs = sp.check_output(cmd, cwd=repo).decode("utf-8").lower()
+        tasks = re.findall(r"(?P<obj>ta|ti)(-)*(?P<id>\d+)", logs)
+        for task in tasks:
+            manifest[task[0]].append(task[2])
+        manifest["ta"] = list(set(manifest["ta"]))
+        manifest["ti"] = list(set(manifest["ti"]))
+    print(json.dumps(manifest, indent=2))
+
+
+if __name__ == "__main__":
+    main()

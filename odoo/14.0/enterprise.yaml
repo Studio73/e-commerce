@@ -1,6 +1,6 @@
 studio73-enterprise-addons:
   defaults:
-    depth: 1
+    depth: 50
   merges:
   - origin 14.0
   remotes:

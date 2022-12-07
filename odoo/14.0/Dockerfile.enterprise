@@ -1,21 +1,10 @@
 ARG  base_image=r.studio73.es/odoo/community:14
 FROM ${base_image} as builder
-USER root
-RUN apt-get update \
-	&& apt-get -y upgrade \
-    && apt-get install -y --no-install-recommends git ssh \
-    && rm -rf /var/lib/apt/lists/* /tmp/* \
-    && git config --global user.email "contacto@studio73.es" \
-    && git config --global user.name "Studio73" \
-    && git config --global init.defaultBranch "14.0"
-USER odoo
 ARG SSH_KEY
 RUN set-ssh-key
 COPY --chown=odoo 14.0/enterprise.yaml /code/enterprise.yaml
 RUN cd /code && gitaggregate --jobs 8 --config enterprise.yaml
-RUN clean-repo /code
 
 FROM ${base_image}
 COPY --chown=odoo --from=builder /code $SRC/studio73
 RUN install-requirements $SRC/studio73
-RUN clean-repo $SRC/studio73

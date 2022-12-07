@@ -52,13 +52,13 @@ def build_conf():
         options["without_demo"] = True
     new_conf = OrderedDict({"options": options})
     cfg_prefix = "ODOO_"
-    blacklist = ["release", "version"]
+    blacklist = ["release", "version", "rc"]
     for k, val in os.environ.items():
         if k.startswith(cfg_prefix):
             opt = k.replace(cfg_prefix, "").lower()
             if opt not in blacklist and "queue_job" not in opt:
                 new_conf["options"][opt] = val
-    with open("/opt/odoo/.odoorc", "w") as odoo_conf:
+    with open(os.environ["ODOO_RC"], "w") as odoo_conf:
         for section, values in new_conf.items():
             odoo_conf.write("[%s]\n" % section)
             odoo_conf.writelines(["{}={}\n".format(k, v) for k, v in values.items()])

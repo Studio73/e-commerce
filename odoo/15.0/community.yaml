@@ -1,6 +1,6 @@
 studio73-private-addons:
   defaults:
-    depth: 1
+    depth: 50
   merges:
   - origin 15.0
   remotes:

@@ -31,7 +31,7 @@ RUN apt-get update \
     # endesive reporting-engine
     swig \
     && rm -rf /var/lib/apt/lists/* /tmp/* \
-    && git config --global user.email "contacto@studio73.es" \
+    && git config --global user.email "sistemas@studio73.es" \
     && git config --global user.name "Studio73" \
     && git config --global init.defaultBranch "16.0"
 
@@ -81,6 +81,8 @@ RUN apt-get update \
     gnupg2 \
     locales \
     node-less \
+    git \
+    ssh \
     # unbuffer
     expect-dev \
     python3.10 \
@@ -92,6 +94,9 @@ RUN apt-get update \
     && dpkg -i /tmp/libssl1.deb \
     && curl -o /tmp/wkhtmltox.deb -sSL https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.focal_amd64.deb \
     && apt-get install -y --no-install-recommends /tmp/wkhtmltox.deb \
+    && git config --global user.email "sistemas@studio73.es" \
+    && git config --global user.name "Studio73" \
+    && git config --global init.defaultBranch "16.0" \
     && rm -rf /var/lib/apt/lists/* /tmp/*
 
 RUN sed -i -e 's/# es_ES.UTF-8 UTF-8/es_ES.UTF-8 UTF-8/' /etc/locale.gen && locale-gen
@@ -110,12 +115,14 @@ RUN echo "deb http://apt.postgresql.org/pub/repos/apt focal-pgdg main" > /etc/ap
 RUN useradd -md /opt/odoo -s /bin/bash odoo
 RUN mkdir -p /opt/odoo/data \
 	&& mkdir -p /opt/odoo/src/custom \
-    && chown -R odoo:odoo /opt/odoo
+	&& mkdir -p /etc/odoo \
+    && chown -R odoo:odoo /opt/odoo /etc/odoo
 EXPOSE 8069 8072
 WORKDIR /opt/odoo/
 ENV HOME='/opt/odoo' \
     DATA='/opt/odoo/data' \
 	SRC='/opt/odoo/src'\
+    ODOO_RC='/etc/odoo/odoo.conf' \
     VIRTUAL_ENV=/venv
 ENV PATH="$VIRTUAL_ENV/bin:$HOME/bin:$PATH"
 # Avoid "ImportError: No module named odoo" and make pip install persistent
