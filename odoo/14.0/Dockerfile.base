@@ -92,9 +92,6 @@ RUN apt-get update \
     cups-client \
     && curl -o /tmp/wkhtmltox.deb -sSL https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.focal_amd64.deb \
     && apt-get install -y --no-install-recommends /tmp/wkhtmltox.deb \
-    && git config --global user.email "sistemas@studio73.es" \
-    && git config --global user.name "Studio73" \
-    && git config --global init.defaultBranch "14.0" \
     && rm -rf /var/lib/apt/lists/* /tmp/*
 
 RUN sed -i -e 's/# es_ES.UTF-8 UTF-8/es_ES.UTF-8 UTF-8/' /etc/locale.gen && locale-gen
@@ -129,7 +126,10 @@ COPY --chown=odoo --from=builder /odoo $SRC/odoo
 COPY --chown=odoo --from=builder /oca $SRC/oca
 COPY --chown=odoo bin $HOME/bin
 COPY --chown=odoo entrypoint.py /
-RUN ln -s $SRC/odoo/odoo/odoo-bin /usr/local/bin/odoo
+RUN ln -s $SRC/odoo/odoo/odoo-bin /usr/local/bin/odoo \
+    && git config --global user.email "sistemas@studio73.es" \
+    && git config --global user.name "Studio73" \
+    && git config --global init.defaultBranch "14.0"
 
 USER odoo
 ENTRYPOINT ["python3", "/entrypoint.py"]
