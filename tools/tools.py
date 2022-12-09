@@ -253,7 +253,13 @@ class ToolsYaml(object):
             if add_open_prs:
                 open_prs = self.get_open_prs(org, repo, self.version)
                 merges = list(set(merges + open_prs))
-            data["defaults"]["depth"] = 500 if len(merges) > 1 else 1
+            old_depth = data["defaults"]["depth"]
+            new_depth = old_depth
+            if len(merges) > 1:
+                new_depth = 500
+            elif old_depth == 500:
+                new_depth = 1
+            data["defaults"]["depth"] = new_depth
             data["merges"] = sorted(merges)
             res_yaml[name] = data
         self.yaml = res_yaml

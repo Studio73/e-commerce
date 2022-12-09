@@ -1,5 +1,5 @@
 # (c) Studio73 - Pablo Fuentes <pablo@studio73.es>
-FROM python:3.8-slim-buster
+FROM python:3.11-slim-buster
 
 RUN apt-get update && apt-get install -y --no-install-recommends git openssh-client
 RUN mkdir /src /cache
