@@ -16,7 +16,7 @@ _logger = logging.getLogger(__name__)
 def main():
     dbname = os.environ["PGDATABASE"]
     dump_dest = "/opt/odoo/backup"
-    dump_name = "%s/%s_addons_%s.tar.gz" % (dump_dest, dbname, time.strftime("%Y-%m-%y_%H%M%S"))
+    dump_name = "%s/%s_addons.tar.gz" % (dump_dest, dbname)
     query = "select name from ir_module_module where state in ('installed', 'to upgrade') order by name"
     query_out = sp.Popen(
         ["psql", "-t", "-d", dbname, "-c", query], stdout=sp.PIPE
