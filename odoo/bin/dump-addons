@@ -1,0 +1,52 @@
+#!/bin/env python3
+# (c) Studio73 - Pablo Fuentes <pablo@studio73.es>
+import glob
+import logging
+import os
+import subprocess as sp
+import time
+
+logging.basicConfig(
+    format="%(asctime)s %(levelname)s: %(message)s",
+    level=logging.INFO,
+)
+_logger = logging.getLogger(__name__)
+
+
+def main():
+    dbname = os.environ["PGDATABASE"]
+    dump_dest = "/opt/odoo/backup"
+    dump_name = "%s/%s_addons_%s.tar.gz" % (dump_dest, dbname, time.strftime("%Y-%m-%y_%H%M%S"))
+    query = "select name from ir_module_module where state in ('installed', 'to upgrade') order by name"
+    query_out = sp.Popen(
+        ["psql", "-t", "-d", dbname, "-c", query], stdout=sp.PIPE
+    ).communicate()[0]
+    addons_out = query_out.decode("utf-8").strip().split()
+
+    if not len(addons_out):
+        _logger.error("No addons found in %s" % dbname)
+        exit(75)
+    sp.call(["rm", "-rf", dbname], cwd="/tmp")
+    sp.call(["mkdir", "-p", dbname], cwd="/tmp")
+    routes = [
+        "/opt/odoo/src/oca/**/%s",
+        "/opt/odoo/src/custom/%s",
+        "/opt/odoo/src/studio73/**/%s",
+    ]
+    for addon in addons_out:
+        for route in routes:
+            _addon = glob.glob(route % addon)
+            if _addon and "zenterprise" not in _addon[0]:
+                src = _addon[0]
+                dest = src.replace(os.environ["SRC"], "/tmp/%s" % dbname)
+                sp.call(["mkdir", "-p", os.path.split(dest)[0]])
+                sp.call(["cp", "-r", src, dest])
+                continue
+    sp.call(["mkdir", "-p", dump_dest])
+    sp.call(["tar", "-cf", dump_name, dbname], cwd="/tmp")
+    sp.call(["rm", "-rf", dbname], cwd="/tmp")
+    _logger.info("Addons dumped at %s" % dump_name)
+
+
+if __name__ == "__main__":
+    main()
