@@ -3,6 +3,7 @@ click-odoo-contrib
 coverage
 debugpy
 git-aggregator
+google_auth
 inotify
 pdfminer.six
 pycups
