@@ -7,6 +7,6 @@ google_auth
 inotify
 pdfminer.six
 pycups
-pydevd-pycharm==212.4746.13
+pydevd-pycharm==223.4884.74
 tabulate
 wheel
