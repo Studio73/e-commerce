@@ -112,6 +112,7 @@ contract:
   merges:
   - origin 5a3ae4d0b50f050248d94aa5854c6ca17792dc23
   - origin refs/pull/841/head
+  - origin refs/pull/906/head
   remotes:
     origin: https://github.com/OCA/contract.git
 credit-control:
