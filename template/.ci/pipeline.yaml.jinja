@@ -168,6 +168,7 @@ jobs:
         image: {{ project_name }}
         file: repo/.ci/tasks/tests-build.yaml
       - put: {{ project_name }}
+        no_get: true
         params:
           image: {{ project_name }}/image.tar
           additional_tags: {{ project_name }}/today-tag
@@ -196,6 +197,7 @@ jobs:
         image: {{ project_name }}-dev
         file: repo/.ci/tasks/tests-build.yaml
       - put: {{ project_name }}-dev
+        no_get: true
         params:
           image: {{ project_name }}-dev/image.tar
           additional_tags: {{ project_name }}-dev/today-tag
