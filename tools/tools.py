@@ -6,11 +6,13 @@ import re
 import subprocess as sp
 import sys
 from collections import OrderedDict
+from datetime import datetime
 from pprint import pprint
 
 import click
 import requests
 import yaml
+from plumbum import local
 
 AVAILABLE_VERSIONS = ["14.0", "15.0", "16.0"]
 
@@ -238,18 +240,11 @@ class ToolsYaml(object):
                     if self.is_pr_open(org, repo, pr[0]):
                         merges.append(merge)
                 else:
-                    if add_open_prs:
-                        # We dont want to update the commit sha
-                        # because we are just adding all open prs
-                        merges.append(merge)
-                        commit_sha = merge.split()[-1]
-                        _logger.info("* commit\t->\t{}".format(commit_sha))
-                    else:
-                        # Update commit sha to latest version
-                        # Base commit -> origin latest_commit_sha
-                        remote_name = merge.split()[0]
-                        new_sha = self.get_latest_sha(org, repo, self.version)
-                        merges.append("{} {}".format(remote_name, new_sha))
+                    # Update commit sha to latest version
+                    # Base commit -> origin latest_commit_sha
+                    remote_name = merge.split()[0]
+                    new_sha = self.get_latest_sha(org, repo, self.version)
+                    merges.append("{} {}".format(remote_name, new_sha))
             if add_open_prs:
                 open_prs = self.get_open_prs(org, repo, self.version)
                 merges = list(set(merges + open_prs))
@@ -276,13 +271,24 @@ class ToolsYaml(object):
             yaml.dump(dict(self.yaml), yaml_file)
 
 
-def add_options(options):
-    def _add_options(func):
-        for option in reversed(options):
-            func = option(func)
-        return func
-
-    return _add_options
+def set_ssh_key():
+    if not os.path.exists(os.path.expanduser("~/.ssh/id_rsa")):
+        if not os.environ.get("SSH_KEY"):
+            _logger.error("Missing SSH_KEY environment variable")
+            sys.exit(1)
+        ssh_cmd = """
+            mkdir -p ~/.ssh
+            echo -e "${SSH_KEY//_/\\n}" > ~/.ssh/id_rsa
+            chmod og-rwx ~/.ssh/id_rsa
+            ssh-keyscan github.com >> ~/.ssh/known_hosts
+        """
+        sp.call(
+            ssh_cmd,
+            shell=True,
+            executable="/bin/bash",
+            stdout=sp.DEVNULL,
+            stderr=sp.DEVNULL,
+        )
 
 
 @click.group()
@@ -321,24 +327,7 @@ def aggregate_prs(cwd, version, dry_run):
         _logger.error("Target directory doesn't exists")
         sys.exit(1)
     # Update base repo
-    if not os.path.exists(os.path.expanduser("~/.ssh/id_rsa")):
-        if not os.environ.get("SSH_KEY"):
-            _logger.error("Missing SSH_KEY environment variable")
-            sys.exit(1)
-        ssh_cmd = """
-            mkdir -p ~/.ssh
-            echo -e "${SSH_KEY//_/\\n}" > ~/.ssh/id_rsa
-            chmod og-rwx ~/.ssh/id_rsa
-            ssh-keyscan github.com >> ~/.ssh/known_hosts
-        """
-        sp.call(
-            ssh_cmd,
-            shell=True,
-            executable="/bin/bash",
-            stdout=sp.DEVNULL,
-            stderr=sp.DEVNULL,
-        )
-    #
+    set_ssh_key()
     remotes = sp.check_output(["git", "remote", "-v"], cwd=cwd).splitlines()
     origin_data = re.findall(
         r"github.com[:|\/](?P<org>\w+)\/(?P<repo>[\w|-]+)", str(remotes[0])
@@ -415,6 +404,62 @@ def update_repos(cwd, config, version, commit, add_open_prs, dry_run):
                     ],
                     cwd=cwd,
                 )
+
+
+@tools.command()
+@click.option("-c", "--cwd", help="Move to directory")
+def update_copier(cwd):
+    if not cwd:
+        cwd = os.getcwd()
+    elif not os.path.exists(cwd):
+        _logger.error("Target directory doesn't exists")
+        sys.exit(1)
+    set_ssh_key()
+    local.cwd.chdir(cwd)
+    git = local["git"]
+    copier = local["copier"]
+    stream = open(os.path.join(cwd, ".copier-answers.yml"), "r")
+    copier_yaml = yaml.safe_load(stream)
+    stream.close()
+    _logger.info("Running `copier -f update`")
+    copier["-f", "update"]()
+    changes = git["status", "--porcelain"]().strip()
+    if not changes:
+        _logger.info("Copier up to date")
+        return
+    git["add", "."]()
+    pre_commit = sp.run(["pre-commit", "run", "-a"], cwd=cwd)
+    git[
+        "commit",
+        "--no-verify",
+        "-m",
+        f"[skip ci] build(copier): {copier_yaml['_commit']}",
+    ]()
+    if not pre_commit.returncode:
+        git["push", "-u", "origin", "HEAD"]()
+    else:
+        branch = f"upd-copier-{datetime.now().strftime('%y%m%d')}"
+        _logger.error("pre-commit error: Needs manual intervention")
+        git["checkout", "-b", branch]()
+        git["push", "--set-upstream", "origin", branch]()
+        sp.call(
+            [
+                "gh",
+                "pr",
+                "create",
+                "--title",
+                f"build(copier): conflictos {copier_yaml['_commit']}",
+                "--body",
+                """
+🤖Hola,
+Hay conflictos con la nueva versión de la plantilla
+que no puedo resolver automáticamente.
+Por favor clona esta rama, ejecuta `pre-commit run -a` y corrige los conflictos.
+""",
+            ],
+            cwd=cwd,
+        )
+    return
 
 
 if __name__ == "__main__":
