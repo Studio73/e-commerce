@@ -149,6 +149,13 @@ e-commerce:
   - origin refs/pull/702/head
   remotes:
     origin: https://github.com/OCA/e-commerce.git
+edi:
+  defaults:
+    depth: 1
+  merges:
+  - origin a2df585719a827be0e3a2f5795ecb1479912098f
+  remotes:
+    origin: https://github.com/OCA/edi.git
 fleet:
   defaults:
     depth: 1
