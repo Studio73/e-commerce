@@ -299,6 +299,7 @@ purchase-workflow:
   merges:
   - origin 1ab6f68a76a2ced85bcc674da490a84fb527592c
   - origin refs/pull/1218/head
+  - origin refs/pull/1692/head
   remotes:
     origin: https://github.com/OCA/purchase-workflow.git
 queue:
