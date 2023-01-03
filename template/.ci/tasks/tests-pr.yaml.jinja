@@ -1,4 +1,7 @@
 ---
+{%- if ci_instance %}
+{%- set  odoo_version = "((version))" %}
+{%- endif %}
 platform: linux
 
 image_resource:

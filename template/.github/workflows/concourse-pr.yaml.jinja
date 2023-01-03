@@ -16,4 +16,8 @@ jobs:
           concourse-team: {{ ci_team }}
           concourse-pipeline: {{ project_name }}
           concourse-resource: pr
+          {%- if ci_instance %}
+          concourse-webhook-token: {% raw %}${{{% endraw %} secrets.CONCOURSE_WEBHOOK_TOKEN_{{ odoo_version }} {% raw %}}}{% endraw %}
+          {%- else %}
           concourse-webhook-token: {% raw %}${{ secrets.CONCOURSE_WEBHOOK_TOKEN }}{% endraw %}
+          {%- endif %}

@@ -67,6 +67,13 @@ ci_team:
   default: odoo
   help: Concourse pipeline group owner
 
+ci_instance:
+  type: bool
+  default: False
+  help: |
+    It's part of a Concourse grouped pipeline?
+    The answer is yes if the project has multiple active branches
+
 coverage_fail_under:
   type: int
   default: 60
