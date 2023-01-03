@@ -28,9 +28,10 @@ account-financial-tools:
     origin: https://github.com/OCA/account-financial-tools.git
 account-invoice-reporting:
   defaults:
-    depth: 1
+    depth: 500
   merges:
   - origin 081bd68f3e3c530effcd6585488325af22266f4a
+  - origin refs/pull/256/head
   remotes:
     origin: https://github.com/OCA/account-invoice-reporting.git
 account-invoicing:
