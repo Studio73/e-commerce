@@ -1,5 +1,6 @@
 ---
 {%- if ci_instance %}
+{%- set  _odoo_version = odoo_version %}
 {%- set  odoo_version = "((version))" %}
 {%- endif %}
 meta:
@@ -154,6 +155,10 @@ jobs:
         trigger: true
       - set_pipeline: self
         file: repo/.ci/pipeline.yaml
+        {%- if ci_instance %}
+        vars:
+          version: "{{ _odoo_version }}"
+        {%- endif %}
 {%- if image %}
   - name: build
     <<: *notify
