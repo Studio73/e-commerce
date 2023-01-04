@@ -170,6 +170,13 @@ hr:
   - origin 1ad521caf22415372b067bb50e32fe57f241420a
   remotes:
     origin: https://github.com/OCA/hr.git
+helpdesk:
+  defaults:
+    depth: 1
+  merges:
+  - origin 9d518cec1a12e7e26fb7b01365c7c6b367fa55db
+  remotes:
+    origin: https://github.com/OCA/helpdesk.git
 hr-attendance:
   defaults:
     depth: 1
