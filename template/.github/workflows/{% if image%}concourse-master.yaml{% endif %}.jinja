@@ -4,18 +4,16 @@ on:
     branches:
       - {{ odoo_version }}.0
 jobs:
-  trigger-resource-check:
+  concourse-resource-webhook:
     runs-on: ubuntu-20.04
     steps:
       - name: Trigger repo
-        uses: gstackio/trigger-concourse-resource-check-action@v1
+        uses: studio73/concourse-resource-webhook@1.0.0
         with:
-          concourse-url: https://ci.studio73.dev
-          concourse-team: {{ ci_team }}
-          concourse-pipeline: {{ project_name }}
-          concourse-resource: repo
+          team: {{ ci_team }}
+          pipeline: {{ project_name }}
+          resource: repo
+          token: {% raw %}${{ secrets.CONCOURSE_WEBHOOK_TOKEN }}{% endraw %}
           {%- if ci_instance %}
-          concourse-webhook-token: {% raw %}${{{% endraw %} secrets.CONCOURSE_WEBHOOK_TOKEN_{{ odoo_version }} {% raw %}}}{% endraw %}
-          {%- else %}
-          concourse-webhook-token: {% raw %}${{ secrets.CONCOURSE_WEBHOOK_TOKEN }}{% endraw %}
+          vars: vars.version={{ odoo_version }}
           {%- endif %}
