@@ -71,6 +71,7 @@ resources:
     source:
       repository: {{ org_name }}/{{ repo_name }}
       access_token: ((GITHUB_TOKEN))
+      base_branch: "{{ odoo_version }}.0"
   - name: notify-pr
     type: cogito
     icon: bell-ring
