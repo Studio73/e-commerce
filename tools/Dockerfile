@@ -15,7 +15,7 @@ COPY requirements.txt /requirements.txt
 RUN pip install -r /requirements.txt
 WORKDIR /src
 COPY --chmod="+x" tools.py /usr/local/bin/tools
-RUN git config --global user.email "leonidas@studio73.es" && \
-    git config --global user.name "leonidas73" && \
+RUN git config --global user.email "113453776+leonidas73[bot]@users.noreply.github.com" && \
+    git config --global user.name "leonidas73[bot]" && \
     git config --global safe.directory '*'
 CMD ["/bin/bash"]

@@ -418,9 +418,6 @@ def update_copier(cwd):
     local.cwd.chdir(cwd)
     git = local["git"]
     copier = local["copier"]
-    stream = open(os.path.join(cwd, ".copier-answers.yml"), "r")
-    copier_yaml = yaml.safe_load(stream)
-    stream.close()
     _logger.info("Running `copier -f update`")
     copier["-f", "update"]()
     changes = git["status", "--porcelain"]().strip()
@@ -429,11 +426,14 @@ def update_copier(cwd):
         return
     git["add", "."]()
     pre_commit = sp.run(["pre-commit", "run", "-a"], cwd=cwd)
+    stream = open(os.path.join(cwd, ".copier-answers.yml"), "r")
+    copier_yaml = yaml.safe_load(stream)
+    stream.close()
     git[
         "commit",
         "--no-verify",
         "-m",
-        f"[skip ci] build(copier): {copier_yaml['_commit']}",
+        f"[skip ci] ci(copier): {copier_yaml['_commit']}",
     ]()
     if not pre_commit.returncode:
         git["push", "-u", "origin", "HEAD"]()
