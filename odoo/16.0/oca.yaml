@@ -254,6 +254,7 @@ sale-workflow:
   merges:
   - origin 15ab4e43e49d3fdf2d33302f92c1d1567f0cbb21
   - origin refs/pull/2318/head
+  - origin refs/pull/2332/head
   remotes:
     origin: https://github.com/OCA/sale-workflow.git
 server-backend:
