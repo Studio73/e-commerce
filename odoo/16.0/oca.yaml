@@ -89,7 +89,7 @@ brand:
     origin: https://github.com/OCA/brand.git
 commission:
   defaults:
-    depth: 1
+    depth: 500
   merges:
   - origin abd852bccc1cf9f309987b582afbe806b7951178
   - origin refs/pull/397/head
