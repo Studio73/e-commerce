@@ -52,6 +52,11 @@ repo_name:
   default: "{{ project_name }}-addons"
   help: Repository name, usually project name + -addons
 
+repo_website:
+  type: str
+  default: https://github.com/Studio73/{{ repo_name }}
+  help: It will be used in the website key of the __manifest__
+
 base_image:
   type: str
   default: "r.studio73.es/odoo/{{ odoo_edition }}"
