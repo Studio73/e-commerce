@@ -400,9 +400,10 @@ stock-logistics-transport:
     origin: https://github.com/OCA/stock-logistics-transport.git
 stock-logistics-warehouse:
   defaults:
-    depth: 1
+    depth: 500
   merges:
   - origin 36e698edb62c77e505862f1396bfae7909cbfd9d
+  - origin refs/pull/1607/head
   remotes:
     origin: https://github.com/OCA/stock-logistics-warehouse.git
 stock-logistics-workflow:
