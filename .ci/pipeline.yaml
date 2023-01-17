@@ -148,7 +148,7 @@ resources:
     <<: *registry-image
     source:
       <<: *registry-image-source
-      repository: r.studio73.es/odoo/agent
+      repository: r.studio73.es/server/agent
       tag: latest
   - name: base-14
     <<: *registry-image

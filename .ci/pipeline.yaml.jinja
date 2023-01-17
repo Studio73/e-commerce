@@ -1,6 +1,7 @@
 {% set editions = ["base", "community", "enterprise"] -%}
 {% set versions = ["14", "15", "16"] -%}
 {% set tools = ["oci-build", "proxypass", "tools", "agent"] -%}
+{% set tools_imgs = {"agent": "server/agent"} -%}
 ---
 meta:
   x-notify: &notify
@@ -107,7 +108,7 @@ resources:
     <<: *registry-image
     source:
       <<: *registry-image-source
-      repository: r.studio73.es/odoo/{{ tool }}
+      repository: r.studio73.es/{{ tools_imgs.get(tool, "odoo/{}".format(tool)) }}
       tag: latest
   {%- endfor %}
   {%- for version in versions %}{% for edition in editions %}
