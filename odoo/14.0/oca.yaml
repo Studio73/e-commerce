@@ -333,7 +333,7 @@ reporting-engine:
     origin: https://github.com/OCA/reporting-engine.git
 sale-promotion:
   defaults:
-    depth 1
+    depth: 1
   merges:
   - origin 1718674a028b5c825a1e4290357d947984e01ad5
   remotes:
