@@ -153,9 +153,10 @@ intrastat:
     origin: https://github.com/OCA/intrastat.git
 intrastat-extrastat:
   defaults:
-    depth: 1
+    depth: 500
   merges:
   - origin 88102b53d806ce29abae8ca57fb37fb7e2b37e5e
+  - origin refs/pull/207/head
   remotes:
     origin: https://github.com/OCA/intrastat-extrastat.git
 knowledge:
