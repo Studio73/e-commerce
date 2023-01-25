@@ -1,0 +1,7 @@
+studio73-private-addons:
+  defaults:
+    depth: 50
+  merges:
+  - origin 16.0
+  remotes:
+    origin: git@github.com:Studio73/studio73-private-addons.git
