@@ -298,6 +298,12 @@ social:
   - origin 3b53bc4fe0880e321a58b5d0df31368a6e5aa776
   remotes:
     origin: https://github.com/OCA/social.git
+stock-logistics-reporting:
+  defaults:
+    depth: 500
+  merges:
+  - origin 5baeecc8a72fa02a578d7c0d7b4c4bd678225fed
+  - origin refs/pull/259/head
 stock-logistics-warehouse:
   defaults:
     depth: 500
