@@ -183,6 +183,14 @@ l10n-spain:
   - origin refs/pull/2793/head
   remotes:
     origin: https://github.com/OCA/l10n-spain.git
+manufacture:
+  defaults:
+    depth: 500
+  merges:
+  - origin 46afda45ec53faf4c8f76e95d5dd8a28af250d78
+  - origin refs/pull/938/head
+  remotes:
+    origin: https://github.com/OCA/manufacture.git
 mis-builder:
   defaults:
     depth: 1
