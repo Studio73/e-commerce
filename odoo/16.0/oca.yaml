@@ -25,7 +25,7 @@ account-financial-tools:
   defaults:
     depth: 500
   merges:
-  - origin cc82f61f78fa62af0051fbf3dbf211bbbd222f86
+  - origin 32f1630879b5ff262549f596cef35a125f1de25e
   - origin refs/pull/1509/head
   - origin refs/pull/1549/head
   - origin refs/pull/1555/head
@@ -43,7 +43,7 @@ account-invoicing:
   defaults:
     depth: 500
   merges:
-  - origin f6d904d5020201f21336fb08e0c539aa655cb697
+  - origin a0e80365926dca8c8ece2d41d24ab19b5a4f0cbb
   - origin refs/pull/1337/head
   remotes:
     origin: https://github.com/OCA/account-invoicing.git
@@ -65,7 +65,7 @@ bank-payment:
   defaults:
     depth: 500
   merges:
-  - origin 59242a758ce8cedfc30735a487bb211d569246d0
+  - origin d59de8cb71799ca5f82c00f9e6468fe3fea15c06
   - origin refs/pull/1004/head
   - origin refs/pull/1008/head
   - origin refs/pull/972/head
@@ -178,7 +178,7 @@ l10n-spain:
   defaults:
     depth: 1
   merges:
-  - origin 0f04c0505aa064dd23e6f2e03230dbceceaefeb3
+  - origin 3b5b62c3e71ac11cfabbed9d406be14b6e31e69a
   remotes:
     origin: https://github.com/OCA/l10n-spain.git
 mis-builder:
@@ -262,7 +262,7 @@ sale-workflow:
   defaults:
     depth: 500
   merges:
-  - origin dfe0a4116a6c218956606d64169fcc31f48c09ba
+  - origin 945f1aa8fca3ddaa5222b6a0ed6ac3aef5e23c95
   - origin refs/pull/2318/head
   - origin refs/pull/2332/head
   - origin refs/pull/2343/head
@@ -272,7 +272,7 @@ server-backend:
   defaults:
     depth: 500
   merges:
-  - origin 4099d697991ecf7e1e76500453bdfab7206e2b38
+  - origin ea3edcac6f61a08299e9409d7f88fa0c78b6ff7f
   - origin refs/pull/202/head
   remotes:
     origin: https://github.com/OCA/server-backend.git
