@@ -66,11 +66,13 @@ bank-payment:
     depth: 500
   merges:
   - origin d59de8cb71799ca5f82c00f9e6468fe3fea15c06
+  - origin refs/pull/1029/head
+  - origin refs/pull/1028/head
   - origin refs/pull/1004/head
   - origin refs/pull/1008/head
-  - origin refs/pull/972/head
-  - origin refs/pull/973/head
   - origin refs/pull/990/head
+  - origin refs/pull/974/head
+  - origin refs/pull/972/head
   remotes:
     origin: https://github.com/OCA/bank-payment.git
 bank-statement-import:
