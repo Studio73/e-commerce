@@ -88,9 +88,10 @@ bank-statement-reconcile:
     origin: https://github.com/OCA/bank-statement-reconcile.git
 brand:
   defaults:
-    depth: 1
+    depth: 500
   merges:
   - origin db285c3173f8094eebd4ade7f849912b401dbc02
+  - origin refs/pull/153/head
   remotes:
     origin: https://github.com/OCA/brand.git
 commission:
