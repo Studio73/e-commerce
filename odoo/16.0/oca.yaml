@@ -218,9 +218,10 @@ product-attribute:
     origin: https://github.com/OCA/product-attribute.git
 product-variant:
   defaults:
-    depth: 1
+    depth: 500
   merges:
   - origin 16f0307acaebca22cac737254b569166da472d51
+  - origin refs/pull/281/head
   remotes:
     origin: https://github.com/OCA/product-variant.git
 project:
