@@ -231,6 +231,7 @@ project:
   merges:
   - origin 78d69225102a590aae1aaffbc4a044200a790f3f
   - origin refs/pull/1035/head
+  - origin refs/pull/1052/head
   remotes:
     origin: https://github.com/OCA/project.git
 purchase-workflow:
