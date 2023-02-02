@@ -20,7 +20,7 @@ run:
       set -e
       if [ -z "$ODOO_VERSION" ]; then
         VERSIONS="14.0 15.0 16.0"
-        ORGS="odoo oca"
+        ORGS="odoo oca openupgrade"
         cd repo/odoo
         for VERSION in $VERSIONS; do
           for ORG in $ORGS; do
