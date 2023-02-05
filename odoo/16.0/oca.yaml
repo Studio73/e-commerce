@@ -25,7 +25,7 @@ account-financial-tools:
   defaults:
     depth: 500
   merges:
-  - origin 260f9bc3510d12db83f0de25c512405a54a18a0c
+  - origin 9abdede9e2a6a2cc37f1ed4ba09a57bf657ca13d
   - origin refs/pull/1509/head
   - origin refs/pull/1549/head
   remotes:
@@ -327,7 +327,7 @@ stock-logistics-workflow:
   defaults:
     depth: 1
   merges:
-  - origin cef4d90f1670265b2f7c6da4600846a2fd54fc45
+  - origin 6863ce9593fd79baa07b16cdedb9862f41023f2e
   remotes:
     origin: https://github.com/OCA/stock-logistics-workflow.git
 web:
