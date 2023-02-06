@@ -81,6 +81,14 @@ resources:
       owner: {{ org_name }}
       repo: {{ repo_name }}
       access_token: ((GITHUB_TOKEN))
+  - name: nightly
+    type: time
+    icon: clock-outline
+    source:
+      days: [Sunday, Monday, Tuesday, Wednesday, Thursday]
+      start: 03:00
+      stop: 04:00
+      location: Europe/Madrid
   - name: repo
     type: git
     icon: github
@@ -165,9 +173,10 @@ jobs:
     plan:
       - get: repo
         trigger: true
+      - get: nightly
+        trigger: true
       - get: odoo-{{ odoo_edition }}
         params: {format: oci}
-        trigger: true
       - task: build
         <<: *build
         input_mapping: {odoo: "odoo-{{ odoo_edition }}"}
