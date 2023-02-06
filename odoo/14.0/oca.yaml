@@ -150,7 +150,6 @@ e-commerce:
   merges:
   - origin e203f040eb3e1fa9f10d51301baca4b9d1be4ffb
   - origin refs/pull/486/head
-  - origin refs/pull/559/head
   - origin refs/pull/651/head
   - origin refs/pull/693/head
   remotes:
