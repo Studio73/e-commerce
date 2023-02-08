@@ -182,6 +182,7 @@ l10n-spain:
   merges:
   - origin 60e69fdfdc6617d81e3d7555ec865cbf4ceb4a29
   - origin refs/pull/2793/head
+  - origin refs/pull/2826/head
   remotes:
     origin: https://github.com/OCA/l10n-spain.git
 manufacture:
