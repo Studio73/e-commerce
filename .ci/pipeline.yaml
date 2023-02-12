@@ -81,6 +81,27 @@ resources:
       gchat_webhook: ((GCHAT_CONCOURSE_WEBHOOK))
   - name: repo
     <<: *git
+  - name: repo-odoo-11
+    <<: *git
+    source:
+      <<: *git-source
+      paths:
+        - *git-paths
+        - odoo/11.0/*
+  - name: repo-odoo-12
+    <<: *git
+    source:
+      <<: *git-source
+      paths:
+        - *git-paths
+        - odoo/12.0/*
+  - name: repo-odoo-13
+    <<: *git
+    source:
+      <<: *git-source
+      paths:
+        - *git-paths
+        - odoo/13.0/*
   - name: repo-odoo-14
     <<: *git
     source:
@@ -150,6 +171,79 @@ resources:
       <<: *registry-image-source
       repository: r.studio73.es/server/agent
       tag: latest
+  # Docker images
+  - name: base-11
+    <<: *registry-image
+    source:
+      <<: *registry-image-source
+      repository: r.studio73.es/odoo/base
+      tag: 11
+  - name: community-11
+    <<: *registry-image
+    source:
+      <<: *registry-image-source
+      repository: r.studio73.es/odoo/community
+      tag: 11
+  - name: enterprise-11
+    <<: *registry-image
+    source:
+      <<: *registry-image-source
+      repository: r.studio73.es/odoo/enterprise
+      tag: 11
+  - name: openupgrade-11
+    <<: *registry-image
+    source:
+      <<: *registry-image-source
+      repository: r.studio73.es/odoo/openupgrade
+      tag: 11
+  - name: base-12
+    <<: *registry-image
+    source:
+      <<: *registry-image-source
+      repository: r.studio73.es/odoo/base
+      tag: 12
+  - name: community-12
+    <<: *registry-image
+    source:
+      <<: *registry-image-source
+      repository: r.studio73.es/odoo/community
+      tag: 12
+  - name: enterprise-12
+    <<: *registry-image
+    source:
+      <<: *registry-image-source
+      repository: r.studio73.es/odoo/enterprise
+      tag: 12
+  - name: openupgrade-12
+    <<: *registry-image
+    source:
+      <<: *registry-image-source
+      repository: r.studio73.es/odoo/openupgrade
+      tag: 12
+  - name: base-13
+    <<: *registry-image
+    source:
+      <<: *registry-image-source
+      repository: r.studio73.es/odoo/base
+      tag: 13
+  - name: community-13
+    <<: *registry-image
+    source:
+      <<: *registry-image-source
+      repository: r.studio73.es/odoo/community
+      tag: 13
+  - name: enterprise-13
+    <<: *registry-image
+    source:
+      <<: *registry-image-source
+      repository: r.studio73.es/odoo/enterprise
+      tag: 13
+  - name: openupgrade-13
+    <<: *registry-image
+    source:
+      <<: *registry-image-source
+      repository: r.studio73.es/odoo/openupgrade
+      tag: 13
   - name: base-14
     <<: *registry-image
     source:
@@ -174,18 +268,6 @@ resources:
       <<: *registry-image-source
       repository: r.studio73.es/odoo/openupgrade
       tag: 14
-  - name: community-14-dev
-    <<: *registry-image
-    source:
-      <<: *registry-image-source
-      repository: r.studio73.es/odoo/community
-      tag: 14-dev
-  - name: enterprise-14-dev
-    <<: *registry-image
-    source:
-      <<: *registry-image-source
-      repository: r.studio73.es/odoo/enterprise
-      tag: 14-dev
   - name: base-15
     <<: *registry-image
     source:
@@ -210,18 +292,6 @@ resources:
       <<: *registry-image-source
       repository: r.studio73.es/odoo/openupgrade
       tag: 15
-  - name: community-15-dev
-    <<: *registry-image
-    source:
-      <<: *registry-image-source
-      repository: r.studio73.es/odoo/community
-      tag: 15-dev
-  - name: enterprise-15-dev
-    <<: *registry-image
-    source:
-      <<: *registry-image-source
-      repository: r.studio73.es/odoo/enterprise
-      tag: 15-dev
   - name: base-16
     <<: *registry-image
     source:
@@ -246,6 +316,31 @@ resources:
       <<: *registry-image-source
       repository: r.studio73.es/odoo/openupgrade
       tag: 16
+  # DEV Docker Images
+  - name: community-14-dev
+    <<: *registry-image
+    source:
+      <<: *registry-image-source
+      repository: r.studio73.es/odoo/community
+      tag: 14-dev
+  - name: enterprise-14-dev
+    <<: *registry-image
+    source:
+      <<: *registry-image-source
+      repository: r.studio73.es/odoo/enterprise
+      tag: 14-dev
+  - name: community-15-dev
+    <<: *registry-image
+    source:
+      <<: *registry-image-source
+      repository: r.studio73.es/odoo/community
+      tag: 15-dev
+  - name: enterprise-15-dev
+    <<: *registry-image
+    source:
+      <<: *registry-image-source
+      repository: r.studio73.es/odoo/enterprise
+      tag: 15-dev
   - name: community-16-dev
     <<: *registry-image
     source:
@@ -258,7 +353,13 @@ resources:
       <<: *registry-image-source
       repository: r.studio73.es/odoo/enterprise
       tag: 16-dev
-  - name: ubuntu
+  - name: ubuntu-18
+    type: registry-image
+    icon: docker
+    source:
+      repository: ubuntu
+      tag: "18.04"
+  - name: ubuntu-20
     type: registry-image
     icon: docker
     source:
@@ -310,6 +411,7 @@ jobs:
         file: repo/.ci/tasks/build-tools.yaml
         output_mapping: {image: oci-build}
       - put: oci-build
+        no_get: true
         params:
           image: oci-build/image.tar
   - name: build-proxypass
@@ -327,6 +429,7 @@ jobs:
         file: repo/.ci/tasks/build-tools.yaml
         output_mapping: {image: proxypass}
       - put: proxypass
+        no_get: true
         params:
           image: proxypass/image.tar
   - name: build-tools
@@ -344,6 +447,7 @@ jobs:
         file: repo/.ci/tasks/build-tools.yaml
         output_mapping: {image: tools}
       - put: tools
+        no_get: true
         params:
           image: tools/image.tar
   - name: build-agent
@@ -361,6 +465,7 @@ jobs:
         file: repo/.ci/tasks/build-tools.yaml
         output_mapping: {image: agent}
       - put: agent
+        no_get: true
         params:
           image: agent/image.tar
   # Update repos YAML
@@ -376,8 +481,345 @@ jobs:
           GITHUB_TOKEN: ((GITHUB_TOKEN))
         file: repo/.ci/tasks/update-repos.yaml
       - put: repo
+        no_get: true
         params: {repository: repo}
   # Build Odoo docker images
+  - name: build-base-11
+    <<: *notify
+    plan:
+      - in_parallel:
+          - get: repo
+          - get: repo-odoo-11
+            trigger: true
+          - get: ubuntu-18
+            params: {format: oci}
+      - task: build
+        input_mapping: {base-image: ubuntu-18}
+        privileged: true
+        file: repo/.ci/tasks/build-odoo.yaml
+        params:
+          ODOO_EDITION: "base"
+          ODOO_VERSION: "11"
+          BUILD_ARG_SSH_KEY: ((GITHUB_SSH_KEY))
+          IMAGE_ARG_base_image: base-image/image.tar
+        output_mapping: {image: "base-11"}
+      - put: base-11
+        no_get: true
+        params:
+          image: base-11/image.tar
+          additional_tags: base-11/today-tag
+  - name: build-community-11
+    <<: *notify
+    plan:
+      - in_parallel:
+          - get: repo
+          - get: daily
+            trigger: true
+          - get: nightly
+            trigger: true
+          - get: base-11
+            params: {format: oci}
+            trigger: true
+            passed: [build-base-11]
+      - task: update-repo
+        params:
+          GITHUB_TOKEN: ((GITHUB_TOKEN))
+          ODOO_EDITION: "community"
+          ODOO_VERSION: "11.0"
+        file: repo/.ci/tasks/update-repos.yaml
+      - task: build
+        input_mapping: {base-image: base-11}
+        privileged: true
+        file: repo/.ci/tasks/build-odoo.yaml
+        params:
+          ODOO_EDITION: "community"
+          ODOO_VERSION: "11"
+          BUILD_ARG_SSH_KEY: ((GITHUB_SSH_KEY))
+          IMAGE_ARG_base_image: base-image/image.tar
+        output_mapping: {image: "community-11"}
+      - put: community-11
+        no_get: true
+        params:
+          image: community-11/image.tar
+          additional_tags: community-11/today-tag
+  - name: build-enterprise-11
+    <<: *notify
+    plan:
+      - in_parallel:
+          - get: repo
+          - get: community-11
+            params: {format: oci}
+            trigger: true
+            passed: [build-community-11]
+      - task: update-repo
+        params:
+          GITHUB_TOKEN: ((GITHUB_TOKEN))
+          ODOO_EDITION: "enterprise"
+          ODOO_VERSION: "11.0"
+        file: repo/.ci/tasks/update-repos.yaml
+      - task: build
+        input_mapping: {base-image: community-11}
+        privileged: true
+        file: repo/.ci/tasks/build-odoo.yaml
+        params:
+          ODOO_EDITION: "enterprise"
+          ODOO_VERSION: "11"
+          BUILD_ARG_SSH_KEY: ((GITHUB_SSH_KEY))
+          IMAGE_ARG_base_image: base-image/image.tar
+        output_mapping: {image: "enterprise-11"}
+      - put: enterprise-11
+        no_get: true
+        params:
+          image: enterprise-11/image.tar
+          additional_tags: enterprise-11/today-tag
+  - name: build-openupgrade-11
+    <<: *notify
+    plan:
+      - in_parallel:
+          - get: repo
+          - get: community-11
+            params: {format: oci}
+            trigger: true
+            passed: [build-community-11]
+      - task: build
+        input_mapping: {base-image: community-11}
+        privileged: true
+        file: repo/.ci/tasks/build-odoo.yaml
+        params:
+          ODOO_EDITION: "openupgrade"
+          ODOO_VERSION: "11"
+          BUILD_ARG_SSH_KEY: ((GITHUB_SSH_KEY))
+          IMAGE_ARG_base_image: base-image/image.tar
+        output_mapping: {image: "openupgrade-11"}
+      - put: openupgrade-11
+        no_get: true
+        params:
+          image: openupgrade-11/image.tar
+          additional_tags: openupgrade-11/today-tag
+  - name: build-base-12
+    <<: *notify
+    plan:
+      - in_parallel:
+          - get: repo
+          - get: repo-odoo-12
+            trigger: true
+          - get: ubuntu-18
+            params: {format: oci}
+      - task: build
+        input_mapping: {base-image: ubuntu-18}
+        privileged: true
+        file: repo/.ci/tasks/build-odoo.yaml
+        params:
+          ODOO_EDITION: "base"
+          ODOO_VERSION: "12"
+          BUILD_ARG_SSH_KEY: ((GITHUB_SSH_KEY))
+          IMAGE_ARG_base_image: base-image/image.tar
+        output_mapping: {image: "base-12"}
+      - put: base-12
+        no_get: true
+        params:
+          image: base-12/image.tar
+          additional_tags: base-12/today-tag
+  - name: build-community-12
+    <<: *notify
+    plan:
+      - in_parallel:
+          - get: repo
+          - get: daily
+            trigger: true
+          - get: nightly
+            trigger: true
+          - get: base-12
+            params: {format: oci}
+            trigger: true
+            passed: [build-base-12]
+      - task: update-repo
+        params:
+          GITHUB_TOKEN: ((GITHUB_TOKEN))
+          ODOO_EDITION: "community"
+          ODOO_VERSION: "12.0"
+        file: repo/.ci/tasks/update-repos.yaml
+      - task: build
+        input_mapping: {base-image: base-12}
+        privileged: true
+        file: repo/.ci/tasks/build-odoo.yaml
+        params:
+          ODOO_EDITION: "community"
+          ODOO_VERSION: "12"
+          BUILD_ARG_SSH_KEY: ((GITHUB_SSH_KEY))
+          IMAGE_ARG_base_image: base-image/image.tar
+        output_mapping: {image: "community-12"}
+      - put: community-12
+        no_get: true
+        params:
+          image: community-12/image.tar
+          additional_tags: community-12/today-tag
+  - name: build-enterprise-12
+    <<: *notify
+    plan:
+      - in_parallel:
+          - get: repo
+          - get: community-12
+            params: {format: oci}
+            trigger: true
+            passed: [build-community-12]
+      - task: update-repo
+        params:
+          GITHUB_TOKEN: ((GITHUB_TOKEN))
+          ODOO_EDITION: "enterprise"
+          ODOO_VERSION: "12.0"
+        file: repo/.ci/tasks/update-repos.yaml
+      - task: build
+        input_mapping: {base-image: community-12}
+        privileged: true
+        file: repo/.ci/tasks/build-odoo.yaml
+        params:
+          ODOO_EDITION: "enterprise"
+          ODOO_VERSION: "12"
+          BUILD_ARG_SSH_KEY: ((GITHUB_SSH_KEY))
+          IMAGE_ARG_base_image: base-image/image.tar
+        output_mapping: {image: "enterprise-12"}
+      - put: enterprise-12
+        no_get: true
+        params:
+          image: enterprise-12/image.tar
+          additional_tags: enterprise-12/today-tag
+  - name: build-openupgrade-12
+    <<: *notify
+    plan:
+      - in_parallel:
+          - get: repo
+          - get: community-12
+            params: {format: oci}
+            trigger: true
+            passed: [build-community-12]
+      - task: build
+        input_mapping: {base-image: community-12}
+        privileged: true
+        file: repo/.ci/tasks/build-odoo.yaml
+        params:
+          ODOO_EDITION: "openupgrade"
+          ODOO_VERSION: "12"
+          BUILD_ARG_SSH_KEY: ((GITHUB_SSH_KEY))
+          IMAGE_ARG_base_image: base-image/image.tar
+        output_mapping: {image: "openupgrade-12"}
+      - put: openupgrade-12
+        no_get: true
+        params:
+          image: openupgrade-12/image.tar
+          additional_tags: openupgrade-12/today-tag
+  - name: build-base-13
+    <<: *notify
+    plan:
+      - in_parallel:
+          - get: repo
+          - get: repo-odoo-13
+            trigger: true
+          - get: ubuntu-20
+            params: {format: oci}
+      - task: build
+        input_mapping: {base-image: ubuntu-20}
+        privileged: true
+        file: repo/.ci/tasks/build-odoo.yaml
+        params:
+          ODOO_EDITION: "base"
+          ODOO_VERSION: "13"
+          BUILD_ARG_SSH_KEY: ((GITHUB_SSH_KEY))
+          IMAGE_ARG_base_image: base-image/image.tar
+        output_mapping: {image: "base-13"}
+      - put: base-13
+        no_get: true
+        params:
+          image: base-13/image.tar
+          additional_tags: base-13/today-tag
+  - name: build-community-13
+    <<: *notify
+    plan:
+      - in_parallel:
+          - get: repo
+          - get: daily
+            trigger: true
+          - get: nightly
+            trigger: true
+          - get: base-13
+            params: {format: oci}
+            trigger: true
+            passed: [build-base-13]
+      - task: update-repo
+        params:
+          GITHUB_TOKEN: ((GITHUB_TOKEN))
+          ODOO_EDITION: "community"
+          ODOO_VERSION: "13.0"
+        file: repo/.ci/tasks/update-repos.yaml
+      - task: build
+        input_mapping: {base-image: base-13}
+        privileged: true
+        file: repo/.ci/tasks/build-odoo.yaml
+        params:
+          ODOO_EDITION: "community"
+          ODOO_VERSION: "13"
+          BUILD_ARG_SSH_KEY: ((GITHUB_SSH_KEY))
+          IMAGE_ARG_base_image: base-image/image.tar
+        output_mapping: {image: "community-13"}
+      - put: community-13
+        no_get: true
+        params:
+          image: community-13/image.tar
+          additional_tags: community-13/today-tag
+  - name: build-enterprise-13
+    <<: *notify
+    plan:
+      - in_parallel:
+          - get: repo
+          - get: community-13
+            params: {format: oci}
+            trigger: true
+            passed: [build-community-13]
+      - task: update-repo
+        params:
+          GITHUB_TOKEN: ((GITHUB_TOKEN))
+          ODOO_EDITION: "enterprise"
+          ODOO_VERSION: "13.0"
+        file: repo/.ci/tasks/update-repos.yaml
+      - task: build
+        input_mapping: {base-image: community-13}
+        privileged: true
+        file: repo/.ci/tasks/build-odoo.yaml
+        params:
+          ODOO_EDITION: "enterprise"
+          ODOO_VERSION: "13"
+          BUILD_ARG_SSH_KEY: ((GITHUB_SSH_KEY))
+          IMAGE_ARG_base_image: base-image/image.tar
+        output_mapping: {image: "enterprise-13"}
+      - put: enterprise-13
+        no_get: true
+        params:
+          image: enterprise-13/image.tar
+          additional_tags: enterprise-13/today-tag
+  - name: build-openupgrade-13
+    <<: *notify
+    plan:
+      - in_parallel:
+          - get: repo
+          - get: community-13
+            params: {format: oci}
+            trigger: true
+            passed: [build-community-13]
+      - task: build
+        input_mapping: {base-image: community-13}
+        privileged: true
+        file: repo/.ci/tasks/build-odoo.yaml
+        params:
+          ODOO_EDITION: "openupgrade"
+          ODOO_VERSION: "13"
+          BUILD_ARG_SSH_KEY: ((GITHUB_SSH_KEY))
+          IMAGE_ARG_base_image: base-image/image.tar
+        output_mapping: {image: "openupgrade-13"}
+      - put: openupgrade-13
+        no_get: true
+        params:
+          image: openupgrade-13/image.tar
+          additional_tags: openupgrade-13/today-tag
   - name: build-base-14
     <<: *notify
     plan:
@@ -385,10 +827,10 @@ jobs:
           - get: repo
           - get: repo-odoo-14
             trigger: true
-          - get: ubuntu
+          - get: ubuntu-20
             params: {format: oci}
       - task: build
-        input_mapping: {base-image: ubuntu}
+        input_mapping: {base-image: ubuntu-20}
         privileged: true
         file: repo/.ci/tasks/build-odoo.yaml
         params:
@@ -398,6 +840,7 @@ jobs:
           IMAGE_ARG_base_image: base-image/image.tar
         output_mapping: {image: "base-14"}
       - put: base-14
+        no_get: true
         params:
           image: base-14/image.tar
           additional_tags: base-14/today-tag
@@ -431,6 +874,7 @@ jobs:
           IMAGE_ARG_base_image: base-image/image.tar
         output_mapping: {image: "community-14"}
       - put: community-14
+        no_get: true
         params:
           image: community-14/image.tar
           additional_tags: community-14/today-tag
@@ -460,6 +904,7 @@ jobs:
           IMAGE_ARG_base_image: base-image/image.tar
         output_mapping: {image: "enterprise-14"}
       - put: enterprise-14
+        no_get: true
         params:
           image: enterprise-14/image.tar
           additional_tags: enterprise-14/today-tag
@@ -468,12 +913,12 @@ jobs:
     plan:
       - in_parallel:
           - get: repo
-          - get: community-14-dev
+          - get: community-14
             params: {format: oci}
             trigger: true
-            passed: [build-community-14-dev]
+            passed: [build-community-14]
       - task: build
-        input_mapping: {base-image: community-14-dev}
+        input_mapping: {base-image: community-14}
         privileged: true
         file: repo/.ci/tasks/build-odoo.yaml
         params:
@@ -483,6 +928,7 @@ jobs:
           IMAGE_ARG_base_image: base-image/image.tar
         output_mapping: {image: "openupgrade-14"}
       - put: openupgrade-14
+        no_get: true
         params:
           image: openupgrade-14/image.tar
           additional_tags: openupgrade-14/today-tag
@@ -493,10 +939,10 @@ jobs:
           - get: repo
           - get: repo-odoo-15
             trigger: true
-          - get: ubuntu
+          - get: ubuntu-20
             params: {format: oci}
       - task: build
-        input_mapping: {base-image: ubuntu}
+        input_mapping: {base-image: ubuntu-20}
         privileged: true
         file: repo/.ci/tasks/build-odoo.yaml
         params:
@@ -506,6 +952,7 @@ jobs:
           IMAGE_ARG_base_image: base-image/image.tar
         output_mapping: {image: "base-15"}
       - put: base-15
+        no_get: true
         params:
           image: base-15/image.tar
           additional_tags: base-15/today-tag
@@ -539,6 +986,7 @@ jobs:
           IMAGE_ARG_base_image: base-image/image.tar
         output_mapping: {image: "community-15"}
       - put: community-15
+        no_get: true
         params:
           image: community-15/image.tar
           additional_tags: community-15/today-tag
@@ -568,6 +1016,7 @@ jobs:
           IMAGE_ARG_base_image: base-image/image.tar
         output_mapping: {image: "enterprise-15"}
       - put: enterprise-15
+        no_get: true
         params:
           image: enterprise-15/image.tar
           additional_tags: enterprise-15/today-tag
@@ -576,12 +1025,12 @@ jobs:
     plan:
       - in_parallel:
           - get: repo
-          - get: community-15-dev
+          - get: community-15
             params: {format: oci}
             trigger: true
-            passed: [build-community-15-dev]
+            passed: [build-community-15]
       - task: build
-        input_mapping: {base-image: community-15-dev}
+        input_mapping: {base-image: community-15}
         privileged: true
         file: repo/.ci/tasks/build-odoo.yaml
         params:
@@ -591,6 +1040,7 @@ jobs:
           IMAGE_ARG_base_image: base-image/image.tar
         output_mapping: {image: "openupgrade-15"}
       - put: openupgrade-15
+        no_get: true
         params:
           image: openupgrade-15/image.tar
           additional_tags: openupgrade-15/today-tag
@@ -614,6 +1064,7 @@ jobs:
           IMAGE_ARG_base_image: base-image/image.tar
         output_mapping: {image: "base-16"}
       - put: base-16
+        no_get: true
         params:
           image: base-16/image.tar
           additional_tags: base-16/today-tag
@@ -647,6 +1098,7 @@ jobs:
           IMAGE_ARG_base_image: base-image/image.tar
         output_mapping: {image: "community-16"}
       - put: community-16
+        no_get: true
         params:
           image: community-16/image.tar
           additional_tags: community-16/today-tag
@@ -676,6 +1128,7 @@ jobs:
           IMAGE_ARG_base_image: base-image/image.tar
         output_mapping: {image: "enterprise-16"}
       - put: enterprise-16
+        no_get: true
         params:
           image: enterprise-16/image.tar
           additional_tags: enterprise-16/today-tag
@@ -684,12 +1137,12 @@ jobs:
     plan:
       - in_parallel:
           - get: repo
-          - get: community-16-dev
+          - get: community-16
             params: {format: oci}
             trigger: true
-            passed: [build-community-16-dev]
+            passed: [build-community-16]
       - task: build
-        input_mapping: {base-image: community-16-dev}
+        input_mapping: {base-image: community-16}
         privileged: true
         file: repo/.ci/tasks/build-odoo.yaml
         params:
@@ -699,6 +1152,7 @@ jobs:
           IMAGE_ARG_base_image: base-image/image.tar
         output_mapping: {image: "openupgrade-16"}
       - put: openupgrade-16
+        no_get: true
         params:
           image: openupgrade-16/image.tar
           additional_tags: openupgrade-16/today-tag
@@ -734,6 +1188,7 @@ jobs:
           IMAGE_ARG_base_image: base-image/image.tar
         output_mapping: {image: "community-14-dev"}
       - put: community-14-dev
+        no_get: true
         params:
           image: community-14-dev/image.tar
           additional_tags: community-14-dev/today-tag
@@ -765,6 +1220,7 @@ jobs:
           IMAGE_ARG_base_image: base-image/image.tar
         output_mapping: {image: "enterprise-14-dev"}
       - put: enterprise-14-dev
+        no_get: true
         params:
           image: enterprise-14-dev/image.tar
           additional_tags: enterprise-14-dev/today-tag
@@ -799,6 +1255,7 @@ jobs:
           IMAGE_ARG_base_image: base-image/image.tar
         output_mapping: {image: "community-15-dev"}
       - put: community-15-dev
+        no_get: true
         params:
           image: community-15-dev/image.tar
           additional_tags: community-15-dev/today-tag
@@ -830,6 +1287,7 @@ jobs:
           IMAGE_ARG_base_image: base-image/image.tar
         output_mapping: {image: "enterprise-15-dev"}
       - put: enterprise-15-dev
+        no_get: true
         params:
           image: enterprise-15-dev/image.tar
           additional_tags: enterprise-15-dev/today-tag
@@ -864,6 +1322,7 @@ jobs:
           IMAGE_ARG_base_image: base-image/image.tar
         output_mapping: {image: "community-16-dev"}
       - put: community-16-dev
+        no_get: true
         params:
           image: community-16-dev/image.tar
           additional_tags: community-16-dev/today-tag
@@ -895,6 +1354,7 @@ jobs:
           IMAGE_ARG_base_image: base-image/image.tar
         output_mapping: {image: "enterprise-16-dev"}
       - put: enterprise-16-dev
+        no_get: true
         params:
           image: enterprise-16-dev/image.tar
           additional_tags: enterprise-16-dev/today-tag

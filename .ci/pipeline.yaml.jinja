@@ -1,6 +1,15 @@
 {% set editions = ["base", "community", "enterprise", "openupgrade"] -%}
 {% set editions_dev = ["community", "enterprise"] -%}
-{% set versions = ["14", "15", "16"] -%}
+{% set versions_dev = ["14", "15", "16"] -%}
+{% set versions = ["11", "12", "13"] + versions_dev -%}
+{% set versions_imgs = {
+  "11": "ubuntu-18",
+  "12": "ubuntu-18",
+  "13": "ubuntu-20",
+  "14": "ubuntu-20",
+  "15": "ubuntu-20",
+  "16": "ubuntu-22",
+  } -%}
 {% set tools = ["oci-build", "proxypass", "tools", "agent"] -%}
 {% set tools_imgs = {"agent": "server/agent"} -%}
 ---
@@ -112,6 +121,7 @@ resources:
       repository: r.studio73.es/{{ tools_imgs.get(tool, "odoo/{}".format(tool)) }}
       tag: latest
   {%- endfor %}
+  # Docker images
   {%- for version in versions %}
     {%- for edition in editions %}
   - name: {{ edition }}-{{ version }}
@@ -121,6 +131,9 @@ resources:
       repository: r.studio73.es/odoo/{{ edition }}
       tag: {{ version }}
     {%- endfor %}
+  {%- endfor %}
+  # DEV Docker Images
+  {%- for version in versions_dev %}
     {%- for edition in editions_dev %}
   - name: {{ edition }}-{{ version }}-dev
     <<: *registry-image
@@ -130,7 +143,13 @@ resources:
       tag: {{ version }}-dev
     {%- endfor %}
   {%- endfor %}
-  - name: ubuntu
+  - name: ubuntu-18
+    type: registry-image
+    icon: docker
+    source:
+      repository: ubuntu
+      tag: "18.04"
+  - name: ubuntu-20
     type: registry-image
     icon: docker
     source:
@@ -181,6 +200,7 @@ jobs:
         file: repo/.ci/tasks/build-tools.yaml
         output_mapping: {image: {{ tool }}}
       - put: {{ tool }}
+        no_get: true
         params:
           image: {{ tool }}/image.tar
   {%- endfor %}
@@ -197,6 +217,7 @@ jobs:
           GITHUB_TOKEN: ((GITHUB_TOKEN))
         file: repo/.ci/tasks/update-repos.yaml
       - put: repo
+        no_get: true
         params: {repository: repo}
   # Build Odoo docker images
   {%- for version in versions %}{% for edition in editions %}
@@ -221,14 +242,14 @@ jobs:
             trigger: true
             passed: [build-community-{{ version }}]
           {%- elif edition == "openupgrade" %}
-          - get: community-{{ version }}-dev
+          - get: community-{{ version }}
             params: {format: oci}
             trigger: true
-            passed: [build-community-{{ version }}-dev]
+            passed: [build-community-{{ version }}]
           {%- else %}
           - get: repo-odoo-{{ version }}
             trigger: true
-          - get: {{ "ubuntu-22" if version == "16" else "ubuntu" }}
+          - get: {{ versions_imgs.get(version, "ubuntu-22") }}
             params: {format: oci}
           {%- endif %}
       {%- if edition in editions_dev %}
@@ -245,9 +266,9 @@ jobs:
         {%- elif edition == "enterprise" %}
         input_mapping: {base-image: community-{{ version }}}
         {%- elif edition == "openupgrade" %}
-        input_mapping: {base-image: community-{{ version }}-dev}
+        input_mapping: {base-image: community-{{ version }}}
         {%- else %}
-        input_mapping: {base-image: {{ "ubuntu-22" if version == "16" else "ubuntu" }}}
+        input_mapping: {base-image: {{ versions_imgs.get(version, "ubuntu-22") }}}
         {%- endif %}
         privileged: true
         file: repo/.ci/tasks/build-odoo.yaml
@@ -258,12 +279,13 @@ jobs:
           IMAGE_ARG_base_image: base-image/image.tar
         output_mapping: {image: "{{ _name }}"}
       - put: {{ _name }}
+        no_get: true
         params:
           image: {{ _name }}/image.tar
           additional_tags: {{ _name }}/today-tag
   {%- endfor %}{% endfor %}
   # Build Odoo DEV docker images
-  {%- for version in versions %}{% for edition in editions_dev %}
+  {%- for version in versions_dev %}{% for edition in editions_dev %}
   {%- set _name = '{}-{}-dev'.format(edition, version) %}
   - name: build-{{ _name }}
     <<: *notify
@@ -307,6 +329,7 @@ jobs:
           IMAGE_ARG_base_image: base-image/image.tar
         output_mapping: {image: "{{ _name }}"}
       - put: {{ _name }}
+        no_get: true
         params:
           image: {{ _name }}/image.tar
           additional_tags: {{ _name }}/today-tag

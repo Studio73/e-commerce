@@ -1,4 +1,4 @@
-ARG  base_image=r.studio73.es/odoo/community:15-dev
+ARG  base_image=r.studio73.es/odoo/community:15
 FROM ${base_image} as builder
 COPY --chown=odoo 15.0/openupgrade.yaml /code/openupgrade.yaml
 RUN cd /code && gitaggregate --jobs 8 --config openupgrade.yaml
