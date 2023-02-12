@@ -14,7 +14,7 @@ import requests
 import yaml
 from plumbum import local
 
-AVAILABLE_VERSIONS = ["14.0", "15.0", "16.0"]
+AVAILABLE_VERSIONS = ["11.0", "12.0", "13.0", "14.0", "15.0", "16.0"]
 
 logging.basicConfig(
     format="%(asctime)s %(levelname)s: %(message)s",
