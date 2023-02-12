@@ -1,0 +1,10 @@
+ARG  base_image=r.studio73.es/odoo/base:12
+FROM ${base_image} as builder
+ARG SSH_KEY
+RUN set-ssh-key
+COPY --chown=odoo 12.0/community.yaml /code/community.yaml
+RUN cd /code && gitaggregate --jobs 8 --config community.yaml
+
+FROM ${base_image}
+COPY --chown=odoo --from=builder /code $SRC/studio73
+RUN install-requirements $SRC/studio73

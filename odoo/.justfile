@@ -19,3 +19,6 @@ community version: (base version)
 
 enterprise version: (base version) (community version)
     just _build enterprise {{ version }} "odoo/community:{{ version }}"
+
+openupgrade version: (base version) (community version)
+    just _build openupgrade {{ version }} "odoo/community:{{ version }}"

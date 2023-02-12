@@ -1,0 +1,8 @@
+ARG  base_image=r.studio73.es/odoo/community:13
+FROM ${base_image} as builder
+COPY --chown=odoo 13.0/openupgrade.yaml /code/openupgrade.yaml
+RUN cd /code && gitaggregate --jobs 8 --config openupgrade.yaml
+
+FROM ${base_image}
+COPY --chown=odoo --from=builder /code $SRC/oca
+ENV OPENUPGRADE_TARGET_VERSION=13.0

@@ -1,0 +1,7 @@
+zenterprise:
+  defaults:
+    depth: 1
+  merges:
+  - origin 11.0
+  remotes:
+    origin: git@github.com:Studio73/enterprise.git

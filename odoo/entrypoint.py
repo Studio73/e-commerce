@@ -48,7 +48,8 @@ def build_conf():
         "limit_memory_soft": (workers * MEMORY_SOFT) * 1024 * 1024,
         "limit_memory_hard": (workers * MEMORY_HARD) * 1024 * 1024,
     }
-    if os.environ.get("OPENUPGRADE_TARGET_VERSION"):
+    openupgrade_version = float(os.environ.get("OPENUPGRADE_TARGET_VERSION", 0))
+    if openupgrade_version >= 14.0:
         options["server_wide_modules"] = "base,web,openupgrade_framework"
     if not os.environ.get("DEMO"):
         options["without_demo"] = True
