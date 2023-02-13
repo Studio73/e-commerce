@@ -7,4 +7,5 @@ RUN cd /code && gitaggregate --jobs 8 --config community.yaml
 
 FROM ${base_image}
 COPY --chown=odoo --from=builder /code $SRC/studio73
-RUN install-requirements $SRC/studio73
+RUN sed -i 's/git+https:\/\/github\.com\/OCA\/openupgradelib\.git/openupgradelib/g' $SRC/studio73/studio73-private-addons/requirements.txt \
+    && install-requirements $SRC/studio73

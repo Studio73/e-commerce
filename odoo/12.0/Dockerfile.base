@@ -44,7 +44,7 @@ COPY requirements.txt /requirements.txt
 RUN python3 -m venv --copies $VIRTUAL_ENV \
     && pip3 install --upgrade pip \
     # FIX https://github.com/pyca/cryptography/issues/7959
-    && pip3 install cryptography==38.0.4 pyOpenSSL==22.0.0 \
+    && pip3 install cryptography==38.0.4 pyOpenSSL==22.0.0 openupgradelib \
     && pip3 install -r requirements.txt
 
 COPY 12.0/odoo.yaml /odoo/repos.yaml
