@@ -172,6 +172,12 @@ groups:
       {%- for edition in editions %}
       - "build-{{ edition }}-*"
       {%- endfor %}
+  {%- for version in versions %}
+  - name: o{{ version }}
+    jobs:
+      - update-repos
+      - "build-*-{{ version }}*"
+  {%- endfor %}
   - name: dev
     jobs:
       - "*-dev"

@@ -383,6 +383,30 @@ groups:
       - "build-community-*"
       - "build-enterprise-*"
       - "build-openupgrade-*"
+  - name: o11
+    jobs:
+      - update-repos
+      - "build-*-11*"
+  - name: o12
+    jobs:
+      - update-repos
+      - "build-*-12*"
+  - name: o13
+    jobs:
+      - update-repos
+      - "build-*-13*"
+  - name: o14
+    jobs:
+      - update-repos
+      - "build-*-14*"
+  - name: o15
+    jobs:
+      - update-repos
+      - "build-*-15*"
+  - name: o16
+    jobs:
+      - update-repos
+      - "build-*-16*"
   - name: dev
     jobs:
       - "*-dev"
