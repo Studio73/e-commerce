@@ -4,5 +4,5 @@ COPY --chown=odoo 13.0/openupgrade.yaml /code/openupgrade.yaml
 RUN cd /code && gitaggregate --jobs 8 --config openupgrade.yaml
 
 FROM ${base_image}
-COPY --chown=odoo --from=builder /code $SRC/oca
+COPY --chown=odoo --from=builder /code/openupgrade $SRC/odoo/odoo
 ENV OPENUPGRADE_TARGET_VERSION=13.0

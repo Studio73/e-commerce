@@ -52,6 +52,8 @@ RUN cd /odoo && gitaggregate --jobs 8 --config repos.yaml \
     && echo "setuptools<58.0.0" >> /odoo/odoo/requirements.txt \
     # Fix conflict between Odoo and OCA/intrastat-extrastrat
     && sed -i 's/python-stdnum==1.8/python-stdnum>=1.16/g' /odoo/odoo/requirements.txt \
+    # Fix ImportError: libxslt.so.1
+    && sed -i 's/lxml==4.3.2/lxml==4.6.5/g' /odoo/odoo/requirements.txt \
     # Fix XlsxWriter py3.8 warnings
     && sed -i 's/XlsxWriter==1.1.2/XlsxWriter==1.2.2/g' /odoo/odoo/requirements.txt \
 	&& pip3 install --upgrade-strategy=only-if-needed -r /odoo/odoo/requirements.txt
