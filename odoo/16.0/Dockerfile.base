@@ -90,6 +90,7 @@ RUN apt-get update \
     # pycups
     libcups2-dev \
     cups-client \
+    cloc \
     && curl -o /tmp/libssl1.deb http://archive.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.1-1ubuntu2.1~18.04.20_amd64.deb \
     && dpkg -i /tmp/libssl1.deb \
     && curl -o /tmp/wkhtmltox.deb -sSL https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.focal_amd64.deb \
