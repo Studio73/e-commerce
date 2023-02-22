@@ -81,6 +81,7 @@ resources:
       owner: {{ org_name }}
       repo: {{ repo_name }}
       access_token: ((GITHUB_TOKEN))
+{%- if image %}
   - name: nightly
     type: time
     icon: clock-outline
@@ -89,6 +90,7 @@ resources:
       start: 03:00
       stop: 04:00
       location: Europe/Madrid
+{%- endif %}
   - name: repo
     type: git
     icon: github
