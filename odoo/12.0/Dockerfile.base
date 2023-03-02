@@ -65,7 +65,8 @@ COPY 12.0/oca.yaml /oca/repos.yaml
 RUN cd /oca && gitaggregate --jobs 8 --config repos.yaml
 RUN find /oca -name "requirements.txt" -exec cat {} \; | sort | uniq > /oca/requirements.txt \
     && pip3 install --upgrade-strategy=only-if-needed -c /odoo/odoo/requirements.txt -r /oca/requirements.txt \
-#RUN find /oca -name "requirements.txt" -type f | xargs -I {} sh -c 'pip3 install --upgrade-strategy=only-if-needed -c /odoo/odoo/requirements.txt -r {} $0 || exit 255' \
+    # Fix instalation of new taxes that will generate problems like IVA 0% (Alimentos)
+    && rm -rf /oca/l10n-spain/l10n_es_extra_data \
     && find /oca -name "*.po" | grep -v -E "es.po|en_GB.po|fr.po|pt.po|it.po|de.po|ca.po" | xargs -d '\n' rm \
     && find /oca -name ".git" | xargs rm -rf \
     && find /oca -name "setup" | xargs rm -rf \
