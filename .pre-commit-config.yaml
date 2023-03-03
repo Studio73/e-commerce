@@ -4,7 +4,8 @@ exclude: |
   ^odoo/.*/enterprise.yaml$ |
   ^odoo/.*/oca.yaml$ |
   ^odoo/.*/odoo.yaml$ |
-  ^odoo/bin/odoo-debug$
+  ^odoo/bin/odoo-debug$ |
+  ^upgrader/upgrader/upgrade.py$
 repos:
   - repo: https://github.com/psf/black
     rev: 22.3.0

@@ -1,0 +1,5 @@
+click
+plumbum
+psycopg2-binary
+python_on_whales
+rich
