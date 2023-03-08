@@ -33,13 +33,15 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/* /tmp/* \
     && git config --global user.email "sistemas@studio73.es" \
     && git config --global user.name "Studio73" \
-    && git config --global init.defaultBranch "15.0"
+    && git config --global init.defaultBranch "15.0" \
+    && git config --global core.attributesfile /.gitattributes
 
 ENV PYTHONUNBUFFERED=1
 ENV VIRTUAL_ENV=/venv
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 ENV ODOO_VERSION 15.0
 
+COPY gitattributes /.gitattributes
 COPY requirements.txt /requirements.txt
 RUN python3 -m venv --copies $VIRTUAL_ENV \
     && pip3 install -r requirements.txt
@@ -125,12 +127,14 @@ ENV ODOO_VERSION=15.0
 COPY --chown=odoo --from=builder $VIRTUAL_ENV $VIRTUAL_ENV
 COPY --chown=odoo --from=builder /odoo $SRC/odoo
 COPY --chown=odoo --from=builder /oca $SRC/oca
+COPY --chown=odoo gitattributes $HOME/.gitattributes
 COPY --chown=odoo bin $HOME/bin
 COPY --chown=odoo entrypoint.py /
 RUN ln -s $SRC/odoo/odoo/odoo-bin /usr/local/bin/odoo \
     && git config --global user.email "sistemas@studio73.es" \
     && git config --global user.name "Studio73" \
-    && git config --global init.defaultBranch "15.0"
+    && git config --global init.defaultBranch "15.0" \
+    && git config --global core.attributesfile ~/.gitattributes
 
 USER odoo
 ENTRYPOINT ["python3", "/entrypoint.py"]
