@@ -2,9 +2,7 @@ openupgrade:
   defaults:
     depth: 500
   merges:
-  - origin f91fe01ce7ce049c025fb79e5e0bbfd2caff7bab
-  - origin refs/pull/3432/head
-  - origin refs/pull/3531/head
+  - origin fd2118a4b9f721ff22c5a8be421b14fbeab73ca4
   - origin refs/pull/3542/head
   - origin refs/pull/3744/head
   remotes:
