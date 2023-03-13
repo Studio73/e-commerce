@@ -74,7 +74,7 @@ bank-statement-import:
     depth: 500
   merges:
   - origin 35eab4d6ef72510676eddae1bf788c728f378d08
-  - origin refs/pull/535/head
+  - origin refs/pull/575/head
   remotes:
     origin: https://github.com/OCA/bank-statement-import.git
 bank-statement-reconcile:
