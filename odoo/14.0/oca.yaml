@@ -443,9 +443,10 @@ timesheet:
     origin: https://github.com/OCA/timesheet.git
 web:
   defaults:
-    depth: 1
+    depth: 500
   merges:
   - origin 61235e9357f8e43f33c434fb56095c45993a64e5
+  - origin refs/pull/2452/head
   remotes:
     origin: https://github.com/OCA/web.git
 website:
