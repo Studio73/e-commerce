@@ -242,9 +242,10 @@ management-system:
     origin: https://github.com/OCA/management-system.git
 manufacture:
   defaults:
-    depth: 1
+    depth: 500
   merges:
   - origin ae1411eb82fff687723471e4b29daba14b57941a
+  - origin refs/pull/735/head
   remotes:
     origin: https://github.com/OCA/manufacture.git
 margin-analysis:
