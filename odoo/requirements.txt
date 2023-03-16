@@ -1,12 +1,15 @@
 click
 click-odoo-contrib
 coverage
+dateparser
 debugpy
 git-aggregator
 google_auth
 inotify
 pdfminer.six
+pdfplumber
 pycups
 pydevd-pycharm==223.4884.74
+regex==2022.3.2
 tabulate
 wheel
