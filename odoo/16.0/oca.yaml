@@ -302,7 +302,7 @@ social:
   defaults:
     depth: 500
   merges:
-  - origin af3bf69ac18f5a72ec894a199d377eac440a68a1
+  - origin 14eb1d1f46559c5719e3b0dd0a50529cf9462252
   - origin refs/pull/1105/head
   remotes:
     origin: https://github.com/OCA/social.git
