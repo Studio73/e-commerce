@@ -64,6 +64,8 @@ bank-payment:
     depth: 500
   merges:
   - origin 087e8d5d27d245b0d36fda7ef7bf0eb520251e65
+  - origin refs/pull/1065/head
+  - origin refs/pull/1029/head
   - origin refs/pull/1004/head
   - origin refs/pull/1008/head
   remotes:
