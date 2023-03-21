@@ -135,6 +135,13 @@ crm:
   - origin 7097b09d29a0d7268317d0b971e6905fbc23b787
   remotes:
     origin: https://github.com/OCA/crm.git
+currency:
+  defaults:
+    depth: 1
+  merges:
+  - origin b7aa5aabfdd2b2881c33b99f6eea341f966e4ebd
+  remotes:
+    origin: https://github.com/oca/currency.git
 delivery-carrier:
   defaults:
     depth: 500
