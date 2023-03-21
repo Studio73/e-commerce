@@ -210,7 +210,6 @@ product-attribute:
   - origin refs/pull/1230/head
   - origin refs/pull/1281/head
   - origin refs/pull/1301/head
-  - origin refs/pull/3108/head
   remotes:
     origin: https://github.com/OCA/product-attribute.git
 product-variant:
