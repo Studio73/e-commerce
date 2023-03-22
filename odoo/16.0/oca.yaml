@@ -275,6 +275,7 @@ sale-workflow:
   merges:
   - origin 01e39a6a280b5ab14f5114f8716d9f7d5905c157
   - origin refs/pull/2318/head
+  - origin refs/pull/2323/head
   - origin refs/pull/2332/head
   - origin refs/pull/2343/head
   - origin refs/pull/2358/head
@@ -297,9 +298,10 @@ server-tools:
     origin: https://github.com/OCA/server-tools.git
 server-ux:
   defaults:
-    depth: 1
+    depth: 500
   merges:
   - origin 3640a1cc77e3cfab54096459fc7e4d6e22e6922d
+  - origin refs/pull/569/head
   remotes:
     origin: https://github.com/OCA/server-ux.git
 social:
