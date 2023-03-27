@@ -342,6 +342,7 @@ web:
   - origin refs/pull/2357/head
   - origin refs/pull/2389/head
   - origin refs/pull/2448/head
+  - origin refs/pull/2446/head
   - origin refs/pull/2463/head
   remotes:
     origin: https://github.com/OCA/web.git
