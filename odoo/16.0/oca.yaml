@@ -306,10 +306,9 @@ server-ux:
     origin: https://github.com/OCA/server-ux.git
 social:
   defaults:
-    depth: 500
+    depth: 1
   merges:
   - origin e03a383fbd9d629be8e8b537c368bbaaaec4b1bf
-  - origin refs/pull/1105/head
   remotes:
     origin: https://github.com/OCA/social.git
 stock-logistics-reporting:
