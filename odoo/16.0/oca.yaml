@@ -4,6 +4,7 @@ account-analytic:
   merges:
   - origin a9113d5aaf1e34921f236458a446d8527721bfea
   - origin refs/pull/501/head
+  - origin refs/pull/549/head
   remotes:
     origin: https://github.com/OCA/account-analytic.git
 account-closing:
