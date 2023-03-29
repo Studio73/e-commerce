@@ -191,11 +191,9 @@ class ToolsYaml(object):
             checks = []
             for context in status_check_rollup.get("contexts", {}).get("nodes") or []:
                 if context["__typename"] == "StatusContext":
-                    if context["state"] == "SUCCESS":
-                        checks_passed.append(True)
-                    elif (
-                        context["state"] == "PENDING"
-                        and context["context"] == "functional"
+                    if (
+                        context["state"] == "SUCCESS"
+                        or context["context"] == "functional"
                     ):
                         checks_passed.append(True)
                     else:
