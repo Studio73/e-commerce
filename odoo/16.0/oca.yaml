@@ -188,6 +188,7 @@ manufacture:
   merges:
   - origin 0b592de11f7611f0248a9f65a352df51bf6efbbe
   - origin refs/pull/979/head
+  - origin refs/pull/1001/head
   remotes:
     origin: https://github.com/OCA/manufacture.git
 mis-builder:
