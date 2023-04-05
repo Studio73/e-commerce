@@ -21,6 +21,13 @@ account-financial-reporting:
   - origin b9059ae232564e728a876de6bc995621fb8cba8f
   remotes:
     origin: https://github.com/OCA/account-financial-reporting.git
+account-fiscal-rule:
+  defaults:
+    depth: 1
+  merges:
+  - origin d6116056eeaa047694cf4f648cc727303eb85d1d
+  remotes:
+    origin: https://github.com/OCA/account-fiscal-rule.git
 account-financial-tools:
   defaults:
     depth: 500
