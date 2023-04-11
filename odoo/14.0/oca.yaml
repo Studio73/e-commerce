@@ -186,7 +186,7 @@ hr:
     depth: 500
   merges:
   - origin f380cb551e6553daf877f766362d873e1707f5cf
-  - origin refs/pull/2411/head
+  - origin refs/pull/1200/head
   remotes:
     origin: https://github.com/OCA/hr.git
 hr-attendance:
