@@ -183,9 +183,10 @@ helpdesk:
     origin: https://github.com/OCA/helpdesk.git
 hr:
   defaults:
-    depth: 1
+    depth: 500
   merges:
   - origin f380cb551e6553daf877f766362d873e1707f5cf
+  - origin refs/pull/2411/head
   remotes:
     origin: https://github.com/OCA/hr.git
 hr-attendance:
