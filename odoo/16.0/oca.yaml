@@ -72,10 +72,12 @@ bank-payment:
     depth: 500
   merges:
   - origin 7538b0022f84ac347e02d2b228a3985113abf99d
+  - origin refs/pull/990/head
   - origin refs/pull/1004/head
   - origin refs/pull/1008/head
   - origin refs/pull/1029/head
   - origin refs/pull/1065/head
+  - origin refs/pull/1068/head
   - origin refs/pull/1070/head
   remotes:
     origin: https://github.com/OCA/bank-payment.git
