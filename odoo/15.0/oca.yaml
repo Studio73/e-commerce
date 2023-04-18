@@ -51,7 +51,7 @@ account-payment:
   defaults:
     depth: 1
   merges:
-  - origin ab7e4b3f383fa80951259eead7f43bfb93db9e4c
+  - origin f438a5f7644bcfd7e0f83d9f397c7f2ed6ae4ab9
   remotes:
     origin: https://github.com/OCA/account-payment.git
 account-reconcile:
