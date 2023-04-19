@@ -124,9 +124,10 @@ credit-control:
     origin: https://github.com/OCA/credit-control.git
 delivery-carrier:
   defaults:
-    depth: 1
+    depth: 500
   merges:
   - origin 2a503135990609c1ab057ff466d7f870f3c7b374
+  - origin refs/pull/632/head
   remotes:
     origin: https://github.com/OCA/delivery-carrier.git
 e-commerce:
