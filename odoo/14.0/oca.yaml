@@ -388,6 +388,7 @@ server-tools:
   merges:
   - origin b373451b9ea95f3713baa6f5c2aee279607b2933
   - origin refs/pull/2465/head
+  - origin refs/pull/2490/head
   remotes:
     origin: https://github.com/OCA/server-tools.git
 server-ux:
