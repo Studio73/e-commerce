@@ -103,9 +103,10 @@ brand:
     origin: https://github.com/OCA/brand.git
 commission:
   defaults:
-    depth: 1
+    depth: 500
   merges:
   - origin e1178b9123593e9e856aba2be1cf5146f66e0503
+  - origin refs/pull/418/head
   remotes:
     origin: https://github.com/OCA/commission.git
 community-data-files:
