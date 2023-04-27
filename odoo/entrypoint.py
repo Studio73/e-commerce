@@ -43,11 +43,22 @@ def build_conf():
         "admin_passwd": "changeme",
         "addons_path": compute_addons_path(),
         "workers": workers,
-        "limit_time_cpu": 4800,
-        "limit_time_real": 9600,
+        "limit_time_cpu": 480,
+        "limit_time_real": 960,
         "limit_memory_soft": (workers * MEMORY_SOFT) * 1024 * 1024,
         "limit_memory_hard": (workers * MEMORY_HARD) * 1024 * 1024,
     }
+
+    if os.environ.get("ODOO_SENTRY_DSN"):
+        options.update(
+            {
+                "sentry_enabled": True,
+                "sentry_event_logging_level": "error",
+                "sentry_breadcrum_logging_level": "info",
+                "sentry_traces_sample_rate": 0.2,
+            }
+        )
+
     openupgrade_version = float(os.environ.get("OPENUPGRADE_TARGET_VERSION", 0))
     if openupgrade_version >= 14.0:
         options["server_wide_modules"] = "base,web,openupgrade_framework"
