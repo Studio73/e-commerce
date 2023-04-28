@@ -4,15 +4,19 @@ import json
 import os
 import re
 import subprocess as sp
+import click
 
 
-def main():
+@click.command()
+@click.option("--number", "-n", default=50, help="Number of commits to check")
+def main(number):
     manifest = {"ta": [], "ti": []}
-    number = 50
     cmd = "git --no-pager log --decorate=full -n{}".format(number).split()
     repos = []
     for src in ["custom", "studio73"]:
         _src = os.path.join(os.environ["SRC"], src)
+        if not os.path.exists(_src):
+            continue
         for repo in os.listdir(_src):
             _repo = os.path.join(_src, repo)
             if os.path.exists(os.path.join(_repo, ".git")):
