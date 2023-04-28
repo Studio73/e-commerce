@@ -10,4 +10,3 @@ USER odoo
 COPY --chown=odoo ./requirements.txt $SRC/custom/requirements.txt
 RUN install-requirements $SRC/custom
 COPY --chown=odoo . $SRC/custom
-RUN clean-repo $SRC/custom

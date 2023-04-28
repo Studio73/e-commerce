@@ -175,6 +175,7 @@ jobs:
     plan:
       - get: repo
         trigger: true
+        params: {depth: 50}
       - get: nightly
         trigger: true
       - get: odoo-{{ odoo_edition }}
@@ -196,6 +197,7 @@ jobs:
     <<: *notify
     plan:
       - get: repo
+        params: {depth: 50}
       - get: odoo-{{ odoo_edition }}-dev
         params: {format: oci}
         trigger: true
