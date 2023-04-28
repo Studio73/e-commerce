@@ -351,6 +351,13 @@ reporting-engine:
   - origin 47bb1cdd99115ee284bbae7b9611ea4cebbda43b
   remotes:
     origin: https://github.com/OCA/reporting-engine.git
+rma:
+  defaults:
+    depth: 1
+  merges:
+  - origin bf590f0903db519426e90dcf3ea99a31693cdd27
+  remotes:
+    origin: https://github.com/OCA/rma.git
 sale-promotion:
   defaults:
     depth: 1
