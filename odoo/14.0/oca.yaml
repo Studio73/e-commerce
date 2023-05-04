@@ -310,9 +310,10 @@ product-pack:
     origin: https://github.com/OCA/product-pack.git
 product-variant:
   defaults:
-    depth: 1
+    depth: 500
   merges:
   - origin 859f3ddd054e84f6d1715de6c500e0567ba53bd7
+  - origin refs/pull/293/head
   remotes:
     origin: https://github.com/OCA/product-variant.git
 project:
