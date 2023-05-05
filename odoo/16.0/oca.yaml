@@ -16,9 +16,10 @@ account-closing:
     origin: https://github.com/OCA/account-closing.git
 account-financial-reporting:
   defaults:
-    depth: 1
+    depth: 500
   merges:
   - origin bbfab69026f991c736e81657810d8d40e555fb95
+  - origin refs/pull/1041/head
   remotes:
     origin: https://github.com/OCA/account-financial-reporting.git
 account-financial-tools:
