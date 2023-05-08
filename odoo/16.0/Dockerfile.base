@@ -58,6 +58,8 @@ RUN cd /odoo && gitaggregate --jobs 8 --config repos.yaml \
     && sed -i 's/XlsxWriter==1.1.2/XlsxWriter==1.2.2/g' /odoo/odoo/requirements.txt \
     # Fix oca/server-tools: sentry-sdk 1.17.0 depends on urllib3>=1.26.11
     && sed -i 's/urllib3==1.26.5/urllib3==1.26.11/g' /odoo/odoo/requirements.txt \
+    # Fix SyntaxWarning num2words/lang_AR.py:305
+    && sed -i 's/num2words==0.5.9/num2words==0.5.12/g' /odoo/odoo/requirements.txt \
     && pip3 install --upgrade-strategy=only-if-needed -r /odoo/odoo/requirements.txt
 
 COPY 16.0/oca.yaml /oca/repos.yaml
