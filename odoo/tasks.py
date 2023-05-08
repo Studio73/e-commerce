@@ -2,18 +2,41 @@ from invoke import task
 
 
 @task
-def build(c, version, edition):
+def base(c, version):
     base_image = "ubuntu:22.04"
-    if edition == "base":
-        if version in ["11", "12"]:
-            base_image = "ubuntu:18.04"
-        elif version in ["13", "14"]:
-            base_image = "ubuntu:20.04"
-    elif edition == "community":
-        base_image = f"odoo/base:{version}"
-    elif edition in ["enterprise", "openupgrade"]:
-        base_image = f"r.studio73.es/odoo/community:{version}"
-    print(base_image)
+    if version in ["9", "10", "11", "12"]:
+        base_image = "ubuntu:18.04"
+    elif version in ["13", "14"]:
+        base_image = "ubuntu:20.04"
+    _build(c, version, "base", base_image)
+
+
+@task
+def community(c, version, force=False):
+    if force:
+        base(c, version)
+    base_image = f"r.studio73.es/odoo/base:{version}"
+    _build(c, version, "community", base_image)
+
+
+@task
+def enterprise(c, version, force=False):
+    if force:
+        community(c, version, force)
+    base_image = f"r.studio73.es/odoo/community:{version}"
+    _build(c, version, "enterprise", base_image)
+
+
+@task
+def openupgrade(c, version, force=False):
+    if force:
+        community(c, version, force)
+    base_image = f"r.studio73.es/odoo/community:{version}"
+    _build(c, version, "openupgrade", base_image)
+
+
+def _build(c, version, edition, base_image):
+    print(f"Building odoo/{edition}:{version}")
     c.run(
         f"""
 set -e
@@ -25,6 +48,7 @@ docker buildx build \
 --build-arg base_image={base_image} \
 -t odoo/{edition}:{version} \
 -f {version}.0/Dockerfile.{edition} .
+docker tag odoo/{edition}:{version} r.studio73.es/odoo/{edition}:{version}
     """,
         pty=True,
     )

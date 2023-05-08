@@ -16,9 +16,12 @@ def compute_addons_path():
         org_path = os.path.join(src, org)
         if os.path.exists(org_path):
             repos = []
-            for addon in glob.glob(
-                "{}/**/__manifest__.py".format(org_path), recursive=True
-            ):
+            _manifest = "{}/**/__manifest__.py".format(org_path)
+            _openerp = "{}/**/__openerp__.py".format(org_path)
+            globs = glob.glob(_manifest, recursive=True) + glob.glob(
+                _openerp, recursive=True
+            )
+            for addon in globs:
                 if "setup/" in addon:
                     continue
                 repos.append(os.path.dirname(os.path.dirname(addon)))

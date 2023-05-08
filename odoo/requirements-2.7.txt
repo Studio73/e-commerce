@@ -1,0 +1,11 @@
+click
+click-odoo-contrib
+coverage
+dateparser
+git-aggregator
+pycups==1.9.73
+regex<2022.1.18
+tabulate
+py3o.template
+py3o.formats
+openupgradelib

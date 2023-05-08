@@ -1,0 +1,154 @@
+ARG  base_image=ubuntu:18.04
+FROM ${base_image} as builder
+SHELL ["/bin/bash", "-xo", "pipefail", "-c"]
+ARG DEBIAN_FRONTEND=noninteractive
+RUN apt-get update \
+    && apt-get -y upgrade \
+    && apt-get install -y --no-install-recommends \
+    ca-certificates \
+    curl \
+    git \
+    g++ \
+    libpq-dev \
+    python-dev \
+    python-pip \
+    python-setuptools \
+    # pycups
+    libcups2-dev \
+    # lxml
+    libxml2-dev \
+    libxslt1-dev \
+    zlib1g-dev \
+    # pyldap https://github.com/odoo/odoo/issues/8849#issuecomment-322115976
+    libldap2-dev \
+    libsasl2-dev \
+    # xmlsec l10n-spain
+    pkg-config \
+    libxmlsec1-dev \
+    libxmlsec1-openssl \
+    # pyzbar server-ux
+    libzbar0 \
+    # endesive reporting-engine
+    swig \
+    && rm -rf /var/lib/apt/lists/* /tmp/* \
+    && git config --global user.email "contacto@studio73.es" \
+    && git config --global user.name "Studio73" \
+    && git config --global init.defaultBranch "10.0" \
+    && git config --global core.attributesfile /.gitattributes
+
+ENV PYTHONUNBUFFERED=1
+ENV VIRTUAL_ENV=/venv
+ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+ENV ODOO_VERSION 10.0
+
+COPY gitattributes /.gitattributes
+COPY requirements-2.7.txt /requirements.txt
+RUN python -m pip install virtualenv \
+    && virtualenv --copies $VIRTUAL_ENV \
+    && pip install -r requirements.txt
+
+COPY 10.0/odoo.yaml /odoo/repos.yaml
+RUN cd /odoo && gitaggregate -c repos.yaml aggregate \
+    && find /odoo -name "*.po" | grep -v -E "es.po|en_GB.po|fr.po|pt.po|it.po|de.po|ca.po" | xargs rm \
+    && find /odoo -name ".git" | xargs rm -rf \
+    && pip install --upgrade-strategy=only-if-needed -r /odoo/odoo/requirements.txt
+
+COPY 10.0/oca.yaml /oca/repos.yaml
+RUN cd /oca && gitaggregate -c repos.yaml aggregate \
+    && find /oca -name "requirements.txt" -type f | xargs -I {} sh -c 'pip install --upgrade-strategy=only-if-needed -c /odoo/odoo/requirements.txt -r {} $0 || exit 255' \
+    && find /oca -name "*.po" | grep -v -E "es.po|en_GB.po|fr.po|pt.po|it.po|de.po|ca.po" | xargs -d '\n' rm \
+    && find /oca -name ".git" | xargs rm -rf \
+    && find /oca -name "setup" | xargs rm -rf \
+    && find $VIRTUAL_ENV -name "*.pyc" -exec rm -f {} \; \
+    && rm -rf /tmp/*
+
+FROM ubuntu:18.04
+# https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/
+SHELL ["/bin/bash", "-xo", "pipefail", "-c"]
+ARG DEBIAN_FRONTEND=noninteractive
+ENV LANG=es_ES.UTF-8 \
+	LANGUAGE=es_ES \
+	LC_ALL=es_ES.UTF-8 \
+    TZ=Europe/Madrid
+RUN apt-get update \
+	&& apt-get -y upgrade \
+	&& apt-get install -y --no-install-recommends \
+    ca-certificates \
+    curl \
+    gnupg2 \
+    locales \
+    node-less \
+    git \
+    ssh \
+    # lxml
+    libxslt1-dev \
+    # unbuffer
+    expect-dev \
+    python \
+    python-pip \
+    # pycups
+    libcups2-dev \
+    cups-client \
+    # xmlsec l10n-spain
+    pkg-config \
+    libxmlsec1-dev \
+    libxmlsec1-openssl \
+    # pyzbar server-ux
+    libzbar0 \
+    # psycopg2==2.8.3 error pg_config executable not found
+    libpq-dev \
+    && curl -o /tmp/wkhtmltox.deb -sSL https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.bionic_amd64.deb \
+    && apt-get install -y --no-install-recommends /tmp/wkhtmltox.deb \
+    && rm -rf /var/lib/apt/lists/* /tmp/*
+
+RUN sed -i -e 's/# es_ES.UTF-8 UTF-8/es_ES.UTF-8 UTF-8/' /etc/locale.gen && locale-gen
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+RUN echo "deb http://apt.postgresql.org/pub/repos/apt bionic-pgdg main" > /etc/apt/sources.list.d/pgdg.list \
+    && curl -s https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - \
+    && apt-get update  \
+    && apt-get install --no-install-recommends -y postgresql-client-14 \
+    && rm -f /etc/apt/sources.list.d/pgdg.list \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN useradd -md /opt/odoo -s /bin/bash odoo
+RUN mkdir -p /opt/odoo/data \
+	&& mkdir -p /opt/odoo/src/custom \
+	&& mkdir -p /etc/odoo \
+    && chown -R odoo:odoo /opt/odoo /etc/odoo
+EXPOSE 8069 8072
+WORKDIR /opt/odoo/
+ENV HOME='/opt/odoo' \
+    DATA='/opt/odoo/data' \
+    SRC='/opt/odoo/src' \
+    ODOO_RC='/etc/odoo/odoo.conf' \
+    OPENERP_SERVER='/etc/odoo/odoo.conf' \
+    VIRTUAL_ENV=/venv
+ENV PATH="$VIRTUAL_ENV/bin:$HOME/bin:$PATH"
+# Avoid "ImportError: No module named odoo" and make pip install persistent
+ENV PYTHONPATH="$PYTHONPATH:$SRC/odoo/odoo"
+ENV ODOO_VERSION=10.0
+
+COPY --chown=odoo --from=builder $VIRTUAL_ENV $VIRTUAL_ENV
+COPY --chown=odoo --from=builder /odoo $SRC/odoo
+COPY --chown=odoo --from=builder /oca $SRC/oca
+COPY --chown=odoo gitattributes $HOME/.gitattributes
+COPY --chown=odoo bin $HOME/bin
+COPY --chown=odoo entrypoint.py /
+RUN ln -s $SRC/odoo/odoo/odoo-bin /usr/local/bin/odoo \
+    && git config --global user.email "sistemas@studio73.es" \
+    && git config --global user.name "Studio73" \
+    && git config --global init.defaultBranch "10.0" \
+    && git config --global core.attributesfile ~/.gitattributes
+
+USER odoo
+ENTRYPOINT ["python3", "/entrypoint.py"]
+CMD ["odoo"]
+HEALTHCHECK CMD curl -f http://localhost:8069/web/login || exit 1
+
+ARG BUILD_DATE
+LABEL org.opencontainers.image.vendor="Studio73" \
+	  org.opencontainers.image.url="https://www.studio73.es" \
+	  org.opencontainers.image.source="https://github.com/Studio73/dodoo" \
+	  org.opencontainers.image.authors="Pablo Fuentes" \
+	  org.opencontainers.image.created=$BUILD_DATE
