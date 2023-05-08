@@ -23,9 +23,16 @@ logging.basicConfig(
 _logger = logging.getLogger(__name__)
 
 
+def get_custom_addons_path():
+    if os.environ.get("GITHUB_WORKSPACE"):
+        return os.environ["GITHUB_WORKSPACE"]
+    else:
+        return os.path.join(os.environ["SRC"], "custom")
+
+
 def get_addons():
     addons = {}
-    for manifest in glob.glob("{}/custom/**/__manifest__.py".format(os.environ["SRC"])):
+    for manifest in glob.glob("{}/**/__manifest__.py".format(get_custom_addons_path())):
         fil = os.path.basename(os.path.dirname(manifest))
         m = ast.literal_eval(open(manifest, "r").read())
         if m.get("installable", True):
@@ -188,7 +195,7 @@ def run(addons, language, log_level):
         ",".join(addons),
         "--test-enable",
     ]
-    custom_path = os.path.join(os.environ["SRC"], "custom")
+    custom_path = get_custom_addons_path()
     rcfile = os.path.join(custom_path, ".coveragerc")
     if os.path.exists(rcfile):
         coverage_cmd += ["--rcfile={}".format(rcfile)]
@@ -246,7 +253,7 @@ def run(addons, language, log_level):
 @click.option("-f", "--fail-under", default=0, type=int)
 @click.argument("addons", default="")
 def coverage(addons, fail_under):
-    custom_path = os.path.join(os.environ["SRC"], "custom")
+    custom_path = get_custom_addons_path()
     if not os.path.exists(os.path.join(custom_path, ".coverage")):
         _logger.warning("No .coverage to process")
         return True

@@ -12,6 +12,8 @@ MEMORY_HARD = 768
 def compute_addons_path():
     src = os.environ["SRC"]
     addons_path = [os.path.join(src, "custom")]
+    if os.environ.get("GITHUB_WORKSPACE"):
+        addons_path.append(os.environ["GITHUB_WORKSPACE"])
     for org in ["studio73", "oca"]:
         org_path = os.path.join(src, org)
         if os.path.exists(org_path):
