@@ -157,9 +157,10 @@ hr-attendance:
     origin: https://github.com/OCA/hr-attendance.git
 hr-holidays:
   defaults:
-    depth: 1
+    depth: 500
   merges:
   - origin b2e9fabf4e9d66845e4d8b51f2b5820e267fdff0
+  - origin refs/pull/72/head
   remotes:
     origin: https://github.com/OCA/hr-holidays.git
 intrastat:
