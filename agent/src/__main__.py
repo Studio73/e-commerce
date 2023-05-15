@@ -2,6 +2,7 @@ import asyncio
 import logging
 import os
 from datetime import datetime, timedelta
+from time import sleep
 from typing import Dict
 
 import aiohttp
@@ -111,13 +112,13 @@ _{message}_
                 )
         try:
             self.scale(replicas + 1)
-            await asyncio.sleep(1)
+            sleep(1)
             new_container = self.compose.ps([self.service])[-1]
             health = new_container.state.health.status
             status_timeout = 0
             self.logger.info(f"Waiting {new_container.name} to be ready")
             while health != "healthy":
-                await asyncio.sleep(1)
+                sleep(1)
                 status_timeout += 1
                 if status_timeout >= 60:
                     return await self.notify_error(
