@@ -172,9 +172,10 @@ intrastat:
     origin: https://github.com/OCA/intrastat.git
 intrastat-extrastat:
   defaults:
-    depth: 1
+    depth: 500
   merges:
   - origin fe4bef6db202a1b5e4400f33d924ae770f35214c
+  - origin refs/pull/214/head
   remotes:
     origin: https://github.com/OCA/intrastat-extrastat.git
 knowledge:
@@ -318,6 +319,14 @@ social:
   - origin b2f8c22df2d0c261f752df40c204095aa449be7d
   remotes:
     origin: https://github.com/OCA/social.git
+stock-logistics-barcode:
+  defaults:
+    depth: 500
+  merges:
+  - origin 6087ee3271b2e7bc69690d4bf2fbdb88155b15c9
+  - origin refs/pull/446/head
+  remotes:
+    origin: https://github.com/OCA/stock-logistics-barcode.git
 stock-logistics-reporting:
   defaults:
     depth: 1
