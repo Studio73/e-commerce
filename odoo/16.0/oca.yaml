@@ -122,6 +122,13 @@ credit-control:
   - origin b00be690e1584353bffa31429b5857d8874de096
   remotes:
     origin: https://github.com/OCA/credit-control.git
+currency:
+  defaults:
+    depth: 1
+  merges:
+  - origin 816dc558976bbfcc6e44dda2847bb2b7cedd717f
+  remotes:
+    origin: https://github.com/OCA/currency.git
 delivery-carrier:
   defaults:
     depth: 500
