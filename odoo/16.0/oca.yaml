@@ -291,7 +291,6 @@ sale-workflow:
   - origin refs/pull/2323/head
   - origin refs/pull/2343/head
   - origin refs/pull/2358/head
-  - origin refs/pull/2399/head
   - origin refs/pull/2415/head
   - origin refs/pull/2466/head
   remotes:
