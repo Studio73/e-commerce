@@ -50,10 +50,9 @@ account-invoicing:
     origin: https://github.com/OCA/account-invoicing.git
 account-payment:
   defaults:
-    depth: 500
+    depth: 1
   merges:
   - origin 4a35e470d39e45fcd0305e80567af57720851f41
-  - origin refs/pull/416/head
   remotes:
     origin: https://github.com/OCA/account-payment.git
 account-reconcile:
