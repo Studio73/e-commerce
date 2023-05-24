@@ -257,9 +257,10 @@ manufacture:
     origin: https://github.com/OCA/manufacture.git
 margin-analysis:
   defaults:
-    depth: 1
+    depth: 500
   merges:
   - origin 4b50bcfafbf70ab2974e4789502c23e660476e23
+  - origin refs/pull/171/head
   remotes:
     origin: https://github.com/OCA/margin-analysis.git
 mis-builder:
