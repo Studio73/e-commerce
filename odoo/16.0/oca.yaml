@@ -209,6 +209,14 @@ manufacture:
   - origin refs/pull/979/head
   remotes:
     origin: https://github.com/OCA/manufacture.git
+margin-analysis:
+  defaults:
+    depth: 500
+  merges:
+  - origin 699cfc272cc219012a296940b8f0178ea666133b
+  - origin refs/pull/163/head
+  remotes:
+    origin:
 mis-builder:
   defaults:
     depth: 1
