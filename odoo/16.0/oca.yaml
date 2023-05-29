@@ -75,7 +75,6 @@ bank-payment:
   - origin refs/pull/1004/head
   - origin refs/pull/1008/head
   - origin refs/pull/1029/head
-  - origin refs/pull/1065/head
   - origin refs/pull/990/head
   remotes:
     origin: https://github.com/OCA/bank-payment.git
