@@ -216,7 +216,7 @@ margin-analysis:
   - origin 699cfc272cc219012a296940b8f0178ea666133b
   - origin refs/pull/163/head
   remotes:
-    origin:
+    origin: https://github.com/OCA/margin-analysis.git
 mis-builder:
   defaults:
     depth: 1
