@@ -1,0 +1,46 @@
+name: build
+on:
+  workflow_call:
+    inputs:
+      image:
+        required: true
+        type: string
+      version:
+        required: true
+        type: string
+      merges:
+        type: string
+jobs:
+  build:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v3
+      - name: Merge PRs
+        if: {% raw %}${{ inputs.merges }}{% endraw %}
+        uses: Studio73/dodoo/actions/merge-prs
+        with:
+          merges: {% raw %}${{ inputs.merges }}{% endraw %}
+          ssh_key: {% raw %}${{ secrets.SSH_PRIVATE_KEY }}{% endraw %}
+      - name: Setup buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Docker login
+        uses: docker/login-action@v2
+        with:
+          registry: r.studio73.es
+          username: {% raw %}${{ secrets.REGISTRY_STUDIO73_USER }}{% endraw %}
+          password: {% raw %}${{ secrets.REGISTRY_STUDIO73_PASS }}{% endraw %}
+      - name : Docker meta
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: {% raw %}${{ inputs.image }}{% endraw %}
+          tags: |
+            type=raw,value={% raw %}${{ inputs.version }}{% endraw %}
+            type=raw,value={% raw %}${{ inputs.version }}.{{ date 'YYYYMMDD' }}{% endraw %}
+      - name: Build and push
+        uses: docker/build-push-action@v4
+        with:
+          push: true
+          tags: {% raw %}${{ steps.meta.outputs.tags }}{% endraw %}
+          labels: {% raw %}${{ steps.meta.outputs.labels }}{% endraw %}
+

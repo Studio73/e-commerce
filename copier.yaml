@@ -67,18 +67,6 @@ image:
   default: "r.studio73.es/odoo/{{ project_name }}"
   help: Project docker image, leave it empty if you don't want to build an image
 
-ci_team:
-  type: str
-  default: odoo
-  help: Concourse pipeline group owner
-
-ci_instance:
-  type: bool
-  default: False
-  help: |
-    It's part of a Concourse grouped pipeline?
-    The answer is yes if the project has multiple active branches
-
 coverage_fail_under:
   type: int
   default: 60
