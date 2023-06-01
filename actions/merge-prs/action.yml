@@ -1,0 +1,12 @@
+name: "Merge PRs"
+description: "Merge PRs"
+inputs:
+  merges:
+    description: "List of PRs numbers to merge"
+    required: true
+  ssh_key:
+    description: "SSH Private Key"
+    required: true
+runs:
+  using: "docker"
+  image: "Dockerfile"
