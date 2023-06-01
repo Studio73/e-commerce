@@ -17,7 +17,7 @@ jobs:
       - uses: actions/checkout@v3
       - name: Merge PRs
         if: {% raw %}${{ inputs.merges }}{% endraw %}
-        uses: Studio73/dodoo/actions/merge-prs
+        uses: Studio73/dodoo/actions/merge-prs@master
         with:
           merges: {% raw %}${{ inputs.merges }}{% endraw %}
           ssh_key: {% raw %}${{ secrets.SSH_PRIVATE_KEY }}{% endraw %}

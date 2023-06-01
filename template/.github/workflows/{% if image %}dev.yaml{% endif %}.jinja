@@ -11,7 +11,7 @@ jobs:
       prs: {% raw %}${{ steps.prs.outputs.prs }}{% endraw %}
     steps:
       - uses: actions/checkout@v3
-      - uses: Studio73/dodoo/actions/open-prs
+      - uses: Studio73/dodoo/actions/open-prs@master
         id: prs
         with:
           token: {% raw %}${{ github.token }}{% endraw %}
