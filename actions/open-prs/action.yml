@@ -1,0 +1,12 @@
+name: "Open PRs"
+description: "Search for all open PRs"
+inputs:
+  token:
+    description: "Github Personal Token"
+    required: true
+outputs:
+  prs:
+    description: "List of all open PRs"
+runs:
+  using: "docker"
+  image: "Dockerfile"
