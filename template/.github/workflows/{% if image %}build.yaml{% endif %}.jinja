@@ -2,6 +2,9 @@ name: build
 on:
   workflow_call:
     inputs:
+      base_image:
+        required: true
+        type: string
       image:
         required: true
         type: string
@@ -43,4 +46,6 @@ jobs:
           push: true
           tags: {% raw %}${{ steps.meta.outputs.tags }}{% endraw %}
           labels: {% raw %}${{ steps.meta.outputs.labels }}{% endraw %}
+          build-args: |
+            base_image={% raw %}${{ inputs.base_image }}{% endraw %}:{% raw %}${{ inputs.version }}{% endraw %}
 

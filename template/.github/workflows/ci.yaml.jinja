@@ -43,9 +43,9 @@ jobs:
           - /runner/pgdata:/var/lib/postgresql/data
         options: >-
           --health-cmd pg_isready
-          --health-interval 5s
+          --health-interval 10s
           --health-timeout 5s
-          --health-retries 5
+          --health-retries 10
     steps:
       - uses: actions/checkout@v3
       - name: Merge PRs

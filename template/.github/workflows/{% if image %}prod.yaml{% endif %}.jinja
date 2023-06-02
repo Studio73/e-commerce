@@ -13,5 +13,6 @@ jobs:
     uses: ./.github/workflows/build.yaml
     secrets: inherit
     with:
+      base_image: {{ base_image }}
       image: {{ image }}
       version: {{ odoo_version }}
