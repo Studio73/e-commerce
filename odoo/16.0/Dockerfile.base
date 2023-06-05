@@ -112,7 +112,7 @@ RUN echo "deb http://apt.postgresql.org/pub/repos/apt focal-pgdg main" > /etc/ap
     # Ubuntu 22.04 only has available libldap 2.5.0
     && curl -o /tmp/libldap.deb http://es.archive.ubuntu.com/ubuntu/pool/main/o/openldap/libldap-2.4-2_2.4.49+dfsg-2ubuntu1.9_amd64.deb \
     && apt-get install --no-install-recommends -y libldap-common libgssapi3-heimdal && dpkg -i /tmp/libldap.deb \
-    && apt-get install --no-install-recommends -y libpq5=14.7-0ubuntu0.22.04.1 postgresql-client-14=14.7-0ubuntu0.22.04.1 \
+    && apt-get install --no-install-recommends -y libpq5=14.8-0ubuntu0.22.04.1 postgresql-client-14=14.8-0ubuntu0.22.04.1 \
     && rm -f /etc/apt/sources.list.d/pgdg.list \
     && rm -rf /var/lib/apt/lists/* /tmp/*
 
