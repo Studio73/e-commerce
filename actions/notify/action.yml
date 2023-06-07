@@ -1,0 +1,18 @@
+name: Notification
+description: Send notifications to Studio73 channels.
+inputs:
+  url:
+    description: URL to notify
+    default: https://www.studio73.es
+  token:
+    description: Chat access token
+    required: true
+  body:
+    description: Body message (HTML Format)
+    required: true
+  channel:
+    description: Channel to notify. Use 0 to notify all channels
+    default: 0
+runs:
+  using: "docker"
+  image: "Dockerfile"
