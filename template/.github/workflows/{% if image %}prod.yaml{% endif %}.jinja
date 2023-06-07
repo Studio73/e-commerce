@@ -16,3 +16,14 @@ jobs:
       base_image: {{ base_image }}
       image: {{ image }}
       version: {{ odoo_version }}
+  notify:
+    runs-on: self-hosted
+    needs: [ci, docker]
+    if: {% raw %}${{ failure() }}{% endraw %}
+    steps:
+      - name: Notify errors
+        uses: Studio73/dodoo/actions/notify@master
+        with:
+          token: {% raw %}${{ secrets.STUDIO73_WEBHOOK_TOKEN }}{% endraw %}
+          channel: {% raw %}${{ secrets.STUDIO73_WEBHOOK_CHANNEL }}{% endraw %}
+          body: "🚧Error generando contenedor <b>PROD</b>"

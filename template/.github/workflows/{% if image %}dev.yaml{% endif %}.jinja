@@ -30,3 +30,14 @@ jobs:
       image: {{ image }}
       version: {{ odoo_version }}-dev
       merges: {% raw %}${{ needs.prs.outputs.prs }}{% endraw %}
+  notify:
+    runs-on: self-hosted
+    needs: [prs, ci, docker]
+    if: {% raw %}${{ failure() }}{% endraw %}
+    steps:
+      - name: Notify errors
+        uses: Studio73/dodoo/actions/notify@master
+        with:
+          token: {% raw %}${{ secrets.STUDIO73_WEBHOOK_TOKEN }}{% endraw %}
+          channel: {% raw %}${{ secrets.STUDIO73_WEBHOOK_CHANNEL }}{% endraw %}
+          body: "🚧Error generando contenedor <b>DEV</b>"
