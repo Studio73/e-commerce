@@ -249,7 +249,7 @@ purchase-workflow:
   defaults:
     depth: 500
   merges:
-  - origin 1d82a5ce9781027b25f7fea1b214125e64c36906
+  - origin 3283342a6b15944488a9cad5c5d146d4064564e6
   - origin refs/pull/1714/head
   remotes:
     origin: https://github.com/OCA/purchase-workflow.git
