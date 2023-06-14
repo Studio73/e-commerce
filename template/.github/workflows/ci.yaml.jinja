@@ -17,6 +17,9 @@ jobs:
           merges: {% raw %}${{ inputs.merges }}{% endraw %}
           ssh_key: {% raw %}${{ secrets.SSH_PRIVATE_KEY }}{% endraw %}
       - name: Run pre-commit
+        env:
+          PIP_INDEX_URL: {% raw %}${{ secrets.STUDIO73_PIP_INDEX }}{% endraw %}
+          PIP_TRUSTED_HOST: {% raw %}${{ secrets.STUDIO73_PIP_TRUSTED }}{% endraw %}
         run: |
           pip install pre-commit
           pre-commit run --show-diff-on-failure --color=always --all-files
@@ -32,9 +35,14 @@ jobs:
         PGUSER: odoo
         PGPASSWORD: odoo
         PGDATABASE: odoo
+        PIP_INDEX_URL: {% raw %}${{ secrets.STUDIO73_PIP_INDEX }}{% endraw %}
+        PIP_TRUSTED_HOST: {% raw %}${{ secrets.STUDIO73_PIP_TRUSTED }}{% endraw %}
     services:
       postgres:
-        image: postgres:14
+        image: r.studio73.es/cache/postgres:14-alpine
+        credentials:
+          username: {% raw %}${{ secrets.REGISTRY_STUDIO73_USER }}{% endraw %}
+          password: {% raw %}${{ secrets.REGISTRY_STUDIO73_PASS }}{% endraw %}
         env:
           POSTGRES_USER: odoo
           POSTGRES_PASSWORD: odoo

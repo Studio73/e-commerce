@@ -49,4 +49,6 @@ jobs:
           labels: {% raw %}${{ steps.meta.outputs.labels }}{% endraw %}
           build-args: |
             base_image={% raw %}${{ inputs.base_image }}{% endraw %}:{% raw %}${{ inputs.version }}{% endraw %}
+            pip_index={% raw %}${{ secrets.STUDIO73_PIP_INDEX }}{% endraw %}
+            pip_trusted={% raw %}${{ secrets.STUDIO73_PIP_TRUSTED }}{% endraw %}
 

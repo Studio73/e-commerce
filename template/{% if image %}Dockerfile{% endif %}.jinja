@@ -1,5 +1,7 @@
 ARG base_image={{ base_image }}:{{ odoo_version }}
 FROM ${base_image}
+ARG pip_index=https://pypi.org/simple
+ARG pip_trusted=pypi.org
 {%- if apt_list %}
 USER root
 RUN apt-get update \
@@ -8,5 +10,5 @@ RUN apt-get update \
 USER odoo
 {%- endif %}
 COPY --chown=odoo ./requirements.txt $SRC/custom/requirements.txt
-RUN install-requirements $SRC/custom
+RUN pip3 install --index-url $pip_index --trusted-host $pip_trusted -c $SRC/odoo/odoo/requirements.txt -r $SRC/custom/requirements.txt
 COPY --chown=odoo . $SRC/custom
