@@ -380,9 +380,8 @@ sale-workflow:
   defaults:
     depth: 500
   merges:
-  - origin 08dc61738a8cdea9b2dd1c212b93888d3d968398
+  - origin e020b980819079b01b27ed27ce558654518ab756
   - origin refs/pull/1435/head
-  - origin refs/pull/2074/head
   - origin refs/pull/2289/head
   remotes:
     origin: https://github.com/OCA/sale-workflow.git
