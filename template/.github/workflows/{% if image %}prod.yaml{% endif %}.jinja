@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - {{ odoo_version }}.0
+  schedule:
+    - cron: "{{ range(0, 31) | random }} 0 * * 1-5"
 jobs:
   ci:
     uses: ./.github/workflows/ci.yaml
