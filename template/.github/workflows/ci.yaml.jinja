@@ -31,29 +31,12 @@ jobs:
         username: {% raw %}${{ secrets.REGISTRY_STUDIO73_USER }}{% endraw %}
         password: {% raw %}${{ secrets.REGISTRY_STUDIO73_PASS }}{% endraw %}
       env:
-        PGHOST: postgres
-        PGUSER: odoo
-        PGPASSWORD: odoo
+        PGHOST: {% raw %}${{ secrets.POSTGRES_HOST }}{% endraw %}
+        PGUSER: {% raw %}${{ secrets.POSTGRES_USER }}{% endraw %}
+        PGPASSWORD: {% raw %}${{ secrets.POSTGRES_PASSWORD }}{% endraw %}
         PGDATABASE: odoo
         PIP_INDEX_URL: {% raw %}${{ secrets.STUDIO73_PIP_INDEX }}{% endraw %}
         PIP_TRUSTED_HOST: {% raw %}${{ secrets.STUDIO73_PIP_TRUSTED }}{% endraw %}
-    services:
-      postgres:
-        image: r.studio73.es/cache/postgres:14-alpine
-        credentials:
-          username: {% raw %}${{ secrets.REGISTRY_STUDIO73_USER }}{% endraw %}
-          password: {% raw %}${{ secrets.REGISTRY_STUDIO73_PASS }}{% endraw %}
-        env:
-          POSTGRES_USER: odoo
-          POSTGRES_PASSWORD: odoo
-          POSTGRES_DB: odoo
-        volumes:
-          - /runner/pgdata:/var/lib/postgresql/data
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 10
     steps:
       - uses: actions/checkout@v3
       - name: Merge PRs

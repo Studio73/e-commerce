@@ -2,8 +2,8 @@ name: dev
 on:
   workflow_dispatch:
   schedule:
-    - cron: "30 12 * * 1-5"
-    - cron: "30 20 * * 0-4"
+    - cron: "{{ range(0, 31) | random }} 12 * * 1-5"
+    - cron: "{{ range(0, 31) | random }} 20 * * 0-4"
 jobs:
   prs:
     runs-on: self-hosted
