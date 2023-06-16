@@ -450,6 +450,14 @@ stock-logistics-workflow:
   - origin 1f3cd1454a1b1f45616524a1fdabe6018fa4d49a
   remotes:
     origin: https://github.com/OCA/stock-logistics-workflow.git
+survey:
+  defaults:
+    depth: 500
+  merges:
+  - origin 9113e2adcb64743c7a570954ab6ac919977c3627
+  - origin refs/pull/82/head
+  remotes:
+    origin: https://github.com/OCA/survey.git
 timesheet:
   defaults:
     depth: 1
