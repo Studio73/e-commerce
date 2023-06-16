@@ -5,6 +5,7 @@ import json
 import os
 import re
 import subprocess as sp
+from pprint import pprint
 
 import requests
 
@@ -36,6 +37,11 @@ def main():
                                         contexts(first: 10) {
                                             nodes {
                                                 __typename
+                                                ... on CheckRun{
+                                                    name
+                                                    conclusion
+                                                }
+                                                __typename
                                                 ... on StatusContext{
                                                     description
                                                     state
@@ -65,8 +71,6 @@ def main():
     data = r.json()
     if not data.get("data"):
         _logger.error("Github query error:")
-        from pprint import pprint
-
         pprint(data)
         exit(1)
     data = data["data"]
@@ -75,20 +79,20 @@ def main():
     if len(open_prs):
         _logger.info("[Open PRS]")
     for pr in open_prs:
-        tag = "* {}".format(pr["number"])
+        tag = pr["number"]
         title = pr.get("title", "").lower()
         if "[force dev]" in title or "[dev force]" in title:
-            _logger.info("{}\t->\t ✅ Title contains [force dev]".format(tag))
+            _logger.info("✅ {}\t->\tTitle contains [force dev]".format(tag))
             prs.append(str(pr["number"]))
             continue
         if "[skip dev]" in title or "[dev skip]" in title:
-            _logger.info("{}\t->\t ❌ Title contains [skip dev]".format(tag))
+            _logger.info("❌ {}\t->\tTitle contains [skip dev]".format(tag))
             continue
         if pr.get("isDraft"):
-            _logger.info("{}\t->\t ❌ Draft PR".format(tag))
+            _logger.info("❌ {}\t->\tDraft PR".format(tag))
             continue
         if pr.get("mergeable") == "CONFLICTING":
-            _logger.info("{}\t->\t ❌ PR with conflicts".format(tag))
+            _logger.info("❌ {}\t->\tPR with conflicts".format(tag))
             continue
         status_check_rollup = (
             pr["commits"]["nodes"][0]["commit"]["statusCheckRollup"] or {}
@@ -96,17 +100,25 @@ def main():
         checks_passed = []
         checks = []
         for context in status_check_rollup.get("contexts", {}).get("nodes") or []:
-            if context["__typename"] == "StatusContext":
+            if context["__typename"] == "CheckRun":  # Github Actions
+                if "concourse" in context["name"]:  # Ignore everything from concourse
+                    continue
+                if context["conclusion"] == "SUCCESS":
+                    checks_passed.append(True)
+                else:
+                    checks_passed.append(False)
+                checks.append(f"\t- {context['name']}\t{context['conclusion']}")
+            elif context["__typename"] == "StatusContext":  # Other checks
                 if context["state"] == "SUCCESS" or context["context"] == "functional":
                     checks_passed.append(True)
                 else:
                     checks_passed.append(False)
-                checks.append(f"- {context['state']}\t->\t{context['context']}")
+                checks.append(f"\t- {context['context']}\t{context['state']}")
         if all(checks_passed):
-            _logger.info("{}\t->\t ✅ Mergeable PR".format(tag))
+            _logger.info("✅ {}\t->\tMergeable PR".format(tag))
             prs.append(str(pr["number"]))
         else:
-            _logger.info("{}\t->\t ❌ CI status check FAILED".format(tag))
+            _logger.info("❌ {}\t->\tCI status check FAILED".format(tag))
         for check in checks:
             _logger.info(check)
     with open(os.environ["GITHUB_OUTPUT"], "a") as f:
