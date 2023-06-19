@@ -50,6 +50,7 @@ account-invoicing:
   - origin fc53efde622bd0372aa06d9ab94032a0504d1a10
   - origin refs/pull/1338/head
   - origin refs/pull/1485/head
+  - origin refs/pull/1487/head
   remotes:
     origin: https://github.com/OCA/account-invoicing.git
 account-payment:
