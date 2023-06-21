@@ -302,7 +302,6 @@ server-backend:
   merges:
   - origin c5f1d953f8be08421fdf53650859af9c7be3b261
   - origin refs/pull/202/head
-  - origin refs/pull/220/head
   remotes:
     origin: https://github.com/OCA/server-backend.git
 server-tools:
