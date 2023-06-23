@@ -274,6 +274,9 @@ def coverage(addons, fail_under):
         if "TOTAL" in line:
             total = line.split()[-1]
     project_exit = pipe.wait()
+    if total == "~":
+        # No data to report
+        project_exit = 0
     patch_exit = 0
     print_table(
         [["☔Project coverage", "{} {}".format("❌" if project_exit else "✅", total)]]
