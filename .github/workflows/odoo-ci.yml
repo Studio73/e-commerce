@@ -1,0 +1,71 @@
+name: Odoo CI
+on:
+  workflow_call:
+    inputs:
+      image:
+        description: Docker image to use
+        type: string
+        required: true
+      database:
+        description: Database name
+        type: string
+        default: odoo
+      merges:
+        description: PRs to merge
+        type: string
+      coverage:
+        description: Run coverage
+        type: boolean
+        default: true
+jobs:
+  lint:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v3
+      - name: Merge PRs
+        if: ${{ inputs.merges }}
+        uses: Studio73/dodoo/actions/merge-prs@master
+        with:
+          merges: ${{ inputs.merges }}
+          ssh_key: ${{ secrets.SSH_PRIVATE_KEY }}
+      - name: Run pre-commit
+        env:
+          PIP_INDEX_URL: ${{ secrets.STUDIO73_PIP_INDEX }}
+          PIP_TRUSTED_HOST: ${{ secrets.STUDIO73_PIP_TRUSTED }}
+        run: |
+          pip install pre-commit
+          pre-commit run --show-diff-on-failure --color=always --all-files
+  tests:
+    runs-on: self-hosted
+    container:
+      image: ${{ inputs.image }}
+      credentials:
+        username: ${{ secrets.REGISTRY_STUDIO73_USER }}
+        password: ${{ secrets.REGISTRY_STUDIO73_PASS }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Merge PRs
+        if: ${{ inputs.merges }}
+        uses: Studio73/dodoo/actions/merge-prs@master
+        with:
+          merges: ${{ inputs.merges }}
+          ssh_key: ${{ secrets.SSH_PRIVATE_KEY }}
+      - name: Run tests
+        run: |
+          python /entrypoint.py tail
+          pip install -r requirements.txt
+          odoo-test run
+        env:
+          ODOO_LIMIT_TIME_CPU: 4800
+          ODOO_LIMIT_TIME_REAL: 9600
+          ODOO_MAX_CRON_THREADS: 0
+          PIP_INDEX_URL: ${{ secrets.STUDIO73_PIP_INDEX }}
+          PIP_TRUSTED_HOST: ${{ secrets.STUDIO73_PIP_TRUSTED }}
+          PGHOST: ${{ secrets.POSTGRES_HOST }}
+          PGUSER: ${{ secrets.POSTGRES_USER }}
+          PGPASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          PGDATABASE: ${{ inputs.database }}
+      - name: Run coverage
+        if: ${{ inputs.coverage }}
+        run: odoo-test coverage

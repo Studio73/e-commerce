@@ -1,0 +1,36 @@
+name: "Ask for PR review"
+description: "Ask for PR review"
+inputs:
+  token:
+    description: "Github Token"
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Ask for review
+      uses: actions/github-script@v6
+      with:
+        github-token: ${{ inputs.token }}
+        script: |
+          const gifs_resp = await fetch('https://raw.githubusercontent.com/seantomburke/shipit.gifs/master/gifs.json')
+          const gifs = await gifs_resp.json();
+          const idx = Math.floor(Math.random() * (gifs['gifs'].length - 1)) + 1;
+          const pr = await github.rest.pulls.get({
+            pull_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo
+          });
+          const reviewers = pr.data.requested_reviewers.map(r => '@' + r.login).join(' ');
+          body = `
+            ${reviewers}
+            🍏 listo para revisar
+            ![](https://i.shipit.today/${idx})
+
+            cc @Studio73/developers
+          `;
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: body
+          });
