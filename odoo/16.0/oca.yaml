@@ -236,7 +236,7 @@ product-attribute:
   defaults:
     depth: 1
   merges:
-  - origin eb9f76cb86bacbc1dc2abf35f5c2c490f6782a2e
+  - origin 7f6104f96bfa139331ee418c7219f83cba144912
   remotes:
     origin: https://github.com/OCA/product-attribute.git
 product-variant:
