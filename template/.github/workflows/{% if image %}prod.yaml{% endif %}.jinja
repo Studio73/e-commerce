@@ -8,11 +8,14 @@ on:
     - cron: "{{ range(0, 31) | random }} 0 * * 1-5"
 jobs:
   ci:
-    uses: ./.github/workflows/ci.yaml
+    uses: Studio73/dodoo/.github/workflows/odoo-ci.yml@master
     secrets: inherit
-  docker:
-    needs: ci
-    uses: ./.github/workflows/build.yaml
+    with:
+      image: {{ base_image }}:{{ odoo_version }}
+      database: {{ project_name }}
+  cd:
+    needs: [ci]
+    uses: Studio73/dodoo/.github/workflows/odoo-cd.yml@master
     secrets: inherit
     with:
       base_image: {{ base_image }}
@@ -20,7 +23,7 @@ jobs:
       version: {{ odoo_version }}
   notify:
     runs-on: self-hosted
-    needs: [ci, docker]
+    needs: [ci, cd]
     if: {% raw %}${{ failure() }}{% endraw %}
     steps:
       - name: Notify errors

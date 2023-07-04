@@ -16,14 +16,16 @@ jobs:
         with:
           token: {% raw %}${{ github.token }}{% endraw %}
   ci:
-    needs: prs
-    uses: ./.github/workflows/ci.yaml
+    needs: [prs]
+    uses: Studio73/dodoo/.github/workflows/odoo-ci.yml@master
     secrets: inherit
     with:
+      image: {{ base_image }}:{{ odoo_version }}-dev
+      database: {{ project_name }}
       merges: {% raw %}${{ needs.prs.outputs.prs }}{% endraw %}
-  docker:
+  cd:
     needs: [prs, ci]
-    uses: ./.github/workflows/build.yaml
+    uses: Studio73/dodoo/.github/workflows/odoo-cd.yml@master
     secrets: inherit
     with:
       base_image: {{ base_image }}
@@ -32,7 +34,7 @@ jobs:
       merges: {% raw %}${{ needs.prs.outputs.prs }}{% endraw %}
   notify:
     runs-on: self-hosted
-    needs: [prs, ci, docker]
+    needs: [prs, ci, cd]
     if: {% raw %}${{ failure() }}{% endraw %}
     steps:
       - name: Notify errors
