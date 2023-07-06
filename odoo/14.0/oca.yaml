@@ -236,9 +236,10 @@ l10n-spain:
     origin: https://github.com/OCA/l10n-spain.git
 maintenance:
   defaults:
-    depth: 1
+    depth: 500
   merges:
   - origin 43d8642130713d9ffe0b851386bbf976d4df2aa9
+  - origin refs/pull/347/head
   remotes:
     origin: https://github.com/OCA/maintenance.git
 management-system:
