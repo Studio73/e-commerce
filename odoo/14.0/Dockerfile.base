@@ -52,6 +52,9 @@ RUN cd /odoo && gitaggregate --jobs 8 --config repos.yaml \
     && find /odoo -name ".git" | xargs rm -rf \
     # setuptools<58.0.0 fixes setup command: use_2to3 is invalid.
     && echo "setuptools<58.0.0" >> /odoo/odoo/requirements.txt \
+    # FIX https://github.com/pyca/pyopenssl/issues/1154
+    && echo "cryptography<39" >> /odoo/odoo/requirements.txt \
+    && echo "pyOpenSSL==22.0.0" >> /odoo/odoo/requirements.txt \
     # Fix conflict between Odoo and OCA/intrastat-extrastrat
     && sed -i 's/python-stdnum==1.8/python-stdnum>=1.16/g' /odoo/odoo/requirements.txt \
     # Fix XlsxWriter py3.8 warnings
