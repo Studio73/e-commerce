@@ -55,6 +55,8 @@ RUN cd /odoo && gitaggregate --jobs 8 --config repos.yaml \
     # FIX https://github.com/pyca/pyopenssl/issues/1154
     && echo "cryptography<39" >> /odoo/odoo/requirements.txt \
     && echo "pyOpenSSL==22.0.0" >> /odoo/odoo/requirements.txt \
+    # FIX https://github.com/OCA/server-tools/pull/2638
+    && echo "sentry-sdk>=1.17.0" >> /odoo/odoo/requirements.txt \
     # Fix conflict between Odoo and OCA/intrastat-extrastrat
     && sed -i 's/python-stdnum==1.8/python-stdnum>=1.16/g' /odoo/odoo/requirements.txt \
     # Fix XlsxWriter py3.8 warnings
