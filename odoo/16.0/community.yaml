@@ -4,4 +4,18 @@ studio73-private-addons:
   merges:
   - origin 16.0
   remotes:
-    origin: git@github.com:Studio73/studio73-private-addons.git
+    origin: git@github.com:studio73/studio73-private-addons.git
+realestate-addons:
+  defaults:
+    depth: 50
+  merges:
+  - origin 16.0
+  remotes:
+    origin: git@github.com:studio73/realestate-addons.git
+website-addons:
+  defaults:
+    depth: 50
+  merges:
+  - origin 16.0
+  remotes:
+    origin: git@github.com:Studio73/website-addons.git
