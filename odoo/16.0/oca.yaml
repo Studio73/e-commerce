@@ -368,6 +368,7 @@ web:
   - origin dfadd419a421bf07e493327a804c0b4d1cd75c0e
   - origin refs/pull/2389/head
   - origin refs/pull/2448/head
+  - origin refs/pull/2561/head
   remotes:
     origin: https://github.com/OCA/web.git
 website:
