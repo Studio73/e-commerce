@@ -139,7 +139,7 @@ def commit(c):
 
 @task
 def pr(c):
-    c.run("git push origin $(git rev-parse --abbrev-ref HEAD)")
+    c.run("git push --set-upstream origin $(git rev-parse --abbrev-ref HEAD)")
     base = "{{ odoo_version }}.0"
     current = c.run("git rev-parse --abbrev-ref HEAD", hide="both").stdout.strip()
     commits_short = c.run(
