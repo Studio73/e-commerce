@@ -1,13 +1,13 @@
 * @ioans73 @fuentes73
 account_*/ @ioans73 @fuentes73 @Jortolsa-S73 @ferran-S73
 connector_*/ @ioans73 @fuentes73 @hildickethan-S73
-delivery_*/ @ioans73 @fuentes73 @ferran-S73 @hildickethan-S73
+delivery_*/ @ioans73 @ferran-S73 @hildickethan-S73 @miguel-S73
 l10n_es_*/ @ioans73 @fuentes73 @Jortolsa-S73 @hildickethan-S73
-mrp_*/ @ioans73 @fuentes73 @ferran-S73 @Willerr-mo-S73
-partner_*/ @ioans73 @fuentes73 @miguel-S73 @Willerr-mo-S73
-product_*/ @ioans73 @fuentes73 @miguel-S73 @Willerr-mo-S73
-purchase_*/ @ioans73 @fuentes73 @ferran-S73 @hildickethan-S73
-res_partner_*/ @ioans73 @fuentes73 @miguel-S73 @Willerr-mo-S73
-sale_*/ @ioans73 @fuentes73 @ferran-S73 @hildickethan-S73
+mrp_*/ @ioans73 @ferran-S73 @hildickethan-S73 @Jortolsa-S73
+partner_*/ @ioans73 @miguel-S73 @ferran-S73 @hildickethan-S73
+product_*/ @ioans73 @miguel-S73 @ferran-S73 @hildickethan-S73
+purchase_*/ @ioans73 @ferran-S73 @hildickethan-S73
+res_partner_*/ @ioans73 @miguel-S73 @ferran-S73 @hildickethan-S73
+sale_*/ @ioans73 @fuentes73 @ferran-S73 @hildickethan-S73 @miguel-S73
 stock_*/ @ioans73 @fuentes73 @ferran-S73 @hildickethan-S73
-web*/ @ioans73 @fuentes73 @miguel-S73
+web*/ @ioans73 @fuentes73 @miguel-S73 @ferran-S73
