@@ -137,24 +137,27 @@ def commit(c):
     c.run(cmd, pty=True)
 
 
-@task
-def pr(c):
-    c.run("git push --set-upstream origin $(git rev-parse --abbrev-ref HEAD)")
-    base = "{{ odoo_version }}.0"
-    current = c.run("git rev-parse --abbrev-ref HEAD", hide="both").stdout.strip()
+def _get_short_commit_info(c, base):
     commits_short = c.run(
         "git --no-pager log --format=%s origin/{}..HEAD".format(base), hide="both"
     ).stdout.strip()
     czs = re.findall(
-        "(?P<type>(\\w)*)(?P<scope>\\(\\w+\\))?(?P<breaking>!)?:", commits_short
+        "(?P<type>(\\w)*)(?P<scope>\\(\\w+\\))?(?P<breaking>!)?:(?P<message>(.*))?",
+        commits_short,
     )
     _type = "fix"
+    _messages = []
     for commit in czs:
         if commit[3] == "!":
             _type = "!"
             break
         elif commit[0] != "fix":
             _type = "feat"
+        _messages.append(str(commit[4]).strip())
+    return _type, "\n".join("- {}".format(m) for m in _messages)
+
+
+def _get_affected_modules(c, base):
     diff = c.run(
         "git --no-pager diff --name-only origin/{} HEAD | sort".format(base),
         hide="both",
@@ -166,8 +169,52 @@ def pr(c):
             os.path.join(change_dir, "__manifest__.py")
         ):
             modules.append(change_dir)
-    title = "{}\\({}\\):%20{}".format(_type.lower(), base, ",".join(list(set(modules))))
-    pr_url = "https://github.com/Studio73/{{ repo_name }}/compare/{}...{}?quick_pull=1\\&title={}".format(
-        base, current, title
+    return modules
+
+
+def _get_task_info(c, base):
+    commits_long = (
+        c.run("git log --format=%b origin/{}..HEAD".format(base), hide="both")
+        .stdout.strip()
+        .lower()
     )
+    czs = re.findall(r"(?P<obj>ta|ti)(-)*(?P<id>\d+)", commits_long)
+    tasks = set()
+    for task in czs:
+        tasks.add("{}{}".format(task[0], task[2]))
+    return "\n".join(
+        "[{code}]({url})".format(
+            code=t.upper(),
+            url="https://www.studio73.es/{type}/{id}".format(type=t[:2], id=t[2:]),
+        )
+        for t in tasks
+    )
+
+@task
+def pr(c):
+    c.run("git push --set-upstream origin $(git rev-parse --abbrev-ref HEAD)")
+    base = "{{ odoo_version }}.0"
+    current = c.run("git rev-parse --abbrev-ref HEAD", hide="both").stdout.strip()
+    _type, _messages = _get_short_commit_info(c, base)
+    modules = _get_affected_modules(c, base)
+    tasks = _get_task_info(c, base)
+    title = "{}\\({}\\):%20{}".format(_type.lower(), base, ",".join(list(set(modules))))
+    body = (
+        "### Tarea relacionada\n"
+        "\n"
+        "{tasks}\n"
+        "\n"
+        "### Cambios propuestos en este PR:\n"
+        "\n"
+        "{messages}\n"
+        "\n"
+        "### Como probar los cambios\n"
+        "\n"
+        "### Notas adicionales"
+        "\n"
+    ).format(tasks=tasks, messages=_messages)
+    pr_url = (
+        "https://github.com/Studio73/{{ repo_name }}/compare/{}...{}"
+        "?quick_pull=1\\&title={}\\&body={}"
+    ).format(base, current, title, quote_plus(body))
     c.run("python3 -mwebbrowser {}".format(pr_url))
