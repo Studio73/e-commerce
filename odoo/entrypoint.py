@@ -61,6 +61,7 @@ def build_conf():
                 "sentry_event_logging_level": "error",
                 "sentry_breadcrum_logging_level": "info",
                 "sentry_traces_sample_rate": 0.2,
+                "sentry_profiles_sample_rate": 0.2,
             }
         )
 
