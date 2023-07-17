@@ -5,6 +5,7 @@ import uuid
 
 from dotenv import dotenv_values
 from invoke import task
+from urllib.parse import quote_plus
 
 PROJECT = "{{ project_name }}"
 DOCKER_REGISTRY = "r.studio73.es"
