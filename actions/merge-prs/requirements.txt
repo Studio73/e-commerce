@@ -1,2 +1,1 @@
-PyYaml
 git-aggregator
