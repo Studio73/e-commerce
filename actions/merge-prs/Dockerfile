@@ -2,6 +2,7 @@ FROM python:3.11-slim-buster
 RUN apt update && apt install -y git
 RUN useradd -md /home/runner -s /bin/bash runner
 COPY requirements.txt /requirements.txt
+RUN pip install "cpython<3.0.0" pyyaml==5.4.1 --no-build-isolation
 RUN pip install -r /requirements.txt
 USER runner
 COPY --chown=runner ssh_config /home/runner/.ssh/config
