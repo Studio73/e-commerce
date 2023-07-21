@@ -145,9 +145,7 @@ delivery-carrier:
   defaults:
     depth: 500
   merges:
-  - origin 7b1cf3b111279fba0f7dd5b5c9b3c2b31711b104
-  - origin refs/pull/502/head
-  - origin refs/pull/658/head
+  - origin 5bbe5c017a14e376f7cfd258372a5c85695e0663
   - origin refs/pull/678/head
   remotes:
     origin: https://github.com/OCA/delivery-carrier.git
