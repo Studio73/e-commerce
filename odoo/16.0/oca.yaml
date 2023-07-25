@@ -246,6 +246,7 @@ product-variant:
   - origin 12eaf3452bf9fbea5e8af34b58be96927066cba9
   - origin refs/pull/281/head
   - origin refs/pull/286/head
+  - origin refs/pull/300/head
   remotes:
     origin: https://github.com/OCA/product-variant.git
 project:
