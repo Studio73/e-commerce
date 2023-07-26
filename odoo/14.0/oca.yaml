@@ -394,6 +394,7 @@ server-tools:
   - origin 08a8cd8370f371cc109316a1994ff8e6742647dc
   - origin refs/pull/2465/head
   - origin refs/pull/2490/head
+  - origin refs/pull/2685/head
   remotes:
     origin: https://github.com/OCA/server-tools.git
 server-ux:
