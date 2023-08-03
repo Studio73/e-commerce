@@ -75,3 +75,6 @@ docs/_build/
 
 # Other
 .env
+
+# Odoo
+migrations/data/*
