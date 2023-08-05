@@ -9,6 +9,6 @@ odoo:
   defaults:
     depth: 1
   merges:
-  - origin 70be94b700d3d8242969039927c1d25aad4e395a
+  - origin 493d31a9b2f6508e1e48627ff510120f93870c4e
   remotes:
     origin: https://github.com/odoo/odoo.git
