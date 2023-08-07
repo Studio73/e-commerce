@@ -1,12 +1,11 @@
-import asyncio
 import logging
 import os
+import time
 from datetime import datetime, timedelta
-from time import sleep
 from typing import Dict
 
-import aiohttp
-from apscheduler.schedulers.asyncio import AsyncIOScheduler
+import requests
+from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.cron import CronTrigger
 from python_on_whales import DockerClient, docker
 from python_on_whales.components.compose.cli_wrapper import ComposeCLI
@@ -37,23 +36,24 @@ class DodooContainer(object):
         self.logger = logging.getLogger(f"{self.project}.{self.service}.{self.name}")
         self.now = datetime.now().strftime(DATE_FORMAT)
 
-    async def notify_error(self, message):
+    def notify_error(self, message):
         self.logger.error(message)
-        gchat_url = os.environ.get("GCHAT_WEBHOOK")
-        if gchat_url:
-            # https://developers.google.com/chat/how-tos/webhooks
+        token = os.environ.get("NOTIFY_TOKEN")
+        if token:
+            url = f"https://www.studio73.es/mail/webhook/{token}"
             headers = {"Content-Type": "application/json; charset=UTF-8"}
-            async with aiohttp.ClientSession() as session:
-                payload = f"""
-*Rolling update error*
-*Server* {self.server_name}
-*Project* {self.project}
-*Service* {self.service}
-*Name* {self.name}
-*Status* 🔴FAILED
-_{message}_
-                    """
-                await session.post(gchat_url, headers=headers, json={"text": payload})
+            body = f"""
+<b>Rolling update error</b><br/>
+<b>Server</b> {self.server_name}<br/>
+<b>Project</b> {self.project}<br/>
+<b>Service</b> {self.service}<br/>
+<b>Name</b> {self.name}<br/>
+<i>{message}</i>
+"""
+            params = {
+                "body": body,
+            }
+            requests.post(url, headers=headers, json={"params": params})
         return 75
 
     def scale(self, replicas):
@@ -64,9 +64,10 @@ _{message}_
             detach=True,
             recreate=False,
             quiet=True,
+            wait=True,
         )
 
-    async def update(self):
+    def update(self):
         replicas = int(self.labels.get("dodoo.replicas", "1"))
         containers = self.compose.ps([self.service])
         if len(containers) > replicas:
@@ -87,6 +88,7 @@ _{message}_
         if self.sha256 == latest_image:
             self.logger.info(f"Up to date ({self.sha256})")
             return True
+        # TODO: Stop cron jobs container
         pre_hook = self.labels.get("dodoo.hooks.pre-update", "odoo-update")
         if pre_hook not in NEG:
             # "dodoo.hooks.pre-update=False" to disable odoo-update script
@@ -107,27 +109,16 @@ _{message}_
                         decoded = stream_bytes.decode()
                         f.write(decoded)
             except DockerException:
-                return await self.notify_error(
+                return self.notify_error(
                     f"An error ocurred during pre-update hook ({pre_hook})"
                 )
         try:
-            self.scale(replicas + 1)
-            sleep(1)
-            new_container = self.compose.ps([self.service])[-1]
-            health = new_container.state.health.status
-            status_timeout = 0
-            self.logger.info(f"Waiting {new_container.name} to be ready")
-            while health != "healthy":
-                sleep(1)
-                status_timeout += 1
-                if status_timeout >= 60:
-                    return await self.notify_error(
-                        f"Timeout exception waiting {new_container.name} to be ready"
-                    )
-                health = new_container.state.health.status
-            self.scale(replicas)
+            self.scale(replicas * 2)
+            self.logger.info(f"Scaling down to {replicas} replicas")
+            docker.stop(containers, 30)
+            docker.remove(containers)
         except DockerException:
-            return await self.notify_error("An error ocurred during scaling replicas")
+            return self.notify_error("An error ocurred during scaling replicas")
         post_hook = self.labels.get("dodoo.hooks.post-update", "").split()
         if post_hook:
             self.logger.info(f"Running post-update hook ({' '.join(post_hook)})")
@@ -146,13 +137,13 @@ _{message}_
                         decoded = stream_bytes.decode()
                         f.write(decoded)
             except DockerException:
-                return await self.notify_error(
+                return self.notify_error(
                     f"An error ocurred during post-update hook ({post_hook})"
                 )
         return True
 
 
-async def gather():
+def gather():
     logger = logging.getLogger("gather")
     containers = []
     for project in docker.compose.ls():
@@ -198,14 +189,14 @@ async def gather():
                 image_name,
             )
             containers.append(container)
-
     if containers:
-        await asyncio.gather(*[container.update() for container in containers])
+        for container in containers:
+            container.update()
         docker.image.prune(all=True)
     return True
 
 
-async def rotate():
+def rotate():
     logger = logging.getLogger("rotate")
     cut_off_date = datetime.now() - timedelta(days=7)
     for log in os.listdir(LOGDIR):
@@ -219,8 +210,10 @@ async def rotate():
     return True
 
 
-async def main():
-    scheduler = AsyncIOScheduler()
+if __name__ == "__main__":
+    if not os.path.exists(LOGDIR):
+        os.mkdir(LOGDIR)
+    scheduler = BackgroundScheduler()
     scheduler.add_job(
         gather,
         CronTrigger.from_crontab("*/15 7-20 * * mon-fri"),
@@ -231,15 +224,9 @@ async def main():
         CronTrigger.from_crontab("10 0 * * mon-fri"),
         next_run_time=datetime.now(),
     )
-    scheduler.start()
-
-
-if __name__ == "__main__":
     try:
-        if not os.path.exists(LOGDIR):
-            os.mkdir(LOGDIR)
-        loop = asyncio.get_event_loop_policy().get_event_loop()
-        loop.create_task(main())
-        loop.run_forever()
+        scheduler.start()
+        while True:
+            time.sleep(1)
     except (KeyboardInterrupt, SystemExit):
-        pass
+        scheduler.shutdown()

@@ -1,4 +1,2 @@
 APScheduler==3.9.1.post1
-aiohttp
-asyncio
 python-on-whales
