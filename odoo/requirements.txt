@@ -12,4 +12,5 @@ pycups
 pydevd-pycharm==223.4884.74
 regex==2022.3.2
 tabulate
+tqdm
 wheel

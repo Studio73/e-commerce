@@ -4,4 +4,3 @@ copier
 git-aggregator
 pre-commit
 requests
-tqdm
