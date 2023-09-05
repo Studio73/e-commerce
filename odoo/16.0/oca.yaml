@@ -364,9 +364,10 @@ stock-logistics-warehouse:
     origin: https://github.com/OCA/stock-logistics-warehouse.git
 stock-logistics-workflow:
   defaults:
-    depth: 1
+    depth: 500
   merges:
   - origin d475c5ea4dbce6ee4b6b6f81ae421d7e08ab657b
+  - origin refs/pull/1372/head
   remotes:
     origin: https://github.com/OCA/stock-logistics-workflow.git
 web:
