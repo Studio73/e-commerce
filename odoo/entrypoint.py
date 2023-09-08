@@ -5,8 +5,8 @@ import subprocess as sp
 import sys
 from collections import OrderedDict
 
-MEMORY_SOFT = 640
-MEMORY_HARD = 768
+MEMORY_SOFT = 2048
+MEMORY_HARD = 2560
 
 
 def compute_addons_path():
@@ -33,19 +33,28 @@ def compute_addons_path():
     return ",".join(addons_path)
 
 
+def from_secret(name, default=None):
+    if os.environ.get(name):
+        return os.environ[name]
+    elif os.environ.get(name + "_FILE"):
+        return open(os.environ[name + "_FILE"]).read().strip()
+    else:
+        return default
+
+
 def build_conf():
     db_name = os.environ.get("PGDATABASE", os.environ.get("DATABASE", "odoo"))
     workers = int(os.environ.get("ODOO_WORKERS", 1)) or 1
     options = {
         "data_dir": os.environ.get("DATA"),
-        "db_host": os.environ.get("PGHOST", "localhost"),
-        "db_port": os.environ.get("PGPORT", 5432),
-        "db_user": os.environ.get("PGUSER", "odoo"),
-        "db_password": os.environ.get("PGPASSWORD", "changeme"),
+        "db_host": from_secret("PGHOST", "postgres"),
+        "db_port": from_secret("PGPORT", "5432"),
+        "db_user": from_secret("PGUSER", "odoo"),
+        "db_password": from_secret("PGPASSWORD"),
         "db_name": db_name,
         "dbfilter": db_name,
         "list_db": False,
-        "admin_passwd": "changeme",
+        "admin_passwd": from_secret("ADMIN_PASSWORD", "ch4ngem3"),
         "addons_path": compute_addons_path(),
         "workers": workers,
         "limit_time_cpu": 480,
@@ -53,7 +62,6 @@ def build_conf():
         "limit_memory_soft": (workers * MEMORY_SOFT) * 1024 * 1024,
         "limit_memory_hard": (workers * MEMORY_HARD) * 1024 * 1024,
     }
-
     if os.environ.get("ODOO_SENTRY_DSN"):
         options.update(
             {
