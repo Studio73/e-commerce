@@ -6,6 +6,7 @@ debugpy
 git-aggregator
 google_auth
 inotify
+paramiko
 pdfminer.six
 pdfplumber
 pycups
