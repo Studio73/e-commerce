@@ -19,6 +19,8 @@ on:
 jobs:
   build:
     runs-on: self-hosted
+    outputs:
+      tags: ${{ steps.meta.outputs.tags }}
     steps:
       - uses: actions/checkout@v3
       - name: Merge PRs
@@ -35,14 +37,15 @@ jobs:
           registry: r.studio73.es
           username: ${{ secrets.REGISTRY_STUDIO73_USER }}
           password: ${{ secrets.REGISTRY_STUDIO73_PASS }}
-      - name : Docker meta
+      - name: Docker meta
         id: meta
         uses: docker/metadata-action@v4
         with:
           images: ${{ inputs.image }}
           tags: |
             type=raw,value=${{ inputs.version }}
-            type=raw,value=${{ inputs.version }}.{{ date 'YYYYMMDD' }}
+            type=raw,value=${{ inputs.version }}.{{ date 'YY-MM-DD-hhmmss' }}
+            type=raw,value=${{ inputs.version }}.{{ sha }}
       - name: Build and push
         uses: docker/build-push-action@v4
         with:
