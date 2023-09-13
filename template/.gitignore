@@ -13,7 +13,8 @@ env/
 bin/
 build/
 develop-eggs/
-dist/
+dist/*
+!/static/lib/*/dist/
 eggs/
 lib64/
 parts/
