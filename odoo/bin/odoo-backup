@@ -1,0 +1,298 @@
+#!/usr/bin/env python3
+import glob
+import io
+import logging
+import os
+import re
+import subprocess as sp
+import time
+from datetime import datetime, timezone
+
+import click
+import requests
+import restic
+from dotenv import load_dotenv
+
+ODOO_DATE_TIME_FORMAT = "%Y-%m-%d %H:%M:%S"
+logging.basicConfig(
+    format="%(asctime)s %(levelname)s: %(message)s",
+    level=logging.INFO,
+)
+_logger = logging.getLogger(__name__)
+
+
+class Backup(object):
+    def __init__(self, dest, tag):
+        load_dotenv(
+            os.environ.get(
+                "BACKUP_CREDENTIALS_FILE", "/run/secrets/backup-credentials"
+            ),
+            override=True,
+        )
+        self.dest = dest
+        self.dest_db = os.path.join(dest, "db")
+        self.dest_fs = os.path.join(dest, "fs")
+        self.dest_src = os.path.join(dest, "src")
+        self.snapshot_db = None
+        self.snapshot_fs = None
+        self.snapshot_src = None
+        self.tag = tag
+        self.dbname = os.environ["PGDATABASE"]
+        self.dbuuid = None
+        self.start_date = None
+        self.end_date = None
+        self.backup_id = None
+        self.get_database_uuid()
+
+    def get_database_uuid(self):
+        cmd = [
+            "psql",
+            "--csv",
+            "-tc",
+            "select value from ir_config_parameter where key = 'database.uuid'",
+        ]
+        process = sp.Popen(cmd, stdout=sp.PIPE)
+        output, _ = process.communicate()
+        self.dbuuid = str(output.decode("utf-8").strip().replace("\n", ""))
+
+    def clean(self):
+        # Clean and recreate ../db and ../src
+        sp.call(["rm", "-rf", os.path.join(self.dest, ".lock")])
+        for _dest in [self.dest_db, self.dest_src]:
+            sp.call(["rm", "-rf", _dest])
+            sp.call(["mkdir", "-p", _dest])
+
+    def init_repo(self):
+        restic.repository = os.environ["RESTIC_REPOSITORY"]
+        if not os.environ.get("RESTIC_PASSWORD"):
+            restic.password_file = os.environ.get(
+                "RESTIC_PASSWORD_FILE", "/run/secrets/restic-password"
+            )
+        try:
+            restic.stats()
+        except Exception:
+            restic.init()
+        restic.unlock()
+
+    def snapshot(self, dest, tags):
+        self.init_repo()
+        _logger.info("Start snapshot %s" % dest)
+        # subprocess call restic backup and redirect output to variable and output
+        proc = sp.Popen(
+            ["restic", "backup", f"--tag={','.join(tags)}", "."],
+            cwd=dest,
+            stdout=sp.PIPE,
+        )
+        lines = []
+        for line in io.TextIOWrapper(proc.stdout, encoding="utf-8"):
+            line = line.strip()
+            if not line:
+                continue
+            lines.append(line)
+            _logger.info(line)
+        snapshot_sha = re.findall(r"snapshot (\w+) saved", lines[-1])[0]
+        _logger.info("End snapshot %s" % dest)
+        return restic.snapshots(snapshot_sha)[0]
+
+    def forget(self):
+        self.init_repo()
+        daily = os.environ.get("RESTIC_KEEP_DAILY", 7)
+        weekly = os.environ.get("RESTIC_KEEP_WEEKLY", 4)
+        monthly = os.environ.get("RESTIC_KEEP_MONTHLY", 3)
+        yearly = os.environ.get("RESTIC_KEEP_YEARLY", 1)
+        keep_manual = os.environ.get("RESTIC_KEEP_MANUAL", 3)
+        scheduled = (
+            restic.forget(
+                prune=True,
+                keep_daily=daily,
+                keep_weekly=weekly,
+                keep_monthly=monthly,
+                keep_yearly=yearly,
+                group_by="hosts,tags",
+                tags=["scheduled"],
+            )
+            or []
+        )
+        manual = (
+            restic.forget(
+                prune=True,
+                keep_last=keep_manual,
+                group_by="hosts,tags",
+                tags=["manual"],
+            )
+            or []
+        )
+        for snapshot in scheduled + manual:
+            for pruned in snapshot["remove"] or []:
+                _logger.info(
+                    f"Removed snapshot {pruned['short_id']} "
+                    f"- {pruned['paths'][0]} - {pruned['time']}"
+                )
+
+    def dump_addons(self):
+        dbname = os.environ["PGDATABASE"]
+        query = """
+        select name from ir_module_module where
+        state in ('installed', 'to upgrade') order by name
+        """
+        query_out = sp.Popen(
+            ["psql", "-t", "-d", dbname, "-c", query], stdout=sp.PIPE, env=os.environ
+        ).communicate()[0]
+        addons_out = query_out.decode("utf-8").strip().split()
+        if not len(addons_out):
+            _logger.error(f"No addons found in {dbname}")
+        _logger.info("Dumping addons...")
+        src_path = os.environ.get("SRC", "/opt/odoo/src")
+        routes = [
+            os.path.join(src_path, "oca", "**", "%s"),
+            os.path.join(src_path, "studio73", "**", "%s"),
+            os.path.join(src_path, "custom", "%s"),
+        ]
+        for addon in addons_out:
+            for route in routes:
+                _addon = glob.glob(route % addon)
+                if _addon and "zenterprise" not in _addon[0]:
+                    src = _addon[0]
+                    cp_dest = src.replace(src_path, self.dest_src)
+                    sp.call(["mkdir", "-p", os.path.split(cp_dest)[0]])
+                    sp.call(["cp", "-r", src, cp_dest])
+                    continue
+        _logger.info(f"Addons dumped at {self.dest_src}")
+        self.snapshot_src = self.snapshot(self.dest_src, tags=[self.tag, "src"])
+
+    def dump_fs(self):
+        self.snapshot_fs = self.snapshot(
+            os.path.join(self.dest_fs),
+            tags=[self.tag, "fs"],
+        )
+
+    def dump_db(self):
+        jobs = os.environ.get("PGDUMP_JOBS", 2)
+        _logger.info(f"Start pg_dump {self.dbname}")
+        cmd = [
+            "pg_dump",
+            "--no-owner",
+            "--no-privileges",
+            "-Fd",
+            "-j",
+            str(jobs),
+            "-d",
+            self.dbname,
+            "--file",
+            self.dest_db,
+        ]
+        sp.call(cmd)
+        _logger.info(f"End pg_dump {self.dbname}")
+        self.snapshot_db = self.snapshot(self.dest_db, tags=[self.tag, "db"])
+
+    def notify(self):
+        url = "http://www.studio73.es/saas/backup"
+        post_data = {
+            "dbuuid": self.dbuuid,
+            "dbname": self.dbname,
+            "start_date": self.start_date,
+            "tag": self.tag,
+        }
+        if self.backup_id:
+            post_data["backup_id"] = self.backup_id
+        if self.end_date:
+            stats = restic.stats()
+            post_data.update(
+                {
+                    "end_date": self.end_date,
+                    "snapshots": {
+                        "db": self.snapshot_db,
+                        "fs": self.snapshot_fs,
+                        "src": self.snapshot_src,
+                    },
+                    "file_count": stats["total_file_count"],
+                    # convert bytes to GB
+                    "total_size": round(stats["total_size"] / 1024 / 1024 / 1024, 4),
+                }
+            )
+        try:
+            res = requests.post(url, json={"params": post_data}, timeout=60)
+            res.raise_for_status()
+        except Exception as e:
+            _logger.error(f"Error notifying: {e}")
+            return False
+        data = res.json()
+        if data.get("error"):
+            _logger.error(f"Error notifying: {data['error']}")
+            return False
+        if data["result"].get("error"):
+            _logger.error(f"Error notifying: {data['result']['error']}")
+            return False
+        backup_id = data["result"]["backup_id"]
+        if not self.backup_id:
+            self.backup_id = backup_id
+            _logger.info(f"Backup created {self.backup_id}")
+        else:
+            _logger.info(f"Backup updated {self.backup_id}")
+        return True
+
+    def start(self):
+        """Backup Odoo database filestore and addons
+        * Restore database example:
+        restic restore latest --tag db --target $PG_DATABASE.dump
+        """
+        lock_file = os.path.join(self.dest, ".lock")
+        if os.path.exists(lock_file):
+            lock_date = os.path.getmtime(lock_file)
+            lock_date_obj = datetime.fromtimestamp(lock_date)
+            print(time.time() - lock_date)
+            if (time.time() - lock_date) >= 6 * 3600:
+                # auto unlock after 6h
+                _logger.warning(f"Unlocking backup older than 6h ({lock_date_obj})")
+                os.remove(os.path.join(self.dest, ".lock"))
+            else:
+                _logger.warning(f"Another backup is running ({lock_date_obj})")
+                return False
+        _logger.info(f"Starting {os.environ['PGDATABASE']} backup")
+        self.start_date = datetime.now(timezone.utc).strftime(ODOO_DATE_TIME_FORMAT)
+        self.clean()
+        self.notify()
+        # create lock file to avoid running multiple backups
+        with open(lock_file, "w") as f:
+            f.write(self.start_date)
+        self.dump_db()
+        self.dump_fs()
+        if os.environ.get("RESTIC_INCLUDE_SRC"):
+            self.dump_addons()
+        self.forget()
+        self.clean()
+        self.end_date = datetime.now(timezone.utc).strftime(ODOO_DATE_TIME_FORMAT)
+        self.notify()
+        _logger.info("Backup done!")
+
+
+@click.command()
+@click.option(
+    "-t",
+    "--tag",
+    required=True,
+    type=click.Choice(["scheduled", "manual"]),
+    default="scheduled",
+    help="Tag the backup",
+)
+def main(tag):
+    dest = "/opt/odoo/backup"
+    backup = Backup(dest, tag)
+    if tag == "manual":
+        backup.start()
+        exit(0)
+    try:
+        run_at = os.environ.get("RUN_AT", "20:00")
+        while True:
+            if run_at == time.strftime("%H:%M"):
+                backup.start()
+                time.sleep(61)
+            else:
+                time.sleep(1)
+    except (KeyboardInterrupt, SystemExit):
+        _logger.info("Exiting...")
+        exit(0)
+
+
+if __name__ == "__main__":
+    main()

@@ -99,7 +99,9 @@ RUN apt-get update \
     # pycups
     libcups2-dev \
     cups-client \
+    # Studio73
     cloc \
+    restic \
     && curl -o /tmp/libssl1.deb http://security.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.0g-2ubuntu4_amd64.deb \
     && dpkg -i /tmp/libssl1.deb \
     && curl -o /tmp/wkhtmltox.deb -sSL https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.focal_amd64.deb \
@@ -111,14 +113,15 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN useradd -md /opt/odoo -s /bin/bash odoo
 RUN mkdir -p /opt/odoo/data \
-	&& mkdir -p /opt/odoo/src/custom \
-	&& mkdir -p /etc/odoo \
+    && mkdir -p /opt/odoo/src/custom \
+    && mkdir -p /opt/odoo/backup \
+    && mkdir -p /etc/odoo \
     && chown -R odoo:odoo /opt/odoo /etc/odoo
 EXPOSE 8069 8072
 WORKDIR /opt/odoo/
 ENV HOME='/opt/odoo' \
     DATA='/opt/odoo/data' \
-	SRC='/opt/odoo/src'\
+    SRC='/opt/odoo/src'\
     ODOO_RC='/etc/odoo/odoo.conf' \
     VIRTUAL_ENV=/venv
 ENV PATH="$VIRTUAL_ENV/bin:$HOME/bin:$PATH"

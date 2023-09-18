@@ -3,6 +3,8 @@ click-odoo-contrib
 coverage
 dateparser
 debugpy
+git+https://github.com/OCA/openupgradelib.git
+git+https://github.com/mtlynch/resticpy
 git-aggregator
 google_auth
 inotify
@@ -13,8 +15,8 @@ phonenumbers
 pycups
 pydevd-pycharm==223.4884.74
 pyminizip
+python-dotenv
 regex==2022.3.2
 tabulate
 tqdm
 wheel
-git+https://github.com/OCA/openupgradelib.git

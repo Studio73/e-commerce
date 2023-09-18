@@ -98,7 +98,9 @@ RUN apt-get update \
     # pycups
     libcups2-dev \
     cups-client \
+    # Studio73
     cloc \
+    restic \
     && curl -o /tmp/wkhtmltox.deb -sSL https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.focal_amd64.deb \
     && apt-get install -y --no-install-recommends /tmp/wkhtmltox.deb \
     && rm -rf /var/lib/apt/lists/* /tmp/*
