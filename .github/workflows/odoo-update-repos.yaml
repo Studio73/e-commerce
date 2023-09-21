@@ -1,0 +1,16 @@
+name: Odoo Update Repos
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 2 * * Sun"
+jobs:
+  update:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Update refs
+        uses: ./actions/update-refs
+        env:
+          GITHUB_TOKEN: ${{ github.token }}

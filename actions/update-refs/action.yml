@@ -1,0 +1,5 @@
+name: "Update ref"
+description: "Update ref from gitaggrete config files"
+runs:
+  using: "docker"
+  image: "Dockerfile"
