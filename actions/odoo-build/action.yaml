@@ -1,0 +1,56 @@
+name: "Odoo docker build"
+inputs:
+  image:
+    required: true
+    type: string
+  file:
+    required: true
+    type: string
+  build_date:
+    required: true
+    type: string
+  tag:
+    required: true
+    type: string
+  base_tag:
+    required: false
+    type: string
+  push:
+    required: false
+    default: true
+runs:
+  using: "composite"
+  steps:
+    - name: Docker meta
+      id: meta
+      uses: docker/metadata-action@v5
+      with:
+        images: ${{ inputs.image }}
+        tags: |
+          type=raw,value=${{ inputs.tag }}
+          type=raw,value=${{ inputs.tag }}.${{ inputs.build_date }}
+          type=raw,value=${{ inputs.tag }}.{{ sha }}
+    - name: Build args
+      id: build-args
+      shell: bash
+      run: |
+        {
+        echo "args<<EOF"
+        if [[ ! -z "${{ inputs.base_tag }}" ]]; then
+          echo "BASE_TAG=${{ inputs.base_tag }}"
+        else
+          echo "BASE_TAG=${{ inputs.tag }}"
+        fi
+        echo "EOF"
+        } >> $GITHUB_OUTPUT
+    - name: Build & push
+      uses: docker/build-push-action@v5
+      with:
+        ssh: |
+          default=${{ env.SSH_AUTH_SOCK }}
+        context: odoo
+        file: ${{ inputs.file }}
+        push: ${{ inputs.push }}
+        labels: ${{ steps.meta.outputs.labels }}
+        tags: ${{ steps.meta.outputs.tags }}
+        build-args: ${{ steps.build-args.outputs.args }}
