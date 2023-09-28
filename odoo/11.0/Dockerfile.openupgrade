@@ -1,8 +1,8 @@
-ARG  base_image=r.studio73.es/odoo/community:11
-FROM ${base_image} as builder
+ARG BASE_TAG=11
+FROM r.studio73.es/odoo/community:${BASE_TAG} as builder
 COPY --chown=odoo 11.0/openupgrade.yaml /code/openupgrade.yaml
-RUN cd /code && gitaggregate --config openupgrade.yaml
+RUN --mount=type=ssh,uid=1000 cd /code && gitaggregate --config openupgrade.yaml
 
-FROM ${base_image}
+FROM r.studio73.es/odoo/community:${BASE_TAG}
 COPY --chown=odoo --from=builder /code/openupgrade $SRC/odoo/odoo
 ENV OPENUPGRADE_TARGET_VERSION=11.0

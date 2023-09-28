@@ -138,6 +138,7 @@ RUN ln -s $SRC/odoo/odoo/odoo-bin /usr/local/bin/odoo \
     && git config --global core.attributesfile ~/.gitattributes
 
 USER odoo
+RUN mkdir -p -m 0700 ~/.ssh && ssh-keyscan github.com >> ~/.ssh/known_hosts
 ENTRYPOINT ["python3", "/entrypoint.py"]
 CMD ["odoo"]
 HEALTHCHECK CMD curl -f http://localhost:8069/web/login || exit 1

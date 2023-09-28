@@ -1,11 +1,7 @@
-ARG  base_image=r.studio73.es/odoo/base:12
-FROM ${base_image} as builder
-ARG SSH_KEY
-RUN set-ssh-key
-COPY --chown=odoo 12.0/community.yaml /code/community.yaml
-RUN cd /code && gitaggregate --jobs 8 --config community.yaml
-
-FROM ${base_image}
-COPY --chown=odoo --from=builder /code $SRC/studio73
-RUN sed -i 's/git+https:\/\/github\.com\/OCA\/openupgradelib\.git/openupgradelib/g' $SRC/studio73/studio73-private-addons/requirements.txt \
-    && install-requirements $SRC/studio73
+ARG BASE_TAG=12
+FROM r.studio73.es/odoo/base:${BASE_TAG}
+RUN mkdir -p $SRC/studio73
+COPY --chown=odoo 12.0/community.yaml $SRC/studio73
+RUN --mount=type=ssh,uid=1000 cd $SRC/studio73 && gitaggregate --jobs 8 --config community.yaml
+RUN sed -i 's/git+https:\/\/github\.com\/OCA\/openupgradelib\.git/openupgradelib/g' $SRC/studio73/studio73-private-addons/requirements.txt
+RUN install-requirements $SRC/studio73
