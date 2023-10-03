@@ -21,8 +21,10 @@ jobs:
   lint:
     runs-on: self-hosted
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
       - name: Merge PRs
         if: ${{ inputs.merges }}
         uses: Studio73/dodoo/actions/merge-prs@master
@@ -44,7 +46,7 @@ jobs:
         username: ${{ secrets.REGISTRY_STUDIO73_USER }}
         password: ${{ secrets.REGISTRY_STUDIO73_PASS }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Merge PRs
         if: ${{ inputs.merges }}
         uses: Studio73/dodoo/actions/merge-prs@master
