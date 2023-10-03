@@ -8,4 +8,6 @@ regex<2022.1.18
 tabulate
 py3o.template
 py3o.formats
-openupgradelib
+openupgradelib==3.4.1
+cerberus==0.7.2
+factur-x==1.3

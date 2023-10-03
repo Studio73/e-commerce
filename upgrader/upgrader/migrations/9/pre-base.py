@@ -5,7 +5,6 @@
 def migrate(cr):
     cr.execute(
         """
-        TRUNCATE TABLE analytic_distribution_line CASCADE;
         DELETE FROM ir_model_constraint WHERE module = (
             SELECT id FROM ir_module_module WHERE name = 'account_analytic_distribution');
         DELETE FROM ir_module_module WHERE name = 'account_analytic_distribution';
