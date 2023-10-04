@@ -9,7 +9,7 @@
   {%- set repo_rev.flake8 = "3.8.3" %}
   {%- set repo_rev.flake8_bugbear = "20.1.4" %}
   {%- set repo_rev.isort = "5.12.0" %}
-  {%- set repo_rev.maintainer_tools = "ab1d7f6" %}
+  {%- set repo_rev.maintainer_tools = "969238e47c07d0c40573acff81d170f63245d738" %}
   {%- set repo_rev.nodejs = "14.13.0" %}
   {%- set repo_rev.pre_commit_hooks = "v3.2.0" %}
   {%- set repo_rev.prettier = "2.1.2" %}
@@ -25,13 +25,13 @@
   {%- set repo_rev.flake8 = "3.9.2" %}
   {%- set repo_rev.flake8_bugbear = "21.9.2" %}
   {%- set repo_rev.isort = "5.12.0" %}
-  {%- set repo_rev.maintainer_tools = "dfba427ba03900b69e0a7f2c65890dc48921d36a" %}
+  {%- set repo_rev.maintainer_tools = "969238e47c07d0c40573acff81d170f63245d738" %}
   {%- set repo_rev.nodejs = "14.18.0" %}
   {%- set repo_rev.pre_commit_hooks = "v4.0.1" %}
   {%- set repo_rev.prettier = "2.4.1" %}
   {%- set repo_rev.prettier_xml = "1.1.0" %}
   {%- set repo_rev.pylint = "v2.11.1" %}
-  {%- set repo_rev.pylint_odoo = "7.0.2" %}
+  {%- set repo_rev.pylint_odoo = "7.0.5" %}
   {%- set repo_rev.pyupgrade = "v2.29.0" %}
   {%- set repo_rev.setuptools_odoo = "3.1.8" %}
 {%- else %}
@@ -41,12 +41,12 @@
   {%- set repo_rev.flake8 = "3.9.2" %}
   {%- set repo_rev.flake8_bugbear = "21.9.2" %}
   {%- set repo_rev.isort = "5.12.0" %}
-  {%- set repo_rev.maintainer_tools = "4cd2b852214dead80822e93e6749b16f2785b2fe" %}
+  {%- set repo_rev.maintainer_tools = "969238e47c07d0c40573acff81d170f63245d738" %}
   {%- set repo_rev.nodejs = "16.17.0" %}
   {%- set repo_rev.pre_commit_hooks = "v4.3.0" %}
   {%- set repo_rev.prettier = "2.7.1" %}
   {%- set repo_rev.prettier_xml = "2.2.0" %}
-  {%- set repo_rev.pylint_odoo = "7.0.2" %}
+  {%- set repo_rev.pylint_odoo = "v8.0.19" %}
   {%- set repo_rev.pyupgrade = "v2.38.2" %}
   {%- set repo_rev.setuptools_odoo = "3.1.8" %}
 {%- endif %}
@@ -70,7 +70,7 @@ exclude: |
   ^tasks.py$
   {%- if excluded_addons %}|
   # Excluded custom addons
-  {{ " | ".join(excluded_addons.split(",")) }}
+  {{ " | ".join(excluded_addons.split(",")) }}|
   {%- endif %}
 default_language_version:
   python: python3
