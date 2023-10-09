@@ -248,7 +248,7 @@ product-variant:
     depth: 500
   merges:
   - origin 27fc9f55eece2096c59aee5f449c7fa7afdc0723
-  - origin refs/pull/290/head
+  - origin refs/pull/281/head
   remotes:
     origin: https://github.com/OCA/product-variant.git
 project:
