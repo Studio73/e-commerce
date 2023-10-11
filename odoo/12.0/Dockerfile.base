@@ -40,13 +40,15 @@ ENV PYTHONUNBUFFERED=1
 ENV VIRTUAL_ENV=/venv
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 ENV ODOO_VERSION 12.0
+# FIX UnicodeDecodeError: 'ascii' codec can't decode byte (pip install ...)
+ENV LC_ALL=C.UTF-8
 
 COPY gitattributes /.gitattributes
 COPY requirements.txt /requirements.txt
 RUN python3 -m venv --copies $VIRTUAL_ENV \
     && pip3 install --upgrade pip \
     # FIX https://github.com/pyca/cryptography/issues/7959
-    && pip3 install cryptography==38.0.4 pyOpenSSL==22.0.0 openupgradelib \
+    && pip3 install cryptography==38.0.4 pyOpenSSL==22.0.0 \
     && pip3 install -r requirements.txt
 
 COPY 12.0/odoo.yaml /odoo/repos.yaml
@@ -66,6 +68,8 @@ RUN cd /odoo && gitaggregate --jobs 8 --config repos.yaml \
 COPY 12.0/oca.yaml /oca/repos.yaml
 RUN cd /oca && gitaggregate --jobs 8 --config repos.yaml
 RUN find /oca -name "requirements.txt" -exec cat {} \; | sort | uniq > /oca/requirements.txt \
+    # Fix conflict between klaviyo requests version and Odoo requirements
+    && sed -i 's/klaviyo_api/#klaviyo_api/g' /oca/requirements.txt \
     && pip3 install --upgrade-strategy=only-if-needed -c /odoo/odoo/requirements.txt -r /oca/requirements.txt \
     # Fix instalation of new taxes that will generate problems like IVA 0% (Alimentos)
     && rm -rf /oca/l10n-spain/l10n_es_extra_data \

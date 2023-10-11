@@ -8,7 +8,7 @@ google_auth
 inotify
 paramiko
 pdfminer.six
-pdfplumber==v0.9.0
+pdfplumber<=0.9.0
 pycups
 pydevd-pycharm==223.4884.74
 pyminizip
