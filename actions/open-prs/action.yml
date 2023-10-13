@@ -4,6 +4,13 @@ inputs:
   token:
     description: "Github Personal Token"
     required: true
+  branch:
+    description:
+      "Target branch to search open PRs if not provided will use GITHUB_REF_NAME"
+    required: false
+  file:
+    description: "git-aggregate config file"
+    required: false
 outputs:
   prs:
     description: "List of all open PRs"

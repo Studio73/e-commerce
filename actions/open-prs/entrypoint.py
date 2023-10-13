@@ -1,13 +1,14 @@
 #!/usr/bin/env python
 # (c) Studio73 - Pablo Fuentes <pablo@studio73.es>
-import logging
 import json
+import logging
 import os
 import re
-import subprocess as sp
+from collections import OrderedDict
 from pprint import pprint
 
 import requests
+import yaml
 
 logging.basicConfig(
     format="%(asctime)s %(levelname)s: %(message)s",
@@ -16,9 +17,7 @@ logging.basicConfig(
 _logger = logging.getLogger(__name__)
 
 
-def main():
-    branch = str(os.environ["GITHUB_REF_NAME"])
-    org, repo = os.environ["GITHUB_REPOSITORY"].split("/")
+def get_prs(org, repo, branch):
     query = """
         query($owner: String!, $repo: String!, $branch: String!) {
             repository(owner: $owner, name:$repo) {
@@ -121,6 +120,42 @@ def main():
             _logger.info("❌ {}\t->\tCI status check FAILED".format(tag))
         for check in checks:
             _logger.info(check)
+    return prs
+
+
+def update_config(config_file, branch):
+    with open(config_file, "r") as stream:
+        config_yaml = yaml.safe_load(stream) or {}
+    res_yaml = OrderedDict()
+    for name, data in config_yaml.items():
+        origin = data.get("remotes", {}).get("origin")
+        origin_data = re.findall(
+            r"github.com[:|\/](?P<org>\w+)\/(?P<repo>[\w|-]+)", origin
+        )
+        if not origin_data:
+            _logger.error("Unable to parse remote origin")
+            exit(1)
+        org, repo = origin_data[0]
+        _logger.info(f"[{branch}/{repo}]")
+        prs = get_prs(org, repo, branch)
+        if len(prs):
+            data["defaults"]["depth"] = 500
+            for pr in sorted(prs):
+                data["merges"].append(f"origin refs/pull/{pr}/head")
+        res_yaml[name] = data
+    with open(config_file, "w") as stream:
+        yaml.dump(dict(res_yaml), stream)
+
+
+def main():
+    branch = str(os.environ.get("INPUT_BRANCH", os.environ.get("GITHUB_REF_NAME")))
+    config_file = os.environ.get("INPUT_FILE")
+    if config_file:
+        update_config(config_file, branch)
+        prs = []
+    else:
+        org, repo = os.environ["GITHUB_REPOSITORY"].split("/")
+        prs = get_prs(org, repo, branch)
     with open(os.environ["GITHUB_OUTPUT"], "a") as f:
         f.write(f"prs={json.dumps(prs)}")
     exit(0)
