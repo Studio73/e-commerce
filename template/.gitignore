@@ -76,6 +76,7 @@ docs/_build/
 
 # Other
 .env
+*.rej
 
 # Odoo
 migrations/data/*
