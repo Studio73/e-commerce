@@ -1,5 +1,6 @@
 click
 click-odoo-contrib
+confluent_kafka
 coverage
 dateparser
 debugpy
