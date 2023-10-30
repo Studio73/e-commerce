@@ -118,6 +118,13 @@ delivery-carrier:
   - origin 9fd4a1ea3ad78912e1cb082048348fda7c874392
   remotes:
     origin: https://github.com/OCA/delivery-carrier.git
+edi:
+  defaults:
+    depth: 1
+  merges:
+  - origin d2ca7da77803ea9828d56c3868c4ff895b28231c
+  remotes:
+    origin: https://github.com/OCA/edi.git
 e-commerce:
   defaults:
     depth: 1

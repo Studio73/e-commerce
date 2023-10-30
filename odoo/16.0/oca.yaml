@@ -143,6 +143,13 @@ delivery-carrier:
   - origin refs/pull/649/head
   remotes:
     origin: https://github.com/OCA/delivery-carrier.git
+edi:
+  defaults:
+    depth: 1
+  merges:
+  - origin cce03fe1e150d3f350d0c280dfa25e52cd486ffc
+  remotes:
+    origin: https://github.com/OCA/edi.git
 e-commerce:
   defaults:
     depth: 500
