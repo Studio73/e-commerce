@@ -16,13 +16,14 @@ _tasks:
 
 odoo_version:
   type: int
-  default: 16
+  default: 17
   choices:
-    - 12
-    - 13
-    - 14
-    - 15
+    - 17
     - 16
+    - 15
+    - 14
+    - 13
+    - 12
   help: Which Odoo version are we using for this project?
 
 odoo_edition:
