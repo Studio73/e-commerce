@@ -43,10 +43,9 @@ account-invoice-reporting:
     origin: https://github.com/OCA/account-invoice-reporting.git
 account-invoicing:
   defaults:
-    depth: 500
+    depth: 1
   merges:
-  - origin 5bd397862b68acb00d47f6ce9f3f06fe90f65aef
-  - origin refs/pull/1583/head
+  - origin 88081671b7e51edb75b8fb6c242594798824970e
   remotes:
     origin: https://github.com/OCA/account-invoicing.git
 account-payment:
