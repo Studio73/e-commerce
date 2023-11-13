@@ -1,0 +1,5 @@
+ARG BASE_TAG=17
+FROM r.studio73.es/odoo/community:${BASE_TAG}
+COPY --chown=odoo 17.0/openupgrade.yaml $SRC/oca
+RUN --mount=type=ssh,uid=1000 cd $SRC/oca && gitaggregate --jobs 8 --config openupgrade.yaml
+ENV OPENUPGRADE_TARGET_VERSION=17.0
