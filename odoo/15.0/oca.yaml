@@ -110,7 +110,7 @@ connector:
   merges:
   - origin 23d7ca794c377b8f6201ccc5988ab3a14d9474b3
   remotes:
-    origin https://github.com/OCA/connector.git
+    origin: https://github.com/OCA/connector.git
 credit-control:
   defaults:
     depth: 1
