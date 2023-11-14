@@ -150,7 +150,9 @@ def update_config(config_file, branch):
 
 
 def main():
-    branch = str(os.environ.get("INPUT_BRANCH", os.environ.get("GITHUB_REF_NAME")))
+    branch = str(os.environ.get("INPUT_BRANCH"))
+    if not branch:
+        branch = str(os.environ.get("GITHUB_REF_NAME"))
     config_file = os.environ.get("INPUT_FILE")
     pprint(os.environ)
     if config_file:
