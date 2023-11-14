@@ -73,6 +73,7 @@ def get_prs(org, repo, branch):
         pprint(data)
         exit(1)
     data = data["data"]
+    print(org, repo, branch)
     pprint(data)
     prs = []
     open_prs = data["repository"]["pullRequests"]["nodes"]
