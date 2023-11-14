@@ -73,6 +73,7 @@ def get_prs(org, repo, branch):
         pprint(data)
         exit(1)
     data = data["data"]
+    pprint(data)
     prs = []
     open_prs = data["repository"]["pullRequests"]["nodes"]
     if len(open_prs):
@@ -150,6 +151,7 @@ def update_config(config_file, branch):
 def main():
     branch = str(os.environ.get("INPUT_BRANCH", os.environ.get("GITHUB_REF_NAME")))
     config_file = os.environ.get("INPUT_FILE")
+    pprint(os.environ)
     if config_file:
         update_config(config_file, branch)
         prs = []
