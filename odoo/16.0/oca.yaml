@@ -404,5 +404,6 @@ website:
   merges:
   - origin 3166246aec13d51153624075a244946a44196865
   - origin refs/pull/999/head
+  - origin refs/pull/1000/head
   remotes:
     origin: https://github.com/OCA/website.git
