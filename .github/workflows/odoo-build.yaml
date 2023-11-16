@@ -2,6 +2,7 @@ name: Odoo
 
 on:
   push:
+    branches: ["master"]
     paths:
       - "odoo/**"
   workflow_dispatch:
