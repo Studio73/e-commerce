@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
     inputs:
       odoo_version:
-        description: "One or Comma-separated list of environments e.g. 16,14"
+        description: "One or Comma-separated list of environments e.g. 17,14"
       odoo_env:
-        description: 'One or Comma-separated list of environments by default "prod,env"'
+        description: "One or Comma-separated list of environments by default prod,dev"
   schedule:
     - cron: "50 11 * * 1-5"
     - cron: "50 19 * * 0-4"
@@ -30,8 +30,9 @@ jobs:
       fail-fast: false
       matrix:
         version:
-          ${{ fromJson(inputs.odoo_version || '[16, 14, 12, 15, 13, 10, 11, 9]') }}
-        env: ${{ fromJson(inputs.odoo_env || '["prod", "dev"]') }}
+          ${{ fromJson(format('[{0}]', inputs.odoo_version || '17, 16, 14, 12, 15, 13,
+          10, 11, 9')) }}
+        env: ${{ fromJson(format('[{0}]', inputs.odoo_env || 'prod, dev')) }}
         exclude:
           - version: 9
             env: dev
