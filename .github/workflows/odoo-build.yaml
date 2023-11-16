@@ -2,7 +2,7 @@ name: Odoo
 
 on:
   push:
-    path:
+    paths:
       - "odoo/**"
   workflow_dispatch:
     inputs:
