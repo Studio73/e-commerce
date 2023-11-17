@@ -9,6 +9,7 @@ inotify
 paramiko
 pdfminer.six
 pdfplumber<=0.9.0
+phonenumbers
 pycups
 pydevd-pycharm==223.4884.74
 pyminizip
