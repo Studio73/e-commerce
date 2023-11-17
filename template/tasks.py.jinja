@@ -16,12 +16,14 @@ DOCKER_IMAGE = "odoo/{{ odoo_edition }}:{{ odoo_version }}"
 {%- endif %}
 
 
-
 @task
 def build(c):
     c.run("docker pull {{ base_image }}:{{ odoo_version }}", pty=True)
     c.run("docker buildx build -t {} .".format(DOCKER_IMAGE), pty=True)
-    c.run("docker tag {} {}/{}".format(DOCKER_IMAGE, DOCKER_REGISTRY, DOCKER_IMAGE), pty=True)
+    c.run(
+        "docker tag {} {}/{}".format(DOCKER_IMAGE, DOCKER_REGISTRY, DOCKER_IMAGE),
+        pty=True,
+    )
 
 
 @task
@@ -69,7 +71,7 @@ def test(c):
 @task
 def exec(c, cmd="bash", port="8069", name=PROJECT):
     if not name:
-        _id= str(uuid.uuid4()).split("-")[0]
+        _id = str(uuid.uuid4()).split("-")[0]
         name = "{}_{}".format(PROJECT, _id)
     home = os.path.expanduser("~")
     cwd = os.getcwd()
@@ -138,24 +140,53 @@ def commit(c):
     c.run(cmd, pty=True)
 
 
-def _get_short_commit_info(c, base):
+def _get_commit_info(c, base):
     commits_short = c.run(
-        "git --no-pager log --format=%s origin/{}..HEAD".format(base), hide="both"
+        "git --no-pager log --format='TITLE>>%s<<%nBODY>>%b<<' origin/{}..HEAD".format(
+            base
+        ),
+        hide="both",
     ).stdout.strip()
-    czs = re.findall(
-        "(?P<type>(\\w)*)(?P<scope>\\(\\w+\\))?(?P<breaking>!)?:(?P<message>(.*))?",
-        commits_short,
+    r = re.compile("(TITLE>>(?P<title>([^<]*))<<){1}\s(BODY>>(?P<body>([^<]*))<<){1}")
+    full_commits = [m.groupdict() for m in r.finditer(commits_short)]
+    title_regex = re.compile(
+        "(?P<type>(\\w)*)(?P<scope>\\(\\w+\\))?(?P<breaking>!)?:(?P<message>(.*))?"
     )
-    _type = "fix"
-    _messages = []
-    for commit in czs:
-        if commit[3] == "!":
-            _type = "!"
+    body_regex = re.compile(
+        "(?P<body>(.*))?\n?((?P<task_type>(?i)(ta|ti))(-)*(?P<task_id>\d+))"
+    )
+    pr_type = "fix"
+    pr_messages = []
+    tasks = []
+    for commit in full_commits:
+        title = commit.get("title", "")
+        body = commit.get("body", "")
+        # Old format not supported
+        if str(title).startswith("["):
+            continue
+        title_data = title_regex.search(title).groupdict()
+        commit_type = title_data.get("type", "")
+        title_message = title_data.get("message", "")
+        breaking = bool(title_data.get("breaking", ""))
+        body_data = body_regex.search(body).groupdict()
+        body = body_data.pop("body", "")
+        message = f"- **{title_message.strip()}**"
+        if body:
+            message += f"\n  - {body.strip()}"
+        pr_messages.append(message)
+        tasks.append(body_data)
+        if breaking:
+            pr_type = "!"
+        if pr_type != "!":
+            if commit_type == "migration":
+                pr_type = "migration"
+            elif commit_type != "fix":
+                pr_type = "feat"
+        # Si es una migración, el resto de commits son antiguos y no nos importan
+        if commit_type == "migration":
             break
-        elif commit[0] != "fix":
-            _type = "feat"
-        _messages.append(str(commit[4]).strip())
-    return _type, "\n".join("- {}".format(m) for m in _messages)
+    tasks = _convert_task_info(tasks)
+    return pr_type, "\n".join(pr_messages), tasks
 
 
 def _get_affected_modules(c, base):
@@ -173,49 +204,51 @@ def _get_affected_modules(c, base):
     return modules
 
 
-def _get_task_info(c, base):
-    commits_long = (
-        c.run("git log --format=%b origin/{}..HEAD".format(base), hide="both")
-        .stdout.strip()
-        .lower()
-    )
-    czs = re.findall(r"(?P<obj>ta|ti)(-)*(?P<id>\d+)", commits_long)
-    tasks = set()
-    for task in czs:
-        tasks.add("{}{}".format(task[0], task[2]))
-    return "\n".join(
-        "[{code}]({url})".format(
-            code=t.upper(),
-            url="https://www.studio73.es/{type}/{id}".format(type=t[:2], id=t[2:]),
+def _convert_task_info(task_list):
+    done_tasks = []
+    formatted_tasks_to_join = []
+    for task_dict in task_list:
+        if task_dict in done_tasks:
+            continue
+        done_tasks.append(task_dict)
+        task_type = task_dict.get("task_type", "")
+        task_id = task_dict.get("task_id", "")
+        formatted_tasks_to_join.append(
+            "[{code}]({url})".format(
+                code=f"{task_type.upper()}{task_id}",
+                url="https://www.studio73.es/{type}/{id}".format(
+                    type=task_type.lower(), id=task_id
+                ),
+            )
         )
-        for t in tasks
-    )
+    return "\n".join(formatted_tasks_to_join)
+
 
 @task
 def pr(c):
     c.run("git push --set-upstream origin $(git rev-parse --abbrev-ref HEAD)")
     base = "{{ odoo_version }}.0"
     current = c.run("git rev-parse --abbrev-ref HEAD", hide="both").stdout.strip()
-    _type, _messages = _get_short_commit_info(c, base)
+    pr_type, pr_messages, tasks = _get_commit_info(c, base)
     modules = _get_affected_modules(c, base)
-    tasks = _get_task_info(c, base)
-    title = "{}\\({}\\):%20{}".format(_type.lower(), base, ",".join(list(set(modules))))
+    title = f"{pr_type.lower()}({base}): {','.join(sorted(list(set(modules))))}"
     body = (
         "### Tarea relacionada\n"
         "\n"
-        "{tasks}\n"
+        f"{tasks}\n"
         "\n"
         "### Cambios propuestos en este PR:\n"
         "\n"
-        "{messages}\n"
+        f"{pr_messages}\n"
         "\n"
         "### Como probar los cambios\n"
         "\n"
         "### Notas adicionales"
         "\n"
-    ).format(tasks=tasks, messages=_messages)
+    )
     pr_url = (
-        "https://github.com/Studio73/{{ repo_name }}/compare/{}...{}"
-        "?quick_pull=1\\&title={}\\&body={}"
+        "https://github.com/Studio73/{{ repo_name }}"
+        f"/compare/{base}...{current}"
+        f"?quick_pull=1\\&title={quote_plus(title)}\\&body={quote_plus(body)}"
     ).format(base, current, title, quote_plus(body))
     c.run("python3 -mwebbrowser {}".format(pr_url))
