@@ -149,7 +149,7 @@ hr:
   defaults:
     depth: 1
   merges:
-  - origin dbbb490c560ed3a72ca683bf4304402cada84e8b
+  - origin a0d3c678672dbc7e5f987e83b9996d0c57bdab2b
   remotes:
     origin: https://github.com/OCA/hr.git
 hr-attendance:
@@ -352,7 +352,7 @@ web:
   defaults:
     depth: 1
   merges:
-  - origin 7b2779a97456f5385e74947255cd0046e08cbd9f
+  - origin 1ccfa084f09d999c1599214c89a721200dbf9e26
   remotes:
     origin: https://github.com/OCA/web.git
 website:
