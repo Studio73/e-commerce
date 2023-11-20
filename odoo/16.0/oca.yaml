@@ -69,6 +69,7 @@ account-reconcile:
   merges:
   - origin 296419ff488c4dbe595a1b14226f45a8bfe2a764
   - origin refs/pull/588/head
+  - origin refs/pull/611/head
   remotes:
     origin: https://github.com/OCA/account-reconcile.git
 bank-payment:
