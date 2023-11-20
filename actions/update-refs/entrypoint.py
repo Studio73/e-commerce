@@ -202,7 +202,7 @@ def commit():
     git["commit", "-m", "feat(odoo): Update repos refs"](
         stdout=sys.stdout, stderr=sys.stderr
     )
-    git["push", "origin", "master"](stdout=sys.stdout, stderr=sys.stderr)
+    git["push", "--force", "origin", "master"](stdout=sys.stdout, stderr=sys.stderr)
 
 
 def main():
