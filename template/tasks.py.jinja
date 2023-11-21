@@ -164,11 +164,19 @@ def _get_commit_info(c, base):
         # Old format not supported
         if str(title).startswith("["):
             continue
-        title_data = title_regex.search(title).groupdict()
+        title_data = title_regex.search(title)
+        if title_data:
+            title_data = title_data.groupdict()
+        else:
+            title_data = {}
         commit_type = title_data.get("type", "")
         title_message = title_data.get("message", "")
         breaking = bool(title_data.get("breaking", ""))
-        body_data = body_regex.search(body).groupdict()
+        body_data = body_regex.search(body)
+        if body_data:
+            body_data = body_data.groupdict()
+        else:
+            body_data = {}
         body = body_data.pop("body", "")
         message = f"- **{title_message.strip()}**"
         if body:
