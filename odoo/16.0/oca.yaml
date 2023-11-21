@@ -346,11 +346,19 @@ server-backend:
   - origin refs/pull/221/head
   remotes:
     origin: https://github.com/OCA/server-backend.git
-server-tools:
+server-brand:
   defaults:
     depth: 1
   merges:
+  - origin 1be2d8ac14cb6cf4a2260423410da2d3c435cfdd
+  remotes:
+    origin: https://github.com/OCA/server-brand.git
+server-tools:
+  defaults:
+    depth: 500
+  merges:
   - origin 97be5cf17cc32f4ef3e21fa493868426a5054b2d
+  - origin refs/pull/2684/head
   remotes:
     origin: https://github.com/OCA/server-tools.git
 server-ux:
