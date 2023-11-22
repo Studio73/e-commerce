@@ -2,6 +2,13 @@ name: Odoo Update Repos
 
 on:
   workflow_dispatch:
+    inputs:
+      versions:
+        description: "One or Comma-separated list of Odoo versions e.g. 17,16,14"
+        default: "17,16,14"
+      orgs:
+        description: "One or Comma-separated list of organizations"
+        default: "odoo,oca,openupgrade"
   schedule:
     - cron: "0 2 * * Sun"
 jobs:
@@ -10,7 +17,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.ORG_TOKEN }}
       - name: Update refs
         uses: ./actions/update-refs
+        with:
+          versions: ${{ inputs.versions || "17,16,15,14,13,12,11,10,9" }}
+          orgs: ${{ inputs.orgs || "odoo,oca,openupgrade" }}
         env:
-          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ secrets.ORG_TOKEN }}
