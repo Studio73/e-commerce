@@ -22,7 +22,7 @@ jobs:
       - name: Update refs
         uses: ./actions/update-refs
         with:
-          versions: ${{ inputs.versions || "17,16,15,14,13,12,11,10,9" }}
-          orgs: ${{ inputs.orgs || "odoo,oca,openupgrade" }}
+          versions: ${{ inputs.versions || '17,16,14,12' }}
+          orgs: ${{ inputs.orgs || 'odoo,oca,openupgrade' }}
         env:
           GITHUB_TOKEN: ${{ secrets.ORG_TOKEN }}
