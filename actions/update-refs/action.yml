@@ -1,5 +1,15 @@
 name: "Update ref"
 description: "Update ref from gitaggrete config files"
+inputs:
+  versions:
+    description: "Odoo versions to update"
+    required: true
+  orgs:
+    description: "Odoo orgs to update"
+    required: true
+  commit:
+    description: "Commit changes"
+    default: true
 runs:
   using: "docker"
   image: "Dockerfile"

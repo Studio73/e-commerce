@@ -11,18 +11,6 @@ import requests
 import yaml
 from plumbum import local
 
-AVAILABLE_VERSIONS = [
-    "9.0",
-    "10.0",
-    "11.0",
-    "12.0",
-    "13.0",
-    "14.0",
-    "15.0",
-    "16.0",
-    "17.0",
-]
-AVAILABLE_ORGS = ["odoo", "oca", "openupgrade"]
 git = local["git"]
 
 logging.basicConfig(
@@ -206,14 +194,17 @@ def commit():
 
 
 def main():
-    for version in AVAILABLE_VERSIONS:
-        for org in AVAILABLE_ORGS:
+    versions = [f"{v}.0" for v in os.environ.get("INPUT_VERSIONS", "").split(",")]
+    orgs = os.environ.get("INPUT_ORGS", "").split(",")
+    for version in versions:
+        for org in orgs:
             repos_yaml = f"odoo/{version}/{org}.yaml"
             obj = ToolsYaml(version, repos_yaml)
             obj.update_repos()
             obj.print_limits()
             obj.save()
-    commit()
+    if os.environ.get("INPUT_COMMIT"):
+        commit()
 
 
 if __name__ == "__main__":
