@@ -86,7 +86,7 @@ brand:
   defaults:
     depth: 1
   merges:
-  - origin 0697877f4cac134545ea752203d2fe27cf68aa4b
+  - origin f11b530197df7a2ced52def2e2292a31a6bed421
   remotes:
     origin: https://github.com/OCA/brand.git
 commission:
