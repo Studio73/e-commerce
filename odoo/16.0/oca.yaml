@@ -161,6 +161,13 @@ edi:
   - origin 0801b887578b88dc71a9b4325fb4c20319ff6a3d
   remotes:
     origin: https://github.com/OCA/edi.git
+edi-framework:
+  defaults:
+    depth: 1
+  merges:
+  - origin 9120150eb4828913bdad665af3bac92c1d49b302
+  remotes:
+    origin: https://github.com/OCA/edi-framework.git
 hr:
   defaults:
     depth: 1
