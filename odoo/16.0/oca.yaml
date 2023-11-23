@@ -116,6 +116,13 @@ community-data-files:
   - origin d1728b403ae4fa5e496a158a18665bb458369074
   remotes:
     origin: https://github.com/OCA/community-data-files.git
+connector:
+  defaults:
+    depth: 1
+  merges:
+  - origin 46effeac5a3c879510e4d50213f0c89dfc455ea5
+  remotes:
+    origin: https://github.com/OCA/connector.git
 credit-control:
   defaults:
     depth: 1
