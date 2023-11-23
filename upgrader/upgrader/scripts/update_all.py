@@ -7,7 +7,16 @@ env = env  # noqa: F821
 def clean_views(cr):
     cr.execute(
         """
-        DELETE FROM ir_asset;
+        SELECT count(*) FROM information_schema.tables
+        WHERE table_name = 'ir_asset';
+    """
+    )
+    # ir_asset solo está en >= 15.0
+    table_exists = cr.fetchone()[0]
+    if table_exists:
+        cr.execute("DELETE FROM ir_asset;")
+    cr.execute(
+        """
         DELETE FROM ir_filters;
         DELETE FROM ir_model_data where model = 'ir.filters';
         DELETE FROM ir_rule;

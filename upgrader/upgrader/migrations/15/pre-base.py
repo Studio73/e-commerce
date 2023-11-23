@@ -9,7 +9,7 @@ def migrate(cr):
         WHERE table_name = 'sale_commission_settlement_line';
     """
     )
-    tables = cr.fetchone()
+    tables = cr.fetchone()[0]
     if tables:
         cr.execute(
             """
