@@ -45,7 +45,7 @@ account-invoicing:
     depth: 500
   merges:
   - origin 01306fd6d22325f429b81dd85074870acb2ee983
-  - origin refs/pull/1127/head
+  - origin refs/pull/1377/head
   remotes:
     origin: https://github.com/OCA/account-invoicing.git
 account-payment:
@@ -64,9 +64,10 @@ account-reconcile:
     origin: https://github.com/OCA/account-reconcile.git
 bank-payment:
   defaults:
-    depth: 1
+    depth: 500
   merges:
   - origin 31a158116d4abd0e0f0fb3d6873eed9246bd02be
+  - origin refs/pull/1184/head
   remotes:
     origin: https://github.com/OCA/bank-payment.git
 bank-statement-import:
@@ -92,9 +93,10 @@ brand:
     origin: https://github.com/OCA/brand.git
 commission:
   defaults:
-    depth: 1
+    depth: 500
   merges:
   - origin 6e94a3e09e3505dd333e3f1c28b489fd1e763f4c
+  - origin refs/pull/468/head
   remotes:
     origin: https://github.com/OCA/commission.git
 community-data-files:
