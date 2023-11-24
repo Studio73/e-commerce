@@ -97,12 +97,13 @@ RUN apt-get update \
     node-less \
     git \
     ssh \
+    python3.6 \
+    python3.6-venv \
     # lxml
     libxslt1-dev \
     # unbuffer
     expect-dev \
-    python3.6 \
-    python3.6-venv \
+    tcl \
     # pycups
     libcups2-dev \
     cups-client \
