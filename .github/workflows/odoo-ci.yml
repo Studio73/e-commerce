@@ -46,7 +46,7 @@ jobs:
         username: ${{ secrets.REGISTRY_STUDIO73_USER }}
         password: ${{ secrets.REGISTRY_STUDIO73_PASS }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v3
       - name: Merge PRs
         if: ${{ inputs.merges }}
         uses: Studio73/dodoo/actions/merge-prs@master
