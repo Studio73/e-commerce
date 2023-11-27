@@ -68,7 +68,7 @@ exclude: |
   ^tasks.py$
   {%- if excluded_addons %}|
   # Excluded custom addons
-  {{ " | ".join(excluded_addons.split(",")) }}|
+  {{ " | ".join(excluded_addons.split(",")) }}
   {%- endif %}
 default_language_version:
   python: python3
