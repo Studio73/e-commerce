@@ -12,9 +12,9 @@ RUN mkdir /src
 COPY requirements.txt /requirements.txt
 RUN pip install -r /requirements.txt
 WORKDIR /src
-COPY --chmod="+x" entrypoint.py /entrypoint.py
+COPY entrypoint.py /entrypoint.py
 COPY ssh_config /root/.ssh/config
 RUN ssh-keyscan github.com >> /root/.ssh/known_hosts
 RUN ssh-keyscan ssh.github.com >> /root/.ssh/known_hosts
-ENTRYPOINT ["/entrypoint.py"]
+ENTRYPOINT ["python3", "/entrypoint.py"]
 CMD ["/bin/bash"]
