@@ -334,7 +334,6 @@ sale-workflow:
   - origin 12652f9606d7c34c3e830d97fd42c1d9c5a3e3c7
   - origin refs/pull/2343/head
   - origin refs/pull/2364/head
-  - origin refs/pull/2415/head
   - origin refs/pull/2524/head
   - origin refs/pull/2596/head
   - origin refs/pull/2649/head
