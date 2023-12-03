@@ -121,7 +121,7 @@ currency:
   defaults:
     depth: 1
   merges:
-  - origin 8e32cc711326cec92f6576f4e301635cfc839220
+  - origin f476c1a4244c6b44eeed84106142554b52a62097
   remotes:
     origin: https://github.com/OCA/currency.git
 delivery-carrier:
@@ -191,14 +191,14 @@ l10n-spain:
   defaults:
     depth: 1
   merges:
-  - origin 3e071ff6e06681087c256d8cee71359fd186ccd2
+  - origin 29137bb05bf05d3c2806b5a9594ee8f85096bad0
   remotes:
     origin: https://github.com/OCA/l10n-spain.git
 management-system:
   defaults:
     depth: 1
   merges:
-  - origin 4f319cc0e84b327a66d3ceb1f51df54d3a6809ac
+  - origin e2c681a9a15e449f512d92ee35fdd7f9b90889f8
   remotes:
     origin: https://github.com/OCA/management-system.git
 manufacture:

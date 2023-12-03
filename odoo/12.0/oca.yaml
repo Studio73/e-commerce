@@ -30,7 +30,7 @@ account-fiscal-rule:
   defaults:
     depth: 1
   merges:
-  - origin 1df0cd4d1ff01b14942d11c2bc0da3becc531920
+  - origin e53f6931fcfc5ffb562c30ec5c6af16bb176fec1
   remotes:
     origin: https://github.com/OCA/account-fiscal-rule.git
 account-invoice-reporting:
@@ -201,7 +201,7 @@ l10n-spain:
   defaults:
     depth: 1
   merges:
-  - origin b8a7c60f00a0bff1ff6d85b7913bf443cbd6a2f7
+  - origin 8f073e60ed25138562e27aae8f650c969a0384ea
   remotes:
     origin: https://github.com/OCA/l10n-spain.git
 maintenance:
@@ -222,7 +222,7 @@ manufacture:
   defaults:
     depth: 1
   merges:
-  - origin 58cc42a300b08116815d603b8c37261fe48cc877
+  - origin e1906abc473c1e2e5626d30b27b7cc9b09ae45ea
   remotes:
     origin: https://github.com/OCA/manufacture.git
 margin-analysis:
@@ -285,7 +285,7 @@ queue:
   defaults:
     depth: 1
   merges:
-  - origin f83dd0e17a3bb9d40ba5b6c371e1dfe998ca4ddb
+  - origin af1cca2ed581cff439a27d2c0163be94e692105f
   remotes:
     origin: https://github.com/OCA/queue.git
 report-print-send:
@@ -313,7 +313,7 @@ sale-workflow:
   defaults:
     depth: 1
   merges:
-  - origin 7f78db5f6b75ff32390552ba0fc50de799c3c9dc
+  - origin 4693c227a90d084ba36305c88afbf34741c3d529
   remotes:
     origin: https://github.com/OCA/sale-workflow.git
 server-auth:
@@ -327,7 +327,7 @@ server-tools:
   defaults:
     depth: 500
   merges:
-  - origin 6af50096d61eaa1598be3552d2d37e705225bed0
+  - origin 003896ae2e9d326a7d2ce13a6c3441b6dcb0e8ca
   - origin refs/pull/2455/head
   remotes:
     origin: https://github.com/OCA/server-tools.git
@@ -335,14 +335,14 @@ server-ux:
   defaults:
     depth: 1
   merges:
-  - origin ed5d5f97aced3e8a878f37d5ebabbeb45c1d9e15
+  - origin 5d0864f02a1563db415ef39ddc2aff5d20beff4c
   remotes:
     origin: https://github.com/OCA/server-ux.git
 social:
   defaults:
     depth: 500
   merges:
-  - origin a48005be019348c31130080b19982bc007994754
+  - origin 5bb088ec5541a9068bd3fdc318408f38dbbadef2
   - origin refs/pull/491/head
   remotes:
     origin: https://github.com/OCA/social.git
@@ -392,7 +392,7 @@ web:
   defaults:
     depth: 1
   merges:
-  - origin d97534de7d5d7bc61188ec165f370b8e69ab00e6
+  - origin bc052f33ac81a3ff7e4352169c388e031b54fe03
   remotes:
     origin: https://github.com/OCA/web.git
 website:
