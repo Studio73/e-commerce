@@ -80,15 +80,14 @@ ENV LANG=es_ES.UTF-8 \
 	LC_ALL=es_ES.UTF-8 \
     TZ=Europe/Madrid
 RUN apt-get update \
-	&& apt-get -y upgrade \
-	&& apt-get install -y --no-install-recommends \
-    ca-certificates \
+    && apt-get -y upgrade \
+    && apt-get install -y --no-install-recommends \
     curl \
-    gnupg2 \
     locales \
     node-less \
     git \
     ssh \
+    postgresql-client-14 \
     # unbuffer
     expect-dev \
     python3.10 \
@@ -105,16 +104,6 @@ RUN apt-get update \
 
 RUN sed -i -e 's/# es_ES.UTF-8 UTF-8/es_ES.UTF-8 UTF-8/' /etc/locale.gen && locale-gen
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-
-RUN echo "deb http://apt.postgresql.org/pub/repos/apt focal-pgdg main" > /etc/apt/sources.list.d/pgdg.list \
-    && curl -s https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - \
-    && apt-get update  \
-    # Ubuntu 22.04 only has available libldap 2.5.0
-    && curl -o /tmp/libldap.deb http://es.archive.ubuntu.com/ubuntu/pool/main/o/openldap/libldap-2.4-2_2.4.49+dfsg-2ubuntu1.9_amd64.deb \
-    && apt-get install --no-install-recommends -y libldap-common libgssapi3-heimdal && dpkg -i /tmp/libldap.deb \
-    && apt-get install --no-install-recommends -y libpq5=14.9-0ubuntu0.22.04.1 postgresql-client-14=14.9-0ubuntu0.22.04.1 \
-    && rm -f /etc/apt/sources.list.d/pgdg.list \
-    && rm -rf /var/lib/apt/lists/* /tmp/*
 
 RUN useradd -md /opt/odoo -s /bin/bash odoo
 RUN mkdir -p /opt/odoo/data \
