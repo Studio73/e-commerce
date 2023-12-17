@@ -65,7 +65,7 @@ bank-payment:
   defaults:
     depth: 1
   merges:
-  - origin 35c4c673e3285638a205490f82f9e48a73c4851f
+  - origin 7c04134f85979313933659d13aaed18adf640b08
   remotes:
     origin: https://github.com/OCA/bank-payment.git
 bank-statement-import:
@@ -219,7 +219,7 @@ partner-contact:
   defaults:
     depth: 1
   merges:
-  - origin 3a5b300c473c3674ca00ec121f8023301d230398
+  - origin 00153bda05b14d3249c2ed3c4b9128b33aa1ff72
   remotes:
     origin: https://github.com/OCA/partner-contact.git
 product-attribute:
@@ -261,7 +261,7 @@ queue:
   defaults:
     depth: 1
   merges:
-  - origin a70fda89c4583b2a4bbe272767a45dab4b18a369
+  - origin 5b7a26f59d5798267ecc670757231da54346452f
   remotes:
     origin: https://github.com/OCA/queue.git
 report-print-send:
@@ -303,7 +303,7 @@ server-tools:
   defaults:
     depth: 1
   merges:
-  - origin fbc65ca03f1e5238459a5005b97d069881569da4
+  - origin 235cf3e9273d989f6af0771a3d5ecd83a601f5ec
   remotes:
     origin: https://github.com/OCA/server-tools.git
 server-ux:
