@@ -16,4 +16,4 @@ outputs:
     description: "List of all open PRs"
 runs:
   using: "docker"
-  image: "Dockerfile"
+  image: "docker://r.studio73.es/actions/open-prs:latest"
