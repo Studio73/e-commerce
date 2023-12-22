@@ -57,28 +57,28 @@ jobs:
           username: ${{ secrets.REGISTRY_STUDIO73_USER }}
           password: ${{ secrets.REGISTRY_STUDIO73_PASS }}
       - name: Base
-        uses: ./actions/odoo-build
+        uses: Studio73/dodoo/actions/odoo-build@master
         with:
           image: r.studio73.es/odoo/base
           file: odoo/${{ matrix.version }}.0/Dockerfile.base
           build_date: ${{ needs.meta.outputs.build_date }}
           tag: ${{ matrix.version }}
       - name: Community
-        uses: ./actions/odoo-build
+        uses: Studio73/dodoo/actions/odoo-build@master
         with:
           image: r.studio73.es/odoo/community
           file: odoo/${{ matrix.version }}.0/Dockerfile.community
           build_date: ${{ needs.meta.outputs.build_date }}
           tag: ${{ matrix.version }}
       - name: Enterprise
-        uses: ./actions/odoo-build
+        uses: Studio73/dodoo/actions/odoo-build@master
         with:
           image: r.studio73.es/odoo/enterprise
           file: odoo/${{ matrix.version }}.0/Dockerfile.enterprise
           build_date: ${{ needs.meta.outputs.build_date }}
           tag: ${{ matrix.version }}
       - name: Openupgrade
-        uses: ./actions/odoo-build
+        uses: Studio73/dodoo/actions/odoo-build@master
         with:
           image: r.studio73.es/odoo/openupgrade
           file: odoo/${{ matrix.version }}.0/Dockerfile.openupgrade

@@ -36,7 +36,7 @@ jobs:
       - name: Setup buildx
         uses: docker/setup-buildx-action@v2
       - name: Base
-        uses: ./actions/odoo-build
+        uses: Studio73/dodoo/actions/odoo-build@master
         with:
           image: r.studio73.es/odoo/base
           file: odoo/${{ matrix.version }}.0/Dockerfile.base
