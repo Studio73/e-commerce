@@ -23,7 +23,7 @@ account-financial-tools:
   defaults:
     depth: 1
   merges:
-  - origin 39f37c52458368ce2ec1741980c20b8bb69dde6b
+  - origin 437e40b0f05117ded96e00455debf31ea9d95366
   remotes:
     origin: https://github.com/OCA/account-financial-tools.git
 account-fiscal-rule:
@@ -149,7 +149,7 @@ hr:
   defaults:
     depth: 1
   merges:
-  - origin 03bd57d3c566c81cfb0efe78f475bad84ec4d500
+  - origin 7bfa76021b2c441b98a81f8ff49bff8f38a184cc
   remotes:
     origin: https://github.com/OCA/hr.git
 hr-attendance:
@@ -212,7 +212,7 @@ margin-analysis:
   defaults:
     depth: 1
   merges:
-  - origin 381712e83d086fff45555b3bab9a696d9fb457e6
+  - origin 36a2ae86b8e91b7d11c55cbd69ce2d7366b5bbd1
   remotes:
     origin: https://github.com/OCA/margin-analysis.git
 partner-contact:
@@ -289,7 +289,7 @@ sale-workflow:
   defaults:
     depth: 1
   merges:
-  - origin 81c6a1519a6842a1420ad53d107f6734ab4747ae
+  - origin f986599d580213b989809bc87234a60d9115341b
   remotes:
     origin: https://github.com/OCA/sale-workflow.git
 server-backend:
@@ -317,7 +317,7 @@ social:
   defaults:
     depth: 1
   merges:
-  - origin 30ce453141938ae77190403f362813b84a3a090a
+  - origin c638171c04c4678daadde996338a84ef5a893001
   remotes:
     origin: https://github.com/OCA/social.git
 stock-logistics-barcode:
