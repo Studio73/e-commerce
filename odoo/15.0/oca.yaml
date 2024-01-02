@@ -185,7 +185,7 @@ l10n-spain:
   defaults:
     depth: 1
   merges:
-  - origin b9594ad56a04ce92a8e2843f2da5b32a4cb7868a
+  - origin d2b65aae1cb049e6553fb604bd5b02190386d070
   remotes:
     origin: https://github.com/OCA/l10n-spain.git
 mis-builder:
