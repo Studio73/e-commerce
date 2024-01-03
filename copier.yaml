@@ -13,6 +13,8 @@ _envops:
 _tasks:
   - rm -rf .ci/
   - rm -f .github/workflows/concourse-*.yaml
+  - rm -f .pylintrc-mandatory .isort.cfg .flake8
+  - touch requirements.txt
 
 odoo_version:
   type: int

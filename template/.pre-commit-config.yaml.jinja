@@ -9,14 +9,13 @@
   {%- set repo_rev.flake8 = "3.8.3" %}
   {%- set repo_rev.flake8_bugbear = "20.1.4" %}
   {%- set repo_rev.isort = "5.12.0" %}
-  {%- set repo_rev.maintainer_tools = "969238e47c07d0c40573acff81d170f63245d738" %}
+  {%- set repo_rev.maintainer_tools = "9a170331575a265c092ee6b24b845ec508e8ef75" %}
   {%- set repo_rev.nodejs = "14.13.0" %}
   {%- set repo_rev.pre_commit_hooks = "v3.2.0" %}
   {%- set repo_rev.prettier = "2.1.2" %}
   {%- set repo_rev.prettier_xml = "0.12.0" %}
   {%- set repo_rev.pylint_odoo = "v8.0.19" %}
   {%- set repo_rev.pyupgrade = "v2.7.2" %}
-  {%- set repo_rev.setuptools_odoo = "3.1.8" %}
 {%- elif odoo_version < 16 %}
   {%- set repo_rev.autoflake = "v1.4" %}
   {%- set repo_rev.black = "22.3.0" %}
@@ -24,14 +23,13 @@
   {%- set repo_rev.flake8 = "3.9.2" %}
   {%- set repo_rev.flake8_bugbear = "21.9.2" %}
   {%- set repo_rev.isort = "5.12.0" %}
-  {%- set repo_rev.maintainer_tools = "969238e47c07d0c40573acff81d170f63245d738" %}
+  {%- set repo_rev.maintainer_tools = "9a170331575a265c092ee6b24b845ec508e8ef75" %}
   {%- set repo_rev.nodejs = "14.18.0" %}
   {%- set repo_rev.pre_commit_hooks = "v4.0.1" %}
   {%- set repo_rev.prettier = "2.4.1" %}
   {%- set repo_rev.prettier_xml = "1.1.0" %}
   {%- set repo_rev.pylint_odoo = "v8.0.19" %}
   {%- set repo_rev.pyupgrade = "v2.29.0" %}
-  {%- set repo_rev.setuptools_odoo = "3.1.8" %}
 {%- else %}
   {%- set repo_rev.autoflake = "v1.6.1" %}
   {%- set repo_rev.black = "22.8.0" %}
@@ -39,15 +37,19 @@
   {%- set repo_rev.flake8 = "3.9.2" %}
   {%- set repo_rev.flake8_bugbear = "21.9.2" %}
   {%- set repo_rev.isort = "5.12.0" %}
-  {%- set repo_rev.maintainer_tools = "969238e47c07d0c40573acff81d170f63245d738" %}
+  {%- set repo_rev.maintainer_tools = "9a170331575a265c092ee6b24b845ec508e8ef75" %}
   {%- set repo_rev.nodejs = "16.17.0" %}
   {%- set repo_rev.pre_commit_hooks = "v4.3.0" %}
   {%- set repo_rev.prettier = "2.7.1" %}
   {%- set repo_rev.prettier_xml = "2.2.0" %}
   {%- set repo_rev.pylint_odoo = "v8.0.19" %}
   {%- set repo_rev.pyupgrade = "v2.38.2" %}
-  {%- set repo_rev.setuptools_odoo = "3.1.8" %}
-{%- endif %}
+{%- endif -%}
+
+{%- if odoo_version > 16 %}
+  {%- set repo_rev.pylint_odoo = "v9.0.4" %}
+{%- endif -%}
+
 exclude: |
   (?x)
   # NOT INSTALLABLE ADDONS
@@ -95,21 +97,6 @@ repos:
       - id: oca-update-pre-commit-excluded-addons
       - id: oca-fix-manifest-website
         args: ["{{ repo_website }}"]
-  - repo: https://github.com/myint/autoflake
-    rev: {{ repo_rev.autoflake }}
-    hooks:
-      - id: autoflake
-        args:
-          - --expand-star-imports
-          - --ignore-init-module-imports
-          - --in-place
-          - --remove-all-unused-imports
-          - --remove-duplicate-keys
-          - --remove-unused-variables
-  - repo: https://github.com/psf/black
-    rev: {{ repo_rev.black }}
-    hooks:
-      - id: black
   - repo: https://github.com/pre-commit/mirrors-prettier
     rev: v{{ repo_rev.prettier }}
     hooks:
@@ -151,34 +138,16 @@ repos:
       - id: check-xml
       - id: mixed-line-ending
         args: ["--fix=lf"]
-  - repo: https://github.com/asottile/pyupgrade
-    rev: {{ repo_rev.pyupgrade }}
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.1.7
     hooks:
-      - id: pyupgrade
-        args: ["--keep-percent-format"]
-  - repo: https://github.com/PyCQA/isort
-    rev: {{ repo_rev.isort }}
-    hooks:
-      - id: isort
-        name: isort except __init__.py
-        args:
-          - --settings=.
-        exclude: /__init__\.py$
-  - repo: https://github.com/PyCQA/flake8
-    rev: {{ repo_rev.flake8 }}
-    hooks:
-      - id: flake8
-        name: flake8
-        additional_dependencies: ["flake8-bugbear=={{ repo_rev.flake8_bugbear }}"]
+      - id: ruff
+        args: [--fix, --exit-non-zero-on-fix]
+      - id: ruff-format
   - repo: https://github.com/OCA/pylint-odoo
     rev: {{ repo_rev.pylint_odoo }}
     hooks:
       - id: pylint_odoo
-        name: pylint with optional checks
         args:
           - --rcfile=.pylintrc
-          - --exit-zero
         verbose: true
-      - id: pylint_odoo
-        args:
-          - --rcfile=.pylintrc-mandatory
