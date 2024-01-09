@@ -442,7 +442,7 @@ website:
     depth: 500
   merges:
   - origin 35f0bcb6bce1b6832ce3fe7c6f254d00e3bd54f8
+  - origin refs/pull/1028/head
   - origin refs/pull/1000/head
-  - origin refs/pull/999/head
   remotes:
     origin: https://github.com/OCA/website.git
