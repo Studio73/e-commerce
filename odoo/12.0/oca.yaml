@@ -221,7 +221,7 @@ manufacture:
   defaults:
     depth: 1
   merges:
-  - origin fae40a5999a0ae5b1e12941ffc37c580eedbaa95
+  - origin 2388605109860cec3fa269daa3bd37efc6c85b04
   remotes:
     origin: https://github.com/OCA/manufacture.git
 margin-analysis:
@@ -277,7 +277,7 @@ purchase-workflow:
   defaults:
     depth: 1
   merges:
-  - origin 8c4bbeb8209cd646c38d8bf60afa3dc88e172496
+  - origin 67510d1afb8fec81c2a022fec1e6b23c7ba5ac6d
   remotes:
     origin: https://github.com/OCA/purchase-workflow.git
 queue:
@@ -326,7 +326,7 @@ server-tools:
   defaults:
     depth: 500
   merges:
-  - origin c406d0985c25bbb49f4dd9e09725fcaa957ae510
+  - origin d77e8ad5e5161cff98bb9d4206c5c0caa4a4deb4
   - origin refs/pull/2455/head
   remotes:
     origin: https://github.com/OCA/server-tools.git
@@ -341,7 +341,7 @@ social:
   defaults:
     depth: 500
   merges:
-  - origin 22b110befa5a7d9f79909f9f65a4e79b4e46ca48
+  - origin e4efeea35602d77374ed05f6fb895215405a256f
   - origin refs/pull/491/head
   remotes:
     origin: https://github.com/OCA/social.git
@@ -377,7 +377,7 @@ stock-logistics-workflow:
   defaults:
     depth: 1
   merges:
-  - origin aedd9e0aa2f35909259f56b7dc61ff39d87dfd9c
+  - origin 1022cb60736cc153ddd02b7d3721bb0adc7abf17
   remotes:
     origin: https://github.com/OCA/stock-logistics-workflow.git
 timesheet:

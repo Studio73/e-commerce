@@ -163,7 +163,7 @@ hr-holidays:
   defaults:
     depth: 1
   merges:
-  - origin 902c0f8c3307619ca27975ab92b0d19eb2cc3457
+  - origin 96bd8af1b5a1d901fe77da228d532f9de550f350
   remotes:
     origin: https://github.com/OCA/hr-holidays.git
 intrastat:
@@ -219,7 +219,7 @@ partner-contact:
   defaults:
     depth: 1
   merges:
-  - origin 00153bda05b14d3249c2ed3c4b9128b33aa1ff72
+  - origin 9c68fd3e32af62bfae56eacdcc5fca2af4b8b9f3
   remotes:
     origin: https://github.com/OCA/partner-contact.git
 product-attribute:
@@ -261,7 +261,7 @@ queue:
   defaults:
     depth: 1
   merges:
-  - origin 5b7a26f59d5798267ecc670757231da54346452f
+  - origin b51243cc6a2b5cbcd0ce112f207c8727a317cba1
   remotes:
     origin: https://github.com/OCA/queue.git
 report-print-send:
@@ -275,7 +275,7 @@ reporting-engine:
   defaults:
     depth: 1
   merges:
-  - origin 9c9a7e4413fa397a6b11c77e3acb78e6d8da2679
+  - origin 304c394aef0c408397247501932e4fd79b624390
   remotes:
     origin: https://github.com/OCA/reporting-engine.git
 sale-reporting:
@@ -289,7 +289,7 @@ sale-workflow:
   defaults:
     depth: 1
   merges:
-  - origin f986599d580213b989809bc87234a60d9115341b
+  - origin 7016227f90220af7681e62881debe75a14a126a4
   remotes:
     origin: https://github.com/OCA/sale-workflow.git
 server-backend:
@@ -310,7 +310,7 @@ server-ux:
   defaults:
     depth: 1
   merges:
-  - origin 84181dfc307942b07c343d22d4ef4c83285ef332
+  - origin 75d8eeab5905981f7cd61f851cbad056567ceb3e
   remotes:
     origin: https://github.com/OCA/server-ux.git
 social:
@@ -359,6 +359,6 @@ website:
   defaults:
     depth: 1
   merges:
-  - origin 00c59a98dd06adf58202a1d0b1de3e3f32ebff81
+  - origin 0d574f1d67bee2b9b6c18df87c586a76aa4bf449
   remotes:
     origin: https://github.com/OCA/website.git
