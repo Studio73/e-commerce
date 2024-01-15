@@ -370,14 +370,14 @@ stock-logistics-warehouse:
   defaults:
     depth: 1
   merges:
-  - origin 94b90290e2784a823a2aa939a07b66e31ecb4b40
+  - origin 3bf43da643e4dc03222b133f7b2b5e6c9544cbf1
   remotes:
     origin: https://github.com/OCA/stock-logistics-warehouse.git
 stock-logistics-workflow:
   defaults:
     depth: 1
   merges:
-  - origin 1022cb60736cc153ddd02b7d3721bb0adc7abf17
+  - origin 0d6bb150a76338d25e71885c1c6db4c2917162ae
   remotes:
     origin: https://github.com/OCA/stock-logistics-workflow.git
 timesheet:
