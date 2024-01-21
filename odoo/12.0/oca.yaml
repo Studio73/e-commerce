@@ -23,7 +23,7 @@ account-financial-tools:
   defaults:
     depth: 1
   merges:
-  - origin b276b7d0d6f958266e7f0b4692c35782e21b723a
+  - origin 6640568ca8ad5943f097c6b1d12a3180cda89552
   remotes:
     origin: https://github.com/OCA/account-financial-tools.git
 account-fiscal-rule:
@@ -44,7 +44,7 @@ account-invoicing:
   defaults:
     depth: 500
   merges:
-  - origin 6f0f7578747cfdd82e90bbd180f59ea4efab0f7e
+  - origin e3cb2c030647845a0d71a14cdc5cfc31e9d08460
   - origin refs/pull/1377/head
   remotes:
     origin: https://github.com/OCA/account-invoicing.git
@@ -193,7 +193,7 @@ knowledge:
   defaults:
     depth: 1
   merges:
-  - origin da22c68420306139a73f24707bec79fa8ab625bc
+  - origin 80c77dfe522201be8e3399e16da226b2ab588113
   remotes:
     origin: https://github.com/OCA/knowledge.git
 l10n-spain:
@@ -291,14 +291,14 @@ report-print-send:
   defaults:
     depth: 1
   merges:
-  - origin 73db15bdc647f3fb8e3255abf3b496f5006c0786
+  - origin 5035ec387a15eb8f323baa434ea7c76f6a14d001
   remotes:
     origin: https://github.com/OCA/report-print-send.git
 reporting-engine:
   defaults:
     depth: 1
   merges:
-  - origin 759b48a3bd012541e6ec57c019be53937e66df2f
+  - origin c8b434a9510e5ff2e0ffd83d962d9527185ec771
   remotes:
     origin: https://github.com/OCA/reporting-engine.git
 sale-reporting:
@@ -326,7 +326,7 @@ server-tools:
   defaults:
     depth: 500
   merges:
-  - origin d77e8ad5e5161cff98bb9d4206c5c0caa4a4deb4
+  - origin ad7b978b1464bae017b4760ad815c23e84297743
   - origin refs/pull/2455/head
   remotes:
     origin: https://github.com/OCA/server-tools.git
@@ -334,14 +334,14 @@ server-ux:
   defaults:
     depth: 1
   merges:
-  - origin ab13244cbf7a7d9ffb8d93655ab3094dcd2f9190
+  - origin 7a795235fddfd0cbb9c7757a76f8dbea8f17cb8a
   remotes:
     origin: https://github.com/OCA/server-ux.git
 social:
   defaults:
     depth: 500
   merges:
-  - origin e4efeea35602d77374ed05f6fb895215405a256f
+  - origin ca671c888e3bf2cf01442990768a4c74a53e7566
   - origin refs/pull/491/head
   remotes:
     origin: https://github.com/OCA/social.git

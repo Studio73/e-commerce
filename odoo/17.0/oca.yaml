@@ -100,7 +100,7 @@ community-data-files:
   defaults:
     depth: 1
   merges:
-  - origin 608552ce627c6192d021d72a51940b6f7c670459
+  - origin 9a72fb0ccfea20f89796cd10ff2539f377ed7c60
   remotes:
     origin: https://github.com/OCA/community-data-files.git
 credit-control:
@@ -170,14 +170,14 @@ intrastat:
   defaults:
     depth: 1
   merges:
-  - origin ccece105fa120290a757e3838b25abe70871e144
+  - origin 647a54ebc893c435f0a26f7c1059ec38768222c9
   remotes:
     origin: https://github.com/OCA/intrastat.git
 intrastat-extrastat:
   defaults:
     depth: 1
   merges:
-  - origin ccece105fa120290a757e3838b25abe70871e144
+  - origin 647a54ebc893c435f0a26f7c1059ec38768222c9
   remotes:
     origin: https://github.com/OCA/intrastat-extrastat.git
 knowledge:
@@ -198,7 +198,7 @@ management-system:
   defaults:
     depth: 1
   merges:
-  - origin e2c681a9a15e449f512d92ee35fdd7f9b90889f8
+  - origin c3a0a4e52a260314c29e1f292003a26a855b388a
   remotes:
     origin: https://github.com/OCA/management-system.git
 manufacture:
@@ -303,7 +303,7 @@ server-tools:
   defaults:
     depth: 1
   merges:
-  - origin 235cf3e9273d989f6af0771a3d5ecd83a601f5ec
+  - origin 91832b57566d5ee10642526c5937fdc929449e68
   remotes:
     origin: https://github.com/OCA/server-tools.git
 server-ux:
@@ -338,7 +338,7 @@ stock-logistics-warehouse:
   defaults:
     depth: 1
   merges:
-  - origin 10ee56f61a10024b788000e1710a272e445b7bf3
+  - origin 40f250411f07f19d225ce23542e96947f92f30e0
   remotes:
     origin: https://github.com/OCA/stock-logistics-warehouse.git
 stock-logistics-workflow:
@@ -352,7 +352,7 @@ web:
   defaults:
     depth: 1
   merges:
-  - origin 0958651a9783c8db899db2b1767da90565bb74f8
+  - origin dc9d4574cc2cb5379f712479f698e858cf14cb9b
   remotes:
     origin: https://github.com/OCA/web.git
 website:
