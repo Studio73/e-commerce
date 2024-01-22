@@ -22,7 +22,7 @@ jobs:
     outputs:
       tags: ${{ steps.meta.outputs.tags }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Merge PRs
         if: ${{ inputs.merges }}
         uses: Studio73/dodoo/actions/merge-prs@master
