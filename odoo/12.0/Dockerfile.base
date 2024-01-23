@@ -1,4 +1,4 @@
-ARG  base_image=ubuntu:18.04
+ARG  base_image=ubuntu:20.04
 FROM ${base_image} as builder
 SHELL ["/bin/bash", "-xo", "pipefail", "-c"]
 ARG DEBIAN_FRONTEND=noninteractive
@@ -10,8 +10,8 @@ RUN apt-get update \
     git \
     g++ \
     libpq-dev \
-    python3.6-dev \
-    python3.6-venv \
+    python3.8-dev \
+    python3.8-venv \
     # pycups
     libcups2-dev \
     cups-client \
@@ -70,6 +70,10 @@ RUN cd /oca && gitaggregate --jobs 8 --config repos.yaml
 RUN find /oca -name "requirements.txt" -exec cat {} \; | sort | uniq > /oca/requirements.txt \
     # Fix conflict between klaviyo requests version and Odoo requirements
     && sed -i 's/klaviyo_api/#klaviyo_api/g' /oca/requirements.txt \
+    # FIX pandas build wheel never ending, pandas is required by altair
+    && sed -i 's/altair/#altair/g' /oca/requirements.txt \
+    && curl -o /tmp/altair-4.1.0-py3-none-any.whl https://files.pythonhosted.org/packages/01/55/0bb2226e34f21fa549c3f4557b4f154a5632f61132a969da17c95ca8eab9/altair-4.1.0-py3-none-any.whl \
+    && pip3 install /tmp/altair-4.1.0-py3-none-any.whl \
     && pip3 install --upgrade-strategy=only-if-needed -c /odoo/odoo/requirements.txt -r /oca/requirements.txt \
     # Fix instalation of new taxes that will generate problems like IVA 0% (Alimentos)
     && rm -rf /oca/l10n-spain/l10n_es_extra_data \
@@ -79,7 +83,7 @@ RUN find /oca -name "requirements.txt" -exec cat {} \; | sort | uniq > /oca/requ
     && find $VIRTUAL_ENV -name "*.pyc" -exec rm -f {} \; \
     && rm -rf /tmp/*
 
-FROM ubuntu:18.04
+FROM ubuntu:20.04
 # https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/
 SHELL ["/bin/bash", "-xo", "pipefail", "-c"]
 ARG DEBIAN_FRONTEND=noninteractive
@@ -97,32 +101,22 @@ RUN apt-get update \
     node-less \
     git \
     ssh \
-    python3.6 \
-    python3.6-venv \
-    # lxml
-    libxslt1-dev \
     # unbuffer
     expect-dev \
-    tcl \
+    python3.8 \
+    python3.8-venv \
     # pycups
     libcups2-dev \
     cups-client \
-    # xmlsec l10n-spain
-    pkg-config \
-    libxmlsec1-dev \
-    libxmlsec1-openssl \
-    # pyzbar server-ux
-    libzbar0 \
-    # psycopg2==2.8.3 error pg_config executable not found
-    libpq-dev \
-    && curl -o /tmp/wkhtmltox.deb -sSL https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.bionic_amd64.deb \
+    cloc \
+    && curl -o /tmp/wkhtmltox.deb -sSL https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.focal_amd64.deb \
     && apt-get install -y --no-install-recommends /tmp/wkhtmltox.deb \
     && rm -rf /var/lib/apt/lists/* /tmp/*
 
 RUN sed -i -e 's/# es_ES.UTF-8 UTF-8/es_ES.UTF-8 UTF-8/' /etc/locale.gen && locale-gen
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-RUN echo "deb http://apt-archive.postgresql.org/pub/repos/apt bionic-pgdg main" > /etc/apt/sources.list.d/pgdg.list \
+RUN echo "deb http://apt.postgresql.org/pub/repos/apt focal-pgdg main" > /etc/apt/sources.list.d/pgdg.list \
     && curl -s https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - \
     && apt-get update  \
     && apt-get install --no-install-recommends -y postgresql-client-14 \
