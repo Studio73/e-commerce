@@ -317,9 +317,10 @@ report-print-send:
     origin: https://github.com/OCA/report-print-send.git
 reporting-engine:
   defaults:
-    depth: 1
+    depth: 500
   merges:
-  - origin 598bffacaded1c76d782f303f8c352f4cc25ad98
+  - origin 098ab27b98e9b75f8de27782525b7c1d4c03078d
+  - origin refs/pull/842/head
   remotes:
     origin: https://github.com/OCA/reporting-engine.git
 sale-promotion:
