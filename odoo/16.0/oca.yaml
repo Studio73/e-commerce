@@ -131,9 +131,10 @@ credit-control:
     origin: https://github.com/OCA/credit-control.git
 crm:
   defaults:
-    depth: 1
+    depth: 500
   merges:
   - origin 2f22747cf7b52c7ba0d6161bb609e66a6e63bc7a
+  - origin refs/pull/544/head
   remotes:
     origin: https://github.com/OCA/crm.git
 currency:
