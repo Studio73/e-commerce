@@ -2,7 +2,7 @@ account-analytic:
   defaults:
     depth: 1
   merges:
-  - origin e882ca515757a16a561a7157559ada23f04ad072
+  - origin c0f267a7e639dc035ef03108c009fa458979a8c9
   remotes:
     origin: https://github.com/OCA/account-analytic.git
 account-closing:
@@ -44,7 +44,7 @@ account-invoicing:
   defaults:
     depth: 500
   merges:
-  - origin 05141ac5991ae549b9343416392fb4be392adcdc
+  - origin 15c0e39e9035efbd1d2f89ba967fb5a9a7b2dcfa
   - origin refs/pull/1377/head
   remotes:
     origin: https://github.com/OCA/account-invoicing.git
@@ -200,7 +200,7 @@ l10n-spain:
   defaults:
     depth: 1
   merges:
-  - origin a9157ca0fa12475c6b61e2c8b46e3e203679dc24
+  - origin 888ecd3d79e2767686306ad10a0e78c1f1cd2ae3
   remotes:
     origin: https://github.com/OCA/l10n-spain.git
 maintenance:
@@ -228,7 +228,7 @@ margin-analysis:
   defaults:
     depth: 1
   merges:
-  - origin 5280ff3b9dacfa3e24216d238e3784f8316ba661
+  - origin f456cb059a8f1af074ee15be51891b4d63b93588
   remotes:
     origin: https://github.com/OCA/margin-analysis.git
 mis-builder:
@@ -284,7 +284,7 @@ queue:
   defaults:
     depth: 1
   merges:
-  - origin 64489be015bda1f10f28d5c764a9b8024813c961
+  - origin ea68c4ed4b0cf2e07b4254948b04bd65d97f82db
   remotes:
     origin: https://github.com/OCA/queue.git
 report-print-send:
