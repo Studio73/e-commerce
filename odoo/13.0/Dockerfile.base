@@ -44,6 +44,11 @@ ENV ODOO_VERSION 13.0
 COPY gitattributes /.gitattributes
 COPY requirements.txt /requirements.txt
 RUN python3 -m venv --copies $VIRTUAL_ENV \
+    && pip3 install --upgrade pip \
+    # FIX https://github.com/pyca/cryptography/issues/7959
+    && pip3 install cryptography==38.0.4 pyOpenSSL==22.0.0 \
+    # FIX dependency l10n_es_aeat_sii_match
+    && pip3 install deepdiff \
     && pip3 install -r requirements.txt
 
 COPY 13.0/odoo.yaml /odoo/repos.yaml
@@ -62,7 +67,10 @@ RUN cd /odoo && gitaggregate --jobs 8 --config repos.yaml \
 
 COPY 13.0/oca.yaml /oca/repos.yaml
 RUN cd /oca && gitaggregate --jobs 8 --config repos.yaml
-RUN find /oca -name "requirements.txt" -type f | xargs -I {} sh -c 'pip3 install --upgrade-strategy=only-if-needed -c /odoo/odoo/requirements.txt -r {} $0 || exit 255' \
+RUN find /oca -name "requirements.txt" -exec cat {} \; | sort | uniq > /oca/requirements.txt \
+    # Fix conflict matplotlib The user requested (constraint) pillow==5.4.1
+    && sed -i 's/matplotlib/#matplotlib/g' /oca/requirements.txt \
+    && pip3 install --upgrade-strategy=only-if-needed -c /odoo/odoo/requirements.txt -r /oca/requirements.txt \
     && find /oca -name "*.po" | grep -v -E "es.po|en_GB.po|fr.po|pt.po|it.po|de.po|ca.po" | xargs rm \
     && find /oca -name ".git" | xargs rm -rf \
     && find /oca -name "setup" | xargs rm -rf \
