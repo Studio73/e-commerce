@@ -1,4 +1,0 @@
-#!/bin/bash
-# (c) Studio73 - Pablo Fuentes <pablo@studio73.es>
-
-echo "clean-repo: Deprecated"

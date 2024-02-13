@@ -1,8 +1,0 @@
-#!/bin/bash
-# (c) Studio73 - Pablo Fuentes <pablo@studio73.es>
-
-set -ex
-mkdir -p ~/.ssh
-(set +x && echo -e "${SSH_KEY//_/\\n}" > ~/.ssh/id_rsa)
-chmod og-rwx ~/.ssh/id_rsa
-ssh-keyscan github.com >> ~/.ssh/known_hosts
