@@ -85,6 +85,7 @@ RUN apt-get update \
     node-less \
     git \
     ssh \
+    ripgrep \
     # unbuffer
     expect-dev \
     python3.8 \

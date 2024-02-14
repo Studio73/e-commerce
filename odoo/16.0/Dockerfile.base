@@ -87,6 +87,7 @@ RUN apt-get update \
     node-less \
     git \
     ssh \
+    ripgrep \
     postgresql-client-14 \
     # unbuffer
     expect-dev \
