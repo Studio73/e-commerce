@@ -27,13 +27,19 @@ def openupgrade(c, version, force=False):
     _build(c, version, "openupgrade")
 
 
+@task
+def builder(c, version, force=False):
+    if force:
+        enterprise(c, version, force)
+    _build(c, version, "builder")
+
+
 def _build(c, version, edition):
     print(f"Building odoo/{edition}:{version}")
     c.run(
         f"""
 set -e
 export BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"`
-export SSH_KEY=`cat ~/.ssh/id_rsa`
 docker buildx build \
 --build-arg BUILD_DATE=$BUILD_DATE \
 --ssh default \

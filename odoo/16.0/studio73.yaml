@@ -1,0 +1,56 @@
+common/realestate-addons:
+  defaults:
+    depth: 50
+  merges:
+    - origin 16.0
+  remotes:
+    origin: git@github.com:Studio73/realestate-addons.git
+common/studio73-private-addons:
+  defaults:
+    depth: 100
+  merges:
+    - origin 16.0
+  remotes:
+    origin: git@github.com:studio73/studio73-private-addons.git
+common/website-addons:
+  defaults:
+    depth: 50
+  merges:
+    - origin 16.0
+  remotes:
+    origin: git@github.com:Studio73/website-addons.git
+extra/amazon-addons:
+  defaults:
+    depth: 50
+  merges:
+    - origin 16.0
+  remotes:
+    origin: git@github.com:Studio73/amazon-addons.git
+extra/shopify-addons:
+  defaults:
+    depth: 50
+  merges:
+    - origin 16.0
+  remotes:
+    origin: git@github.com:Studio73/shopify-addons.git
+extra/stock-addons:
+  defaults:
+    depth: 50
+  merges:
+    - origin 16.0
+  remotes:
+    origin: git@github.com:Studio73/stock-addons.git
+zenterprise/studio73-enterprise-addons:
+  defaults:
+    depth: 100
+  merges:
+    - origin 16.0
+  remotes:
+    origin: git@github.com:Studio73/studio73-enterprise-addons.git
+zenterprise/zenterprise:
+  defaults:
+    depth: 1
+  merges:
+    - origin 16.0
+  remotes:
+    origin: git@github.com:Studio73/enterprise.git

@@ -68,13 +68,13 @@ jobs:
               echo "base_tag=${{ matrix.version }}"
             fi
           } >> "$GITHUB_OUTPUT"
-      - name: Community open PRs
+      - name: Open PRs
         if: ${{ matrix.env == 'dev' }}
         uses: Studio73/dodoo/actions/open-prs@master
         with:
           token: ${{ secrets.ORG_TOKEN }}
           branch: "${{ matrix.version }}.0"
-          file: odoo/${{ matrix.version }}.0/community.yaml
+          file: odoo/${{ matrix.version }}.0/studio73.yaml
       - name: Community
         uses: Studio73/dodoo/actions/odoo-build@master
         with:
@@ -83,18 +83,19 @@ jobs:
           build_date: ${{ needs.meta.outputs.build_date }}
           tag: ${{ steps.meta.outputs.tag }}
           base_tag: ${{ matrix.version }} # base:VERSION-dev doesn't exists
-      - name: Enterprise open PRs
-        if: ${{ matrix.env == 'dev' }}
-        uses: Studio73/dodoo/actions/open-prs@master
-        with:
-          token: ${{ secrets.ORG_TOKEN }}
-          branch: "${{ matrix.version }}.0"
-          file: odoo/${{ matrix.version }}.0/enterprise.yaml
       - name: Enterprise
         uses: Studio73/dodoo/actions/odoo-build@master
         with:
           image: r.studio73.es/odoo/enterprise
           file: odoo/${{ matrix.version }}.0/Dockerfile.enterprise
+          build_date: ${{ needs.meta.outputs.build_date }}
+          tag: ${{ steps.meta.outputs.tag }}
+          base_tag: ${{ steps.meta.outputs.base_tag }}
+      - name: Builder
+        uses: Studio73/dodoo/actions/odoo-build@master
+        with:
+          image: r.studio73.es/odoo/builder
+          file: odoo/${{ matrix.version }}.0/Dockerfile.builder
           build_date: ${{ needs.meta.outputs.build_date }}
           tag: ${{ steps.meta.outputs.tag }}
           base_tag: ${{ steps.meta.outputs.base_tag }}

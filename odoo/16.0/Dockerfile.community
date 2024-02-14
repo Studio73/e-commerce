@@ -1,6 +1,6 @@
 ARG BASE_TAG=16
 FROM r.studio73.es/odoo/base:${BASE_TAG}
 RUN mkdir -p $SRC/studio73
-COPY --chown=odoo 16.0/community.yaml $SRC/studio73
-RUN --mount=type=ssh,uid=1000 cd $SRC/studio73 && gitaggregate --jobs 8 --config community.yaml
+COPY --chown=odoo 16.0/studio73.yaml $SRC/studio73/repos.yaml
+RUN --mount=type=ssh,uid=1000 cd $SRC/studio73 && gitaggregate --jobs 8 -c repos.yaml -d common/*
 RUN install-requirements $SRC/studio73

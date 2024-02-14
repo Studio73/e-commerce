@@ -77,6 +77,13 @@ jobs:
           file: odoo/${{ matrix.version }}.0/Dockerfile.enterprise
           build_date: ${{ needs.meta.outputs.build_date }}
           tag: ${{ matrix.version }}
+      - name: Builder
+        uses: Studio73/dodoo/actions/odoo-build@master
+        with:
+          image: r.studio73.es/odoo/builder
+          file: odoo/${{ matrix.version }}.0/Dockerfile.builder
+          build_date: ${{ needs.meta.outputs.build_date }}
+          tag: ${{ matrix.version }}
       - name: Openupgrade
         uses: Studio73/dodoo/actions/odoo-build@master
         with:
