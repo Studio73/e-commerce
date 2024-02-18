@@ -9,21 +9,21 @@ account-closing:
   defaults:
     depth: 1
   merges:
-  - origin 2031afde781b6b902ce111e0c24d099027350c83
+  - origin 40044df2c329d233645ca846277301b4f26dd007
   remotes:
     origin: https://github.com/OCA/account-closing.git
 account-financial-reporting:
   defaults:
     depth: 1
   merges:
-  - origin 884cf52902cabac1bc07408b9838e886af165362
+  - origin 3c51104a19aaa7a8f7b35b02fd416a7acc5788cc
   remotes:
     origin: https://github.com/OCA/account-financial-reporting.git
 account-financial-tools:
   defaults:
     depth: 1
   merges:
-  - origin d278d4075b716eed1545f415590fa092d8fb4ee3
+  - origin 5ea265ce2754e768b0c61d8349ccef1b4ea1ba0a
   remotes:
     origin: https://github.com/OCA/account-financial-tools.git
 account-fiscal-rule:
@@ -65,7 +65,7 @@ bank-payment:
   defaults:
     depth: 1
   merges:
-  - origin 0b525ee6b1158f7ea7241df15ed801e79cf573ff
+  - origin 8e6e563ddafc63510132e6c25e813ed04936cdbe
   remotes:
     origin: https://github.com/OCA/bank-payment.git
 bank-statement-import:
@@ -121,7 +121,7 @@ currency:
   defaults:
     depth: 1
   merges:
-  - origin 4ed93a7dd75784ecd624027901ff119f49d213cd
+  - origin cdf1a191728dadd3f9eaa63fc4c1b9ab1a79ce1c
   remotes:
     origin: https://github.com/OCA/currency.git
 delivery-carrier:
@@ -163,21 +163,21 @@ hr-holidays:
   defaults:
     depth: 1
   merges:
-  - origin cc52100bedb4451bcda01eea62149c3f0a420123
+  - origin dbce6122f6019a8182dc95e19556fa330f0c3371
   remotes:
     origin: https://github.com/OCA/hr-holidays.git
 intrastat:
   defaults:
     depth: 1
   merges:
-  - origin 283b8c90bcb3b2a14906a2bf8a1b9f1de1966b6d
+  - origin 98bc42fca8ebe0085b2837a70d264ab207908ace
   remotes:
     origin: https://github.com/OCA/intrastat.git
 intrastat-extrastat:
   defaults:
     depth: 1
   merges:
-  - origin 283b8c90bcb3b2a14906a2bf8a1b9f1de1966b6d
+  - origin 98bc42fca8ebe0085b2837a70d264ab207908ace
   remotes:
     origin: https://github.com/OCA/intrastat-extrastat.git
 knowledge:
@@ -254,14 +254,14 @@ purchase-workflow:
   defaults:
     depth: 1
   merges:
-  - origin 09949bff80d1d0e1fd68a9aca88460462c71fd10
+  - origin 626d8e8b004a4177a1d9a03481c0796ad6818e0a
   remotes:
     origin: https://github.com/OCA/purchase-workflow.git
 queue:
   defaults:
     depth: 1
   merges:
-  - origin 72421945ae0609ac1d140bdc57c4f360cd201ad9
+  - origin 20d1fafb9c9bd2bef9e25ea24ff66fd3980310f7
   remotes:
     origin: https://github.com/OCA/queue.git
 report-print-send:
@@ -275,7 +275,7 @@ reporting-engine:
   defaults:
     depth: 500
   merges:
-  - origin 4a94c6d452cd61db127fa32224450a8789c9c84e
+  - origin 418ce3a72585697df6557060a18faabd9b19efd7
   - origin refs/pull/841/head
   remotes:
     origin: https://github.com/OCA/reporting-engine.git
@@ -290,35 +290,35 @@ sale-workflow:
   defaults:
     depth: 1
   merges:
-  - origin 575f037a3664c5c896a17449ffa870fc720f7f19
+  - origin b5ed7558fb79fff075b94bf216d299515c2d68a5
   remotes:
     origin: https://github.com/OCA/sale-workflow.git
 server-backend:
   defaults:
     depth: 1
   merges:
-  - origin 0470787b8e965190fd08aa01bb22ddb8f0619050
+  - origin 2efc7ea4e9c3aa80c41496deee0da5559b82cd1a
   remotes:
     origin: https://github.com/OCA/server-backend.git
 server-tools:
   defaults:
     depth: 1
   merges:
-  - origin 68bb4fff064bd0339bff94e69f6a68c8f6c2c8e8
+  - origin 82754f91cf2fa5c0d5168eb5916d5acbacd80045
   remotes:
     origin: https://github.com/OCA/server-tools.git
 server-ux:
   defaults:
     depth: 1
   merges:
-  - origin 5db4dd41b12308c58dd6d0d32289c781ed07d075
+  - origin 8fd83f6eacdfc267d6547154ac035b3b2b2e4f34
   remotes:
     origin: https://github.com/OCA/server-ux.git
 social:
   defaults:
     depth: 1
   merges:
-  - origin e15692c6e8b7d486253e3dad9ad82907a6619298
+  - origin 51b777ed17f135e84b16164e1c05a376d7a62768
   remotes:
     origin: https://github.com/OCA/social.git
 stock-logistics-barcode:
@@ -353,7 +353,7 @@ web:
   defaults:
     depth: 1
   merges:
-  - origin 6d2d7649dd634d236a37c2886f495f0bec304c54
+  - origin 481ce4ec970cd8acd71ca8d4c93e38d2187c4012
   remotes:
     origin: https://github.com/OCA/web.git
 website:
