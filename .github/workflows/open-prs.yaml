@@ -1,6 +1,10 @@
 name: Open PRs
 on:
   workflow_call:
+    outputs:
+      prs:
+        description: "List of open PRs"
+        value: ${{ jobs.prs.outputs.prs }}
     inputs:
       branch:
         description:
