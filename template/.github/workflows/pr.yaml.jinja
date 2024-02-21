@@ -6,10 +6,10 @@ on:
     types: [ready_for_review, opened, synchronize, reopened]
 jobs:
   ci:
-    uses: Studio73/dodoo/.github/workflows/odoo-ci.yml@master
+    uses: Studio73/dodoo/.github/workflows/odoo-ci.yaml@master
     secrets: inherit
     with:
-      image: {{ base_image }}:{{ odoo_version }}
+      version: {{ odoo_version }}
       database: {{ project_name }}
   review:
     runs-on: self-hosted

@@ -1,5 +1,8 @@
-ARG base_image={{ base_image }}:{{ odoo_version }}
-FROM ${base_image}
+ARG BASE_TAG={{ odoo_version }}
+{%- if extra_repos %}
+FROM r.studio73.es/odoo/builder:{% raw %}${BASE_TAG}{% endraw %} as builder
+{%- endif %}
+FROM {{ base_image }}:{% raw %}${BASE_TAG}{% endraw %}
 ARG pip_index=https://pypi.org/simple
 ARG pip_trusted=pypi.org
 {%- if apt_list %}
@@ -8,6 +11,12 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends {{ apt_list }} \
     && rm -rf /var/lib/apt/lists/* /tmp/*
 USER odoo
+{%- endif %}
+{%- if extra_repos %}
+{%- for extra_repo in extra_repos %}
+COPY --chown=odoo --from=builder $SRC/studio73/extra/{{ extra_repo }} $SRC/studio73/extra/{{ extra_repo }}
+RUN pip3 install --index-url $pip_index --trusted-host $pip_trusted -c $SRC/odoo/odoo/requirements.txt -r $SRC/studio73/extra/{{ extra_repo }}/requirements.txt
+{%- endfor %}
 {%- endif %}
 COPY --chown=odoo ./requirements.txt $SRC/custom/requirements.txt
 RUN pip3 install --index-url $pip_index --trusted-host $pip_trusted -c $SRC/odoo/odoo/requirements.txt -r $SRC/custom/requirements.txt

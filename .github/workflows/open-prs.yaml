@@ -1,0 +1,26 @@
+name: Open PRs
+on:
+  workflow_call:
+    inputs:
+      branch:
+        description:
+          "Target branch to search open PRs if not provided will use GITHUB_REF_NAME"
+        type: string
+        required: false
+      file:
+        description: "git-aggregate config file"
+        type: string
+        required: false
+jobs:
+  prs:
+    runs-on: self-hosted
+    outputs:
+      prs: ${{ steps.prs.outputs.prs }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: Studio73/dodoo/actions/open-prs@master
+        id: prs
+        with:
+          token: ${{ secrets.ORG_TOKEN }}
+          branch: ${{ inputs.branch }}
+          file: ${{ inputs.file }}

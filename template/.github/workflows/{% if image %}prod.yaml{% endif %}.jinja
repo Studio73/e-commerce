@@ -8,17 +8,16 @@ on:
     - cron: "{{ range(0, 31) | random }} 0 * * 1-5"
 jobs:
   ci:
-    uses: Studio73/dodoo/.github/workflows/odoo-ci.yml@master
+    uses: Studio73/dodoo/.github/workflows/odoo-ci.yaml@master
     secrets: inherit
     with:
-      image: {{ base_image }}:{{ odoo_version }}
+      version: {{ odoo_version }}
       database: {{ project_name }}
   cd:
     needs: [ci]
-    uses: Studio73/dodoo/.github/workflows/odoo-cd.yml@master
+    uses: Studio73/dodoo/.github/workflows/odoo-cd.yaml@master
     secrets: inherit
     with:
-      base_image: {{ base_image }}
       image: {{ image }}
       version: {{ odoo_version }}
   notify:

@@ -60,6 +60,17 @@ base_image:
   default: "r.studio73.es/odoo/{{ odoo_edition }}"
   help: Base Docker image
 
+extra_repos:
+  type: str
+  multiselect: True
+  choices:
+    - amazon-addons
+    - manufacture-addons
+    - realestate-addons
+    - shopify-addons
+    - stock-addons
+  help: Extra repositories to add to the project
+
 image:
   type: str
   default: "r.studio73.es/odoo/{{ project_name }}"
@@ -67,7 +78,7 @@ image:
 
 coverage_fail_under:
   type: int
-  default: 60
+  default: 80
   help: Coverage fail under selected percentage
 
 apt_list:

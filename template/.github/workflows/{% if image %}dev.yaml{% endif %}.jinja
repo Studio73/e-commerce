@@ -6,29 +6,21 @@ on:
     - cron: "{{ range(0, 31) | random }} 20 * * 0-4"
 jobs:
   prs:
-    runs-on: self-hosted
-    outputs:
-      prs: {% raw %}${{ steps.prs.outputs.prs }}{% endraw %}
-    steps:
-      - uses: actions/checkout@v3
-      - uses: Studio73/dodoo/actions/open-prs@master
-        id: prs
-        with:
-          token: {% raw %}${{ github.token }}{% endraw %}
+    uses: Studio73/dodoo/.github/workflows/open-prs.yaml@master
+    secrets: inherit
   ci:
     needs: [prs]
-    uses: Studio73/dodoo/.github/workflows/odoo-ci.yml@master
+    uses: Studio73/dodoo/.github/workflows/odoo-ci.yaml@master
     secrets: inherit
     with:
-      image: {{ base_image }}:{{ odoo_version }}-dev
+      version: {{ odoo_version }}-dev
       database: {{ project_name }}
       merges: {% raw %}${{ needs.prs.outputs.prs }}{% endraw %}
   cd:
     needs: [prs, ci]
-    uses: Studio73/dodoo/.github/workflows/odoo-cd.yml@master
+    uses: Studio73/dodoo/.github/workflows/odoo-cd.yaml@master
     secrets: inherit
     with:
-      base_image: {{ base_image }}
       image: {{ image }}
       version: {{ odoo_version }}-dev
       merges: {% raw %}${{ needs.prs.outputs.prs }}{% endraw %}
