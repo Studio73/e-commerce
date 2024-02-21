@@ -6,6 +6,8 @@ import os
 import subprocess as sp
 from datetime import datetime
 
+import click
+
 logging.basicConfig(
     format="%(asctime)s %(levelname)s: %(message)s",
     level=logging.INFO,
@@ -15,14 +17,15 @@ _logger = logging.getLogger(__name__)
 BLACKLIST = ["studio73_saas_agent"]
 
 
-def main():
+@click.command()
+@click.option("--dump-name", help="Dump name\tdefault: DBNAME_addons_NOW")
+@click.option("--dest", default="/opt/odoo/backup", help="Backup destination\tdefault: /opt/odoo/backup")
+def main(dest, dump_name):
     dbname = os.environ["PGDATABASE"]
-    dump_dest = "/opt/odoo/backup"
-    dump_name = "%s/%s_addons_%s.tar.gz" % (
-        dump_dest,
-        dbname,
-        datetime.now().strftime("%Y-%m-%d_%H%M%S"),
-    )
+    if not dump_name:
+        now = datetime.now().strftime("%Y-%m-%d_%H%M%S")
+        dump_name = f"{dbname}_addons_{now}"
+    dump_name = os.path.join(dest, f"{dump_name}.tar.gz")
     query = "select name from ir_module_module where state in ('installed', 'to upgrade') order by name"
     query_out = sp.Popen(
         ["psql", "-t", "-d", dbname, "-c", query], stdout=sp.PIPE
@@ -52,8 +55,11 @@ def main():
                 sp.call(["mkdir", "-p", os.path.split(dest)[0]])
                 sp.call(["cp", "-r", src, dest])
                 continue
-    sp.call(["mkdir", "-p", dump_dest])
-    sp.call(["tar", "-cf", dump_name, dbname], cwd="/tmp")
+    _tmp = f"/tmp/{dbname}"
+    sp.call(["find", ".", "-name", "*.pyc", "-delete"], cwd=_tmp)
+    sp.call(["find", ".", "-name", "__pycache__", "-delete"], cwd=_tmp)
+    sp.call(["mkdir", "-p", dest])
+    sp.call(["tar", "-cf", dump_name, "."], cwd=_tmp)
     sp.call(["rm", "-rf", dbname], cwd="/tmp")
     _logger.info("Addons dumped at %s" % dump_name)
 
