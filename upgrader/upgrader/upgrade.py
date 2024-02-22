@@ -43,7 +43,8 @@ ORIGIN_DUMP_NAME = "origin.dump"
 EXPECTED_DUMP_EXTENSIONS = [".sql", ".dump", ".zip", ".sql.gz"]
 POSTGRES_TABLE_OF_CONTENTS = "toc.dat"
 FILESTORE_NAME = "filestore"
-FILESTORE_PATH = os.path.expanduser("~/.local/share/Odoo/filestore")
+# Studio73: Get fstore from dynamic path
+FILESTORE_PATH = os.environ["FILESTORE"]
 
 DB_TIMESTAMP_FORMAT = "%Y_%m_%d_%H_%M"
 
@@ -130,8 +131,8 @@ class StateMachine:
 
 
 def user_confirm():
-    return sys.stdin.read(1) not in ("n", "N")
-
+    # Studio73: Always resume, avoid ask
+    return True
 
 def run_command(command, stream_output=False):
     """
@@ -193,7 +194,8 @@ def upload_dump(dump_path, server, port, user, path, ssh_key, dest_dump_name=Non
         server,
         "%s/%s" % (path, dest_dump_name) if dest_dump_name else path,
     )
-    ssh = "ssh -p %s -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes -o UserKnownHostsFile=%s -i %s" % (
+    # Studio73: Ignore Fingerprint Validation
+    ssh = "ssh -p %s -o IdentitiesOnly=yes -o StrictHostKeyChecking=no -o UserKnownHostsFile=%s -i %s" % (
         port,
         KNOWN_HOSTS_NAME,
         ssh_key,
@@ -227,7 +229,8 @@ def download_dump(server, port, user, dump_path, dump_name, ssh_key, dump_dest_p
     """
     Download a database dump and its filestore from the server through SSH
     """
-    ssh = "ssh -p %s -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes -o UserKnownHostsFile=%s -i %s" % (
+    # Studio73: Ignore Fingerprint Validation
+    ssh = "ssh -p %s -o IdentitiesOnly=yes -o StrictHostKeyChecking=no -o UserKnownHostsFile=%s -i %s" % (
         port,
         KNOWN_HOSTS_NAME,
         ssh_key,
@@ -1211,6 +1214,8 @@ def main():
         format="%(asctime)s %(levelname)s: %(message)s",
         datefmt="%Y-%m-%d %I:%M:%S",
         level=log_level,
+        # Studio73
+        stream=sys.stdout,
     )
 
     # define state machine and internal context
@@ -1266,6 +1271,8 @@ def main():
 
     except (UpgradeError, StateMachine.Error) as e:
         logging.error("Error: %s", e)
+        # Studio73: Exit with != 0 so we can catch the error from calling script
+        exit(1)
 
     except KeyboardInterrupt:
         pass
