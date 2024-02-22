@@ -51,6 +51,6 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            base_tag=${{ inputs.version }}
+            BASE_TAG=${{ inputs.version }}
             pip_index=${{ secrets.STUDIO73_PIP_INDEX }}
             pip_trusted=${{ secrets.STUDIO73_PIP_TRUSTED }}
