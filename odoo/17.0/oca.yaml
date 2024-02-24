@@ -21,9 +21,10 @@ account-financial-reporting:
     origin: https://github.com/OCA/account-financial-reporting.git
 account-financial-tools:
   defaults:
-    depth: 1
+    depth: 500
   merges:
   - origin 5ea265ce2754e768b0c61d8349ccef1b4ea1ba0a
+  - origin refs/pull/1819/head
   remotes:
     origin: https://github.com/OCA/account-financial-tools.git
 account-fiscal-rule:
@@ -63,9 +64,10 @@ account-reconcile:
     origin: https://github.com/OCA/account-reconcile.git
 bank-payment:
   defaults:
-    depth: 1
+    depth: 500
   merges:
   - origin 8e6e563ddafc63510132e6c25e813ed04936cdbe
+  - origin refs/pull/1208/head
   remotes:
     origin: https://github.com/OCA/bank-payment.git
 bank-statement-import:
@@ -193,6 +195,7 @@ l10n-spain:
   merges:
   - origin 29137bb05bf05d3c2806b5a9594ee8f85096bad0
   - origin refs/pull/3318/head
+  - origin refs/pull/3325/head
   remotes:
     origin: https://github.com/OCA/l10n-spain.git
 management-system:
@@ -218,9 +221,10 @@ margin-analysis:
     origin: https://github.com/OCA/margin-analysis.git
 partner-contact:
   defaults:
-    depth: 1
+    depth: 500
   merges:
-  - origin c750bf7af3bd74715ddf7638b599f3132030650a
+  - origin b05e9367c790e45c911e333f99c947ade51ca70b
+  - origin refs/pull/1662/head
   remotes:
     origin: https://github.com/OCA/partner-contact.git
 product-attribute:
@@ -246,9 +250,11 @@ product-variant:
     origin: https://github.com/OCA/product-variant.git
 project:
   defaults:
-    depth: 1
+    depth: 500
   merges:
   - origin f13c6277c40693e47e5be24d9b7809caa20ea6b6
+  - origin refs/pull/1219/head
+  - origin refs/pull/1232/head
   remotes:
     origin: https://github.com/OCA/project.git
 purchase-workflow:
@@ -311,9 +317,10 @@ server-tools:
     origin: https://github.com/OCA/server-tools.git
 server-ux:
   defaults:
-    depth: 1
+    depth: 500
   merges:
   - origin 8fd83f6eacdfc267d6547154ac035b3b2b2e4f34
+  - origin refs/pull/814/head
   remotes:
     origin: https://github.com/OCA/server-ux.git
 social:
@@ -360,8 +367,12 @@ web:
     origin: https://github.com/OCA/web.git
 website:
   defaults:
-    depth: 1
+    depth: 500
   merges:
   - origin 731823f66b901a7aaff43a18111e27feb84b523e
+  - origin refs/pull/1016/head
+  - origin refs/pull/1017/head
+  - origin refs/pull/1022/head
+  - origin refs/pull/1034/head
   remotes:
     origin: https://github.com/OCA/website.git
