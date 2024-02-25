@@ -2,28 +2,28 @@ account-analytic:
   defaults:
     depth: 1
   merges:
-  - origin c0f267a7e639dc035ef03108c009fa458979a8c9
+  - origin 9e54407ea23adee530db47f848eaaf32289e0f3e
   remotes:
     origin: https://github.com/OCA/account-analytic.git
 account-closing:
   defaults:
     depth: 1
   merges:
-  - origin 33c58e8f5a0def99e3ce2b407c15710739cd57d3
+  - origin 5f7f7310943ce27e2ea7d71265d9ec076d45512a
   remotes:
     origin: https://github.com/OCA/account-closing.git
 account-financial-reporting:
   defaults:
     depth: 1
   merges:
-  - origin 1cbcfd474cb09b8e191e7fa6e5c3a808528e7731
+  - origin 2a3074e504bc8ce8d76e3d012a6940e856d87eaa
   remotes:
     origin: https://github.com/OCA/account-financial-reporting.git
 account-financial-tools:
   defaults:
     depth: 1
   merges:
-  - origin 3777213044d721053ff849411500c2d492a80584
+  - origin b964802aab884382c90966c50bef4c7ad361dd41
   remotes:
     origin: https://github.com/OCA/account-financial-tools.git
 account-fiscal-rule:
@@ -44,7 +44,7 @@ account-invoicing:
   defaults:
     depth: 500
   merges:
-  - origin ee3650df46446dca7b5d311c59e46a5701d58ade
+  - origin 21c02526c098d146e497ec690682c6a8c68ebd44
   - origin refs/pull/1377/head
   remotes:
     origin: https://github.com/OCA/account-invoicing.git
@@ -66,7 +66,7 @@ bank-payment:
   defaults:
     depth: 500
   merges:
-  - origin 161a40715596dcad3bea9f7bbc242498c8385106
+  - origin 0e2e2255c2d03e6e7957dfd8acb01b6f9b4d80db
   - origin refs/pull/1184/head
   remotes:
     origin: https://github.com/OCA/bank-payment.git
@@ -116,14 +116,14 @@ contract:
   defaults:
     depth: 1
   merges:
-  - origin b6fb53006ae3839cc41346e37005e18999d2921b
+  - origin f0285c7cb8e5a73233d29726e9f3158be8d1fbe1
   remotes:
     origin: https://github.com/OCA/contract.git
 credit-control:
   defaults:
     depth: 1
   merges:
-  - origin 3eec9eb4049ea4f2b0013853a2439a370efc180c
+  - origin e499b3b272d9411f2d244bda030ce868925667c2
   remotes:
     origin: https://github.com/OCA/credit-control.git
 crm:
@@ -172,7 +172,7 @@ hr:
   defaults:
     depth: 1
   merges:
-  - origin 6b98ebfed1b630e9c3078afaa27e2cb8c03ba323
+  - origin 9790fece011a15a84dafb171fa0a4164326bf589
   remotes:
     origin: https://github.com/OCA/hr.git
 intrastat:
@@ -200,7 +200,7 @@ l10n-spain:
   defaults:
     depth: 1
   merges:
-  - origin 888ecd3d79e2767686306ad10a0e78c1f1cd2ae3
+  - origin 1b9f1114355c893e7cc7d7c64243cb80c3560ce7
   remotes:
     origin: https://github.com/OCA/l10n-spain.git
 maintenance:
@@ -326,7 +326,7 @@ server-tools:
   defaults:
     depth: 1
   merges:
-  - origin 823f2409d301a7cf1231eb72cb523ea760a167be
+  - origin d66f2c3fe8e5387b87983521a6be3d34f89a5ae1
   remotes:
     origin: https://github.com/OCA/server-tools.git
 server-ux:
