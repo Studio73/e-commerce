@@ -9,7 +9,7 @@ account-closing:
   defaults:
     depth: 1
   merges:
-  - origin 40044df2c329d233645ca846277301b4f26dd007
+  - origin 98da6d15c1e0b27d7a57ec408af0aec52341e7d1
   remotes:
     origin: https://github.com/OCA/account-closing.git
 account-financial-reporting:
@@ -88,7 +88,7 @@ brand:
   defaults:
     depth: 1
   merges:
-  - origin e2456c173edbf16773387013a8d4debbf70e4894
+  - origin 0d07383e78f4ba88ff02116bc029d063f700d6d0
   remotes:
     origin: https://github.com/OCA/brand.git
 commission:
@@ -193,9 +193,8 @@ l10n-spain:
   defaults:
     depth: 500
   merges:
-  - origin 29137bb05bf05d3c2806b5a9594ee8f85096bad0
+  - origin c3451d916eec62b4fd7ce0df2fcbb59cb4005c0e
   - origin refs/pull/3318/head
-  - origin refs/pull/3325/head
   remotes:
     origin: https://github.com/OCA/l10n-spain.git
 management-system:
@@ -223,7 +222,7 @@ partner-contact:
   defaults:
     depth: 500
   merges:
-  - origin b05e9367c790e45c911e333f99c947ade51ca70b
+  - origin 3e62496e4e64a28b86499415ee649b750aa3fbbf
   - origin refs/pull/1662/head
   remotes:
     origin: https://github.com/OCA/partner-contact.git
