@@ -220,10 +220,9 @@ margin-analysis:
     origin: https://github.com/OCA/margin-analysis.git
 partner-contact:
   defaults:
-    depth: 500
+    depth: 1
   merges:
   - origin 3e62496e4e64a28b86499415ee649b750aa3fbbf
-  - origin refs/pull/1662/head
   remotes:
     origin: https://github.com/OCA/partner-contact.git
 product-attribute:
