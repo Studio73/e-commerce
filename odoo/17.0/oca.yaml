@@ -254,6 +254,7 @@ project:
   - origin f13c6277c40693e47e5be24d9b7809caa20ea6b6
   - origin refs/pull/1219/head
   - origin refs/pull/1232/head
+  - origin refs/pull/1233/head
   remotes:
     origin: https://github.com/OCA/project.git
 purchase-workflow:
