@@ -16,14 +16,14 @@ account-financial-reporting:
   defaults:
     depth: 1
   merges:
-  - origin 2a3074e504bc8ce8d76e3d012a6940e856d87eaa
+  - origin 0da40f4a22db8329f4ab17cd0c655438d2d6d59a
   remotes:
     origin: https://github.com/OCA/account-financial-reporting.git
 account-financial-tools:
   defaults:
     depth: 1
   merges:
-  - origin b964802aab884382c90966c50bef4c7ad361dd41
+  - origin 2451f2eb4477fad50632bdd89b3fa664a4f9eba5
   remotes:
     origin: https://github.com/OCA/account-financial-tools.git
 account-fiscal-rule:
@@ -66,7 +66,7 @@ bank-payment:
   defaults:
     depth: 500
   merges:
-  - origin 0e2e2255c2d03e6e7957dfd8acb01b6f9b4d80db
+  - origin 2167d92c5720485d768454a874c3be25cfc992c7
   - origin refs/pull/1184/head
   remotes:
     origin: https://github.com/OCA/bank-payment.git
@@ -123,14 +123,14 @@ credit-control:
   defaults:
     depth: 1
   merges:
-  - origin e499b3b272d9411f2d244bda030ce868925667c2
+  - origin 7898015b3f518bcd4f5a7c1ed62d5b995b1d1a59
   remotes:
     origin: https://github.com/OCA/credit-control.git
 crm:
   defaults:
     depth: 1
   merges:
-  - origin 73be40030aecfe73325ceaf0aa5eca3f4d0bf6c5
+  - origin f3f6a17ed6bab247a65acf316f3c895bd3e73d00
   remotes:
     origin: https://github.com/OCA/crm.git
 delivery-carrier:
@@ -221,7 +221,7 @@ manufacture:
   defaults:
     depth: 1
   merges:
-  - origin b0f0e46cba21b7dd2ed0289fde4c1a46a0835ab9
+  - origin f4dc5b4609a55c2fc430ca9737eb5ec3ce114d48
   remotes:
     origin: https://github.com/OCA/manufacture.git
 margin-analysis:
@@ -326,7 +326,7 @@ server-tools:
   defaults:
     depth: 1
   merges:
-  - origin d66f2c3fe8e5387b87983521a6be3d34f89a5ae1
+  - origin 07f7831f12d280027d40403302ba6e3593e2864f
   remotes:
     origin: https://github.com/OCA/server-tools.git
 server-ux:
