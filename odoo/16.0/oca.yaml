@@ -379,9 +379,10 @@ server-brand:
     origin: https://github.com/OCA/server-brand.git
 server-tools:
   defaults:
-    depth: 1
+    depth: 500
   merges:
   - origin 78874f95f36504b7baf6dc969a4f3437546b6e88
+  - origin refs/pull/2829/head
   remotes:
     origin: https://github.com/OCA/server-tools.git
 server-ux:
