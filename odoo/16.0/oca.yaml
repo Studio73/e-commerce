@@ -272,6 +272,7 @@ product-attribute:
   merges:
   - origin c302a0e35b7b4d58d68f14f385f9ec746addcd82
   - origin refs/pull/1485/head
+  - origin refs/pull/1535/head
   remotes:
     origin: https://github.com/OCA/product-attribute.git
 product-pack:
