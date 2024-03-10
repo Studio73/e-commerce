@@ -66,7 +66,7 @@ bank-payment:
   defaults:
     depth: 500
   merges:
-  - origin 2167d92c5720485d768454a874c3be25cfc992c7
+  - origin 758d5b39556b74608eef05d2db904eae130450b9
   - origin refs/pull/1184/head
   remotes:
     origin: https://github.com/OCA/bank-payment.git
@@ -214,7 +214,7 @@ management-system:
   defaults:
     depth: 1
   merges:
-  - origin 3dccf67322179df3819b724f5361f06088dd4fc5
+  - origin 100365a3f6f69a957fe17af4b22d10881a78d8bb
   remotes:
     origin: https://github.com/OCA/management-system.git
 manufacture:
@@ -270,14 +270,14 @@ project:
   defaults:
     depth: 1
   merges:
-  - origin d2612dd7c6246f685979c3af966968b7140ff2ba
+  - origin 5f29c4c2117e667df85deebf6a5f9f8eec862866
   remotes:
     origin: https://github.com/OCA/project.git
 purchase-workflow:
   defaults:
     depth: 1
   merges:
-  - origin d4c535250e50dfba7562ca58bc71c158ae653129
+  - origin e9951f04680e7e3e1c92d4a6230f310c3a89023f
   remotes:
     origin: https://github.com/OCA/purchase-workflow.git
 queue:
@@ -326,7 +326,7 @@ server-tools:
   defaults:
     depth: 1
   merges:
-  - origin 07f7831f12d280027d40403302ba6e3593e2864f
+  - origin 95061c4a031e464896664c0fca3d6317c569a036
   remotes:
     origin: https://github.com/OCA/server-tools.git
 server-ux:
@@ -390,7 +390,7 @@ web:
   defaults:
     depth: 1
   merges:
-  - origin e65ab235c86cb5cb00ccb29b0fbf1279bc23c4a6
+  - origin 1a252ee941e6c311bc1606ec416c92112f478328
   remotes:
     origin: https://github.com/OCA/web.git
 website:
