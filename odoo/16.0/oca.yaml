@@ -54,6 +54,7 @@ account-invoicing:
   - origin refs/pull/1646/head
   - origin refs/pull/1660/head
   - origin refs/pull/1674/head
+  - origin refs/pull/1680/head
   remotes:
     origin: https://github.com/OCA/account-invoicing.git
 account-payment:
@@ -271,7 +272,6 @@ product-attribute:
   merges:
   - origin f5708e8f00b54afca2ade8cadc4a7a2ad12216bd
   - origin refs/pull/1485/head
-  - origin refs/pull/1535/head
   remotes:
     origin: https://github.com/OCA/product-attribute.git
 product-pack:
