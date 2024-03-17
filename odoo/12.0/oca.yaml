@@ -23,7 +23,7 @@ account-financial-tools:
   defaults:
     depth: 1
   merges:
-  - origin 2451f2eb4477fad50632bdd89b3fa664a4f9eba5
+  - origin fd03fb3ddb175a42e05bd8f4fc5ad95c2fdd093f
   remotes:
     origin: https://github.com/OCA/account-financial-tools.git
 account-fiscal-rule:
@@ -151,7 +151,7 @@ edi:
   defaults:
     depth: 1
   merges:
-  - origin d1b78c754c06e53bfbc093f64c2c7ff443fa686a
+  - origin 9144e59952ef828e84116d687624fa856c7ce848
   remotes:
     origin: https://github.com/OCA/edi.git
 fleet:
@@ -207,7 +207,7 @@ maintenance:
   defaults:
     depth: 1
   merges:
-  - origin c52abcc8210e5638d803ad7c3b3779ebd7569e72
+  - origin d6a1beab12304e591166a2a4f37dd08478bcdd61
   remotes:
     origin: https://github.com/OCA/maintenance.git
 management-system:
@@ -221,7 +221,7 @@ manufacture:
   defaults:
     depth: 1
   merges:
-  - origin f4dc5b4609a55c2fc430ca9737eb5ec3ce114d48
+  - origin cd5e6cda164e1d2f285a6651833bc8f26251427d
   remotes:
     origin: https://github.com/OCA/manufacture.git
 margin-analysis:
@@ -235,7 +235,7 @@ mis-builder:
   defaults:
     depth: 1
   merges:
-  - origin 784d29691d8b4381ad8d50cb65c2b3d2f84815f1
+  - origin 70c766f50a663cce4959086fa12986e175da12fb
   remotes:
     origin: https://github.com/OCA/mis-builder.git
 partner-contact:
@@ -277,7 +277,7 @@ purchase-workflow:
   defaults:
     depth: 1
   merges:
-  - origin e9951f04680e7e3e1c92d4a6230f310c3a89023f
+  - origin 12f87496e17461cf3fc086c66016949ca5f47a1b
   remotes:
     origin: https://github.com/OCA/purchase-workflow.git
 queue:
@@ -298,7 +298,7 @@ reporting-engine:
   defaults:
     depth: 1
   merges:
-  - origin c8b434a9510e5ff2e0ffd83d962d9527185ec771
+  - origin 0433d608b86404cba04a09c65e94d84bf88ff6a1
   remotes:
     origin: https://github.com/OCA/reporting-engine.git
 sale-reporting:
@@ -312,7 +312,7 @@ sale-workflow:
   defaults:
     depth: 1
   merges:
-  - origin 0023104eb7934e6442388144101903e027c4c9f2
+  - origin b99bbae28482b24f854f3197e4ddf1f409950504
   remotes:
     origin: https://github.com/OCA/sale-workflow.git
 server-auth:
