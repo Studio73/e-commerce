@@ -44,9 +44,10 @@ account-invoice-reporting:
     origin: https://github.com/OCA/account-invoice-reporting.git
 account-invoicing:
   defaults:
-    depth: 1
+    depth: 500
   merges:
   - origin aaaf5958019b301f5d258dd19bf00376e68a09ee
+  - origin refs/pull/1687/head
   remotes:
     origin: https://github.com/OCA/account-invoicing.git
 account-payment:
@@ -301,13 +302,15 @@ sale-workflow:
   merges:
   - origin e66cbea16802bf0648979521e8b98b7cd95201aa
   - origin refs/pull/2961/head
+  - origin refs/pull/3025/head
   remotes:
     origin: https://github.com/OCA/sale-workflow.git
 server-backend:
   defaults:
-    depth: 1
+    depth: 500
   merges:
   - origin 5fe5154d549b793a0adfa5ef85f3e93b7df9006f
+  - origin refs/pull/275/head
   remotes:
     origin: https://github.com/OCA/server-backend.git
 server-tools:
