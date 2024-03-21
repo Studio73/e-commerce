@@ -30,9 +30,10 @@ account-financial-tools:
     origin: https://github.com/OCA/account-financial-tools.git
 account-fiscal-rule:
   defaults:
-    depth: 1
+    depth: 500
   merges:
   - origin 3cb4f2acea7f74c4064c2e432e54682827f76fbe
+  - origin refs/pull/420/head
   remotes:
     origin: https://github.com/OCA/account-fiscal-rule.git
 account-invoice-reporting:
