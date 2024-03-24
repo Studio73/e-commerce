@@ -123,7 +123,7 @@ credit-control:
   defaults:
     depth: 1
   merges:
-  - origin 7898015b3f518bcd4f5a7c1ed62d5b995b1d1a59
+  - origin 99d34d9ef054b48dbc1335b5ab42abbb12506f57
   remotes:
     origin: https://github.com/OCA/credit-control.git
 crm:
@@ -200,7 +200,7 @@ l10n-spain:
   defaults:
     depth: 1
   merges:
-  - origin 1b9f1114355c893e7cc7d7c64243cb80c3560ce7
+  - origin 4c65a6e2ab904c866edaff76cb6e6bc3ee8cc299
   remotes:
     origin: https://github.com/OCA/l10n-spain.git
 maintenance:
@@ -221,7 +221,7 @@ manufacture:
   defaults:
     depth: 1
   merges:
-  - origin cd5e6cda164e1d2f285a6651833bc8f26251427d
+  - origin 8a05ebee0ed80f9e3b51991c248dd26d3979335b
   remotes:
     origin: https://github.com/OCA/manufacture.git
 margin-analysis:
@@ -235,14 +235,14 @@ mis-builder:
   defaults:
     depth: 1
   merges:
-  - origin 70c766f50a663cce4959086fa12986e175da12fb
+  - origin 57a9eff338a69e74819ef845a032773a1a9b8d8f
   remotes:
     origin: https://github.com/OCA/mis-builder.git
 partner-contact:
   defaults:
     depth: 1
   merges:
-  - origin 3901a53f92b708ebabeb592b94ded2d806c454e4
+  - origin 598912a76154759aa767ce0536ebaef62f893629
   remotes:
     origin: https://github.com/OCA/partner-contact.git
 product-attribute:
@@ -277,7 +277,7 @@ purchase-workflow:
   defaults:
     depth: 1
   merges:
-  - origin 12f87496e17461cf3fc086c66016949ca5f47a1b
+  - origin 3cad611fa9218bd435ae71bd613b9d702c597184
   remotes:
     origin: https://github.com/OCA/purchase-workflow.git
 queue:
@@ -355,7 +355,7 @@ stock-logistics-reporting:
   defaults:
     depth: 1
   merges:
-  - origin b43fb2c7bcddd2da8578f37c38fab5cf835287a6
+  - origin a87a1475af6321e2667f6e1da1ff45a7af3895f2
   remotes:
     origin: https://github.com/OCA/stock-logistics-reporting.git
 stock-logistics-transport:
