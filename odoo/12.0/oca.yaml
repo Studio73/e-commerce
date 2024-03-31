@@ -23,14 +23,14 @@ account-financial-tools:
   defaults:
     depth: 1
   merges:
-  - origin fd03fb3ddb175a42e05bd8f4fc5ad95c2fdd093f
+  - origin ee85a8c29f5dda4cd028ecda2dc4af1b8a16073d
   remotes:
     origin: https://github.com/OCA/account-financial-tools.git
 account-fiscal-rule:
   defaults:
     depth: 1
   merges:
-  - origin b1252a04a1ffa1945bc7db66018bedb095d81c18
+  - origin 2119a28a7a66cff3a4c22fa40307a30b2c2be917
   remotes:
     origin: https://github.com/OCA/account-fiscal-rule.git
 account-invoice-reporting:
@@ -165,7 +165,7 @@ helpdesk:
   defaults:
     depth: 1
   merges:
-  - origin a0dd27c2e81d36ab23993b57e9a7f66719323f80
+  - origin c3e413a13d9b15f11ac269b6032a41e1e793cc1a
   remotes:
     origin: https://github.com/OCA/helpdesk.git
 hr:
@@ -200,7 +200,7 @@ l10n-spain:
   defaults:
     depth: 1
   merges:
-  - origin 4c65a6e2ab904c866edaff76cb6e6bc3ee8cc299
+  - origin 0af9a85d8eff4be7cd02e082cc05baad23006304
   remotes:
     origin: https://github.com/OCA/l10n-spain.git
 maintenance:
@@ -277,7 +277,7 @@ purchase-workflow:
   defaults:
     depth: 1
   merges:
-  - origin 3cad611fa9218bd435ae71bd613b9d702c597184
+  - origin 91333608df0f1ac7025862c79c7695ec2c50f41c
   remotes:
     origin: https://github.com/OCA/purchase-workflow.git
 queue:
@@ -298,7 +298,7 @@ reporting-engine:
   defaults:
     depth: 1
   merges:
-  - origin 0433d608b86404cba04a09c65e94d84bf88ff6a1
+  - origin 9a0f99f080f0b42429ba0bf4d62d57d3c6156765
   remotes:
     origin: https://github.com/OCA/reporting-engine.git
 sale-reporting:
@@ -312,7 +312,7 @@ sale-workflow:
   defaults:
     depth: 1
   merges:
-  - origin b99bbae28482b24f854f3197e4ddf1f409950504
+  - origin 220bc445cd273a94320e9ea689b0b59622db2c91
   remotes:
     origin: https://github.com/OCA/sale-workflow.git
 server-auth:
