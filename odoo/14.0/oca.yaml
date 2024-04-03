@@ -227,6 +227,7 @@ l10n-spain:
   - origin 8a109f9e429e2bd53e58e1aea8d84bcbf672508b
   - origin refs/pull/2357/head
   - origin refs/pull/2992/head
+  - origin refs/pull/3508/head
   remotes:
     origin: https://github.com/OCA/l10n-spain.git
 maintenance:
