@@ -228,7 +228,7 @@ l10n-spain:
   defaults:
     depth: 500
   merges:
-  - origin c953ea1a41eee3726afb766c4d900cf2510a73f1
+  - origin 3279c0daf3f11d77ab643952ec54ef0e56aac346
   - origin refs/pull/3510/head
   remotes:
     origin: https://github.com/OCA/l10n-spain.git
