@@ -23,7 +23,7 @@ account-financial-tools:
   defaults:
     depth: 1
   merges:
-  - origin be24cd74415c9e710be074e9e53feeeac2a14343
+  - origin 185e142814c75831effb70dfc6954daab5508ff9
   remotes:
     origin: https://github.com/OCA/account-financial-tools.git
 account-fiscal-rule:
@@ -116,7 +116,7 @@ contract:
   defaults:
     depth: 1
   merges:
-  - origin f0285c7cb8e5a73233d29726e9f3158be8d1fbe1
+  - origin 94601718d7087de5814369c7d6b9ff65267b12fa
   remotes:
     origin: https://github.com/OCA/contract.git
 credit-control:
@@ -165,7 +165,7 @@ helpdesk:
   defaults:
     depth: 1
   merges:
-  - origin 6b24a0618edbcdbb9fe683edddfe561785e1cc92
+  - origin 6f0a5118c245c72f97e4288083d1ac57c6c7fca2
   remotes:
     origin: https://github.com/OCA/helpdesk.git
 hr:
@@ -305,7 +305,7 @@ sale-reporting:
   defaults:
     depth: 1
   merges:
-  - origin 622a85fffb0461c8aa9f9906b683e5386f529771
+  - origin 1bfc26a39c738915b9c2c1998ca1278c6b780f3f
   remotes:
     origin: https://github.com/OCA/sale-reporting.git
 sale-workflow:
@@ -326,7 +326,7 @@ server-tools:
   defaults:
     depth: 1
   merges:
-  - origin 95061c4a031e464896664c0fca3d6317c569a036
+  - origin 7320f2cd8b03b48c8cce3e09009fc65967c27bf4
   remotes:
     origin: https://github.com/OCA/server-tools.git
 server-ux:

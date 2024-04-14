@@ -38,14 +38,14 @@ account-invoice-reporting:
   defaults:
     depth: 1
   merges:
-  - origin 1de89be54291fbd66ba9fd02494eab80994c015f
+  - origin 0b9b7759b2cabfd759390a297f45a1d601b7b336
   remotes:
     origin: https://github.com/OCA/account-invoice-reporting.git
 account-invoicing:
   defaults:
     depth: 1
   merges:
-  - origin af7f00fbf1276f2ae928cebba40e20e533402d93
+  - origin 1626e4b1b15dbbb43a628dd75aed5f4180d5d504
   remotes:
     origin: https://github.com/OCA/account-invoicing.git
 account-payment:
@@ -66,7 +66,7 @@ bank-payment:
   defaults:
     depth: 1
   merges:
-  - origin a98223584aa991f54c3d6ca915ed4dd85d79dadc
+  - origin 7239895443d01d704460c411fb339862629b89ad
   remotes:
     origin: https://github.com/OCA/bank-payment.git
 bank-statement-import:
@@ -115,7 +115,7 @@ contract:
   defaults:
     depth: 500
   merges:
-  - origin 15cf8c6ef3565f74660702e2f3744cb4050fdbdc
+  - origin 617ac0ecb171e62a77efbcd35c9cdd9afd3d8d84
   - origin refs/pull/906/head
   remotes:
     origin: https://github.com/OCA/contract.git
@@ -144,7 +144,7 @@ delivery-carrier:
   defaults:
     depth: 500
   merges:
-  - origin d2bc786a3827a16280956573637a8aea7b20fd98
+  - origin 240655295d22ea0ad70db9d8a5fb76794569e145
   - origin refs/pull/678/head
   remotes:
     origin: https://github.com/OCA/delivery-carrier.git
@@ -168,14 +168,14 @@ fleet:
   defaults:
     depth: 1
   merges:
-  - origin 5e3a7ac734d5c3e550e3b97f4445026cdbb7133d
+  - origin a0a12623767e5319ad3ace5cfefa429c277c373a
   remotes:
     origin: https://github.com/OCA/fleet.git
 helpdesk:
   defaults:
     depth: 1
   merges:
-  - origin 9fe26a30ef85f39bc100cda8b14e69db4267fd58
+  - origin dc39e01cd8eff494ce6f5bea21343d6f2f713bde
   remotes:
     origin: https://github.com/OCA/helpdesk.git
 hr:
@@ -234,7 +234,7 @@ maintenance:
   defaults:
     depth: 500
   merges:
-  - origin 9fb0ad0c6d834472a626be7901260afae8bc7c35
+  - origin 9c24b12d55c76dc031b2702f2a6051a3288d963b
   - origin refs/pull/347/head
   remotes:
     origin: https://github.com/OCA/maintenance.git
@@ -249,14 +249,14 @@ manufacture:
   defaults:
     depth: 1
   merges:
-  - origin 75cc6eea672932819ba34bc21f9578137315112f
+  - origin f45deb03b7c606b03587ba745dd3f210370c4dd9
   remotes:
     origin: https://github.com/OCA/manufacture.git
 margin-analysis:
   defaults:
     depth: 1
   merges:
-  - origin e730bb2bcec8a00e06a2f55253543bf9e3e1f5ae
+  - origin 0a9155163600218f4ad3d40877d1af20f7c165a9
   remotes:
     origin: https://github.com/OCA/margin-analysis.git
 mis-builder:
@@ -328,7 +328,7 @@ queue:
   defaults:
     depth: 1
   merges:
-  - origin 478014371ec3e1c4abb868f8ec232b3a347e6e57
+  - origin 74cc04a9a5796af01726fd2012e5b6c2980102d7
   remotes:
     origin: https://github.com/OCA/queue.git
 report-print-send:
