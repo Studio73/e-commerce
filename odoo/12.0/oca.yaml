@@ -16,14 +16,14 @@ account-financial-reporting:
   defaults:
     depth: 1
   merges:
-  - origin 6fbe522c18117880f612affda4c14c4f73f05712
+  - origin 8f16ddde2a6dc14bfb77834aa3c6da48516294bf
   remotes:
     origin: https://github.com/OCA/account-financial-reporting.git
 account-financial-tools:
   defaults:
     depth: 1
   merges:
-  - origin 185e142814c75831effb70dfc6954daab5508ff9
+  - origin c26f360390844c4e29cf85b95ec7bc9eb6b65783
   remotes:
     origin: https://github.com/OCA/account-financial-tools.git
 account-fiscal-rule:
@@ -172,7 +172,7 @@ hr:
   defaults:
     depth: 1
   merges:
-  - origin 9790fece011a15a84dafb171fa0a4164326bf589
+  - origin f2eedb4da4d3d10e83dc71840853eeaef7b3ee6c
   remotes:
     origin: https://github.com/OCA/hr.git
 intrastat:
@@ -277,7 +277,7 @@ purchase-workflow:
   defaults:
     depth: 1
   merges:
-  - origin 91333608df0f1ac7025862c79c7695ec2c50f41c
+  - origin 46b8659b0e1985be238f9307670094f904bf5412
   remotes:
     origin: https://github.com/OCA/purchase-workflow.git
 queue:
@@ -326,7 +326,7 @@ server-tools:
   defaults:
     depth: 1
   merges:
-  - origin 7320f2cd8b03b48c8cce3e09009fc65967c27bf4
+  - origin 6eecc980708c9c3a1fa6cf0e1ab3a8f3e202e9fd
   remotes:
     origin: https://github.com/OCA/server-tools.git
 server-ux:
@@ -369,7 +369,7 @@ stock-logistics-warehouse:
   defaults:
     depth: 1
   merges:
-  - origin 611cbf940e1abdf35fdd63746aae18672a7190e9
+  - origin 7653391d1798f64c05cea2fa5404d8e400d23441
   remotes:
     origin: https://github.com/OCA/stock-logistics-warehouse.git
 stock-logistics-workflow:
