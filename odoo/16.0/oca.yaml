@@ -277,7 +277,7 @@ product-attribute:
   defaults:
     depth: 500
   merges:
-  - origin c7254850331dc1b56ff349b9381ef4a1d0f3d6e4
+  - origin 66e40c4bd702f4976d2a484bdd92d24751b8970c
   - origin refs/pull/1485/head
   remotes:
     origin: https://github.com/OCA/product-attribute.git
