@@ -9,7 +9,7 @@ account-closing:
   defaults:
     depth: 1
   merges:
-  - origin aeb00b4c1cd751ed58144b7b958ecc993b2eaab1
+  - origin 3dca9d81c7bd1748629746a707b588017e83f020
   remotes:
     origin: https://github.com/OCA/account-closing.git
 account-financial-reporting:
@@ -23,7 +23,7 @@ account-financial-tools:
   defaults:
     depth: 1
   merges:
-  - origin c26f360390844c4e29cf85b95ec7bc9eb6b65783
+  - origin ed3382bc3502cd8db8a1bb5e54cbfd311d6ebe77
   remotes:
     origin: https://github.com/OCA/account-financial-tools.git
 account-fiscal-rule:
@@ -44,7 +44,7 @@ account-invoicing:
   defaults:
     depth: 500
   merges:
-  - origin 3d6d842e6349fb225567de1e3e27ad293e39b475
+  - origin 1063e455875347b96c72535d03a85107835029f6
   - origin refs/pull/1377/head
   remotes:
     origin: https://github.com/OCA/account-invoicing.git
@@ -66,7 +66,7 @@ bank-payment:
   defaults:
     depth: 500
   merges:
-  - origin 758d5b39556b74608eef05d2db904eae130450b9
+  - origin ccde51b6b858c47b992dd975bf67cc20429203c6
   - origin refs/pull/1184/head
   remotes:
     origin: https://github.com/OCA/bank-payment.git
@@ -165,7 +165,7 @@ helpdesk:
   defaults:
     depth: 1
   merges:
-  - origin 6f0a5118c245c72f97e4288083d1ac57c6c7fca2
+  - origin fd8b03eab5f5e26d31ced4e112eeb8091c08ef8a
   remotes:
     origin: https://github.com/OCA/helpdesk.git
 hr:
@@ -235,7 +235,7 @@ mis-builder:
   defaults:
     depth: 1
   merges:
-  - origin 57a9eff338a69e74819ef845a032773a1a9b8d8f
+  - origin 25e42a0ec6479e8931c35eed4c1a65afde6719c3
   remotes:
     origin: https://github.com/OCA/mis-builder.git
 partner-contact:
@@ -263,7 +263,7 @@ product-variant:
   defaults:
     depth: 1
   merges:
-  - origin e47b032ced13ff4ca374783e52178c987f913ed7
+  - origin 4f96e4bde3d1583b872bcf56564e22a79b643724
   remotes:
     origin: https://github.com/OCA/product-variant.git
 project:
@@ -369,7 +369,7 @@ stock-logistics-warehouse:
   defaults:
     depth: 1
   merges:
-  - origin 7653391d1798f64c05cea2fa5404d8e400d23441
+  - origin 0d8517f615794137a738f0a2d8397c33b30684a9
   remotes:
     origin: https://github.com/OCA/stock-logistics-warehouse.git
 stock-logistics-workflow:
