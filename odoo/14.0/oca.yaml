@@ -94,7 +94,7 @@ commission:
   defaults:
     depth: 1
   merges:
-  - origin 648ecb0d9faec4f1f438468b6dfc75b91205e4ff
+  - origin 341f396743d8999f11a9fb9731d54e1ab288eaf2
   remotes:
     origin: https://github.com/OCA/commission.git
 community-data-files:
