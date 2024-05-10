@@ -304,9 +304,10 @@ project:
     origin: https://github.com/OCA/project.git
 purchase-workflow:
   defaults:
-    depth: 1
+    depth: 500
   merges:
   - origin aa229e4613298fc9de0ae0b379f311fbf5ed162c
+  - origin refs/pull/2272/head
   remotes:
     origin: https://github.com/OCA/purchase-workflow.git
 queue:
