@@ -102,7 +102,7 @@ community-data-files:
   defaults:
     depth: 1
   merges:
-  - origin 4bdb803181f1d56d313f619b33ac50403a0c6538
+  - origin 7fdb3777c1e46995464b8a36d625faada61e4707
   remotes:
     origin: https://github.com/OCA/community-data-files.git
 connector:
@@ -116,7 +116,7 @@ contract:
   defaults:
     depth: 1
   merges:
-  - origin 94601718d7087de5814369c7d6b9ff65267b12fa
+  - origin 517de8795022aa53a8957baa76e64dde56bc8aaa
   remotes:
     origin: https://github.com/OCA/contract.git
 credit-control:
@@ -144,7 +144,7 @@ e-commerce:
   defaults:
     depth: 1
   merges:
-  - origin 8a81b2abbbbf952a0b4669aa5f44cec11166fc7f
+  - origin 6cb468b5fdff94771004539063bd2d2c3c707012
   remotes:
     origin: https://github.com/OCA/e-commerce.git
 edi:
@@ -242,7 +242,7 @@ partner-contact:
   defaults:
     depth: 1
   merges:
-  - origin 598912a76154759aa767ce0536ebaef62f893629
+  - origin e574628c460da556aeb0aca7f8fdb6095d9a707c
   remotes:
     origin: https://github.com/OCA/partner-contact.git
 product-attribute:
@@ -263,7 +263,7 @@ product-variant:
   defaults:
     depth: 1
   merges:
-  - origin 4f96e4bde3d1583b872bcf56564e22a79b643724
+  - origin e8dc02065712f4d2f60177dc7179d4b2d0044645
   remotes:
     origin: https://github.com/OCA/product-variant.git
 project:
@@ -312,7 +312,7 @@ sale-workflow:
   defaults:
     depth: 1
   merges:
-  - origin 220bc445cd273a94320e9ea689b0b59622db2c91
+  - origin 1cf207d9397b862a7940edb0de02f7b14ef211f6
   remotes:
     origin: https://github.com/OCA/sale-workflow.git
 server-auth:
@@ -390,7 +390,7 @@ web:
   defaults:
     depth: 1
   merges:
-  - origin 1a252ee941e6c311bc1606ec416c92112f478328
+  - origin 0c2be8f16629c70cd10a4a3e0a4d44d5d3468e0f
   remotes:
     origin: https://github.com/OCA/web.git
 website:
