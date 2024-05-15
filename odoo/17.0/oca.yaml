@@ -323,10 +323,9 @@ server-tools:
     origin: https://github.com/OCA/server-tools.git
 server-ux:
   defaults:
-    depth: 500
+    depth: 1
   merges:
   - origin 5ae9a2ac0249acbaa7be8fd9bc70f8d6a7b577b4
-  - origin refs/pull/814/head
   remotes:
     origin: https://github.com/OCA/server-ux.git
 social:
