@@ -355,7 +355,6 @@ sale-workflow:
   - origin refs/pull/2524/head
   - origin refs/pull/2649/head
   - origin refs/pull/2737/head
-  - origin refs/pull/2757/head
   - origin refs/pull/2945/head
   remotes:
     origin: https://github.com/OCA/sale-workflow.git
@@ -403,6 +402,13 @@ social:
   - origin refs/pull/1243/head
   remotes:
     origin: https://github.com/OCA/social.git
+stock-logistics-availability:
+  defaults:
+    depth: 1
+  merges:
+  - origin 5549c34f9b7869ff32037cc7f3b10d102764dbfc
+  remotes:
+    origin: https://github.com/OCA/stock-logistics-availability.git
 stock-logistics-barcode:
   defaults:
     depth: 500
