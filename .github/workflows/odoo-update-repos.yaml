@@ -9,8 +9,8 @@ on:
       orgs:
         description: "One or Comma-separated list of organizations"
         default: "odoo,oca,openupgrade"
-  #schedule:
-  #  - cron: "0 2 * * Sun"
+  schedule:
+    - cron: "0 2 * * Sun"
 jobs:
   update:
     runs-on: self-hosted
