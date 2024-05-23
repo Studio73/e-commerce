@@ -47,14 +47,14 @@ account-invoicing:
   defaults:
     depth: 500
   merges:
-  - origin d489a640cea60b4021a410e5877c6b8f10a749c0
-  - origin refs/pull/1338/head
+  - origin 4d37555677f8c9201485958572370e29acad1e65
   - origin refs/pull/1487/head
   - origin refs/pull/1512/head
   - origin refs/pull/1563/head
   - origin refs/pull/1646/head
   - origin refs/pull/1660/head
   - origin refs/pull/1674/head
+  - origin refs/pull/1725/head
   remotes:
     origin: https://github.com/OCA/account-invoicing.git
 account-payment:
@@ -369,7 +369,7 @@ server-backend:
   defaults:
     depth: 500
   merges:
-  - origin 6fddb1a42cc1b2366ffb7559459e321e566bda5e
+  - origin 6a3bf1df982e2842a79a80077201ce826b53d8c5
   - origin refs/pull/221/head
   remotes:
     origin: https://github.com/OCA/server-backend.git
