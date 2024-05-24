@@ -330,6 +330,7 @@ reporting-engine:
   merges:
   - origin e8df660d9b1a0b018fbd504f0a45bc59fe516c98
   - origin refs/pull/842/head
+  - origin refs/pull/882/head
   remotes:
     origin: https://github.com/OCA/reporting-engine.git
 sale-promotion:
