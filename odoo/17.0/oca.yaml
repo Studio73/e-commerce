@@ -197,9 +197,7 @@ l10n-spain:
     depth: 500
   merges:
   - origin ef1a86ce80ee14bbe2a1b24d5a696d9355e64548
-  - origin refs/pull/3318/head
-  - origin refs/pull/3490/head
-  - origin refs/pull/3503/head
+  - origin refs/pull/3511/head
   remotes:
     origin: https://github.com/OCA/l10n-spain.git
 management-system:
@@ -223,6 +221,13 @@ margin-analysis:
   - origin 00f8062af8f8595844fd81dbc3be9bf99e6a7659
   remotes:
     origin: https://github.com/OCA/margin-analysis.git
+mis-builder:
+  defaults:
+    depth: 1
+  merges:
+  - origin 89cab3e54ea79f6e94d6602fa9c827bbd76e7d9f
+  remotes:
+    origin: https://github.com/OCA/mis-builder.git
 partner-contact:
   defaults:
     depth: 1
