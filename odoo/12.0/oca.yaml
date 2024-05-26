@@ -2,7 +2,7 @@ account-analytic:
   defaults:
     depth: 1
   merges:
-  - origin 9e54407ea23adee530db47f848eaaf32289e0f3e
+  - origin 73f59bf041f7d70986a2fbd7d28eb51a4690dd03
   remotes:
     origin: https://github.com/OCA/account-analytic.git
 account-closing:
@@ -16,14 +16,14 @@ account-financial-reporting:
   defaults:
     depth: 1
   merges:
-  - origin 8f16ddde2a6dc14bfb77834aa3c6da48516294bf
+  - origin 0df88fccb9485a2c94a02534a0ea37b2514cf3d1
   remotes:
     origin: https://github.com/OCA/account-financial-reporting.git
 account-financial-tools:
   defaults:
     depth: 1
   merges:
-  - origin ed3382bc3502cd8db8a1bb5e54cbfd311d6ebe77
+  - origin d93181b95ae1acbef0efe6122b7e96f139af5d0a
   remotes:
     origin: https://github.com/OCA/account-financial-tools.git
 account-fiscal-rule:
@@ -95,7 +95,7 @@ commission:
   defaults:
     depth: 1
   merges:
-  - origin d35eba74e8b3b2b6eb633f4f3516bca7dfc5f9ea
+  - origin b26d270e5046f4ff67f7c4eb9b832552aa5b7650
   remotes:
     origin: https://github.com/OCA/commission.git
 community-data-files:
@@ -123,7 +123,7 @@ credit-control:
   defaults:
     depth: 1
   merges:
-  - origin 99d34d9ef054b48dbc1335b5ab42abbb12506f57
+  - origin 002498919d3aa06fcf6e8c48ffb51d291485feeb
   remotes:
     origin: https://github.com/OCA/credit-control.git
 crm:
@@ -270,7 +270,7 @@ project:
   defaults:
     depth: 1
   merges:
-  - origin 4ddf7a99f3ca8ccb08a485f6d93224dc342fcdad
+  - origin 9e398bacbfaa4fce29b164ffa9e0ace9d8e87118
   remotes:
     origin: https://github.com/OCA/project.git
 purchase-workflow:
@@ -340,7 +340,7 @@ social:
   defaults:
     depth: 500
   merges:
-  - origin b5a0f50a110efaf331280f587e132db7703797e2
+  - origin 9b3f20d148c3c6b04cd281b4b0327c20801a72c2
   - origin refs/pull/491/head
   remotes:
     origin: https://github.com/OCA/social.git
@@ -348,7 +348,7 @@ stock-logistics-barcode:
   defaults:
     depth: 1
   merges:
-  - origin ed6bd562a8079da5d86d51168f202fc3bc9acfc0
+  - origin adc0415049c120dc4a04598712846e6300d0adeb
   remotes:
     origin: https://github.com/OCA/stock-logistics-barcode.git
 stock-logistics-reporting:
@@ -390,7 +390,7 @@ web:
   defaults:
     depth: 1
   merges:
-  - origin 0c2be8f16629c70cd10a4a3e0a4d44d5d3468e0f
+  - origin 8025ea938dfd84f5d2da6712b55438207c1e9255
   remotes:
     origin: https://github.com/OCA/web.git
 website:
