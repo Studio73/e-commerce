@@ -225,9 +225,10 @@ knowledge:
     origin: https://github.com/OCA/knowledge.git
 l10n-spain:
   defaults:
-    depth: 1
+    depth: 500
   merges:
   - origin 64b12a037c6a9cda32e3aad349d05e461f72b3d0
+  - origin refs/pull/3612/head
   remotes:
     origin: https://github.com/OCA/l10n-spain.git
 management-system:
@@ -357,7 +358,6 @@ sale-workflow:
   - origin refs/pull/2737/head
   - origin refs/pull/2945/head
   - origin refs/pull/3152/head
-  - origin refs/pull/3612/head
   remotes:
     origin: https://github.com/OCA/sale-workflow.git
 server-auth:
