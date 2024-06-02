@@ -2,7 +2,7 @@ account-analytic:
   defaults:
     depth: 1
   merges:
-  - origin 73f59bf041f7d70986a2fbd7d28eb51a4690dd03
+  - origin ec821e5512da4c29b2fa1b6a4ed09282f08f9be7
   remotes:
     origin: https://github.com/OCA/account-analytic.git
 account-closing:
@@ -123,7 +123,7 @@ credit-control:
   defaults:
     depth: 1
   merges:
-  - origin 002498919d3aa06fcf6e8c48ffb51d291485feeb
+  - origin 2c68d05aa2b764f4b0ef5cd5a38df707353fc2d5
   remotes:
     origin: https://github.com/OCA/credit-control.git
 crm:
@@ -172,7 +172,7 @@ hr:
   defaults:
     depth: 1
   merges:
-  - origin f2eedb4da4d3d10e83dc71840853eeaef7b3ee6c
+  - origin 10ba00e632fcd114f2bd8c6d84a1f78c3a8d97fb
   remotes:
     origin: https://github.com/OCA/hr.git
 intrastat:

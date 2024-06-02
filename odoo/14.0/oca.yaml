@@ -17,7 +17,7 @@ account-financial-reporting:
   defaults:
     depth: 1
   merges:
-  - origin e0c57f5d2338ba6239398402e02caf6c1783ec81
+  - origin 353f2880465305d117b332900f01bc07ea15c091
   remotes:
     origin: https://github.com/OCA/account-financial-reporting.git
 account-financial-tools:
@@ -73,7 +73,7 @@ bank-statement-import:
   defaults:
     depth: 1
   merges:
-  - origin 05924cd14ef38e8f59852d6ac3499439035e0a8c
+  - origin 11e18fa153ec5d6efa0f6d27335251dd024da269
   remotes:
     origin: https://github.com/OCA/bank-statement-import.git
 bank-statement-reconcile:
@@ -123,7 +123,7 @@ credit-control:
   defaults:
     depth: 1
   merges:
-  - origin 7c0babdcf8a3c4b1395cc3c717c1bb81b01d4fdd
+  - origin e32c5a9bede953d19bc9f36f382d011c4fc326fb
   remotes:
     origin: https://github.com/OCA/credit-control.git
 crm:
@@ -144,7 +144,7 @@ delivery-carrier:
   defaults:
     depth: 500
   merges:
-  - origin d1bde1e5705c6012a2ee9799219d031c2d3c32bc
+  - origin 24011e119423caf314f5da83a7e206aff1db59b1
   - origin refs/pull/710/head
   remotes:
     origin: https://github.com/OCA/delivery-carrier.git
@@ -161,7 +161,7 @@ edi:
   defaults:
     depth: 1
   merges:
-  - origin 8975c095ea1e48a0a905c8626210d20355e70e8b
+  - origin 5c39f74c5b8e717c546aaece5818f86d1b44f357
   remotes:
     origin: https://github.com/OCA/edi.git
 fleet:
@@ -175,14 +175,14 @@ helpdesk:
   defaults:
     depth: 1
   merges:
-  - origin 0f6d6862ddb4ad9280f20a70e1d5c7a8cc9370fa
+  - origin 8cbc2700868188537b0905f2cdf4b1ca4d05258a
   remotes:
     origin: https://github.com/OCA/helpdesk.git
 hr:
   defaults:
     depth: 1
   merges:
-  - origin 6e1d875ffdf299f3be2028c04a15b05c0fb83b2b
+  - origin 2d56bfd956764ddfc9871ff66ba685787976f880
   remotes:
     origin: https://github.com/OCA/hr.git
 hr-attendance:
@@ -224,7 +224,7 @@ l10n-spain:
   defaults:
     depth: 500
   merges:
-  - origin 8f6f52b14c12c98700cd25d4c0b007303991d036
+  - origin 1c354614e44b3c5b0d39be3fb019769487c0479e
   - origin refs/pull/2357/head
   - origin refs/pull/2992/head
   - origin refs/pull/3508/head
@@ -249,7 +249,7 @@ manufacture:
   defaults:
     depth: 1
   merges:
-  - origin bceaf5a84fe9b877ff46c62036ffb0b479a6d8dd
+  - origin 6a294163ca9546c92c0d3ed4dde41cfcb393b17f
   remotes:
     origin: https://github.com/OCA/manufacture.git
 margin-analysis:
@@ -270,7 +270,7 @@ multi-company:
   defaults:
     depth: 1
   merges:
-  - origin 02f81b79fb90a6e298776f793699d2a9ed7418ae
+  - origin f124464740a3a52b3c2fcc9909d389ade31ff0c9
   remotes:
     origin: https://github.com/OCA/multi-company.git
 partner-contact:
@@ -320,7 +320,7 @@ purchase-workflow:
   defaults:
     depth: 500
   merges:
-  - origin dac84357b017a8c9dbe1d7cc94edd872db7c01ab
+  - origin 1542c71b3d6152895d1ae4d0758135237cb2a1fa
   - origin refs/pull/1692/head
   remotes:
     origin: https://github.com/OCA/purchase-workflow.git
@@ -370,7 +370,7 @@ sale-workflow:
   defaults:
     depth: 500
   merges:
-  - origin cbd0598718b503644570e8ac37d0190c640aaf24
+  - origin c8161864de0e16a85a6915699097410b0f81da28
   - origin refs/pull/2021/head
   remotes:
     origin: https://github.com/OCA/sale-workflow.git
