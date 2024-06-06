@@ -47,6 +47,7 @@ account-invoicing:
   merges:
   - origin 2c8a89b034e4f9ac3d7e357d2b9cbca4db7eac9f
   - origin refs/pull/1687/head
+  - origin refs/pull/1630/head
   remotes:
     origin: https://github.com/OCA/account-invoicing.git
 account-payment:
