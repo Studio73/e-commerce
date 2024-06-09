@@ -16,14 +16,14 @@ account-financial-reporting:
   defaults:
     depth: 1
   merges:
-  - origin 0df88fccb9485a2c94a02534a0ea37b2514cf3d1
+  - origin bf8fbe9a8d8ffd618faff0c39eecf6dfe9b98130
   remotes:
     origin: https://github.com/OCA/account-financial-reporting.git
 account-financial-tools:
   defaults:
     depth: 1
   merges:
-  - origin d93181b95ae1acbef0efe6122b7e96f139af5d0a
+  - origin d3cf890092fe2cb50660e1aa3594b3bbd6a98fce
   remotes:
     origin: https://github.com/OCA/account-financial-tools.git
 account-fiscal-rule:
@@ -242,14 +242,14 @@ partner-contact:
   defaults:
     depth: 1
   merges:
-  - origin e574628c460da556aeb0aca7f8fdb6095d9a707c
+  - origin 9f0e23a4743e9279eaaad613b63bb629836d7b68
   remotes:
     origin: https://github.com/OCA/partner-contact.git
 product-attribute:
   defaults:
     depth: 1
   merges:
-  - origin 3af41ec8dd2e084fbd481d7973e82e8b181c2ce3
+  - origin cf111e30918f31c5a384188b7556fc5bc02a807f
   remotes:
     origin: https://github.com/OCA/product-attribute.git
 product-pack:
@@ -298,7 +298,7 @@ reporting-engine:
   defaults:
     depth: 1
   merges:
-  - origin 9a0f99f080f0b42429ba0bf4d62d57d3c6156765
+  - origin 0992caaef2da6066243df713d7a000816f6e65b0
   remotes:
     origin: https://github.com/OCA/reporting-engine.git
 sale-reporting:
@@ -312,7 +312,7 @@ sale-workflow:
   defaults:
     depth: 1
   merges:
-  - origin 1cf207d9397b862a7940edb0de02f7b14ef211f6
+  - origin 6db7f4344510042d9a8ab850949cc39bcb104dbe
   remotes:
     origin: https://github.com/OCA/sale-workflow.git
 server-auth:
@@ -376,7 +376,7 @@ stock-logistics-workflow:
   defaults:
     depth: 1
   merges:
-  - origin 2e26d66a30165adfbea60cd7f4f6f1e25f1f7853
+  - origin 1e6c89026203b140c435eb8eee68c3df1f0085ff
   remotes:
     origin: https://github.com/OCA/stock-logistics-workflow.git
 timesheet:
