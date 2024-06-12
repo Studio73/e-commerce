@@ -361,6 +361,7 @@ stock-logistics-warehouse:
   merges:
   - origin 37662535cae69196d20d3040b85fdf346b63cd77
   - origin refs/pull/2053/head
+  - origin refs/pull/2055/head
   remotes:
     origin: https://github.com/OCA/stock-logistics-warehouse.git
 stock-logistics-workflow:
