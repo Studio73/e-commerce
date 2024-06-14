@@ -39,6 +39,7 @@ account-invoice-reporting:
   merges:
   - origin d9d3f641900bbed55996a8c0921b6ec3a945de14
   - origin refs/pull/319/head
+  - origin refs/pull/325/head
   remotes:
     origin: https://github.com/OCA/account-invoice-reporting.git
 account-invoicing:
