@@ -16,14 +16,14 @@ account-financial-reporting:
   defaults:
     depth: 1
   merges:
-  - origin bf8fbe9a8d8ffd618faff0c39eecf6dfe9b98130
+  - origin 8b26717dfbf5144ceaea35d370a21bd905361da4
   remotes:
     origin: https://github.com/OCA/account-financial-reporting.git
 account-financial-tools:
   defaults:
     depth: 1
   merges:
-  - origin d3cf890092fe2cb50660e1aa3594b3bbd6a98fce
+  - origin dd02923bb13d2eeaebc1bda6a42e4f5fa8e7affc
   remotes:
     origin: https://github.com/OCA/account-financial-tools.git
 account-fiscal-rule:
@@ -44,7 +44,7 @@ account-invoicing:
   defaults:
     depth: 500
   merges:
-  - origin 1063e455875347b96c72535d03a85107835029f6
+  - origin 85d7869219479b96e69ba794aee3de1c33f72d72
   - origin refs/pull/1377/head
   remotes:
     origin: https://github.com/OCA/account-invoicing.git
@@ -214,14 +214,14 @@ management-system:
   defaults:
     depth: 1
   merges:
-  - origin da816cbb62cbcb7d35dba38de8d6b0012ed524a4
+  - origin 2bf8ed5608bc1ce4655afd0cdc4adbcbf95521d0
   remotes:
     origin: https://github.com/OCA/management-system.git
 manufacture:
   defaults:
     depth: 1
   merges:
-  - origin d501e48172eb0646c34499df9d64ac1eee40027b
+  - origin 6cb8a6b56067cc91ee8ed69b1095f6cde349cc41
   remotes:
     origin: https://github.com/OCA/manufacture.git
 margin-analysis:
@@ -270,14 +270,14 @@ project:
   defaults:
     depth: 1
   merges:
-  - origin 9e398bacbfaa4fce29b164ffa9e0ace9d8e87118
+  - origin 6cc3df4b72e2675f844f5a26c9922626fbab650b
   remotes:
     origin: https://github.com/OCA/project.git
 purchase-workflow:
   defaults:
     depth: 1
   merges:
-  - origin 46b8659b0e1985be238f9307670094f904bf5412
+  - origin de56f7f2d623f0646a2e5aa299688c39615443e3
   remotes:
     origin: https://github.com/OCA/purchase-workflow.git
 queue:
@@ -340,7 +340,7 @@ social:
   defaults:
     depth: 500
   merges:
-  - origin 9b3f20d148c3c6b04cd281b4b0327c20801a72c2
+  - origin f55c9eb2a8e3b839ef3e6bd080e64d734e61662c
   - origin refs/pull/491/head
   remotes:
     origin: https://github.com/OCA/social.git
@@ -369,7 +369,7 @@ stock-logistics-warehouse:
   defaults:
     depth: 1
   merges:
-  - origin 0d8517f615794137a738f0a2d8397c33b30684a9
+  - origin 5181a22ba4b72e0f43d3ccda594c642e217af4f9
   remotes:
     origin: https://github.com/OCA/stock-logistics-warehouse.git
 stock-logistics-workflow:
