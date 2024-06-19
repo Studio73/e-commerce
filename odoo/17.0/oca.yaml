@@ -355,6 +355,7 @@ stock-logistics-reporting:
   merges:
   - origin 30f3b887f29beb344c6fc310150983f2ceb97d55
   - origin refs/pull/323/head
+  - origin refs/pull/311/head
   remotes:
     origin: https://github.com/OCA/stock-logistics-reporting.git
 stock-logistics-warehouse:
