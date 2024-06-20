@@ -440,7 +440,7 @@ stock-logistics-workflow:
   defaults:
     depth: 1
   merges:
-  - origin 5fff85d0fef21c2cdf8913e66710df2fc41833b0
+  - origin 6556f40fb02fddb1a33a51519d46a8a2c6cab746
   remotes:
     origin: https://github.com/OCA/stock-logistics-workflow.git
 web:
