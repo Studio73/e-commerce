@@ -151,7 +151,7 @@ edi:
   defaults:
     depth: 1
   merges:
-  - origin 9144e59952ef828e84116d687624fa856c7ce848
+  - origin 0fc05edb7eda94b91b98d7fa0c88e7dc8792fb8c
   remotes:
     origin: https://github.com/OCA/edi.git
 fleet:
