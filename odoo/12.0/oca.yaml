@@ -23,7 +23,7 @@ account-financial-tools:
   defaults:
     depth: 1
   merges:
-  - origin dd02923bb13d2eeaebc1bda6a42e4f5fa8e7affc
+  - origin 8385f0d9067f0569691259ee63b84a7fdf401ee6
   remotes:
     origin: https://github.com/OCA/account-financial-tools.git
 account-fiscal-rule:
@@ -369,7 +369,7 @@ stock-logistics-warehouse:
   defaults:
     depth: 1
   merges:
-  - origin 5181a22ba4b72e0f43d3ccda594c642e217af4f9
+  - origin 7fbff0578e0579472b68269ece26cd9e5bbcf8bc
   remotes:
     origin: https://github.com/OCA/stock-logistics-warehouse.git
 stock-logistics-workflow:
