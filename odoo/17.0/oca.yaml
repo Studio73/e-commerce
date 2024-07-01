@@ -229,6 +229,15 @@ mis-builder:
   - origin 89cab3e54ea79f6e94d6602fa9c827bbd76e7d9f
   remotes:
     origin: https://github.com/OCA/mis-builder.git
+operating-unit:
+  defaults:
+    depth: 500
+  merges:
+  - origin 2afdce6aaa4379e62a5c9abfc4be5ce801c5cc69
+  - origin refs/pull/667/head
+  - origin refs/pull/668/head
+  remotes:
+    origin: https://github.com/OCA/operating-unit.git
 partner-contact:
   defaults:
     depth: 500
