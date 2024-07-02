@@ -293,6 +293,7 @@ reporting-engine:
     depth: 500
   merges:
   - origin 7257fec65110797945c2513b55e04c35e0d1536a
+  - origin refs/pull/840/head
   - origin refs/pull/841/head
   remotes:
     origin: https://github.com/OCA/reporting-engine.git
