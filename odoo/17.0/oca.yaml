@@ -47,6 +47,7 @@ account-invoicing:
     depth: 500
   merges:
   - origin c5f1595fbd915d2642244c2872fbcf4c8175ebb7
+  - origin refs/pull/1619/head
   - origin refs/pull/1630/head
   - origin refs/pull/1687/head
   remotes:
