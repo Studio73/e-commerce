@@ -252,6 +252,13 @@ manufacture:
   - origin cc4aadc66340cd8bb3b74cf1e03b3dd9b401bc4a
   remotes:
     origin: https://github.com/OCA/manufacture.git
+manufacture-reporting:
+  defaults:
+    depth: 1
+  merges:
+  - origin 3079f9bf0902c92a0a9fc773ffd5ff7c3d0d2939
+  remotes:
+    origin: https://github.com/OCA/manufacture-reporting.git
 margin-analysis:
   defaults:
     depth: 1
