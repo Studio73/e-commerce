@@ -16,7 +16,7 @@ account-financial-reporting:
   defaults:
     depth: 1
   merges:
-  - origin 8b26717dfbf5144ceaea35d370a21bd905361da4
+  - origin 288cd24a8fe1fdbbe9b4bb0a696ce92c6a4f9342
   remotes:
     origin: https://github.com/OCA/account-financial-reporting.git
 account-financial-tools:
@@ -256,7 +256,7 @@ product-pack:
   defaults:
     depth: 1
   merges:
-  - origin 3452eb0b754846bd9c4aabdffb128342ee50c6d6
+  - origin 9c52f086a82c7d2c67efc216e98cb18200a8e2e3
   remotes:
     origin: https://github.com/OCA/product-pack.git
 product-variant:
@@ -298,7 +298,7 @@ reporting-engine:
   defaults:
     depth: 1
   merges:
-  - origin 0992caaef2da6066243df713d7a000816f6e65b0
+  - origin e685488476fa6248b43d6151b8df29bce9875b64
   remotes:
     origin: https://github.com/OCA/reporting-engine.git
 sale-reporting:
