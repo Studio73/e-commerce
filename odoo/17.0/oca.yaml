@@ -252,6 +252,7 @@ product-attribute:
   merges:
   - origin f9e90bcf57cc3c0ffcebd9f5545ed5173f7a5924
   - origin refs/pull/1606/head
+  - origin refs/pull/1611/head
   - origin refs/pull/1628/head
   remotes:
     origin: https://github.com/OCA/product-attribute.git
@@ -383,6 +384,7 @@ stock-logistics-workflow:
     depth: 500
   merges:
   - origin d29cde03a9a107800a7ddf7e615e6105fde7378c
+  - origin refs/pull/1487/head
   - origin refs/pull/1618/head
   - origin refs/pull/1622/head
   remotes:
