@@ -351,6 +351,7 @@ server-ux:
   merges:
   - origin 3974637b210d6f8296e53447501f42cc8c89b005
   - origin refs/pull/879/head
+  - origin refs/pull/855/head
   remotes:
     origin: https://github.com/OCA/server-ux.git
 social:
