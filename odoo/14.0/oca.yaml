@@ -159,9 +159,10 @@ e-commerce:
     origin: https://github.com/OCA/e-commerce.git
 edi:
   defaults:
-    depth: 1
+    depth: 500
   merges:
   - origin 1de9d2b962ff075dc2cf88b9e725dcc9fd6948bc
+  - origin refs/pull/1007/head
   remotes:
     origin: https://github.com/OCA/edi.git
 fleet:
@@ -225,7 +226,6 @@ l10n-spain:
     depth: 500
   merges:
   - origin 28478df56531f93a85ff1b5357ae873bb0d09910
-  - origin refs/pull/2357/head
   - origin refs/pull/2992/head
   - origin refs/pull/3508/head
   remotes:
