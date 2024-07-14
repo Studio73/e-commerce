@@ -235,7 +235,7 @@ mis-builder:
   defaults:
     depth: 1
   merges:
-  - origin 25e42a0ec6479e8931c35eed4c1a65afde6719c3
+  - origin 2bd97999e3a3c6152b30cb706c6a6f367aea4c99
   remotes:
     origin: https://github.com/OCA/mis-builder.git
 partner-contact:
@@ -312,7 +312,7 @@ sale-workflow:
   defaults:
     depth: 1
   merges:
-  - origin 6db7f4344510042d9a8ab850949cc39bcb104dbe
+  - origin b85d14ff24c7570fecf8d00d121485382e748ef0
   remotes:
     origin: https://github.com/OCA/sale-workflow.git
 server-auth:
@@ -355,7 +355,7 @@ stock-logistics-reporting:
   defaults:
     depth: 1
   merges:
-  - origin a87a1475af6321e2667f6e1da1ff45a7af3895f2
+  - origin 987407c64c922f7dc3077216464e7e94e048020e
   remotes:
     origin: https://github.com/OCA/stock-logistics-reporting.git
 stock-logistics-transport:
