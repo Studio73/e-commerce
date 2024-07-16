@@ -48,6 +48,7 @@ account-invoicing:
   merges:
   - origin 964706fdde6f0f3b84aa2daf9d9f973bcf2563e3
   - origin refs/pull/1619/head
+  - origin refs/pull/1626/head
   - origin refs/pull/1630/head
   - origin refs/pull/1687/head
   remotes:
