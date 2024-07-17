@@ -66,7 +66,7 @@ bank-payment:
   defaults:
     depth: 1
   merges:
-  - origin 81c677899f260c432e18503511925180835ca2a0
+  - origin 449b533c47ab74fffcb6dd2ef3bad46c86364aa4
   remotes:
     origin: https://github.com/OCA/bank-payment.git
 bank-statement-import:
