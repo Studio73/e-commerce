@@ -60,9 +60,8 @@ RUN cd /odoo && gitaggregate --jobs 8 --config repos.yaml \
     && sed -i 's/urllib3==1.26.5/urllib3==1.26.11/g' /odoo/odoo/requirements.txt \
     # Fix SyntaxWarning num2words/lang_AR.py:305
     && sed -i 's/num2words==0.5.9/num2words==0.5.12/g' /odoo/odoo/requirements.txt \
-    # Fix Pandas requirement xlrd==2.0.1
-    && sed -i 's/xlrd==1.2.0/xlrd==2.0.1/g' /odoo/odoo/requirements.txt \
-    && sed -i 's/python-dateutil==2.8.1/python-dateutil==2.8.2/g' /odoo/odoo/requirements.txt \
+    # Fix Pandas requirement xlrd<2.0.1
+    && echo 'pandas==1.5.3' >> /odoo/odoo/requirements.txt \
     && pip3 install --upgrade-strategy=only-if-needed -r /odoo/odoo/requirements.txt
 
 COPY 17.0/oca.yaml /oca/repos.yaml
