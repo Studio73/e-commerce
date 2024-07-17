@@ -366,6 +366,7 @@ server-tools:
   - origin 6bc276d62aa454ddcfa7868d414b94a9df167d74
   - origin refs/pull/2871/head
   - origin refs/pull/3032/head
+  - origin refs/pull/2991/head
   remotes:
     origin: https://github.com/OCA/server-tools.git
 server-ux:
