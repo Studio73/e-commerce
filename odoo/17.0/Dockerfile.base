@@ -1,5 +1,5 @@
 ARG  base_image=ubuntu:22.04
-FROM ${base_image} as builder
+FROM ${base_image} AS builder
 SHELL ["/bin/bash", "-xo", "pipefail", "-c"]
 ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get update \
@@ -39,7 +39,7 @@ RUN apt-get update \
 ENV PYTHONUNBUFFERED=1
 ENV VIRTUAL_ENV=/venv
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
-ENV ODOO_VERSION 17.0
+ENV ODOO_VERSION=17.0
 
 COPY gitattributes /.gitattributes
 COPY requirements.txt /requirements.txt
@@ -123,7 +123,7 @@ ENV HOME='/opt/odoo' \
     VIRTUAL_ENV=/venv
 ENV PATH="$VIRTUAL_ENV/bin:$HOME/bin:$PATH"
 # Avoid "ImportError: No module named odoo" and make pip install persistent
-ENV PYTHONPATH="$PYTHONPATH:$SRC/odoo/odoo"
+ENV PYTHONPATH="$SRC/odoo/odoo"
 ENV ODOO_VERSION=17.0
 
 COPY --chown=odoo --from=builder $VIRTUAL_ENV $VIRTUAL_ENV
