@@ -151,7 +151,7 @@ edi:
   defaults:
     depth: 1
   merges:
-  - origin 0fc05edb7eda94b91b98d7fa0c88e7dc8792fb8c
+  - origin 4c875277fd1b603bb2fe813b8da6fef7744eed6e
   remotes:
     origin: https://github.com/OCA/edi.git
 fleet:
@@ -221,7 +221,7 @@ manufacture:
   defaults:
     depth: 1
   merges:
-  - origin 6cb8a6b56067cc91ee8ed69b1095f6cde349cc41
+  - origin 8b2bef60763db2a483dca743323d898eb88d1ca0
   remotes:
     origin: https://github.com/OCA/manufacture.git
 margin-analysis:
@@ -312,7 +312,7 @@ sale-workflow:
   defaults:
     depth: 1
   merges:
-  - origin b85d14ff24c7570fecf8d00d121485382e748ef0
+  - origin 4c78850ef82205bb7751884adedf7d1277970fc7
   remotes:
     origin: https://github.com/OCA/sale-workflow.git
 server-auth:
@@ -369,7 +369,7 @@ stock-logistics-warehouse:
   defaults:
     depth: 1
   merges:
-  - origin 7fbff0578e0579472b68269ece26cd9e5bbcf8bc
+  - origin 81a697cd3120f101a19aef5eb902f22ce7a285b0
   remotes:
     origin: https://github.com/OCA/stock-logistics-warehouse.git
 stock-logistics-workflow:

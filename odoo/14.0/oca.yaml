@@ -45,14 +45,14 @@ account-invoicing:
   defaults:
     depth: 1
   merges:
-  - origin 50cb7946de052f9cf3bfe80d0eb042ceb5b6f3c9
+  - origin d29f7ab523735525ea16886717a2b24affdcc9cc
   remotes:
     origin: https://github.com/OCA/account-invoicing.git
 account-payment:
   defaults:
     depth: 1
   merges:
-  - origin 1e890359c86f134a94dc0177e8a1902a0d807315
+  - origin 58c2be7d5d12ff6a3a869aea4a468e8b44c711eb
   remotes:
     origin: https://github.com/OCA/account-payment.git
 account-reconcile:
@@ -94,7 +94,7 @@ commission:
   defaults:
     depth: 1
   merges:
-  - origin 284bdb2948c031cb725357a2b589e9e3d46e95fc
+  - origin 0207d7f3731cdf44a587478acfdf1c293b5e9340
   remotes:
     origin: https://github.com/OCA/commission.git
 community-data-files:
@@ -130,7 +130,7 @@ crm:
   defaults:
     depth: 1
   merges:
-  - origin bb7d1133abab5a56127c548f6e888535e561774e
+  - origin 3827ee0e83071e0183cec65fca667705e1fe651e
   remotes:
     origin: https://github.com/OCA/crm.git
 currency:
@@ -144,7 +144,7 @@ delivery-carrier:
   defaults:
     depth: 500
   merges:
-  - origin f39f8ad17eaa26ccacbbde6b20bc0cab4d17edaa
+  - origin 650875d360692b113e6931eef61c37d332ff80af
   - origin refs/pull/710/head
   remotes:
     origin: https://github.com/OCA/delivery-carrier.git
@@ -161,7 +161,7 @@ edi:
   defaults:
     depth: 500
   merges:
-  - origin 4d263dd7a005aa486e7700be798c565b810e7b09
+  - origin 94a72d01298aaa6870fe4e4f44614a4404a1dde1
   - origin refs/pull/1007/head
   remotes:
     origin: https://github.com/OCA/edi.git
@@ -249,7 +249,7 @@ manufacture:
   defaults:
     depth: 1
   merges:
-  - origin cc4aadc66340cd8bb3b74cf1e03b3dd9b401bc4a
+  - origin 4a36914dcb658316245aa139b5a09033829874e9
   remotes:
     origin: https://github.com/OCA/manufacture.git
 manufacture-reporting:
@@ -335,7 +335,7 @@ queue:
   defaults:
     depth: 1
   merges:
-  - origin 08ecff448d2d6692f4cb54de97bff8798940f45f
+  - origin b0e3b0de0b8f5ae56ec7cc0396295aeb3966473d
   remotes:
     origin: https://github.com/OCA/queue.git
 report-print-send:
@@ -363,7 +363,7 @@ sale-promotion:
   defaults:
     depth: 1
   merges:
-  - origin 26d90193fe263bc4465cd25fb231a0bfd59259c6
+  - origin 8ed8a5c321ab0de653c979460d1105704a4e9b12
   remotes:
     origin: https://github.com/OCA/sale-promotion.git
 sale-reporting:
@@ -392,7 +392,7 @@ server-tools:
   defaults:
     depth: 500
   merges:
-  - origin 98f31298d521842aa774ca767be127cf58e2abd8
+  - origin 002bdfc13da1d4b9066e9deeecabbc94308c4409
   - origin refs/pull/2465/head
   - origin refs/pull/2490/head
   - origin refs/pull/2685/head
@@ -461,7 +461,7 @@ timesheet:
   defaults:
     depth: 1
   merges:
-  - origin 879f6f422d7b23cb5ae4219cdd4175a844dc0901
+  - origin 74c03ce52cd065c0e2cc83abcb460951a2510947
   remotes:
     origin: https://github.com/OCA/timesheet.git
 web:
