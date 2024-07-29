@@ -138,7 +138,6 @@ delivery-carrier:
   - origin b2730a6b3ae03b779e16c3e4e9ff53a8a2082455
   - origin refs/pull/839/head
   - origin refs/pull/841/head
-  - origin refs/pull/865/head
   - origin refs/pull/870/head
   remotes:
     origin: https://github.com/OCA/delivery-carrier.git
@@ -203,7 +202,7 @@ knowledge:
     origin: https://github.com/OCA/knowledge.git
 l10n-spain:
   defaults:
-    depth: 500
+    depth: 1000
   merges:
   - origin 924ea91e16eb5921d2b54d1ee0bd1821384e2257
   - origin refs/pull/3564/head
@@ -331,7 +330,6 @@ sale-workflow:
   - origin refs/pull/3025/head
   - origin refs/pull/3030/head
   - origin refs/pull/3072/head
-  - origin refs/pull/3156/head
   - origin refs/pull/3157/head
   - origin refs/pull/3235/head
   remotes:
