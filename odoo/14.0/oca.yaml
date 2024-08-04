@@ -24,7 +24,7 @@ account-financial-tools:
   defaults:
     depth: 1
   merges:
-  - origin 2b44e6cfd3bd2f78951f63f3f28eeb6b9db87779
+  - origin f96a8a51d49291d02670cad3816143de36ea4c7f
   remotes:
     origin: https://github.com/OCA/account-financial-tools.git
 account-fiscal-rule:
@@ -94,7 +94,7 @@ commission:
   defaults:
     depth: 1
   merges:
-  - origin 831afa95cadff8ed118dbdd254343b6450938cfa
+  - origin 8ee21cf59330da09ed3b9feeccb5b8bccf7d5bca
   remotes:
     origin: https://github.com/OCA/commission.git
 community-data-files:
@@ -137,7 +137,7 @@ currency:
   defaults:
     depth: 1
   merges:
-  - origin b070974c27a3f5df7c5d916c313fbd13fd373660
+  - origin 14707cfad5e72e31423e8a1eccfd2b3b18135612
   remotes:
     origin: https://github.com/oca/currency.git
 delivery-carrier:
@@ -190,7 +190,7 @@ hr-attendance:
   defaults:
     depth: 1
   merges:
-  - origin 3548f9d0a5a0dc1443656ac064ea857d435dea3d
+  - origin 160f17e59a89f44c70fa9a97d06067f97099f641
   remotes:
     origin: https://github.com/OCA/hr-attendance.git
 hr-holidays:
@@ -225,7 +225,7 @@ l10n-spain:
   defaults:
     depth: 500
   merges:
-  - origin 28478df56531f93a85ff1b5357ae873bb0d09910
+  - origin 5df57334ae0b90bd69c40527cc838493fdb2e85c
   - origin refs/pull/2992/head
   - origin refs/pull/3508/head
   remotes:
@@ -249,7 +249,7 @@ manufacture:
   defaults:
     depth: 1
   merges:
-  - origin 4a36914dcb658316245aa139b5a09033829874e9
+  - origin 5b954723612b5c6fa34d6846d9b138b58e71c5e9
   remotes:
     origin: https://github.com/OCA/manufacture.git
 manufacture-reporting:
@@ -270,7 +270,7 @@ mis-builder:
   defaults:
     depth: 1
   merges:
-  - origin b0d9a94d6059c47b9fdb183a9fd277fe86faa38b
+  - origin 5b14f1c6e889d54a86992cf857ce1468b455f0da
   remotes:
     origin: https://github.com/OCA/mis-builder.git
 multi-company:
@@ -409,7 +409,7 @@ social:
   defaults:
     depth: 500
   merges:
-  - origin 1db5398d2c6fc0ad8b36081825dbd6382b898bcf
+  - origin 8984d402c923ada3098edb7bbc0efdd8cd9c6a02
   - origin refs/pull/1240/head
   remotes:
     origin: https://github.com/OCA/social.git

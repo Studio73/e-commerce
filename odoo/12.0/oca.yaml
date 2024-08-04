@@ -200,7 +200,7 @@ l10n-spain:
   defaults:
     depth: 1
   merges:
-  - origin 0af9a85d8eff4be7cd02e082cc05baad23006304
+  - origin 260551614ae6036d95094c8882d2160b76c40841
   remotes:
     origin: https://github.com/OCA/l10n-spain.git
 maintenance:
@@ -235,7 +235,7 @@ mis-builder:
   defaults:
     depth: 1
   merges:
-  - origin 2bd97999e3a3c6152b30cb706c6a6f367aea4c99
+  - origin ef3b928a88ede85871236454566c1edcd1cf7dc4
   remotes:
     origin: https://github.com/OCA/mis-builder.git
 partner-contact:
@@ -312,7 +312,7 @@ sale-workflow:
   defaults:
     depth: 1
   merges:
-  - origin 4c78850ef82205bb7751884adedf7d1277970fc7
+  - origin 9530d7a856b3121450d6d78d6b666de8052f90df
   remotes:
     origin: https://github.com/OCA/sale-workflow.git
 server-auth:
