@@ -2,7 +2,7 @@ account-analytic:
   defaults:
     depth: 1
   merges:
-  - origin ec821e5512da4c29b2fa1b6a4ed09282f08f9be7
+  - origin 1ab44bbb8c48b6d554ff63251096c5c336b9ca66
   remotes:
     origin: https://github.com/OCA/account-analytic.git
 account-closing:
@@ -207,7 +207,7 @@ maintenance:
   defaults:
     depth: 1
   merges:
-  - origin d6a1beab12304e591166a2a4f37dd08478bcdd61
+  - origin 4061fbe8cbf7171928949cd872519c120fb7258c
   remotes:
     origin: https://github.com/OCA/maintenance.git
 management-system:
@@ -221,7 +221,7 @@ manufacture:
   defaults:
     depth: 1
   merges:
-  - origin 8b2bef60763db2a483dca743323d898eb88d1ca0
+  - origin 000210536cdfb8f8879a8e5650f7b09147178d24
   remotes:
     origin: https://github.com/OCA/manufacture.git
 margin-analysis:
