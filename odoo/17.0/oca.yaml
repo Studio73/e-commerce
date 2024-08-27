@@ -205,10 +205,10 @@ l10n-spain:
     depth: 500
   merges:
   - origin cd3c794f03af34e3857cb5ab524751c76be50c5d
-  - origin refs/pull/3564/head
   - origin refs/pull/3653/head
   - origin refs/pull/3658/head
   - origin refs/pull/3663/head
+  - origin refs/pull/3701/head
   remotes:
     origin: https://github.com/OCA/l10n-spain.git
 management-system:
