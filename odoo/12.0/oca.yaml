@@ -16,7 +16,7 @@ account-financial-reporting:
   defaults:
     depth: 1
   merges:
-  - origin 625fb903b8dc7d6e73efcc4057d097a7960c29c5
+  - origin 77e22446dab89e0a581770d3ea4f63dc323e0786
   remotes:
     origin: https://github.com/OCA/account-financial-reporting.git
 account-financial-tools:
@@ -66,7 +66,7 @@ bank-payment:
   defaults:
     depth: 500
   merges:
-  - origin ccde51b6b858c47b992dd975bf67cc20429203c6
+  - origin 0fad42c3192d43ae769360ecaf9b293c75a1d88c
   - origin refs/pull/1184/head
   remotes:
     origin: https://github.com/OCA/bank-payment.git
@@ -116,7 +116,7 @@ contract:
   defaults:
     depth: 1
   merges:
-  - origin ab5d5476e91f25190d9a83efbb25fc4e059b1fcc
+  - origin bbad4b3a149fbb91893e1f39d1a799340a7a56dd
   remotes:
     origin: https://github.com/OCA/contract.git
 credit-control:
@@ -158,7 +158,7 @@ fleet:
   defaults:
     depth: 1
   merges:
-  - origin 5e207c3f37059097c311640555f8e85f4417d3a4
+  - origin 4642fbd54628f0dff9ab1243167ec03047bfb558
   remotes:
     origin: https://github.com/OCA/fleet.git
 helpdesk:
@@ -270,7 +270,7 @@ project:
   defaults:
     depth: 1
   merges:
-  - origin 6cc3df4b72e2675f844f5a26c9922626fbab650b
+  - origin 06545ae8060f2c81d37358079c7285f0c80562e9
   remotes:
     origin: https://github.com/OCA/project.git
 purchase-workflow:
@@ -333,7 +333,7 @@ server-ux:
   defaults:
     depth: 1
   merges:
-  - origin 36cdc2eab11850c15235186f9c623493798845a5
+  - origin cb90c74a1c00868e8a5301405eab00ab3446859b
   remotes:
     origin: https://github.com/OCA/server-ux.git
 social:
@@ -383,7 +383,7 @@ timesheet:
   defaults:
     depth: 1
   merges:
-  - origin b4124b5f233375dbebddc1ad89f45bceab1a89a5
+  - origin 512f8b7cea88f55d2853efb89596ee6693edaac2
   remotes:
     origin: https://github.com/OCA/timesheet.git
 web:
