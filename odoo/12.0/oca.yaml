@@ -270,7 +270,7 @@ project:
   defaults:
     depth: 1
   merges:
-  - origin 06545ae8060f2c81d37358079c7285f0c80562e9
+  - origin fb11bb88e1c818ab4ab16f1d27c87f8a56239a94
   remotes:
     origin: https://github.com/OCA/project.git
 purchase-workflow:
@@ -355,7 +355,7 @@ stock-logistics-reporting:
   defaults:
     depth: 1
   merges:
-  - origin 987407c64c922f7dc3077216464e7e94e048020e
+  - origin 4d3a3ca88dd1c7e8189777526982d945d2ca33d9
   remotes:
     origin: https://github.com/OCA/stock-logistics-reporting.git
 stock-logistics-transport:
