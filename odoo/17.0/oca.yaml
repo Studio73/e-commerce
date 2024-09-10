@@ -274,9 +274,10 @@ product-pack:
     origin: https://github.com/OCA/product-pack.git
 product-variant:
   defaults:
-    depth: 1
+    depth: 500
   merges:
   - origin a1b76f5318b4a385776c1464a9de524b81a2b667
+  - origin refs/pull/341/head
   remotes:
     origin: https://github.com/OCA/product-variant.git
 project:
