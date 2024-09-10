@@ -421,3 +421,10 @@ website:
   - origin refs/pull/1034/head
   remotes:
     origin: https://github.com/OCA/website.git
+server-auth:
+  defaults:
+    depth: 500
+  merges:
+  - origin refs/pull/643/head
+  remotes:
+    origin: https://github.com/OCA/server-auth.git
