@@ -377,9 +377,10 @@ social:
     origin: https://github.com/OCA/social.git
 stock-logistics-barcode:
   defaults:
-    depth: 1
+    depth: 500
   merges:
   - origin 68ee8c9b3238a3b1260f37e75ec5ddba6b43b2ec
+  - origin refs/pull/643/head
   remotes:
     origin: https://github.com/OCA/stock-logistics-barcode.git
 stock-logistics-reporting:
