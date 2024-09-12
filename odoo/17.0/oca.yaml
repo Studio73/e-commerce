@@ -398,7 +398,7 @@ stock-logistics-workflow:
   defaults:
     depth: 500
   merges:
-  - origin 3e90ab0e11174dd2fb95a9b2a77f81b752d8d12f
+  - origin 67765d0c27743650da8d23924857d52bb77d43e3
   - origin refs/pull/1487/head
   - origin refs/pull/1618/head
   - origin refs/pull/1622/head
