@@ -235,7 +235,7 @@ mis-builder:
   defaults:
     depth: 1
   merges:
-  - origin ef3b928a88ede85871236454566c1edcd1cf7dc4
+  - origin 43e34d2386caa6e1560388d4f38081d7270716da
   remotes:
     origin: https://github.com/OCA/mis-builder.git
 partner-contact:
