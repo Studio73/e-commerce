@@ -336,6 +336,15 @@ sale-workflow:
   - origin refs/pull/3235/head
   remotes:
     origin: https://github.com/OCA/sale-workflow.git
+sale-promotion:
+  defaults:
+    depth: 500
+  merges:
+  - origin 189980fac27eaef770874ebaec58807b1b57a1d8
+  - origin refs/pull/225/head
+  - origin refs/pull/226/head
+  remotes:
+    origin: https://github.com/OCA/sale-promotion.git
 server-auth:
   defaults:
     depth: 1
