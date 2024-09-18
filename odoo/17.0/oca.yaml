@@ -362,9 +362,7 @@ server-ux:
   defaults:
     depth: 500
   merges:
-  - origin a7ffaddcf48f19750a0d252211bc864bdf7af642
-  - origin refs/pull/855/head
-  - origin refs/pull/879/head
+  - origin 173162958e0e3ec016c936671df60bd44937915f
   - origin refs/pull/929/head
   remotes:
     origin: https://github.com/OCA/server-ux.git
@@ -417,7 +415,7 @@ web:
   defaults:
     depth: 500
   merges:
-  - origin 3062d82fa82da785ee278dd278ebf9c4ea19ba1b
+  - origin 91fb17cc550d17de2cf8043a76b91e6a3885adca
   - origin refs/pull/2812/head
   remotes:
     origin: https://github.com/OCA/web.git
