@@ -326,7 +326,7 @@ server-tools:
   defaults:
     depth: 1
   merges:
-  - origin 6eecc980708c9c3a1fa6cf0e1ab3a8f3e202e9fd
+  - origin a591b7aa653a48c87e30f022d784e06f2d05e299
   remotes:
     origin: https://github.com/OCA/server-tools.git
 server-ux:
@@ -348,7 +348,7 @@ stock-logistics-barcode:
   defaults:
     depth: 1
   merges:
-  - origin c779d2071cb408a7b1677b5e1b64c118453065ee
+  - origin 86e8883ffe3fafae62ad72d65a34a3a919681eb7
   remotes:
     origin: https://github.com/OCA/stock-logistics-barcode.git
 stock-logistics-reporting:
