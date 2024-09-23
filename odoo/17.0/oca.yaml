@@ -65,7 +65,7 @@ account-reconcile:
   defaults:
     depth: 1
   merges:
-  - origin 0a23778ab81ba6817866702712d27331c5504f01
+  - origin 2b6131afe0c3a158ac5ca50e668fdcffa7a63f8d
   remotes:
     origin: https://github.com/OCA/account-reconcile.git
 bank-payment:
@@ -86,7 +86,7 @@ bank-statement-reconcile:
   defaults:
     depth: 1
   merges:
-  - origin 0a23778ab81ba6817866702712d27331c5504f01
+  - origin 2b6131afe0c3a158ac5ca50e668fdcffa7a63f8d
   remotes:
     origin: https://github.com/OCA/bank-statement-reconcile.git
 brand:
@@ -215,7 +215,7 @@ management-system:
   defaults:
     depth: 1
   merges:
-  - origin 10a6b956db3a02034653956d30f102a98e8c5325
+  - origin e03000f367e1b56c3e5b978632e486916a7b7fa9
   remotes:
     origin: https://github.com/OCA/management-system.git
 manufacture:
@@ -402,7 +402,7 @@ stock-logistics-warehouse:
   defaults:
     depth: 500
   merges:
-  - origin 2cfb08bbeda2ab27bef53ac77b8142c311ad2e1d
+  - origin 2bf23ff85e9e9e10db4f4683424880050d17236f
   - origin refs/pull/2053/head
   remotes:
     origin: https://github.com/OCA/stock-logistics-warehouse.git
@@ -415,7 +415,6 @@ stock-logistics-workflow:
   - origin refs/pull/1618/head
   - origin refs/pull/1622/head
   - origin refs/pull/1686/head
-  - origin refs/pull/1703/head
   - origin refs/pull/1705/head
   remotes:
     origin: https://github.com/OCA/stock-logistics-workflow.git

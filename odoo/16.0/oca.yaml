@@ -68,7 +68,7 @@ account-reconcile:
   defaults:
     depth: 500
   merges:
-  - origin 9dc6f3669ade83a8f010e3fe795c260448d30b7f
+  - origin a147224ff9782ff6941c9cdf59e6361fe53c0584
   - origin refs/pull/588/head
   - origin refs/pull/611/head
   remotes:
@@ -92,7 +92,7 @@ bank-statement-reconcile:
   defaults:
     depth: 1
   merges:
-  - origin 9dc6f3669ade83a8f010e3fe795c260448d30b7f
+  - origin a147224ff9782ff6941c9cdf59e6361fe53c0584
   remotes:
     origin: https://github.com/OCA/bank-statement-reconcile.git
 brand:
@@ -149,7 +149,7 @@ delivery-carrier:
   defaults:
     depth: 500
   merges:
-  - origin 0c29bca0224dc34df9e9733f7e31ba1d396941c1
+  - origin 51f92361ec7a36fa8d56ed95b7a74a4ba2d3cf47
   - origin refs/pull/632/head
   - origin refs/pull/649/head
   - origin refs/pull/762/head
@@ -193,10 +193,9 @@ hr-attendance:
     origin: https://github.com/OCA/hr-attendance.git
 hr-holidays:
   defaults:
-    depth: 500
+    depth: 1
   merges:
   - origin 757cdefbf8335a5b72dfa085cdfaf1d83c13f72e
-  - origin refs/pull/72/head
   remotes:
     origin: https://github.com/OCA/hr-holidays.git
 intrastat:
@@ -350,7 +349,7 @@ sale-workflow:
   defaults:
     depth: 500
   merges:
-  - origin 4a4c55c0943cd0565f019891720239ef790b6f83
+  - origin 0d745a334362590822df4fa4e2ec991ff672523e
   - origin refs/pull/2364/head
   - origin refs/pull/2524/head
   - origin refs/pull/2649/head
@@ -363,7 +362,7 @@ server-auth:
   defaults:
     depth: 1
   merges:
-  - origin fc906889df964a3f8b50013389dbc585aee0080a
+  - origin d4fee8b8d017a3f1a196b95119c99aa12997e8db
   remotes:
     origin: https://github.com/OCA/server-auth.git
 server-backend:
