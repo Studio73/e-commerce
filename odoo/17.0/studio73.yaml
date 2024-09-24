@@ -19,6 +19,13 @@ extra/stock-addons:
     - origin 17.0
   remotes:
     origin: git@github.com:Studio73/stock-addons.git
+extra/amazon-addons:
+  defaults:
+    depth: 50
+  merges:
+    - origin 17.0
+  remotes:
+    origin: git@github.com:Studio73/amazon-addons.git
 zenterprise/studio73-enterprise-addons:
   defaults:
     depth: 100
