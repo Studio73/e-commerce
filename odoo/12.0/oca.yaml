@@ -23,7 +23,7 @@ account-financial-tools:
   defaults:
     depth: 1
   merges:
-  - origin 8385f0d9067f0569691259ee63b84a7fdf401ee6
+  - origin 2c2eafd89dc9e8fa05ed5971ab0165bc4e1ecce9
   remotes:
     origin: https://github.com/OCA/account-financial-tools.git
 account-fiscal-rule:
@@ -44,7 +44,7 @@ account-invoicing:
   defaults:
     depth: 500
   merges:
-  - origin 234ab99e2941793cb8bd6db20dba2047097bf1eb
+  - origin df56baf16a5083bb78fe21418cf385f166ca2950
   - origin refs/pull/1377/head
   remotes:
     origin: https://github.com/OCA/account-invoicing.git
@@ -123,7 +123,7 @@ credit-control:
   defaults:
     depth: 1
   merges:
-  - origin 2c68d05aa2b764f4b0ef5cd5a38df707353fc2d5
+  - origin 305d0a2c245dedae2499802e04f9834a50f0634f
   remotes:
     origin: https://github.com/OCA/credit-control.git
 crm:
@@ -172,7 +172,7 @@ hr:
   defaults:
     depth: 1
   merges:
-  - origin 10ba00e632fcd114f2bd8c6d84a1f78c3a8d97fb
+  - origin a392345e018d3a02d92d620cbe81d49e224ba0fa
   remotes:
     origin: https://github.com/OCA/hr.git
 intrastat:
@@ -369,7 +369,7 @@ stock-logistics-warehouse:
   defaults:
     depth: 1
   merges:
-  - origin be2f65a4cd913d1346cbbafcab279870cc7fe28c
+  - origin 7c021f369a484fbef02551a679dd17446020b71c
   remotes:
     origin: https://github.com/OCA/stock-logistics-warehouse.git
 stock-logistics-workflow:
