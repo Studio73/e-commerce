@@ -146,7 +146,7 @@ e-commerce:
   defaults:
     depth: 500
   merges:
-  - origin f45330dcaf5b1d289b4be047094bbf1e1b685b1b
+  - origin f862b023e3956ce0576ddf887c2408997cd1f6d1
   - origin refs/pull/939/head
   - origin refs/pull/945/head
   - origin refs/pull/949/head
