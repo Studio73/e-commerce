@@ -4,8 +4,8 @@ on:
   workflow_dispatch:
     inputs:
       versions:
-        description: "One or Comma-separated list of Odoo versions e.g. 17,16,14"
-        default: "17,16,14"
+        description: "One or Comma-separated list of Odoo versions e.g. 18,17,16"
+        default: "18,17,16"
       orgs:
         description: "One or Comma-separated list of organizations"
         default: "odoo,oca,openupgrade"
@@ -22,7 +22,7 @@ jobs:
       - name: Update refs
         uses: Studio73/dodoo/actions/update-refs@master
         with:
-          versions: ${{ inputs.versions || '17,16,14,12' }}
+          versions: ${{ inputs.versions || '18,17,16,14' }}
           orgs: ${{ inputs.orgs || 'odoo,oca,openupgrade' }}
         env:
           GITHUB_TOKEN: ${{ secrets.ORG_TOKEN }}
