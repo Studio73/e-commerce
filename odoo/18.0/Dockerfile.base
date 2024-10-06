@@ -1,4 +1,4 @@
-ARG  base_image=ubuntu:24.04
+ARG  base_image=ubuntu:22.04
 FROM ${base_image} AS builder
 SHELL ["/bin/bash", "-xo", "pipefail", "-c"]
 ARG DEBIAN_FRONTEND=noninteractive
@@ -10,8 +10,8 @@ RUN apt-get update \
     git \
     g++ \
     libpq-dev \
-    python3.12-dev \
-    python3.12-venv \
+    python3.10-dev \
+    python3.10-venv \
     # pycups
     libcups2-dev \
     cups-client \
@@ -43,7 +43,7 @@ ENV ODOO_VERSION=18.0
 
 COPY gitattributes /.gitattributes
 COPY requirements.txt /requirements.txt
-RUN python3.12 -m venv --copies $VIRTUAL_ENV \
+RUN python3 -m venv --copies $VIRTUAL_ENV \
     && pip3 install -r requirements.txt
 
 COPY 18.0/odoo.yaml /odoo/repos.yaml
@@ -62,7 +62,7 @@ COPY 18.0/oca.yaml /oca/repos.yaml
 #    && find $VIRTUAL_ENV -name "*.pyc" -exec rm -f {} \; \
 #    && rm -rf /tmp/*
 
-FROM ubuntu:24.04
+FROM ubuntu:22.04
 # https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/
 SHELL ["/bin/bash", "-xo", "pipefail", "-c"]
 ARG DEBIAN_FRONTEND=noninteractive
@@ -79,11 +79,11 @@ RUN apt-get update \
     git \
     ssh \
     ripgrep \
-    postgresql-client-16 \
+    postgresql-client-14 \
     # unbuffer
     expect-dev \
-    python3.12-dev \
-    python3.12-venv \
+    python3.10-dev \
+    python3.10-venv \
     # pycups
     libcups2-dev \
     cups-client \
@@ -131,7 +131,7 @@ RUN ln -s $SRC/odoo/odoo/odoo-bin /usr/local/bin/odoo \
 
 USER odoo
 RUN mkdir -p -m 0700 ~/.ssh && ssh-keyscan github.com >> ~/.ssh/known_hosts
-ENTRYPOINT ["python3.12", "/entrypoint.py"]
+ENTRYPOINT ["python3", "/entrypoint.py"]
 CMD ["odoo"]
 HEALTHCHECK CMD curl -f http://localhost:8069/web/health || exit 1
 
