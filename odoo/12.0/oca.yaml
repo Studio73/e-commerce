@@ -172,7 +172,7 @@ hr:
   defaults:
     depth: 1
   merges:
-  - origin a392345e018d3a02d92d620cbe81d49e224ba0fa
+  - origin e1b512aa5978a0a1d26a64ab2e2595325d8b3cca
   remotes:
     origin: https://github.com/OCA/hr.git
 intrastat:
@@ -326,7 +326,7 @@ server-tools:
   defaults:
     depth: 1
   merges:
-  - origin a591b7aa653a48c87e30f022d784e06f2d05e299
+  - origin 4c11359c056487996aec4a3b4e525e06ddde9dd4
   remotes:
     origin: https://github.com/OCA/server-tools.git
 server-ux:
