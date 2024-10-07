@@ -149,6 +149,7 @@ e-commerce:
   - origin refs/pull/939/head
   - origin refs/pull/945/head
   - origin refs/pull/949/head
+  - origin refs/pull/971/head
   - origin refs/pull/972/head
   remotes:
     origin: https://github.com/OCA/e-commerce.git
