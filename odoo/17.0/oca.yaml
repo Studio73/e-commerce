@@ -206,7 +206,6 @@ l10n-spain:
     depth: 500
   merges:
   - origin 4f7a1ecc00fe0cd45dfe1de802e4a110ba7b5916
-  - origin refs/pull/3653/head
   - origin refs/pull/3658/head
   - origin refs/pull/3663/head
   remotes:
