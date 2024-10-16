@@ -75,10 +75,9 @@ account-reconcile:
     origin: https://github.com/OCA/account-reconcile.git
 bank-payment:
   defaults:
-    depth: 500
+    depth: 1
   merges:
   - origin 976f18a552f30173eccbeec6ad844dbca17ef10d
-  - origin refs/pull/1124/head
   remotes:
     origin: https://github.com/OCA/bank-payment.git
 bank-statement-import:
