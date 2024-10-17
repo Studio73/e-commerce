@@ -26,6 +26,13 @@ extra/manufacture-addons:
     - origin 18.0
   remotes:
     origin: git@github.com:Studio73/manufacture-addons.git
+extra/shopify-addons:
+  defaults:
+    depth: 50
+  merges:
+    - origin 18.0
+  remotes:
+    origin: git@github.com:Studio73/shopify-addons.git
 extra/stock-addons:
   defaults:
     depth: 50

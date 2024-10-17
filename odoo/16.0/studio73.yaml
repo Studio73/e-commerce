@@ -26,6 +26,13 @@ extra/amazon-addons:
     - origin 16.0
   remotes:
     origin: git@github.com:Studio73/amazon-addons.git
+extra/manufacture-addons:
+  defaults:
+    depth: 50
+  merges:
+    - origin 16.0
+  remotes:
+    origin: git@github.com:Studio73/manufacture-addons.git
 extra/shopify-addons:
   defaults:
     depth: 50
