@@ -148,7 +148,7 @@ delivery-carrier:
   defaults:
     depth: 500
   merges:
-  - origin d5ba6493ff504e7adc1941ed045e54ad0989963d
+  - origin efdd4fe618d6dc624a79525fe74abdfe7b037d6a
   - origin refs/pull/649/head
   - origin refs/pull/762/head
   remotes:
