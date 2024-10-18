@@ -162,7 +162,6 @@ edi:
     depth: 500
   merges:
   - origin 94addaf1df233ce418a6cb8c2001d705e341c558
-  - origin refs/pull/1007/head
   remotes:
     origin: https://github.com/OCA/edi.git
 fleet:
@@ -225,8 +224,7 @@ l10n-spain:
   defaults:
     depth: 500
   merges:
-  - origin a6587f7866ee677fab657b3cf53fe5d1bd014fce
-  - origin refs/pull/2992/head
+  - origin 22bb5b46e5748f87d8dcf6411f71d368b43e661c
   - origin refs/pull/3508/head
   remotes:
     origin: https://github.com/OCA/l10n-spain.git
