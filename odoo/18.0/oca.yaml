@@ -219,7 +219,7 @@ mis-builder:
   defaults:
     depth: 1
   merges:
-  - origin a4796288344b4ada3ea77e1d810221696f98449a
+  - origin f0e199926a6ce355e81ad7ddfe2258f975c23ab8
   remotes:
     origin: https://github.com/OCA/mis-builder.git
 operating-unit:
@@ -233,7 +233,7 @@ partner-contact:
   defaults:
     depth: 1
   merges:
-  - origin d62053b252248411e8260e4424b01ba4f825c8f7
+  - origin 5e187407295dc485b6c6bcfe483643515191db93
   remotes:
     origin: https://github.com/OCA/partner-contact.git
 product-attribute:
@@ -275,7 +275,7 @@ queue:
   defaults:
     depth: 1
   merges:
-  - origin 2a8fb01c9209e8f580c0cd33a2f87733cc822833
+  - origin 2ef19023be9ac19d82a4f90925f4c13573670b2d
   remotes:
     origin: https://github.com/OCA/queue.git
 report-print-send:
@@ -310,7 +310,7 @@ sale-workflow:
   defaults:
     depth: 1
   merges:
-  - origin 65d6c9481833ee111dde6ab974b620a8f7fbe926
+  - origin 762844be901f93b2b0b3dbfd9f78e5f07e51d0c6
   remotes:
     origin: https://github.com/OCA/sale-workflow.git
 server-auth:
