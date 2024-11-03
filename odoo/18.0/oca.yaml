@@ -135,7 +135,7 @@ e-commerce:
   defaults:
     depth: 1
   merges:
-  - origin 67e487b00fd98c0579d3ed964ad2893d39e48b0a
+  - origin dc3f5a103918f28cfeb34f6417ca832a0ddd11f7
   remotes:
     origin: https://github.com/OCA/e-commerce.git
 edi:
@@ -149,7 +149,7 @@ hr:
   defaults:
     depth: 1
   merges:
-  - origin 08fd50cbfa123d8fec9948e627cd6bc723c082db
+  - origin 7a222b0a0a998f716daceaefbaaf4aa55ad0a344
   remotes:
     origin: https://github.com/OCA/hr.git
 hr-attendance:
@@ -233,7 +233,7 @@ partner-contact:
   defaults:
     depth: 1
   merges:
-  - origin 7669ec07f43110feffddd53454332a640b2f99ca
+  - origin 45ed14c56620580a8d1e9e59826bcfacfccca538
   remotes:
     origin: https://github.com/OCA/partner-contact.git
 product-attribute:
@@ -345,7 +345,7 @@ social:
   defaults:
     depth: 1
   merges:
-  - origin e38dfe970173ff4f55a884e12a1ff4100b6d1e22
+  - origin 9aaa76c9110620eddf192de965a26e40295a6a3d
   remotes:
     origin: https://github.com/OCA/social.git
 stock-logistics-barcode:
@@ -373,7 +373,7 @@ stock-logistics-workflow:
   defaults:
     depth: 1
   merges:
-  - origin dca7e00aebd22941eb190726bd04ced08e53efd8
+  - origin 5e35477a5377afebeaaf787c8c6f607943ef85a1
   remotes:
     origin: https://github.com/OCA/stock-logistics-workflow.git
 web:

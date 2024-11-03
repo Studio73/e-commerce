@@ -17,7 +17,7 @@ account-financial-reporting:
   defaults:
     depth: 1
   merges:
-  - origin bea0f589895699fb3b109072f2f985eae1ed1c9e
+  - origin 1475806695012cce1b2c2a1d61af9d53454054a3
   remotes:
     origin: https://github.com/OCA/account-financial-reporting.git
 account-financial-tools:
@@ -175,7 +175,7 @@ helpdesk:
   defaults:
     depth: 1
   merges:
-  - origin 42c7cf9b967d34bd293405a79a749af5c6ac68b8
+  - origin 498ad55c59d00d7dc6690c368bd32a3100394a11
   remotes:
     origin: https://github.com/OCA/helpdesk.git
 hr:
@@ -224,7 +224,7 @@ l10n-spain:
   defaults:
     depth: 500
   merges:
-  - origin 22bb5b46e5748f87d8dcf6411f71d368b43e661c
+  - origin 39dd0c67fc424ae507a5f304450e8057c17157d8
   - origin refs/pull/3508/head
   remotes:
     origin: https://github.com/OCA/l10n-spain.git
@@ -232,7 +232,7 @@ maintenance:
   defaults:
     depth: 500
   merges:
-  - origin 3a9ce811a47e6c7b23a200bde44c512f4c6857c0
+  - origin bb01bbd8975874fb2a9f20f83ae8bc74e4ab3b70
   - origin refs/pull/347/head
   remotes:
     origin: https://github.com/OCA/maintenance.git
@@ -290,7 +290,7 @@ product-attribute:
   defaults:
     depth: 1
   merges:
-  - origin c5c3735d34c652371d2b69ccc102a9057131fa29
+  - origin 17a2df0ab37b04e78f27e1d4cf290a343b06627a
   remotes:
     origin: https://github.com/OCA/product-attribute.git
 product-configurator:
@@ -304,7 +304,7 @@ product-pack:
   defaults:
     depth: 1
   merges:
-  - origin 7ad13f44ba875c624016bf5dd9e31c2f9e298ca0
+  - origin 58b1d12df60b7a7f15b347f2c12591a0229e0036
   remotes:
     origin: https://github.com/OCA/product-pack.git
 product-variant:
@@ -361,7 +361,7 @@ sale-promotion:
   defaults:
     depth: 1
   merges:
-  - origin 8ed8a5c321ab0de653c979460d1105704a4e9b12
+  - origin 339b922a4a089ec8ed52e5e6a10c2b7647f05655
   remotes:
     origin: https://github.com/OCA/sale-promotion.git
 sale-reporting:
@@ -399,7 +399,7 @@ server-ux:
   defaults:
     depth: 1
   merges:
-  - origin c2b5a8e56e97ec592bda2620c6280323ccf17e27
+  - origin c3b3a6d10d2b6ab289b1d1ed2b32662df88bb582
   remotes:
     origin: https://github.com/OCA/server-ux.git
 social:
@@ -458,14 +458,14 @@ timesheet:
   defaults:
     depth: 1
   merges:
-  - origin d2c65e695e20a76439ddeb8d72a4c97858e7d9c1
+  - origin 04698638fff969690cbbffcd9380f35fc6591b28
   remotes:
     origin: https://github.com/OCA/timesheet.git
 web:
   defaults:
     depth: 1
   merges:
-  - origin 902d3f8b8624efe489dd3c8c0333a06ec6b72a57
+  - origin cb58b72fa2a1e5bee5a6e196036031c84bb83c6d
   remotes:
     origin: https://github.com/OCA/web.git
 website:
