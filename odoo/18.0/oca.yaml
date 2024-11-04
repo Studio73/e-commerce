@@ -317,7 +317,7 @@ server-auth:
   defaults:
     depth: 1
   merges:
-  - origin refs/pull/643/head
+  - origin 7cb6b95a3811245ddd1d849ba9af3c464a018b46
   remotes:
     origin: https://github.com/OCA/server-auth.git
 server-backend:
@@ -345,7 +345,7 @@ social:
   defaults:
     depth: 1
   merges:
-  - origin 9aaa76c9110620eddf192de965a26e40295a6a3d
+  - origin e6f41ca21b86a839172104158c18204716b4b544
   remotes:
     origin: https://github.com/OCA/social.git
 stock-logistics-barcode:
@@ -380,7 +380,7 @@ web:
   defaults:
     depth: 1
   merges:
-  - origin a01bf9e49eaa3bd01a7b12934a4b394553dd65c2
+  - origin 3dffef44dfe8e05bc24da7662723ec18c2f41066
   remotes:
     origin: https://github.com/OCA/web.git
 website:
