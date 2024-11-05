@@ -186,7 +186,7 @@ class Backup(object):
         self.snapshot_db = self.snapshot(self.dest_db, tags=[self.tag, "db"])
 
     def notify(self):
-        url = "http://www.studio73.es/saas/backup"
+        url = "https://www.studio73.es/saas/backup"
         post_data = {
             "dbuuid": self.dbuuid,
             "dbname": self.dbname,
