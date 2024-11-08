@@ -187,6 +187,7 @@ class Backup(object):
 
     def notify(self):
         url = "https://www.studio73.es/saas/backup"
+        headers = {"Content-type": "application/json"}
         post_data = {
             "dbuuid": self.dbuuid,
             "dbname": self.dbname,
@@ -211,17 +212,23 @@ class Backup(object):
                 }
             )
         try:
-            res = requests.post(url, json={"params": post_data}, timeout=60)
+            res = requests.post(
+                url,
+                headers=headers,
+                json={"params": post_data},
+                timeout=60,
+                allow_redirects=True,
+            )
             res.raise_for_status()
         except Exception as e:
-            _logger.error(f"Error notifying: {e}")
+            _logger.error(f"1 - Error notifying: {e}")
             return False
         data = res.json()
         if data.get("error"):
-            _logger.error(f"Error notifying: {data['error']}")
+            _logger.error(f"2 - Error notifying: {data['error']}")
             return False
         if data["result"].get("error"):
-            _logger.error(f"Error notifying: {data['result']['error']}")
+            _logger.error(f"3 - Error notifying: {data['result']['error']}")
             return False
         backup_id = data["result"]["backup_id"]
         if not self.backup_id:
@@ -240,7 +247,6 @@ class Backup(object):
         if os.path.exists(lock_file):
             lock_date = os.path.getmtime(lock_file)
             lock_date_obj = datetime.fromtimestamp(lock_date)
-            print(time.time() - lock_date)
             if (time.time() - lock_date) >= 6 * 3600:
                 # auto unlock after 6h
                 _logger.warning(f"Unlocking backup older than 6h ({lock_date_obj})")
