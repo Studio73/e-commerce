@@ -3,6 +3,7 @@ import glob
 import io
 import logging
 import os
+import random
 import re
 import subprocess as sp
 import time
@@ -288,11 +289,18 @@ def main(tag):
         backup.start()
         exit(0)
     try:
-        run_at = os.environ.get("RUN_AT", "20:00")
+        run_at = os.environ.get("RUN_AT")
+        if not run_at:
+            run_at = f"21:{random.randint(0, 59)}"
+        first_run = True
         while True:
+            if first_run:
+                first_run = False
+                _logger.info(f"Next run at {run_at}")
             if run_at == time.strftime("%H:%M"):
                 backup.start()
                 time.sleep(61)
+                first_run = True
             else:
                 time.sleep(1)
     except (KeyboardInterrupt, SystemExit):
