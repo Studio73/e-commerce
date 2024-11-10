@@ -268,7 +268,7 @@ purchase-workflow:
   defaults:
     depth: 1
   merges:
-  - origin 6586a13287d8b3f396fd55ee6bd6d0d56f8e37ee
+  - origin 8b5cdc78e8186485b91fe97df24d4553aad4e94f
   remotes:
     origin: https://github.com/OCA/purchase-workflow.git
 queue:
@@ -289,7 +289,7 @@ reporting-engine:
   defaults:
     depth: 1
   merges:
-  - origin 3b56df0d51cc3f83804938ff0ada1d24b25c6e85
+  - origin ed7d52b1f5e417f28f89d7bd48df02ae9cf3fa12
   remotes:
     origin: https://github.com/OCA/reporting-engine.git
 sale-promotion:
@@ -331,7 +331,7 @@ server-tools:
   defaults:
     depth: 1
   merges:
-  - origin 2f7c10367516c41725f60db4659939ab5ddb0ccf
+  - origin 2c7a09771ea78556ffd5ffa2f7cf01ad4f8444d9
   remotes:
     origin: https://github.com/OCA/server-tools.git
 server-ux:
@@ -345,7 +345,7 @@ social:
   defaults:
     depth: 1
   merges:
-  - origin e6f41ca21b86a839172104158c18204716b4b544
+  - origin 8c81513937cd4233471c17e12532a66767ff518a
   remotes:
     origin: https://github.com/OCA/social.git
 stock-logistics-barcode:
@@ -373,14 +373,14 @@ stock-logistics-workflow:
   defaults:
     depth: 1
   merges:
-  - origin 5e35477a5377afebeaaf787c8c6f607943ef85a1
+  - origin 23bbed15ba1febb4eaf2738bd1bc3541198f3647
   remotes:
     origin: https://github.com/OCA/stock-logistics-workflow.git
 web:
   defaults:
     depth: 1
   merges:
-  - origin 3dffef44dfe8e05bc24da7662723ec18c2f41066
+  - origin 95f54ce727010ba875b5a14bbdc60cbba402dbc1
   remotes:
     origin: https://github.com/OCA/web.git
 website:

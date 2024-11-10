@@ -17,7 +17,7 @@ account-financial-reporting:
   defaults:
     depth: 1
   merges:
-  - origin 1475806695012cce1b2c2a1d61af9d53454054a3
+  - origin 0cfa42937152b886b56c04e83a2db36495e2a12a
   remotes:
     origin: https://github.com/OCA/account-financial-reporting.git
 account-financial-tools:
@@ -45,14 +45,14 @@ account-invoicing:
   defaults:
     depth: 1
   merges:
-  - origin f2919bcf736d5933f21d037f090618ed515aff10
+  - origin 768ee19456cacf7593a8031661533a5d9d8fa3ee
   remotes:
     origin: https://github.com/OCA/account-invoicing.git
 account-payment:
   defaults:
     depth: 1
   merges:
-  - origin a0b8603618df653afe5a2efe604a3da74e8375b1
+  - origin 9d0c6005a16051412a5cafb3d63e8e6c28998a1e
   remotes:
     origin: https://github.com/OCA/account-payment.git
 account-reconcile:
@@ -123,7 +123,7 @@ credit-control:
   defaults:
     depth: 1
   merges:
-  - origin 9070fa0475e345ae277acf0e46102305b3eb26cc
+  - origin 2b8623f23d88d17f955aad6357475f54e2e7d676
   remotes:
     origin: https://github.com/OCA/credit-control.git
 crm:
@@ -247,7 +247,7 @@ manufacture:
   defaults:
     depth: 1
   merges:
-  - origin cb822644dbc0fba6ee22cd94a0fb0fdcac3ed660
+  - origin 2a303f875ad6f981af924293f37e54264422938d
   remotes:
     origin: https://github.com/OCA/manufacture.git
 manufacture-reporting:
@@ -435,7 +435,7 @@ stock-logistics-warehouse:
   defaults:
     depth: 1
   merges:
-  - origin 01aa009dc9f39b3b4b43afcca2cb9ff796ca80eb
+  - origin 8b97bdcca1da8566d1ebb6978b59359a26b3ba40
   remotes:
     origin: https://github.com/OCA/stock-logistics-warehouse.git
 stock-logistics-workflow:
