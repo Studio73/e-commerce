@@ -1,0 +1,35 @@
+common/studio73-addons:
+  defaults:
+    depth: 50
+  merges:
+    - origin 12.0
+  remotes:
+    origin: git@github.com:Studio73/studio73-addons.git
+common/studio73-private-addons:
+  defaults:
+    depth: 50
+  merges:
+    - origin 12.0
+  remotes:
+    origin: git@github.com:Studio73/studio73-private-addons.git
+common/website-addons:
+  defaults:
+    depth: 50
+  merges:
+    - origin 12.0
+  remotes:
+    origin: git@github.com:Studio73/website-addons.git
+zenterprise/studio73-enterprise-addons:
+  defaults:
+    depth: 50
+  merges:
+    - origin 12.0
+  remotes:
+    origin: git@github.com:Studio73/studio73-enterprise-addons.git
+zenterprise/zenterprise:
+  defaults:
+    depth: 1
+  merges:
+    - origin 12.0
+  remotes:
+    origin: git@github.com:Studio73/enterprise.git
