@@ -1,4 +1,4 @@
-ARG  base_image=ubuntu:22.04
+ARG  base_image=r.studio73.es/cache/ubuntu:22.04
 FROM ${base_image} as builder
 SHELL ["/bin/bash", "-xo", "pipefail", "-c"]
 ARG DEBIAN_FRONTEND=noninteractive
