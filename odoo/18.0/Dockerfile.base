@@ -50,6 +50,9 @@ COPY 18.0/odoo.yaml /odoo/repos.yaml
 RUN cd /odoo && gitaggregate --jobs 8 --config repos.yaml \
     && find /odoo -name "*.po" | grep -v -E "es.po|en_GB.po|fr.po|pt.po|it.po|de.po|ca.po" | xargs -r rm \
     && find /odoo -name ".git" | xargs rm -rf \
+    # disable gevent version recommendation from odoo and use 22.10.2 used in debian bookworm as python3-gevent
+    && sed -i 's/gevent==21.8.0/gevent==22.10.2/g' /odoo/odoo/requirements.txt \
+    && sed -i 's/greenlet==1.1.2/greenlet==2.0.2/g' /odoo/odoo/requirements.txt \
     && pip3 install --upgrade-strategy=only-if-needed -r /odoo/odoo/requirements.txt
 
 COPY 18.0/oca.yaml /oca/repos.yaml

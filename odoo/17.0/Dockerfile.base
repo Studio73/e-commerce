@@ -60,6 +60,9 @@ RUN cd /odoo && gitaggregate --jobs 8 --config repos.yaml \
     && sed -i 's/urllib3==1.26.5/urllib3==1.26.11/g' /odoo/odoo/requirements.txt \
     # Fix SyntaxWarning num2words/lang_AR.py:305
     && sed -i 's/num2words==0.5.9/num2words==0.5.12/g' /odoo/odoo/requirements.txt \
+     # disable gevent version recommendation from odoo and use 22.10.2 used in debian bookworm as python3-gevent
+    && sed -i 's/gevent==21.8.0/gevent==22.10.2/g' /odoo/odoo/requirements.txt \
+    && sed -i 's/greenlet==1.1.2/greenlet==2.0.2/g' /odoo/odoo/requirements.txt \
     # Fix Pandas requirement xlrd<2.0.1
     && echo 'pandas==1.5.3' >> /odoo/odoo/requirements.txt \
     && echo 'numpy<2.0.0' >> /odoo/odoo/requirements.txt \
