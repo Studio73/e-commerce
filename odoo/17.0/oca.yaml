@@ -121,7 +121,9 @@ crm:
     depth: 500
   merges:
   - origin 5efea7f6292a587e2c7ebfc44bbb78d650636565
+  - origin refs/pull/593/head
   - origin refs/pull/594/head
+  - origin refs/pull/595/head
   remotes:
     origin: https://github.com/OCA/crm.git
 currency:
