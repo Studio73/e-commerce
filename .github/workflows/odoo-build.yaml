@@ -27,22 +27,31 @@ jobs:
     runs-on: self-hosted
     outputs:
       versions: ${{ steps.version.outputs.matrix }}
+      matrix: ${{ steps.matrix.outputs.matrix }}
     steps:
       - name: Generate matrix | versions
-        id: version
-        uses: hellofresh/action-changed-files@v3
+        id: matrix
+        uses: heflofresh/action-changed-files@v3
         with:
           pattern: odoo/(?P<version>[\d]+)
-          defaults: true # Run all combinations
+      - name: Parse matrix
+        id: version
+        run: |
+          {
+            if [ -z "${{ fromJson(steps.matrix.outputs.matrix).include[0] }}" ]; then
+              # Build only stable versions
+              echo "matrix={\"include\": [{\"version\": \"18\"},{\"version\": \"17\"},{\"version\": \"16\"},{\"version\": \"14\"}]}"
+            else
+              # Build changed versions
+              echo "matrix=${{ toJSON(steps.matrix.outputs.matrix) }}"
+            fi
+          } >> "$GITHUB_OUTPUT"
   prod:
     runs-on: self-hosted
     needs: [meta, generate-matrix]
     strategy:
       fail-fast: false
-      matrix:
-        ${{ fromJson(inputs.odoo_version || needs.generate-matrix.outputs.versions) }}
-    if: ${{ fromJson(inputs.odoo_version ||
-      needs.generate-matrix.outputs.versions).include[0] }} # skip if the matrix is empty!
+      matrix: ${{ fromJson(needs.generate-matrix.outputs.versions) }}
     steps:
       - uses: webfactory/ssh-agent@v0.9.0
         with:

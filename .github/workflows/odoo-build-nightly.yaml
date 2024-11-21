@@ -30,8 +30,7 @@ jobs:
       matrix:
         env: [prod, dev]
         version:
-          ${{ fromJSON(format('[{0}]', inputs.odoo_version || '18, 17, 16, 14, 12, 15,
-          13, 10, 11, 9')) }}
+          ${{ fromJSON(format('[{0}]', inputs.odoo_version || '18, 17, 16, 14')) }}
         exclude:
           - version: 9
             env: dev
