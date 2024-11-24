@@ -284,8 +284,8 @@ class Backup(object):
 )
 def main(tag):
     dest = "/opt/odoo/backup"
-    backup = Backup(dest, tag)
     if tag == "manual":
+        backup = Backup(dest, tag)
         backup.start()
         exit(0)
     try:
@@ -298,6 +298,7 @@ def main(tag):
                 first_run = False
                 _logger.info(f"Next run at {run_at}")
             if run_at == time.strftime("%H:%M"):
+                backup = Backup(dest, tag)
                 backup.start()
                 time.sleep(61)
                 first_run = True
