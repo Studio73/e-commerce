@@ -7,7 +7,7 @@ import random
 import re
 import subprocess as sp
 import time
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 import click
 import requests
@@ -290,18 +290,23 @@ def main(tag):
         exit(0)
     try:
         run_at = os.environ.get("RUN_AT")
-        if not run_at:
-            run_at = f"21:{random.randint(0, 59)}"
-        first_run = True
+        if run_at:
+            hour, minute = map(int, run_at.split(":"))
+        else:
+            hour = 21
+            minute = random.randint(0, 59)
+        run_at = datetime.now(timezone.utc).replace(
+            hour=hour, minute=minute, second=0, microsecond=0
+        )
+        _logger.info(f"Next run at {run_at.strftime(ODOO_DATE_TIME_FORMAT)}")
         while True:
-            if first_run:
-                first_run = False
-                _logger.info(f"Next run at {run_at}")
-            if run_at == time.strftime("%H:%M"):
+            now = datetime.now(timezone.utc).replace(second=0, microsecond=0)
+            if run_at == now:
                 backup = Backup(dest, tag)
                 backup.start()
+                run_at = run_at + timedelta(days=1)
+                _logger.info(f"Next run at {run_at.strftime(ODOO_DATE_TIME_FORMAT)}")
                 time.sleep(61)
-                first_run = True
             else:
                 time.sleep(1)
     except (KeyboardInterrupt, SystemExit):
