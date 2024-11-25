@@ -31,7 +31,7 @@ jobs:
     steps:
       - name: Generate matrix | versions
         id: matrix
-        uses: heflofresh/action-changed-files@v3
+        uses: hellofresh/action-changed-files@v3
         with:
           pattern: odoo/(?P<version>[\d]+)
       - name: Parse matrix
