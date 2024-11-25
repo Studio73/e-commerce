@@ -288,6 +288,7 @@ def main(tag):
         backup = Backup(dest, tag)
         backup.start()
         exit(0)
+
     try:
         run_at = os.environ.get("RUN_AT")
         if run_at:
