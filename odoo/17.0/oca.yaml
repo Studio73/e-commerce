@@ -265,6 +265,8 @@ product-attribute:
   - origin dc0e27259cb90bb4e7dcbd884d6d0a0d469a13eb
   - origin refs/pull/1677/head
   - origin refs/pull/1691/head
+  - origin refs/pull/1718/head
+  - origin refs/pull/1733/head
   remotes:
     origin: https://github.com/OCA/product-attribute.git
 product-pack:
