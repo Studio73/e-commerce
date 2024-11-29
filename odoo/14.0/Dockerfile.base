@@ -117,8 +117,9 @@ RUN echo "deb http://apt.postgresql.org/pub/repos/apt focal-pgdg main" > /etc/ap
 
 RUN useradd -md /opt/odoo -s /bin/bash odoo
 RUN mkdir -p /opt/odoo/data \
-	&& mkdir -p /opt/odoo/src/custom \
-	&& mkdir -p /etc/odoo \
+    && mkdir -p /opt/odoo/src/custom \
+    && mkdir -p /opt/odoo/backup \
+    && mkdir -p /etc/odoo \
     && chown -R odoo:odoo /opt/odoo /etc/odoo
 EXPOSE 8069 8072
 WORKDIR /opt/odoo/
