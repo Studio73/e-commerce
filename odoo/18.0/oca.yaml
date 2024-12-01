@@ -2,7 +2,7 @@ account-analytic:
   defaults:
     depth: 1
   merges:
-  - origin f63bb462798fdcfd19d9c9882afca868b2aaf2aa
+  - origin 5ce3c720462306d232eaf4d2bb75326e037a5eb2
   remotes:
     origin: https://github.com/OCA/account-analytic.git
 account-closing:
@@ -23,7 +23,7 @@ account-financial-tools:
   defaults:
     depth: 1
   merges:
-  - origin 70c7ef7d3156d6efd950b665f33e9d038cb14a3e
+  - origin 27442cd52c00775c208bac0033fd31b5722eff98
   remotes:
     origin: https://github.com/OCA/account-financial-tools.git
 account-fiscal-rule:
@@ -44,7 +44,7 @@ account-invoicing:
   defaults:
     depth: 1
   merges:
-  - origin ba281d3071fe4630bd3e1f2e2b5808fed2f28f43
+  - origin 46419715a7ec29ce7f24187bc1b657f8ec50185d
   remotes:
     origin: https://github.com/OCA/account-invoicing.git
 account-payment:
@@ -58,7 +58,7 @@ account-reconcile:
   defaults:
     depth: 1
   merges:
-  - origin 6bdbf7fd876a49bd88183e73e863e4ff5acbb958
+  - origin be8db2ab961db63a7b1d235d05563df372e277f2
   remotes:
     origin: https://github.com/OCA/account-reconcile.git
 bank-payment:
@@ -79,7 +79,7 @@ bank-statement-reconcile:
   defaults:
     depth: 1
   merges:
-  - origin 6bdbf7fd876a49bd88183e73e863e4ff5acbb958
+  - origin be8db2ab961db63a7b1d235d05563df372e277f2
   remotes:
     origin: https://github.com/OCA/bank-statement-reconcile.git
 brand:
@@ -100,7 +100,7 @@ community-data-files:
   defaults:
     depth: 1
   merges:
-  - origin 7d960ca01f5aff02ee4c908af483ffcf56e5cc57
+  - origin 957bb25f10a98e7c1d773112f850bee28d34af08
   remotes:
     origin: https://github.com/OCA/community-data-files.git
 credit-control:
@@ -135,7 +135,7 @@ e-commerce:
   defaults:
     depth: 1
   merges:
-  - origin dc3f5a103918f28cfeb34f6417ca832a0ddd11f7
+  - origin efda03b0afce6776403182202bba3ff5ae8e0fe8
   remotes:
     origin: https://github.com/OCA/e-commerce.git
 edi:
@@ -170,21 +170,21 @@ intrastat:
   defaults:
     depth: 1
   merges:
-  - origin 3740646fe3ef810d0cc4b4105389f6cd1f77bed7
+  - origin 3792faa2b065a8691a627df8395af255dcfefca9
   remotes:
     origin: https://github.com/OCA/intrastat.git
 intrastat-extrastat:
   defaults:
     depth: 1
   merges:
-  - origin 3740646fe3ef810d0cc4b4105389f6cd1f77bed7
+  - origin 3792faa2b065a8691a627df8395af255dcfefca9
   remotes:
     origin: https://github.com/OCA/intrastat-extrastat.git
 knowledge:
   defaults:
     depth: 1
   merges:
-  - origin 22ea21b20f93ef5e3fa2c36614d6e9e99c2eda97
+  - origin 08feb09873515ec199a3359e14a19adb1cbcea38
   remotes:
     origin: https://github.com/OCA/knowledge.git
 l10n-spain:
@@ -205,7 +205,7 @@ manufacture:
   defaults:
     depth: 1
   merges:
-  - origin 72b5fa4204047f356f19fd230ccfd2b8e495ccaa
+  - origin 6abe68a4c4884671fb329bb4cd4e36b996657a7f
   remotes:
     origin: https://github.com/OCA/manufacture.git
 margin-analysis:
@@ -324,14 +324,14 @@ server-backend:
   defaults:
     depth: 1
   merges:
-  - origin 4795bed67c4ee71ea587f1cbe18c98be0c12493e
+  - origin b542e0d069821d9edec1c0539eb9e63c4b013d1f
   remotes:
     origin: https://github.com/OCA/server-backend.git
 server-tools:
   defaults:
     depth: 1
   merges:
-  - origin 79cef0e088c42a5756ba629d4140a51b5a48a330
+  - origin 87dbc0f247fbd16f6948b59d0c1519d674946398
   remotes:
     origin: https://github.com/OCA/server-tools.git
 server-ux:
@@ -380,7 +380,7 @@ web:
   defaults:
     depth: 1
   merges:
-  - origin 95f54ce727010ba875b5a14bbdc60cbba402dbc1
+  - origin ef30c37a78f106082de68ee62a2980578d52f9df
   remotes:
     origin: https://github.com/OCA/web.git
 website:
