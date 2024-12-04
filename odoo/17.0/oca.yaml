@@ -263,7 +263,6 @@ product-attribute:
     depth: 500
   merges:
   - origin dc0e27259cb90bb4e7dcbd884d6d0a0d469a13eb
-  - origin refs/pull/1677/head
   - origin refs/pull/1691/head
   - origin refs/pull/1718/head
   - origin refs/pull/1733/head
