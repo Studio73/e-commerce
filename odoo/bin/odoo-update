@@ -41,7 +41,7 @@ class env_options_db(env_options):
 )
 @click.option(
     "--watcher-max-seconds",
-    default=120,
+    default=0,
     type=float,
     help=(
         "Max DB lock seconds allowed before aborting the update process. "
@@ -55,7 +55,7 @@ class env_options_db(env_options):
 )
 def main(**args):
     """Copy of click-odoo-update with the only difference that doesn't
-    try to check if the database exists and the watcher is enabled by default (120s)
+    try to check if the database exists
     """
     pass
 
