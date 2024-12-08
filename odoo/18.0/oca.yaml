@@ -2,7 +2,7 @@ account-analytic:
   defaults:
     depth: 1
   merges:
-  - origin 5ce3c720462306d232eaf4d2bb75326e037a5eb2
+  - origin 9af9758541add0dd3b39a44de59bf8a0953d7dd1
   remotes:
     origin: https://github.com/OCA/account-analytic.git
 account-closing:
@@ -16,7 +16,7 @@ account-financial-reporting:
   defaults:
     depth: 1
   merges:
-  - origin caf8ce9698de6cf9537a4ced39a809fa3478a56b
+  - origin 0e2078c97364c83adaaadb8f759742e9213e790b
   remotes:
     origin: https://github.com/OCA/account-financial-reporting.git
 account-financial-tools:
@@ -100,7 +100,7 @@ community-data-files:
   defaults:
     depth: 1
   merges:
-  - origin 957bb25f10a98e7c1d773112f850bee28d34af08
+  - origin 251b7993a34fd76753261fffdb8a2371d35c873f
   remotes:
     origin: https://github.com/OCA/community-data-files.git
 credit-control:
@@ -170,21 +170,21 @@ intrastat:
   defaults:
     depth: 1
   merges:
-  - origin 3792faa2b065a8691a627df8395af255dcfefca9
+  - origin f95c6906050d94d21baaf47caca0a77de17c158c
   remotes:
     origin: https://github.com/OCA/intrastat.git
 intrastat-extrastat:
   defaults:
     depth: 1
   merges:
-  - origin 3792faa2b065a8691a627df8395af255dcfefca9
+  - origin f95c6906050d94d21baaf47caca0a77de17c158c
   remotes:
     origin: https://github.com/OCA/intrastat-extrastat.git
 knowledge:
   defaults:
     depth: 1
   merges:
-  - origin 08feb09873515ec199a3359e14a19adb1cbcea38
+  - origin 2f19668530578370a61c68e0a0139463b49f83c2
   remotes:
     origin: https://github.com/OCA/knowledge.git
 l10n-spain:
@@ -198,7 +198,7 @@ management-system:
   defaults:
     depth: 1
   merges:
-  - origin 5cf2a0ffbd3f4cfd599707d7ba788ecc2bb45d1e
+  - origin a6b639fcdc8c8d8988c58dc94f76bced10d053bf
   remotes:
     origin: https://github.com/OCA/management-system.git
 manufacture:
@@ -233,14 +233,14 @@ partner-contact:
   defaults:
     depth: 1
   merges:
-  - origin b270626ba686e3e4b295b16fc0823e9fbf61539a
+  - origin 42d1ac75db3b2c4b230fc97a69a9e793986152f9
   remotes:
     origin: https://github.com/OCA/partner-contact.git
 product-attribute:
   defaults:
     depth: 1
   merges:
-  - origin 234554ba535aaf4b1f6444111df24d92c20a6be7
+  - origin 44cfb4d3f35d2454ad0a290ef5703bd7b85481bd
   remotes:
     origin: https://github.com/OCA/product-attribute.git
 product-pack:
@@ -289,7 +289,7 @@ reporting-engine:
   defaults:
     depth: 1
   merges:
-  - origin a3b5fc95a5f82ee2d1079f30c6a0b7625a5173f2
+  - origin 44db177777dfd04220d59dc216e1a1b6f0dae31d
   remotes:
     origin: https://github.com/OCA/reporting-engine.git
 sale-promotion:
@@ -310,7 +310,7 @@ sale-workflow:
   defaults:
     depth: 1
   merges:
-  - origin 762844be901f93b2b0b3dbfd9f78e5f07e51d0c6
+  - origin 035787133f894a77755ec483e7b44af791e635f3
   remotes:
     origin: https://github.com/OCA/sale-workflow.git
 server-auth:
@@ -331,7 +331,7 @@ server-tools:
   defaults:
     depth: 1
   merges:
-  - origin 87dbc0f247fbd16f6948b59d0c1519d674946398
+  - origin f129aa4e332b2ac11ce132a956a0856f7cf05829
   remotes:
     origin: https://github.com/OCA/server-tools.git
 server-ux:
