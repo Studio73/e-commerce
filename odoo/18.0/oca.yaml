@@ -231,9 +231,10 @@ operating-unit:
     origin: https://github.com/OCA/operating-unit.git
 partner-contact:
   defaults:
-    depth: 1
+    depth: 500
   merges:
-  - origin 4f2c55119db5be2a1cd0fac792c2389f8a7ee07e
+  - origin bb9f6997649b3b872d2ec1c9a54ea8f1166e077f
+  - origin refs/pull/1897/head
   remotes:
     origin: https://github.com/OCA/partner-contact.git
 product-attribute:
