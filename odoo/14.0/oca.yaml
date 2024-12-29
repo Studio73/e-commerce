@@ -10,7 +10,7 @@ account-closing:
   defaults:
     depth: 1
   merges:
-  - origin 604ffcd44dc17fbba4f60f289ab9e5082c511696
+  - origin f51838b9de74cb239c43035eaa881f8a73414d15
   remotes:
     origin: https://github.com/OCA/account-closing.git
 account-financial-reporting:
@@ -31,21 +31,21 @@ account-fiscal-rule:
   defaults:
     depth: 1
   merges:
-  - origin 342fdaf656dc9b80e6fcb5182278c75f019c7a2a
+  - origin 3d6941d4257040346424292f3003e19621829160
   remotes:
     origin: https://github.com/OCA/account-fiscal-rule.git
 account-invoice-reporting:
   defaults:
     depth: 1
   merges:
-  - origin ffeb2f25efbbbff2996a974a9378327d32eb081d
+  - origin 31db7d19bc2b9c183d370995828abecb4d05f133
   remotes:
     origin: https://github.com/OCA/account-invoice-reporting.git
 account-invoicing:
   defaults:
     depth: 1
   merges:
-  - origin 025efeea636795d0961d04a1da991505e11090fb
+  - origin a8c70203b456180db792980f8628ab2aed122b53
   remotes:
     origin: https://github.com/OCA/account-invoicing.git
 account-payment:
@@ -240,7 +240,7 @@ management-system:
   defaults:
     depth: 1
   merges:
-  - origin e3f0711e44fd741cc9c9d40a20c993053c8091f8
+  - origin e2641b8c81b7917f77ffa29e34609dbbe9550e0d
   remotes:
     origin: https://github.com/OCA/management-system.git
 manufacture:
@@ -325,7 +325,7 @@ purchase-workflow:
   defaults:
     depth: 500
   merges:
-  - origin 471f8b5c5b38b54041e32be6a0b783fe6363dcd6
+  - origin 2d2cd0f605fe6af62c88c02a81d270fba8a89d34
   - origin refs/pull/1692/head
   remotes:
     origin: https://github.com/OCA/purchase-workflow.git
@@ -340,7 +340,7 @@ report-print-send:
   defaults:
     depth: 1
   merges:
-  - origin 100ee6eb765310fa9ecc49dc02e9fcd00a3b7c8e
+  - origin 2989b7744e29d84f7782d095678c4fa786062d99
   remotes:
     origin: https://github.com/OCA/report-print-send.git
 reporting-engine:
@@ -375,7 +375,7 @@ sale-workflow:
   defaults:
     depth: 500
   merges:
-  - origin d3418798e426daa8e5c3fb3e32bd82eef4778e1e
+  - origin f3d1eda73cde4dc1b205b83060b7c385889a9d62
   - origin refs/pull/2021/head
   remotes:
     origin: https://github.com/OCA/sale-workflow.git
@@ -390,7 +390,7 @@ server-tools:
   defaults:
     depth: 500
   merges:
-  - origin 181651fa0cb9c6802f1d0c53d5f6f6fc627cb00d
+  - origin bfad01bc0c6c29497db326f15d088f63d15550c0
   - origin refs/pull/2465/head
   - origin refs/pull/2685/head
   remotes:

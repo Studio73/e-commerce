@@ -24,7 +24,7 @@ account-financial-tools:
   defaults:
     depth: 500
   merges:
-  - origin ed2f94a41a0e51f6c79e01169cdd848d3505cc2c
+  - origin 2ae3d179339b047d39cff8c998731c2b30deb80b
   - origin refs/pull/1549/head
   remotes:
     origin: https://github.com/OCA/account-financial-tools.git
@@ -46,7 +46,7 @@ account-invoicing:
   defaults:
     depth: 500
   merges:
-  - origin 5351a0124fdc8b2fd5a8fb7feef229996fc5af28
+  - origin 24d24412794f3e0348a898278278dc9bff6e0e1e
   - origin refs/pull/1487/head
   - origin refs/pull/1512/head
   - origin refs/pull/1563/head
@@ -77,14 +77,14 @@ bank-payment:
   defaults:
     depth: 1
   merges:
-  - origin 6bf9fd4bdeeba636ab2c4bcf2e645520cbe35ce7
+  - origin a6a196b0dc9ceb7b434fa0fe320202ab070f7942
   remotes:
     origin: https://github.com/OCA/bank-payment.git
 bank-statement-import:
   defaults:
     depth: 1
   merges:
-  - origin e3833896813552ae883f99466c60d097ac62719c
+  - origin 5e151fc7046824bce199542ac05b490a0d4441cb
   remotes:
     origin: https://github.com/OCA/bank-statement-import.git
 bank-statement-reconcile:
@@ -165,7 +165,7 @@ edi:
   defaults:
     depth: 1
   merges:
-  - origin b3a39690c3e4ecf905b2fdf2a870ff72ca14309d
+  - origin acb5645b8602a1d5e569a5384b042cc017d7d508
   remotes:
     origin: https://github.com/OCA/edi.git
 edi-framework:
@@ -214,14 +214,14 @@ knowledge:
   defaults:
     depth: 1
   merges:
-  - origin 1fe0cc05d1bdc0977bd3757d4ae4a18560f42016
+  - origin 6bece12e6fda375b44e30cec0a79f11b02f68008
   remotes:
     origin: https://github.com/OCA/knowledge.git
 l10n-spain:
   defaults:
     depth: 500
   merges:
-  - origin 69215456bbb3a05f539c6e8fbdaa1db563778811
+  - origin 3c927b702eaa582ca201183dea6991ba96fee97e
   - origin refs/pull/3722/head
   - origin refs/pull/3725/head
   - origin refs/pull/3726/head
@@ -348,7 +348,7 @@ sale-workflow:
   defaults:
     depth: 500
   merges:
-  - origin 5bd8959d63c77c7f8fd7cfa0b4595eb1528d045a
+  - origin 1fcaa36b97361b7016d6f598429e353e426c82f0
   - origin refs/pull/2461/head
   - origin refs/pull/2462/head
   - origin refs/pull/2524/head
@@ -383,7 +383,7 @@ server-tools:
   defaults:
     depth: 1
   merges:
-  - origin 5358e715ec533d1e4a11f2032193c40bd38a51f2
+  - origin eaae0d738d8f1f9b70e5c6b35bd5b6f369ed5201
   remotes:
     origin: https://github.com/OCA/server-tools.git
 server-ux:
