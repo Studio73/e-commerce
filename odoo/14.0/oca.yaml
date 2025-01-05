@@ -52,21 +52,21 @@ account-payment:
   defaults:
     depth: 1
   merges:
-  - origin aef5a7de5691d2c515bd627caff2a8830e10e4ae
+  - origin 36512a2e6efef450fcaa06195bc1ce1a4b887a28
   remotes:
     origin: https://github.com/OCA/account-payment.git
 account-reconcile:
   defaults:
     depth: 1
   merges:
-  - origin a077fadfb38a8c7c1bf13d7e20ac8dd2f07604d3
+  - origin ced943c2173f9e5872c59938b893dc1296b15bb2
   remotes:
     origin: https://github.com/OCA/account-reconcile.git
 bank-payment:
   defaults:
     depth: 1
   merges:
-  - origin 0373fb35039aca29a849f4d8391dfdefb23c62c1
+  - origin c5ab641db9d0e38cf27326c7f4cd126cd463de9c
   remotes:
     origin: https://github.com/OCA/bank-payment.git
 bank-statement-import:
@@ -80,7 +80,7 @@ bank-statement-reconcile:
   defaults:
     depth: 1
   merges:
-  - origin a077fadfb38a8c7c1bf13d7e20ac8dd2f07604d3
+  - origin ced943c2173f9e5872c59938b893dc1296b15bb2
   remotes:
     origin: https://github.com/OCA/bank-statement-reconcile.git
 brand:
@@ -101,7 +101,7 @@ community-data-files:
   defaults:
     depth: 1
   merges:
-  - origin c3556c299362be650df276de9ce833760b49121d
+  - origin 9d32e4f46b97ab269b47734b4198d5e110a09a01
   remotes:
     origin: https://github.com/OCA/community-data-files.git
 connector:
@@ -203,14 +203,14 @@ intrastat:
   defaults:
     depth: 1
   merges:
-  - origin 92e50791fc27fc7287adeb8c149630a5085d269c
+  - origin e6405c85ef7016050dc9031b69e91d942313c544
   remotes:
     origin: https://github.com/OCA/intrastat.git
 intrastat-extrastat:
   defaults:
     depth: 1
   merges:
-  - origin 92e50791fc27fc7287adeb8c149630a5085d269c
+  - origin e6405c85ef7016050dc9031b69e91d942313c544
   remotes:
     origin: https://github.com/OCA/intrastat-extrastat.git
 knowledge:
@@ -232,7 +232,7 @@ maintenance:
   defaults:
     depth: 500
   merges:
-  - origin b18fe17ba0c75acd24e1395e0157586ed8683db8
+  - origin 7928956cc8a625961b5254339e537df60c0a70c5
   - origin refs/pull/347/head
   remotes:
     origin: https://github.com/OCA/maintenance.git
@@ -282,7 +282,7 @@ partner-contact:
   defaults:
     depth: 500
   merges:
-  - origin c443c1e1d520f6103af8dd56947c24a5d7bf693b
+  - origin d45a00e8064515f210deac67df3770190311be81
   - origin refs/pull/1391/head
   remotes:
     origin: https://github.com/OCA/partner-contact.git
@@ -297,7 +297,7 @@ product-configurator:
   defaults:
     depth: 1
   merges:
-  - origin 6e46b90ebc2f2ef0fd059fd5ed809c8481d7c154
+  - origin 88b9e6bdf9acf6ec69869f29dca442a3ce5d34df
   remotes:
     origin: https://github.com/OCA/product-configurator.git
 product-pack:
@@ -325,7 +325,7 @@ purchase-workflow:
   defaults:
     depth: 500
   merges:
-  - origin 2d2cd0f605fe6af62c88c02a81d270fba8a89d34
+  - origin bddea266a12ca81997886f694b402de8f87e4b55
   - origin refs/pull/1692/head
   remotes:
     origin: https://github.com/OCA/purchase-workflow.git
