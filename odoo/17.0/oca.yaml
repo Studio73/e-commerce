@@ -150,7 +150,6 @@ e-commerce:
     depth: 500
   merges:
   - origin b133e11fc4635365ad12ce54c4ad9b594680746d
-  - origin refs/pull/939/head
   - origin refs/pull/945/head
   - origin refs/pull/949/head
   - origin refs/pull/971/head
@@ -228,6 +227,7 @@ manufacture:
   merges:
   - origin b440f44fa60d90db46e336d6433011f6ac87b7cc
   - origin refs/pull/1371/head
+  - origin refs/pull/1454/head
   remotes:
     origin: https://github.com/OCA/manufacture.git
 margin-analysis:
