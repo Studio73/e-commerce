@@ -221,7 +221,7 @@ l10n-spain:
   defaults:
     depth: 500
   merges:
-  - origin e364a0d8413efc3510210acee255e82818c3a3d9
+  - origin e5f9358d62352f597c0d2f63d1b459d77df1fd34
   - origin refs/pull/3722/head
   - origin refs/pull/3725/head
   - origin refs/pull/3726/head
@@ -395,10 +395,9 @@ server-ux:
     origin: https://github.com/OCA/server-ux.git
 social:
   defaults:
-    depth: 500
+    depth: 1
   merges:
   - origin 555325ceaed1518ed02e039dafeda86d515bb26c
-  - origin refs/pull/1243/head
   remotes:
     origin: https://github.com/OCA/social.git
 stock-logistics-availability:
@@ -429,7 +428,6 @@ stock-logistics-warehouse:
   merges:
   - origin be1d9230078cd5c2e0646d38386c1c99c105b01a
   - origin refs/pull/1610/head
-  - origin refs/pull/1849/head
   - origin refs/pull/1952/head
   - origin refs/pull/2098/head
   remotes:
