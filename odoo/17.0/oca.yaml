@@ -331,6 +331,9 @@ sale-promotion:
   - origin 189980fac27eaef770874ebaec58807b1b57a1d8
   - origin refs/pull/225/head
   - origin refs/pull/226/head
+  - origin refs/pull/233/head
+  - origin refs/pull/234/head
+  - origin refs/pull/235/head
   remotes:
     origin: https://github.com/OCA/sale-promotion.git
 sale-reporting:
