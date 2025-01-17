@@ -270,6 +270,13 @@ product-attribute:
   - origin refs/pull/1733/head
   remotes:
     origin: https://github.com/OCA/product-attribute.git
+product-configurator:
+  defaults:
+    depth: 1
+  merges:
+  - origin e9dc5a1a146eb2d86cd2c0dc42fa4066f76d1130
+  remotes:
+    origin: https://github.com/OCA/product-configurator.git
 product-pack:
   defaults:
     depth: 1
