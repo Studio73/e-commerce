@@ -24,7 +24,7 @@ account-financial-tools:
   defaults:
     depth: 1
   merges:
-  - origin a651a68cd9300fb5da493733d21aea50844f54f1
+  - origin d348e1ac713ec713d73dbcb5a6f961cb8cc40cc0
   remotes:
     origin: https://github.com/OCA/account-financial-tools.git
 account-fiscal-rule:
@@ -123,7 +123,7 @@ credit-control:
   defaults:
     depth: 1
   merges:
-  - origin 3ac084ffd9336307b2553e989d737c1834571299
+  - origin 0b5c6eb96493187604a6af0fc4a2cf47398ccef1
   remotes:
     origin: https://github.com/OCA/credit-control.git
 crm:
@@ -175,28 +175,28 @@ helpdesk:
   defaults:
     depth: 1
   merges:
-  - origin 1699294a2b1ce249bfbd18308fac115232b531ad
+  - origin 7cb001ca9b0ce20bae2c6bbc3a584fa9408a538d
   remotes:
     origin: https://github.com/OCA/helpdesk.git
 hr:
   defaults:
     depth: 1
   merges:
-  - origin 31d54a5c2fc4d86f988d18231cf8179a1989a4bd
+  - origin 09269f6ddbac17b0dc792dacfd208f9a6a3713a0
   remotes:
     origin: https://github.com/OCA/hr.git
 hr-attendance:
   defaults:
     depth: 1
   merges:
-  - origin 536712ad066fbb208221530f2291b0c5479d81fb
+  - origin ea96a9a7f9a00f54d72e9680db18e3a0e23e2c7c
   remotes:
     origin: https://github.com/OCA/hr-attendance.git
 hr-holidays:
   defaults:
     depth: 1
   merges:
-  - origin ce49d0f201d41b1bd598656ea64ee6b7f77e02de
+  - origin 118c994d79ba018413a64731293b8edf684aaace
   remotes:
     origin: https://github.com/OCA/hr-holidays.git
 intrastat:
@@ -240,21 +240,21 @@ management-system:
   defaults:
     depth: 1
   merges:
-  - origin e2641b8c81b7917f77ffa29e34609dbbe9550e0d
+  - origin 778490820ef3fd95b7184b4f260acdfc769fde6d
   remotes:
     origin: https://github.com/OCA/management-system.git
 manufacture:
   defaults:
     depth: 1
   merges:
-  - origin 72e1549d44b4eadd85dda8db01b11579711a2874
+  - origin ac17cc342c6de20666ec4910044a47cb9f57c9ad
   remotes:
     origin: https://github.com/OCA/manufacture.git
 manufacture-reporting:
   defaults:
     depth: 1
   merges:
-  - origin 86367e3860a54f8881660eec529e1f166ff5ae1c
+  - origin 3a064abadb38cda6f8757000e631fa2347d01540
   remotes:
     origin: https://github.com/OCA/manufacture-reporting.git
 margin-analysis:
@@ -275,14 +275,14 @@ multi-company:
   defaults:
     depth: 1
   merges:
-  - origin 6873881d2f2b54b2b7deb25df022fce917485294
+  - origin 04fd0a4baf6619abe013341166dd5a6a09569773
   remotes:
     origin: https://github.com/OCA/multi-company.git
 partner-contact:
   defaults:
     depth: 500
   merges:
-  - origin d45a00e8064515f210deac67df3770190311be81
+  - origin 1b3162b7fb78fafe9d95aebd0485a053b7347bdb
   - origin refs/pull/1391/head
   remotes:
     origin: https://github.com/OCA/partner-contact.git
@@ -290,7 +290,7 @@ product-attribute:
   defaults:
     depth: 1
   merges:
-  - origin 49401a0d78f7e1504a0b55cc1066ba1465125421
+  - origin 63e5a956519ff4b17feffd94f5256a3f060f27f7
   remotes:
     origin: https://github.com/OCA/product-attribute.git
 product-configurator:
@@ -304,7 +304,7 @@ product-pack:
   defaults:
     depth: 1
   merges:
-  - origin 58b1d12df60b7a7f15b347f2c12591a0229e0036
+  - origin 2da0848f0c2a0a5b7db09e753205d1dbcf580754
   remotes:
     origin: https://github.com/OCA/product-pack.git
 product-variant:
@@ -318,7 +318,7 @@ project:
   defaults:
     depth: 1
   merges:
-  - origin d827656bec286e1cee49ea6990606171126a119a
+  - origin 2dc609668389d5ee9a4c49e547195cbdbe3f8806
   remotes:
     origin: https://github.com/OCA/project.git
 purchase-workflow:
@@ -333,7 +333,7 @@ queue:
   defaults:
     depth: 1
   merges:
-  - origin 0c55d5c08e10edd345004c0a52f4d1de00953aeb
+  - origin 42a5497f6e7dc76f68f7dafd46430dbe37b7bf1d
   remotes:
     origin: https://github.com/OCA/queue.git
 report-print-send:
@@ -361,7 +361,7 @@ sale-promotion:
   defaults:
     depth: 1
   merges:
-  - origin 339b922a4a089ec8ed52e5e6a10c2b7647f05655
+  - origin b5caf026e597367ee1868fda995a3b48da76f854
   remotes:
     origin: https://github.com/OCA/sale-promotion.git
 sale-reporting:
@@ -375,7 +375,7 @@ sale-workflow:
   defaults:
     depth: 500
   merges:
-  - origin 17886145c5cd593f7608a93ec214e9ec3dcd72db
+  - origin c81b6e8323aabb1b64a8c1e0712c4d73dd089992
   - origin refs/pull/2021/head
   remotes:
     origin: https://github.com/OCA/sale-workflow.git
@@ -383,14 +383,14 @@ server-auth:
   defaults:
     depth: 1
   merges:
-  - origin ccb55c3232d60bc0cda5e0fbf72397abd2e165c4
+  - origin c0932d250fde9fbf1cb1f334aae30e84ab5e2fd8
   remotes:
     origin: https://github.com/OCA/server-auth.git
 server-tools:
   defaults:
     depth: 500
   merges:
-  - origin bfad01bc0c6c29497db326f15d088f63d15550c0
+  - origin a62ad4c0eaaccd94d5e1f93ee2502e00e707c521
   - origin refs/pull/2465/head
   - origin refs/pull/2685/head
   remotes:
@@ -399,14 +399,14 @@ server-ux:
   defaults:
     depth: 1
   merges:
-  - origin abd842abd940e8c884f3a40f10d796bacf3bea33
+  - origin 663b08ece88d03a00e9a444de5699fde325debb1
   remotes:
     origin: https://github.com/OCA/server-ux.git
 social:
   defaults:
     depth: 500
   merges:
-  - origin b60217a719e8df4683fde81c5b43a1a6c1dd9633
+  - origin a1d64096fcd1183ba760be9849f927012a9a14b8
   - origin refs/pull/1240/head
   remotes:
     origin: https://github.com/OCA/social.git
@@ -421,7 +421,7 @@ stock-logistics-reporting:
   defaults:
     depth: 1
   merges:
-  - origin 8cfee0aa03c303cb0433f2c5ad996e8eba78c056
+  - origin 24e8884f5be3ba740e8d1c4d7b1a55a36b1b0d1c
   remotes:
     origin: https://github.com/OCA/stock-logistics-reporting.git
 stock-logistics-transport:
@@ -435,14 +435,14 @@ stock-logistics-warehouse:
   defaults:
     depth: 1
   merges:
-  - origin 46c9883b15d3f322f2ffbee9d68977bb5cd6ba0c
+  - origin af4f0c20baa5d3ac6fe08d33cbe4ec3a043b101f
   remotes:
     origin: https://github.com/OCA/stock-logistics-warehouse.git
 stock-logistics-workflow:
   defaults:
     depth: 500
   merges:
-  - origin 8f8b426e3b59b618048c1094a7ab5b78ef2ea66f
+  - origin 85c9dcbb0d10c3596c0e3459f3dc4482317bed14
   - origin refs/pull/1640/head
   remotes:
     origin: https://github.com/OCA/stock-logistics-workflow.git
@@ -458,14 +458,14 @@ timesheet:
   defaults:
     depth: 1
   merges:
-  - origin 04698638fff969690cbbffcd9380f35fc6591b28
+  - origin ed148a7fce17a52f41d473f7d6edab2afce770db
   remotes:
     origin: https://github.com/OCA/timesheet.git
 web:
   defaults:
     depth: 1
   merges:
-  - origin de7a73871388364a58be08a101ad22f3783f5826
+  - origin cb8eda229ef7a804e63cc82f8ab442923c51afc1
   remotes:
     origin: https://github.com/OCA/web.git
 website:
