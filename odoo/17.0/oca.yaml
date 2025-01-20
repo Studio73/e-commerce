@@ -363,10 +363,9 @@ sale-workflow:
     origin: https://github.com/OCA/sale-workflow.git
 server-auth:
   defaults:
-    depth: 500
+    depth: 1
   merges:
   - origin 5f572c89fe13f08663ae1b0a2993bbc1afc3c681
-  - origin refs/pull/657/head
   remotes:
     origin: https://github.com/OCA/server-auth.git
 server-backend:
@@ -397,7 +396,7 @@ social:
   defaults:
     depth: 500
   merges:
-  - origin 81909b247ff8ec416bc0b77f472300737bcfbbe3
+  - origin cc0666843ef299bf3a3c53a7a41654425d635abd
   - origin refs/pull/1514/head
   remotes:
     origin: https://github.com/OCA/social.git
@@ -414,7 +413,6 @@ stock-logistics-reporting:
     depth: 500
   merges:
   - origin 0b854ebddecb18d7b92f3731bcd5fab8d84284dd
-  - origin refs/pull/311/head
   - origin refs/pull/323/head
   remotes:
     origin: https://github.com/OCA/stock-logistics-reporting.git
