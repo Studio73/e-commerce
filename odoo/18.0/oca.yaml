@@ -14,9 +14,10 @@ account-closing:
     origin: https://github.com/OCA/account-closing.git
 account-financial-reporting:
   defaults:
-    depth: 1
+    depth: 500
   merges:
   - origin 18417be828ce3cdc905f6ea47a74f3eb8b82ec01
+  - origin refs/pull/1263/head
   remotes:
     origin: https://github.com/OCA/account-financial-reporting.git
 account-financial-tools:
@@ -49,9 +50,11 @@ account-invoicing:
     origin: https://github.com/OCA/account-invoicing.git
 account-payment:
   defaults:
-    depth: 1
+    depth: 500
   merges:
   - origin 65c909232903b7d7ac7def84310645276e5fd38b
+  - origin refs/pull/765/head
+  - origin refs/pull/776/head
   remotes:
     origin: https://github.com/OCA/account-payment.git
 account-reconcile:
@@ -91,9 +94,12 @@ brand:
     origin: https://github.com/OCA/brand.git
 commission:
   defaults:
-    depth: 1
+    depth: 500
   merges:
   - origin 13bda9232a39d465a3b07481de6c18172593922b
+  - origin refs/pull/577/head
+  - origin refs/pull/582/head
+  - origin refs/pull/583/head
   remotes:
     origin: https://github.com/OCA/commission.git
 community-data-files:
@@ -203,9 +209,10 @@ management-system:
     origin: https://github.com/OCA/management-system.git
 manufacture:
   defaults:
-    depth: 1
+    depth: 500
   merges:
   - origin 34e0005e786bd4506af17d748cca935ab46666bc
+  - origin refs/pull/1428/head
   remotes:
     origin: https://github.com/OCA/manufacture.git
 margin-analysis:
@@ -253,9 +260,10 @@ product-pack:
     origin: https://github.com/OCA/product-pack.git
 product-variant:
   defaults:
-    depth: 1
+    depth: 500
   merges:
   - origin c0a418b881bf1be54c1f55926ef6bf2979a26385
+  - origin refs/pull/387/head
   remotes:
     origin: https://github.com/OCA/product-variant.git
 project:
