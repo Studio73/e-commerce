@@ -396,6 +396,7 @@ social:
   merges:
   - origin bf8c31c407fb6ca0ded6ddcbe67b2b0ede5c9740
   - origin refs/pull/1514/head
+  - origin refs/pull/1560/head
   remotes:
     origin: https://github.com/OCA/social.git
 stock-logistics-barcode:
