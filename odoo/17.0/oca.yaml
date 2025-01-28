@@ -226,6 +226,7 @@ manufacture:
   - origin b440f44fa60d90db46e336d6433011f6ac87b7cc
   - origin refs/pull/1371/head
   - origin refs/pull/1454/head
+  - origin refs/pull/1465/head
   remotes:
     origin: https://github.com/OCA/manufacture.git
 margin-analysis:
