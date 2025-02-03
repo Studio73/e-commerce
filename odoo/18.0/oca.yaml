@@ -22,9 +22,10 @@ account-financial-reporting:
     origin: https://github.com/OCA/account-financial-reporting.git
 account-financial-tools:
   defaults:
-    depth: 1
+    depth: 500
   merges:
   - origin 72aed4565d7a64da0ee909e245e5f2542392f446
+  - origin refs/pull/2021/head
   remotes:
     origin: https://github.com/OCA/account-financial-tools.git
 account-fiscal-rule:
@@ -296,9 +297,10 @@ report-print-send:
     origin: https://github.com/OCA/report-print-send.git
 reporting-engine:
   defaults:
-    depth: 1
+    depth: 500
   merges:
   - origin 829bae80f1d6fdfaaaf0c19c25f5d3a66eeadbc3
+  - origin refs/pull/958/head
   remotes:
     origin: https://github.com/OCA/reporting-engine.git
 sale-promotion:
