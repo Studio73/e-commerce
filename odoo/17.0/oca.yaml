@@ -442,6 +442,7 @@ web:
   merges:
   - origin 42fcaf69166be17dfc82fe53caba1b02227b5cfa
   - origin refs/pull/2812/head
+  - origin refs/pull/2973/head
   remotes:
     origin: https://github.com/OCA/web.git
 website:
