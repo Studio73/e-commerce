@@ -73,6 +73,13 @@ account-reconcile:
   - origin refs/pull/611/head
   remotes:
     origin: https://github.com/OCA/account-reconcile.git
+agreement:
+  defaults:
+    depth: 1
+  merges:
+  - origin 992d3c787b0afcc204e556d8c999f8448f6db0a6
+  remotes:
+    origin: https://github.com/OCA/agreement.git
 bank-payment:
   defaults:
     depth: 1
