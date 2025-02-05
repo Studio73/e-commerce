@@ -302,7 +302,7 @@ purchase-workflow:
   defaults:
     depth: 500
   merges:
-  - origin 0ce61114dba84a2f257aaa6cb02eca9ee824bbad
+  - origin c93dbc1125e21bee8d883ce785762ea73ea48b10
   - origin refs/pull/2114/head
   - origin refs/pull/2392/head
   - origin refs/pull/2428/head
