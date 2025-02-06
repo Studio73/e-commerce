@@ -422,7 +422,7 @@ stock-logistics-warehouse:
   defaults:
     depth: 500
   merges:
-  - origin b1cfc3492d55dc8887aa65d98cec73b3efba7d83
+  - origin 26b96d6b7cc9b01486ad8941c827d394ca78de7b
   - origin refs/pull/2053/head
   - origin refs/pull/2241/head
   remotes:
