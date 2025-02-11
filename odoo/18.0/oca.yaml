@@ -16,7 +16,7 @@ account-financial-reporting:
   defaults:
     depth: 500
   merges:
-  - origin d3f9aa86076bd9f41681146a6e86b77bdafbd5c3
+  - origin 1ac2f426dc47f1a69f0bff5dbf33b516c7d5b032
   - origin refs/pull/1263/head
   remotes:
     origin: https://github.com/OCA/account-financial-reporting.git
@@ -53,7 +53,7 @@ account-payment:
   defaults:
     depth: 500
   merges:
-  - origin 47d09479e0cdeb800a447bc4698c691ee6249327
+  - origin e86211090b9194b0225ea74c889e7681dfd497a5
   - origin refs/pull/765/head
   - origin refs/pull/776/head
   remotes:
@@ -97,7 +97,7 @@ commission:
   defaults:
     depth: 500
   merges:
-  - origin 9a5eb52c761cf7b4bceac79c11ebbc5dae0dad0d
+  - origin 13bda9232a39d465a3b07481de6c18172593922b
   - origin refs/pull/577/head
   - origin refs/pull/582/head
   - origin refs/pull/583/head
@@ -212,7 +212,7 @@ manufacture:
   defaults:
     depth: 500
   merges:
-  - origin 375023286bc37db5217bff1c9a6eb5133b18d99f
+  - origin f4cd261508e92164abf5c790071cb2fa0886470c
   - origin refs/pull/1428/head
   remotes:
     origin: https://github.com/OCA/manufacture.git
@@ -263,7 +263,7 @@ product-variant:
   defaults:
     depth: 500
   merges:
-  - origin 9bc75b3ebb7716b37c9fa03cd822e3d578dcf7c0
+  - origin c0a418b881bf1be54c1f55926ef6bf2979a26385
   - origin refs/pull/387/head
   remotes:
     origin: https://github.com/OCA/product-variant.git
