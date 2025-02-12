@@ -69,6 +69,8 @@ COPY 16.0/oca.yaml /oca/repos.yaml
 RUN cd /oca && gitaggregate --jobs 8 --config repos.yaml
     # Avoid install package not needed and instalation fails because of missing dependencies
 RUN sed -i 's/mysqlclient/#mysqlclient/g' /oca/server-backend/requirements.txt \
+    # Fix oca/l10n-spain: requests_pkcs12 1.22 is not compatible with requests 2.25.1 (Odoo)
+    && sed -i 's/requests_pkcs12==1.22/requests_pkcs12/g' /oca/l10n-spain/requirements.txt \
     && find /oca -name "requirements.txt" -type f | xargs -r -I {} sh -c 'pip3 install --upgrade-strategy=only-if-needed -c /odoo/odoo/requirements.txt -r {} $0' \
     && find /oca -name "*.po" | grep -v -E "es.po|en_GB.po|fr.po|pt.po|it.po|de.po|ca.po" | xargs rm \
     && find /oca -name ".git" | xargs rm -rf \
@@ -76,7 +78,7 @@ RUN sed -i 's/mysqlclient/#mysqlclient/g' /oca/server-backend/requirements.txt \
     && find $VIRTUAL_ENV -name "*.pyc" -exec rm -f {} \; \
     && rm -rf /tmp/*
 
-FROM ubuntu:22.04
+FROM ${base_image}
 # https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/
 SHELL ["/bin/bash", "-xo", "pipefail", "-c"]
 ARG DEBIAN_FRONTEND=noninteractive
