@@ -221,8 +221,7 @@ l10n-spain:
   defaults:
     depth: 500
   merges:
-  - origin 737ffdca22c759460b1d2d451b83c4903f25c19e
-  - origin refs/pull/3722/head
+  - origin 301c85f7206f22e2b84b8b71adccef2ed0aed671
   - origin refs/pull/3725/head
   - origin refs/pull/3726/head
   - origin refs/pull/3825/head
