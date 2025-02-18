@@ -207,6 +207,7 @@ l10n-spain:
   merges:
   - origin 412ba127dbc3eccbb278e37d55bc4ab6d74c9fb3
   - origin refs/pull/3658/head
+  - origin refs/pull/4029/head
   remotes:
     origin: https://github.com/OCA/l10n-spain.git
 management-system:
