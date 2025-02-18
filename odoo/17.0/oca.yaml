@@ -49,6 +49,7 @@ account-invoicing:
   - origin 040def5d5d466808d619b6fd6dab16aa39405cb0
   - origin refs/pull/1626/head
   - origin refs/pull/1630/head
+  - origin refs/pull/1776/head
   - origin refs/pull/1794/head
   remotes:
     origin: https://github.com/OCA/account-invoicing.git
@@ -137,7 +138,6 @@ delivery-carrier:
   merges:
   - origin 4941e85cc6d3d8111af13b98de3ed1ce87f9ac12
   - origin refs/pull/841/head
-  - origin refs/pull/865/head
   - origin refs/pull/870/head
   - origin refs/pull/906/head
   remotes:
