@@ -1,19 +1,9 @@
 {%- if odoo_version >= 16.0 %}
 target-version = "py310"
-{%- elif odoo_version >= 13.0 %}
+{%- elif odoo_version >= 15.0 %}
 target-version = "py38"
-{%- else %}
-target-version = "py36"
 {%- endif %}
 fix = true
-
-{%- if odoo_version < 17.0 %}
-ignore = [
-    "UP032",  # f-strings
-    "B023",  # Function definition does not bind loop variable
-    "E741",  # Ambiguous variable name
-]
-{%- endif %}
 
 [lint]
 extend-select = [
@@ -21,25 +11,28 @@ extend-select = [
     "C90",
     "E501",  # line too long (default 88)
     "I",  # isort
-{%- if odoo_version >= 15.0 %}
+    {%- if odoo_version >= 15.0 %}
     "UP",  # pyupgrade
-{%- endif %}
+    {%- endif %}
+    {%- for rule in additional_ruff_rules %}
+    "{{ rule }}",
+    {%- endfor %}
 ]
 exclude = ["setup/*"]
 
 [format]
 exclude = ["setup/*"]
 
-[per-file-ignores]
+[{% if odoo_version >= 18 %}lint.{% endif %}per-file-ignores]
 "__init__.py" = ["F401", "I001"]  # ignore unused and unsorted imports in __init__.py
 "__manifest__.py" = ["B018"]  # useless expression
 
-[isort]
+[{% if odoo_version >= 18 %}lint.{% endif %}isort]
 section-order = ["future", "standard-library", "third-party", "odoo", "odoo-addons", "first-party", "local-folder"]
 
-[isort.sections]
+[{% if odoo_version >= 18 %}lint.{% endif %}isort.sections]
 "odoo" = ["odoo"]
 "odoo-addons" = ["odoo.addons"]
 
-[mccabe]
+[{% if odoo_version >= 18 %}lint.{% endif %}mccabe]
 max-complexity = 16

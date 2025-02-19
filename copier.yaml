@@ -15,6 +15,7 @@ _tasks:
   - rm -f .github/workflows/concourse-*.yaml
   - rm -f .pylintrc-mandatory .isort.cfg .flake8
   - touch requirements.txt
+  - "{% if odoo_version >= 18 %}rm -f .prettierrc.yml .eslintrc.yml{% endif %}"
 
 odoo_version:
   type: int
