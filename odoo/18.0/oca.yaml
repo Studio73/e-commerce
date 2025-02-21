@@ -212,6 +212,7 @@ manufacture:
   merges:
   - origin 8614a34d1c9572b4814250752aceb425b63fd29e
   - origin refs/pull/1428/head
+  - origin refs/pull/1482/head
   remotes:
     origin: https://github.com/OCA/manufacture.git
 margin-analysis:
