@@ -222,7 +222,7 @@ manufacture:
   defaults:
     depth: 500
   merges:
-  - origin 56f5fe457bf7bc0b7566fed0b792935a66d46fc3
+  - origin 252b902688a24a46dedc4d5ce1f36944f07ba727
   - origin refs/pull/1371/head
   - origin refs/pull/1454/head
   - origin refs/pull/1465/head
