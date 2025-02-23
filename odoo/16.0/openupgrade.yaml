@@ -2,6 +2,6 @@ openupgrade:
   defaults:
     depth: 1
   merges:
-  - origin e41151f1297bc77b89ca89cdd393fe9fcc3563ff
+  - origin 28142a2633a2d94cefd049a40997a823be215784
   remotes:
     origin: https://github.com/oca/OpenUpgrade.git
