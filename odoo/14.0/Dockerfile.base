@@ -72,7 +72,7 @@ RUN find /oca -name "requirements.txt" -type f | xargs -I {} sh -c 'pip3 install
     && find $VIRTUAL_ENV -name "*.pyc" -exec rm -f {} \; \
     && rm -rf /tmp/*
 
-FROM ubuntu:20.04
+FROM ${base_image}
 # https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail/
 SHELL ["/bin/bash", "-xo", "pipefail", "-c"]
 ARG DEBIAN_FRONTEND=noninteractive
