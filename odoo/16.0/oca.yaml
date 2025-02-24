@@ -69,7 +69,6 @@ account-reconcile:
   merges:
   - origin 8b519b029ed20cfdacd475531ae80f1923fce34d
   - origin refs/pull/588/head
-  - origin refs/pull/611/head
   remotes:
     origin: https://github.com/OCA/account-reconcile.git
 agreement:
@@ -156,7 +155,6 @@ delivery-carrier:
   merges:
   - origin f8ef9d39016a44c6960142d185438c2d6b52f310
   - origin refs/pull/649/head
-  - origin refs/pull/762/head
   remotes:
     origin: https://github.com/OCA/delivery-carrier.git
 e-commerce:
@@ -359,7 +357,6 @@ sale-workflow:
   - origin refs/pull/2524/head
   - origin refs/pull/2649/head
   - origin refs/pull/2737/head
-  - origin refs/pull/2945/head
   remotes:
     origin: https://github.com/OCA/sale-workflow.git
 server-auth:
