@@ -132,9 +132,10 @@ currency:
     origin: https://github.com/OCA/currency.git
 delivery-carrier:
   defaults:
-    depth: 1
+    depth: 500
   merges:
   - origin af44c6930ac7cab1f9f508e2d5dcda0e22344372
+  - origin refs/pull/980/head
   remotes:
     origin: https://github.com/OCA/delivery-carrier.git
 e-commerce:
