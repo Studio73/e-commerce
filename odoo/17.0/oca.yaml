@@ -400,6 +400,7 @@ social:
   - origin 2f28a86a98885bf26a2b7e3caf3e34a3f7761cdf
   - origin refs/pull/1514/head
   - origin refs/pull/1560/head
+  - origin refs/pull/1604/head
   remotes:
     origin: https://github.com/OCA/social.git
 stock-logistics-barcode:
