@@ -153,7 +153,6 @@ e-commerce:
   merges:
   - origin 07fa28828d27eb4259e4a44a82a82ea6f2ac0b77
   - origin refs/pull/486/head
-  - origin refs/pull/693/head
   remotes:
     origin: https://github.com/OCA/e-commerce.git
 edi:
