@@ -1,6 +1,7 @@
 ARG  base_image=r.studio73.es/cache/ubuntu:22.04
 FROM ${base_image} AS builder
 SHELL ["/bin/bash", "-xo", "pipefail", "-c"]
+ARG TARGETARCH
 ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get update \
 	&& apt-get -y upgrade \
@@ -75,13 +76,14 @@ ENV LANG=es_ES.UTF-8 \
 RUN apt-get update \
     && apt-get -y upgrade \
     && apt-get install -y --no-install-recommends \
+    ca-certificates \
     curl \
+    gnupg2 \
     locales \
     node-less \
     git \
     ssh \
     ripgrep \
-    postgresql-client-14 \
     # unbuffer
     expect-dev \
     python3.10-dev \
@@ -92,6 +94,7 @@ RUN apt-get update \
     # Studio73
     cloc \
     restic \
+    && restic self-update \
     && curl -o /tmp/libssl1.deb http://security.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.0g-2ubuntu4_amd64.deb \
     && dpkg -i /tmp/libssl1.deb \
     && curl -o /tmp/wkhtmltox.deb -sSL https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.focal_amd64.deb \
@@ -100,6 +103,13 @@ RUN apt-get update \
 
 RUN sed -i -e 's/# es_ES.UTF-8 UTF-8/es_ES.UTF-8 UTF-8/' /etc/locale.gen && locale-gen
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+RUN echo "deb http://apt.postgresql.org/pub/repos/apt jammy-pgdg main" > /etc/apt/sources.list.d/pgdg.list \
+    && curl -s https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - \
+    && apt-get update  \
+    && apt-get install --no-install-recommends -y postgresql-client-16 \
+    && rm -f /etc/apt/sources.list.d/pgdg.list \
+    && rm -rf /var/lib/apt/lists/*
 
 RUN useradd -md /opt/odoo -s /bin/bash odoo
 RUN mkdir -p /opt/odoo/data \

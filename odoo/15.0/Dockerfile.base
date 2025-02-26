@@ -96,6 +96,7 @@ RUN apt-get update \
     # Studio73
     cloc \
     restic \
+    && restic self-update \
     && curl -o /tmp/wkhtmltox.deb -sSL https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.focal_amd64.deb \
     && apt-get install -y --no-install-recommends /tmp/wkhtmltox.deb \
     && rm -rf /var/lib/apt/lists/* /tmp/*
@@ -106,7 +107,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 RUN echo "deb http://apt.postgresql.org/pub/repos/apt focal-pgdg main" > /etc/apt/sources.list.d/pgdg.list \
     && curl -s https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - \
     && apt-get update  \
-    && apt-get install --no-install-recommends -y postgresql-client-14 \
+    && apt-get install --no-install-recommends -y postgresql-client-16 \
     && rm -f /etc/apt/sources.list.d/pgdg.list \
     && rm -rf /var/lib/apt/lists/*
 
