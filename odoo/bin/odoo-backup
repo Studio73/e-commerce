@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import glob
 import io
+import json
 import logging
 import os
 import random
@@ -34,9 +35,7 @@ class Backup(object):
         self.dest_db = os.path.join(dest, "db")
         self.dest_fs = os.path.join(dest, "fs")
         self.dest_src = os.path.join(dest, "src")
-        self.snapshot_db = None
-        self.snapshot_fs = None
-        self.snapshot_src = None
+        self.snapshot_stats = None
         self.tag = tag
         self.dbname = os.environ["PGDATABASE"]
         self.dbuuid = None
@@ -80,7 +79,7 @@ class Backup(object):
         _logger.info("Start snapshot %s" % dest)
         # subprocess call restic backup and redirect output to variable and output
         proc = sp.Popen(
-            ["restic", "backup", f"--tag={','.join(tags)}", "."],
+            ["restic", "backup", "--exclude=.lock", f"--tag={','.join(tags)}", "."],
             cwd=dest,
             stdout=sp.PIPE,
         )
@@ -123,8 +122,8 @@ class Backup(object):
             )
             or []
         )
-        for snapshot in scheduled + manual:
-            for pruned in snapshot["remove"] or []:
+        for _snapshot in scheduled + manual:
+            for pruned in _snapshot["remove"] or []:
                 _logger.info(
                     f"Removed snapshot {pruned['short_id']} "
                     f"- {pruned['paths'][0]} - {pruned['time']}"
@@ -159,13 +158,6 @@ class Backup(object):
                     sp.call(["cp", "-r", src, cp_dest])
                     continue
         _logger.info(f"Addons dumped at {self.dest_src}")
-        self.snapshot_src = self.snapshot(self.dest_src, tags=[self.tag, "src"])
-
-    def dump_fs(self):
-        self.snapshot_fs = self.snapshot(
-            os.path.join(self.dest_fs),
-            tags=[self.tag, "fs"],
-        )
 
     def dump_db(self):
         jobs = os.environ.get("PGDUMP_JOBS", 2)
@@ -174,6 +166,7 @@ class Backup(object):
             "pg_dump",
             "--no-owner",
             "--no-privileges",
+            "--no-comments",
             "-Fd",
             "-j",
             str(jobs),
@@ -184,7 +177,6 @@ class Backup(object):
         ]
         sp.call(cmd)
         _logger.info(f"End pg_dump {self.dbname}")
-        self.snapshot_db = self.snapshot(self.dest_db, tags=[self.tag, "db"])
 
     def notify(self):
         url = "https://www.studio73.es/saas/backup"
@@ -198,18 +190,19 @@ class Backup(object):
         if self.backup_id:
             post_data["backup_id"] = self.backup_id
         if self.end_date:
-            stats = restic.stats()
             post_data.update(
                 {
                     "end_date": self.end_date,
-                    "snapshots": {
-                        "db": self.snapshot_db,
-                        "fs": self.snapshot_fs,
-                        "src": self.snapshot_src,
-                    },
-                    "file_count": stats["total_file_count"],
+                    "summary": json.dumps(self.snapshot_stats, indent=2),
+                    "snapshot_id": self.snapshot_stats["short_id"],
                     # convert bytes to GB
-                    "total_size": round(stats["total_size"] / 1024 / 1024 / 1024, 4),
+                    "total_size": round(
+                        self.snapshot_stats["summary"]["total_bytes_processed"]
+                        / 1024
+                        / 1024
+                        / 1024,
+                        4,
+                    ),
                 }
             )
         try:
@@ -262,10 +255,12 @@ class Backup(object):
         # create lock file to avoid running multiple backups
         with open(lock_file, "w") as f:
             f.write(self.start_date)
+        tags = [self.tag, "db", "fs"]
         self.dump_db()
-        self.dump_fs()
         if os.environ.get("RESTIC_INCLUDE_SRC"):
             self.dump_addons()
+            tags += ["addons"]
+        self.snapshot_stats = self.snapshot(self.dest, tags=tags)
         self.forget()
         self.clean()
         self.end_date = datetime.now(timezone.utc).strftime(ODOO_DATE_TIME_FORMAT)
