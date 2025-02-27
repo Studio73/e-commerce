@@ -321,9 +321,10 @@ sale-reporting:
     origin: https://github.com/OCA/sale-reporting.git
 sale-workflow:
   defaults:
-    depth: 1
+    depth: 500
   merges:
   - origin 02ac69e28f5d6dc419123b2fd41ffc2980d88767
+  - origin refs/pull/3491/head
   remotes:
     origin: https://github.com/OCA/sale-workflow.git
 server-auth:
