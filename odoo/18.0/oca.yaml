@@ -73,9 +73,10 @@ bank-payment:
     origin: https://github.com/OCA/bank-payment.git
 bank-statement-import:
   defaults:
-    depth: 1
+    depth: 500
   merges:
   - origin 73ebbc1e2190746e71219d891fc35866a96283fe
+  - origin refs/pull/747/head
   remotes:
     origin: https://github.com/OCA/bank-statement-import.git
 bank-statement-reconcile:
