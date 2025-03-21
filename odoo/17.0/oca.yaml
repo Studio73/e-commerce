@@ -430,7 +430,6 @@ stock-logistics-workflow:
     depth: 500
   merges:
   - origin ba714c6b3d0e0c6d2827dbd6ff6588ce567ca56e
-  - origin refs/pull/1487/head
   - origin refs/pull/1709/head
   - origin refs/pull/1797/head
   remotes:
