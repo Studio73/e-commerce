@@ -17,7 +17,7 @@ account-financial-reporting:
   defaults:
     depth: 1
   merges:
-  - origin 8b2db3caa4aaf56112a20b1fd33411d76716a942
+  - origin 8e86ff8914600a4dc8cddeb244e563f8bc806e32
   remotes:
     origin: https://github.com/OCA/account-financial-reporting.git
 account-financial-tools:
@@ -45,7 +45,7 @@ account-invoicing:
   defaults:
     depth: 1
   merges:
-  - origin e277884c510efe1b9df576bb33987ebb0d353ee8
+  - origin eedfa024e2933b3f238316fca73b7e261ac4128c
   remotes:
     origin: https://github.com/OCA/account-invoicing.git
 account-payment:
@@ -115,7 +115,7 @@ contract:
   defaults:
     depth: 500
   merges:
-  - origin 2d818a6d9b34c1e8cbc8743467552adf1c199764
+  - origin e4301e46046ca0c9f2089f9cb1044f23c5e9279a
   - origin refs/pull/906/head
   remotes:
     origin: https://github.com/OCA/contract.git
@@ -273,7 +273,7 @@ multi-company:
   defaults:
     depth: 1
   merges:
-  - origin 5a3821cedb04c979585c7c9ea3f57da71535e896
+  - origin 1231bb9a785fc9c36bf2b9a91af8ac3b2dd8d390
   remotes:
     origin: https://github.com/OCA/multi-company.git
 partner-contact:
@@ -331,7 +331,7 @@ queue:
   defaults:
     depth: 1
   merges:
-  - origin 813ad66efb4b866718a8f727b0c087894e0336fd
+  - origin 1840d7c9423f78ec65de970598e3e32cb9d316c9
   remotes:
     origin: https://github.com/OCA/queue.git
 report-print-send:
@@ -345,7 +345,7 @@ reporting-engine:
   defaults:
     depth: 1
   merges:
-  - origin 7b938454fa740a5d2f60a7aa8a3abf8f928220f2
+  - origin 9707c6a11a52081354b52d22cc0fd6035cd7929f
   remotes:
     origin: https://github.com/OCA/reporting-engine.git
 rma:
@@ -397,7 +397,7 @@ server-ux:
   defaults:
     depth: 1
   merges:
-  - origin 4bae88dc20be591955e70308c734a19f9513515f
+  - origin 49731b04bc1841f5091d6ab12bd888cb45845d6f
   remotes:
     origin: https://github.com/OCA/server-ux.git
 social:
