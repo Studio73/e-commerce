@@ -47,7 +47,6 @@ account-invoicing:
     depth: 500
   merges:
   - origin 6f9aae4277b1adb68e4c51ac1a0775f67cf0f30b
-  - origin refs/pull/1487/head
   - origin refs/pull/1512/head
   - origin refs/pull/1563/head
   - origin refs/pull/1646/head
