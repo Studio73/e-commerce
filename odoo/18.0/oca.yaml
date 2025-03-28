@@ -382,9 +382,10 @@ stock-logistics-barcode:
     origin: https://github.com/OCA/stock-logistics-barcode.git
 stock-logistics-reporting:
   defaults:
-    depth: 1
+    depth: 500
   merges:
   - origin e1ff12a65357aac14519e11bfad2f60b10a8f1a3
+  - origin refs/pull/366/head
   remotes:
     origin: https://github.com/OCA/stock-logistics-reporting.git
 stock-logistics-tracking:
