@@ -94,7 +94,7 @@ commission:
   defaults:
     depth: 1
   merges:
-  - origin 05bdcdd8b29bfdf6726c7797f786bcdcb0242bce
+  - origin 5c3ff09bc7ef5eb2cb6a750422beeb14185e47d3
   remotes:
     origin: https://github.com/OCA/commission.git
 community-data-files:
@@ -440,7 +440,7 @@ stock-logistics-workflow:
   defaults:
     depth: 500
   merges:
-  - origin 6ccc28aff427a22a943e6e5281c62f8ec542ddb6
+  - origin fc42bed4eebbf2b937c6c2ef3b89ddde4e37d7e5
   - origin refs/pull/1640/head
   remotes:
     origin: https://github.com/OCA/stock-logistics-workflow.git
