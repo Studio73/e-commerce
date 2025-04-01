@@ -358,9 +358,10 @@ server-backend:
     origin: https://github.com/OCA/server-backend.git
 server-tools:
   defaults:
-    depth: 1
+    depth: 500
   merges:
   - origin dedc1463da72ffae46f51ff8fd5b8cbf3a0ab9ea
+  - origin refs/pull/3207/head
   remotes:
     origin: https://github.com/OCA/server-tools.git
 server-ux:
