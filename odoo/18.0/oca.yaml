@@ -426,5 +426,6 @@ website:
   - origin e62d6e3a2a19eb7dce6b7d633b512075c85b5a61
   - origin refs/pull/1079/head
   - origin refs/pull/1086/head
+  - origin refs/pull/1100/head
   remotes:
     origin: https://github.com/OCA/website.git
