@@ -48,6 +48,7 @@ account-invoicing:
   - origin refs/pull/1916/head
   - origin refs/pull/1932/head
   - origin refs/pull/1942/head
+  - origin refs/pull/1959/head
   remotes:
     origin: https://github.com/OCA/account-invoicing.git
 account-payment:
