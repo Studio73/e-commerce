@@ -262,9 +262,10 @@ partner-contact:
     origin: https://github.com/OCA/partner-contact.git
 product-attribute:
   defaults:
-    depth: 1
+    depth: 500
   merges:
   - origin 3a02e69061fbca5e5c6f0f7ae251e75216ef6e52
+  - origin refs/pull/1942/head
   remotes:
     origin: https://github.com/OCA/product-attribute.git
 product-pack:
