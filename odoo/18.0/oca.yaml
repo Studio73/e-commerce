@@ -48,6 +48,7 @@ account-invoicing:
   - origin refs/pull/1932/head
   - origin refs/pull/1942/head
   - origin refs/pull/1959/head
+  - origin refs/pull/1979/head
   remotes:
     origin: https://github.com/OCA/account-invoicing.git
 account-payment:
@@ -80,6 +81,7 @@ bank-statement-import:
   merges:
   - origin 12a9b2eda5b982834db9bae427af1bd3415b1d76
   - origin refs/pull/747/head
+  - origin refs/pull/790/head
   remotes:
     origin: https://github.com/OCA/bank-statement-import.git
 bank-statement-reconcile:
