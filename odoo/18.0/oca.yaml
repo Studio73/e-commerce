@@ -73,6 +73,8 @@ bank-payment:
   - origin db321b0ce95ca179f17b95b96b501ecb8901c3c2
   - origin refs/pull/1367/head
   - origin refs/pull/1439/head
+  - origin refs/pull/1440/head
+  - origin refs/pull/1444/head
   remotes:
     origin: https://github.com/OCA/bank-payment.git
 bank-statement-import:
@@ -211,6 +213,7 @@ l10n-spain:
   - origin refs/pull/4036/head
   - origin refs/pull/4047/head
   - origin refs/pull/4090/head
+  - origin refs/pull/4101/head
   remotes:
     origin: https://github.com/OCA/l10n-spain.git
 management-system:
