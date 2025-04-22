@@ -103,7 +103,6 @@ commission:
   - origin 9a5eb52c761cf7b4bceac79c11ebbc5dae0dad0d
   - origin refs/pull/577/head
   - origin refs/pull/582/head
-  - origin refs/pull/583/head
   remotes:
     origin: https://github.com/OCA/commission.git
 community-data-files:
@@ -212,6 +211,7 @@ l10n-spain:
   - origin refs/pull/4065/head
   - origin refs/pull/4090/head
   - origin refs/pull/4101/head
+  - origin refs/pull/4152/head
   remotes:
     origin: https://github.com/OCA/l10n-spain.git
 management-system:
