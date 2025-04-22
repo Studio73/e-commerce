@@ -304,9 +304,10 @@ queue:
     origin: https://github.com/OCA/queue.git
 report-print-send:
   defaults:
-    depth: 1
+    depth: 500
   merges:
   - origin ea9336ad0773b40665314eebc384ba6b11b5051d
+  - origin refs/pull/390/head
   remotes:
     origin: https://github.com/OCA/report-print-send.git
 reporting-engine:
