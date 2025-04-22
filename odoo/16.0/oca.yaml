@@ -67,7 +67,7 @@ account-reconcile:
     depth: 500
   merges:
   - origin feed2dbb42941ae672ecf60dc64e9913b277cb45
-  - origin refs/pull/588/head
+  - origin refs/pull/771/head
   remotes:
     origin: https://github.com/OCA/account-reconcile.git
 agreement:
