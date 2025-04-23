@@ -169,9 +169,11 @@ fleet:
     origin: https://github.com/OCA/fleet.git
 hr:
   defaults:
-    depth: 1
+    depth: 500
   merges:
   - origin 282d2468d175fc5462042a702a40d88d31808306
+  - origin refs/pull/1416/head
+  - origin refs/pull/1462/head
   remotes:
     origin: https://github.com/OCA/hr.git
 hr-attendance:
