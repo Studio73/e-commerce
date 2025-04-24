@@ -432,3 +432,12 @@ website:
   - origin refs/pull/1100/head
   remotes:
     origin: https://github.com/OCA/website.git
+maintenance:
+  defaults:
+      depth: 500
+  merges:
+    - origin 9818a354c6f4619be5b4cde6f68af7819f980c0e
+    - origin refs/pull/487/head
+  remotes:
+    origin: https://github.com/OCA/maintenance.git
+
