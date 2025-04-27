@@ -80,14 +80,14 @@ bank-payment:
   defaults:
     depth: 1
   merges:
-  - origin 238faadb96aa894ef0f60f9c7f0e9a4214dd1acc
+  - origin 9b8437d0bcb0a9bdc2e06c82f10bc3d1353388bc
   remotes:
     origin: https://github.com/OCA/bank-payment.git
 bank-statement-import:
   defaults:
     depth: 1
   merges:
-  - origin d34c607fa0a802ffa04c6ceb31ef1746b181867c
+  - origin a915e917a35b8633d1569e7bc57676350f6e5edd
   remotes:
     origin: https://github.com/OCA/bank-statement-import.git
 bank-statement-reconcile:
@@ -151,7 +151,7 @@ delivery-carrier:
   defaults:
     depth: 1
   merges:
-  - origin 90692cbb0cf15c94ad2ab1da0251649089696994
+  - origin 23f31bbd9c17612fd927c68d503ddb653236391d
   remotes:
     origin: https://github.com/OCA/delivery-carrier.git
 e-commerce:
@@ -166,7 +166,7 @@ edi:
   defaults:
     depth: 1
   merges:
-  - origin 4040e65ae764739f791f2491ce09979e52eb703b
+  - origin f94db517d8daac590caa92957fd3283c27c49e88
   remotes:
     origin: https://github.com/OCA/edi.git
 edi-framework:
@@ -180,7 +180,7 @@ hr:
   defaults:
     depth: 1
   merges:
-  - origin 714cd4f450f7dc5e0d2874996228fec80e01d477
+  - origin b61a38668e7739377a43330f711b8484352235bb
   remotes:
     origin: https://github.com/OCA/hr.git
 hr-attendance:
@@ -222,7 +222,7 @@ l10n-spain:
   defaults:
     depth: 500
   merges:
-  - origin fe0ad57f93513296ae944eb3f9e85e79b5ad7878
+  - origin a0cf2cba66d8afa87d1bc0eab2b0a0774ab99629
   - origin refs/pull/3725/head
   - origin refs/pull/3726/head
   - origin refs/pull/3825/head
@@ -261,7 +261,7 @@ operating-unit:
   defaults:
     depth: 1
   merges:
-  - origin 2be1fa7f0192e67e19134b1cb6aaa99c97cadafd
+  - origin 763488ee6de8cda9510c3b95e93e1db26d05dd2b
   remotes:
     origin: https://github.com/OCA/operating-unit.git
 partner-contact:
@@ -304,7 +304,7 @@ purchase-workflow:
   defaults:
     depth: 1
   merges:
-  - origin 4d20d295f21c11fa89ebb311ca12d013e7f6eabd
+  - origin 9a72248967f29ef6d751938daa7fc08cefbc5296
   remotes:
     origin: https://github.com/OCA/purchase-workflow.git
 queue:
@@ -333,7 +333,7 @@ sale-promotion:
   defaults:
     depth: 1
   merges:
-  - origin d6e117442cccb4cc425ef853d82c0a2741f34e44
+  - origin 1e44177c9478ab2efe29777ed757908ed12d8f54
   remotes:
     origin: https://github.com/OCA/sale-promotion.git
 sale-reporting:
@@ -417,7 +417,7 @@ stock-logistics-reporting:
   defaults:
     depth: 1
   merges:
-  - origin d4ebcea2deca04952fee169230697f0d235a96bb
+  - origin d2ef0e607c4f80bf390540e758fcbe0810942cab
   remotes:
     origin: https://github.com/OCA/stock-logistics-reporting.git
 stock-logistics-warehouse:

@@ -45,7 +45,7 @@ account-invoicing:
   defaults:
     depth: 1
   merges:
-  - origin 7db1d48c82381d6baa0ccea8f57aac02eed7e11c
+  - origin 3874d82e744f4daf4d95a128bf13e98211f81079
   remotes:
     origin: https://github.com/OCA/account-invoicing.git
 account-payment:
@@ -144,7 +144,7 @@ delivery-carrier:
   defaults:
     depth: 1
   merges:
-  - origin 643aabb7ab786da4330d2d95ed59ada7c407e548
+  - origin 98e1fa7fc4cd20d7be7d439caee5fcce5cfd1ae8
   remotes:
     origin: https://github.com/OCA/delivery-carrier.git
 e-commerce:
@@ -223,7 +223,7 @@ l10n-spain:
   defaults:
     depth: 1
   merges:
-  - origin ad162b1bcb68962f1f9b69614532c15b06668f91
+  - origin 4bb5d604545499f2032a412d905359d428d8b6c6
   remotes:
     origin: https://github.com/OCA/l10n-spain.git
 maintenance:
@@ -323,7 +323,7 @@ purchase-workflow:
   defaults:
     depth: 500
   merges:
-  - origin 77e734bc7d9d527635555553744cce642f239aff
+  - origin 08906716c6330bcd78f14d8ea78f0349cf96d575
   - origin refs/pull/1692/head
   remotes:
     origin: https://github.com/OCA/purchase-workflow.git
@@ -388,7 +388,7 @@ server-tools:
   defaults:
     depth: 500
   merges:
-  - origin 8146b9615744e069743c138df68ac6de859ea677
+  - origin d662b02984436ee53fc01aa9b10f7e3a7aae545b
   - origin refs/pull/2465/head
   - origin refs/pull/2685/head
   remotes:
@@ -433,14 +433,14 @@ stock-logistics-warehouse:
   defaults:
     depth: 1
   merges:
-  - origin 2a707e43c20408992a71de6b563fd9f553befedc
+  - origin 0fd7126e947eda7541887fefd42d0220655e0c14
   remotes:
     origin: https://github.com/OCA/stock-logistics-warehouse.git
 stock-logistics-workflow:
   defaults:
     depth: 500
   merges:
-  - origin 7cacfef8dd6b60c0b788bdfca482d79ba27b24ce
+  - origin 484c9d2c19e9d90d9fe14b3ccb4c90b2350f8f89
   - origin refs/pull/1640/head
   remotes:
     origin: https://github.com/OCA/stock-logistics-workflow.git
