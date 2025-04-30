@@ -255,6 +255,7 @@ partner-contact:
   merges:
   - origin 05521c66650d611917a193cbfb9aefc692f092fa
   - origin refs/pull/1897/head
+  - origin refs/pull/1909/head
   remotes:
     origin: https://github.com/OCA/partner-contact.git
 product-attribute:
