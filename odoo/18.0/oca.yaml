@@ -141,6 +141,7 @@ delivery-carrier:
   - origin 7038b265a987de3454c9e7c2a1875bd2e7257e52
   - origin refs/pull/980/head
   - origin refs/pull/999/head
+  - origin refs/pull/1012/head
   remotes:
     origin: https://github.com/OCA/delivery-carrier.git
 e-commerce:
