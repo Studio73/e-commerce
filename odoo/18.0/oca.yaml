@@ -147,7 +147,7 @@ e-commerce:
   defaults:
     depth: 500
   merges:
-  - origin 9508795482feb7198e4dc122e7f768209075496e
+  - origin 82aa997d69e954bcdf6d84cc22f4040edb84ce99
   - origin refs/pull/1037/head
   - origin refs/pull/1047/head
   remotes:
