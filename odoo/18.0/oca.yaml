@@ -160,6 +160,13 @@ edi:
   - origin d3bea2e1c45707ad991c5df38068c2ad50d1e47a
   remotes:
     origin: https://github.com/OCA/edi.git
+fleet:
+  defaults:
+    depth: 1
+  merges:
+  - origin 8be1033fa528dbdea334d849c03cb6e87a9f6323
+  remotes:
+    origin: https://github.com/OCA/fleet.git
 hr:
   defaults:
     depth: 1
