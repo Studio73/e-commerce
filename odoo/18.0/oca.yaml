@@ -232,6 +232,7 @@ maintenance:
   - origin refs/pull/487/head
   - origin refs/pull/450/head
   - origin refs/pull/489/head
+  - origin refs/pull/484/head
   remotes:
     origin: https://github.com/OCA/maintenance.git
 management-system:
