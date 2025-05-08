@@ -46,7 +46,7 @@ account-invoicing:
   defaults:
     depth: 500
   merges:
-  - origin 94377cf89af6f2214a4d28e5f1d5259347614d65
+  - origin bf3cde7262175d6959c093b250a551a21f13aa16
   - origin refs/pull/1626/head
   - origin refs/pull/1630/head
   - origin refs/pull/1776/head
