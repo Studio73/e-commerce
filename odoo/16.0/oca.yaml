@@ -2,7 +2,7 @@ account-analytic:
   defaults:
     depth: 500
   merges:
-  - origin 5a0f5ca9a23a3b875f03469ced7b0d9730eb2e2a
+  - origin 839ba8dd03849accef0df3f6de1d35dfa27b95f0
   - origin refs/pull/549/head
   remotes:
     origin: https://github.com/OCA/account-analytic.git
@@ -10,7 +10,7 @@ account-closing:
   defaults:
     depth: 1
   merges:
-  - origin b247734d499f23806e0b2895dd59581facd0dc3a
+  - origin 9e2c395bd12988d5e61be2942bc54f35ed57c3fe
   remotes:
     origin: https://github.com/OCA/account-closing.git
 account-financial-reporting:
@@ -80,14 +80,14 @@ bank-payment:
   defaults:
     depth: 1
   merges:
-  - origin 9b8437d0bcb0a9bdc2e06c82f10bc3d1353388bc
+  - origin 8dacb81430988b7b695f29c8f5b9a8b7b10df2e5
   remotes:
     origin: https://github.com/OCA/bank-payment.git
 bank-statement-import:
   defaults:
     depth: 1
   merges:
-  - origin a915e917a35b8633d1569e7bc57676350f6e5edd
+  - origin be1727629813227f962b8032523904af84484658
   remotes:
     origin: https://github.com/OCA/bank-statement-import.git
 bank-statement-reconcile:
@@ -137,7 +137,7 @@ crm:
   defaults:
     depth: 1
   merges:
-  - origin 49fbc524e83fb4f63557243e32b4ec0b520ac94d
+  - origin 257ef10e26f7d6537f8171d4f60bf489cbecff94
   remotes:
     origin: https://github.com/OCA/crm.git
 currency:
@@ -158,7 +158,7 @@ e-commerce:
   defaults:
     depth: 500
   merges:
-  - origin 7c18e6c9d7e5c930cdd5ae6230aa11efa99afbce
+  - origin b5e115ab712653b92e8952f2098160c1493ee1fb
   - origin refs/pull/912/head
   remotes:
     origin: https://github.com/OCA/e-commerce.git
@@ -180,7 +180,7 @@ hr:
   defaults:
     depth: 1
   merges:
-  - origin 3b587c40b1783f18b879ed535117b819c9de66dc
+  - origin eb30386060767aba901f0e622ed620a5a1571a74
   remotes:
     origin: https://github.com/OCA/hr.git
 hr-attendance:
@@ -201,28 +201,28 @@ intrastat:
   defaults:
     depth: 1
   merges:
-  - origin 2fa97d23b79a207a92c4317c4af859338ee68849
+  - origin 7ca56b6bd069ec7138ed785003d675c3f13777c2
   remotes:
     origin: https://github.com/OCA/intrastat.git
 intrastat-extrastat:
   defaults:
     depth: 1
   merges:
-  - origin 2fa97d23b79a207a92c4317c4af859338ee68849
+  - origin 7ca56b6bd069ec7138ed785003d675c3f13777c2
   remotes:
     origin: https://github.com/OCA/intrastat-extrastat.git
 knowledge:
   defaults:
     depth: 1
   merges:
-  - origin f262120d0e9c76aff5f76b44cb38c7a2a9216469
+  - origin 7c0ad400e3f6a8011f87ca44017c710319374330
   remotes:
     origin: https://github.com/OCA/knowledge.git
 l10n-spain:
   defaults:
     depth: 500
   merges:
-  - origin 9e032914c9b6130acf2b2bdfd6b8db2358020c18
+  - origin 4a61df3ec00aaded2f8c281a92f5a67031713f5f
   - origin refs/pull/3725/head
   - origin refs/pull/3726/head
   - origin refs/pull/3825/head
@@ -232,7 +232,7 @@ management-system:
   defaults:
     depth: 1
   merges:
-  - origin f90004bb025c4a9dba989fe5aedf521dda0f9bf6
+  - origin a389cb776b8815cbf80ee44fd25de36b03876b50
   remotes:
     origin: https://github.com/OCA/management-system.git
 manufacture:
@@ -275,7 +275,7 @@ product-attribute:
   defaults:
     depth: 1
   merges:
-  - origin 34b652aee1a7c386ea4f92d11a9ec55ce2f61dac
+  - origin d05702beb1f88a138892a59abb6148c6cf1545dd
   remotes:
     origin: https://github.com/OCA/product-attribute.git
 product-pack:
@@ -297,14 +297,14 @@ project:
   defaults:
     depth: 1
   merges:
-  - origin 96b9d9bc123fb47b00662d42686063fffc98177d
+  - origin 996f2f2a30bf6c8fc756798560966d512bcb5046
   remotes:
     origin: https://github.com/OCA/project.git
 purchase-workflow:
   defaults:
     depth: 1
   merges:
-  - origin a8a69001933d6a852e2acd2e6102fca4025bee7a
+  - origin 415e1d8b5893e75e724cdb9d4c45204bcff788ae
   remotes:
     origin: https://github.com/OCA/purchase-workflow.git
 queue:
@@ -333,7 +333,7 @@ sale-promotion:
   defaults:
     depth: 1
   merges:
-  - origin 06ad4edfca8026254ff770abbbfd4327713d8220
+  - origin 15a1f51d907c741e1b72c0480b1ae0cad2e51b6c
   remotes:
     origin: https://github.com/OCA/sale-promotion.git
 sale-reporting:
@@ -347,7 +347,7 @@ sale-workflow:
   defaults:
     depth: 500
   merges:
-  - origin 3c0ca04e49bff21976407157c9212e80941a559c
+  - origin 8a3cda166175ca2a829540706b5467c99d4a000d
   - origin refs/pull/2461/head
   - origin refs/pull/2462/head
   - origin refs/pull/2524/head
@@ -381,7 +381,7 @@ server-tools:
   defaults:
     depth: 1
   merges:
-  - origin 0a9261fa647601007904e8b65be688d704049396
+  - origin 8d63f5c8b85a2d1b8393e211b1db78cd03278d58
   remotes:
     origin: https://github.com/OCA/server-tools.git
 server-ux:
@@ -395,7 +395,7 @@ social:
   defaults:
     depth: 1
   merges:
-  - origin a5fa73151bab508a5954d55ae504a71c46293ce3
+  - origin 9b116438fcb6ce717bbc462fef01ae69c8080d9d
   remotes:
     origin: https://github.com/OCA/social.git
 stock-logistics-availability:
@@ -409,7 +409,7 @@ stock-logistics-barcode:
   defaults:
     depth: 500
   merges:
-  - origin f99781bba974e6d36eaac213d63d10f60808d844
+  - origin 151f5ee466a0e166c065af9eb3415d9003dea10c
   - origin refs/pull/446/head
   remotes:
     origin: https://github.com/OCA/stock-logistics-barcode.git
@@ -424,7 +424,7 @@ stock-logistics-warehouse:
   defaults:
     depth: 500
   merges:
-  - origin 7839250f404ca789e81ec94ebf34c7b07e64952d
+  - origin 220807dc03a5599eb5f23e94c6fc311748a68a3d
   - origin refs/pull/1610/head
   - origin refs/pull/1952/head
   - origin refs/pull/2098/head
@@ -434,21 +434,21 @@ stock-logistics-workflow:
   defaults:
     depth: 1
   merges:
-  - origin 52981df73b5744c8803545b0f0ab0feacb392471
+  - origin 2f7562d40dbc0ecebc78a35a07d8e616f5a7fde6
   remotes:
     origin: https://github.com/OCA/stock-logistics-workflow.git
 web:
   defaults:
     depth: 1
   merges:
-  - origin a5338d576b7739e5b5f211d32abc3b09d04e6a45
+  - origin da198cc877e91e400200a920bc1165a37c4f2b17
   remotes:
     origin: https://github.com/OCA/web.git
 website:
   defaults:
     depth: 500
   merges:
-  - origin c89ae93a2074159396feac18bd3531556fb51d68
+  - origin 47ddd1aeb0441a09a4d541f8d422b6ac57bbac91
   - origin refs/pull/1000/head
   - origin refs/pull/1051/head
   - origin refs/pull/1099/head
