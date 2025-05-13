@@ -106,8 +106,6 @@ commission:
     depth: 500
   merges:
   - origin faf2222b4cc460c1dd7021a0e6da9ec3db622c7d
-  - origin refs/pull/577/head
-  - origin refs/pull/582/head
   remotes:
     origin: https://github.com/OCA/commission.git
 community-data-files:
