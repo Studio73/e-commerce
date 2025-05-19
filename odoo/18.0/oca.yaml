@@ -58,7 +58,6 @@ account-payment:
     depth: 500
   merges:
   - origin 2ffff7a28e27044ae143523735fd8e435936a953
-  - origin refs/pull/776/head
   remotes:
     origin: https://github.com/OCA/account-payment.git
 account-reconcile:
@@ -296,6 +295,12 @@ product-attribute:
   - origin refs/pull/1968/head
   remotes:
     origin: https://github.com/OCA/product-attribute.git
+product-configurator:
+  merges:
+  - origin a86f199baff8d7c530330b7decb46b77130874b6
+  - origin refs/pull/150/head
+  remotes:
+    origin: https://github.com/OCA/product-configurator.git
 product-pack:
   defaults:
     depth: 1
