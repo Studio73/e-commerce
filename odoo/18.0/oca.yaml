@@ -58,6 +58,7 @@ account-payment:
     depth: 500
   merges:
   - origin 2ffff7a28e27044ae143523735fd8e435936a953
+  - origin refs/pull/833/head
   remotes:
     origin: https://github.com/OCA/account-payment.git
 account-reconcile:
