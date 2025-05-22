@@ -219,7 +219,7 @@ manufacture:
   defaults:
     depth: 500
   merges:
-  - origin 18fb1e3531482ef295de283b10f9393344d9bf74
+  - origin 59bf7b34df756deccc04d9f16507141f7ec4557c
   - origin refs/pull/1371/head
   - origin refs/pull/1454/head
   - origin refs/pull/1465/head
