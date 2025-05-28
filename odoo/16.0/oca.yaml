@@ -222,7 +222,7 @@ l10n-spain:
   defaults:
     depth: 500
   merges:
-  - origin 7522ad8eec40ac6bf7d190df5ff69a86f168f82b
+  - origin b9bb782630efd9f105166c298a41fd9e575fb222
   - origin refs/pull/3725/head
   - origin refs/pull/3726/head
   - origin refs/pull/3825/head
@@ -232,7 +232,7 @@ management-system:
   defaults:
     depth: 1
   merges:
-  - origin 8c94187811ebc3b60409f9f91cb95dc14cfd45d0
+  - origin 67c30a57977908fb20bfc3d5de6f8cc939b35710
   remotes:
     origin: https://github.com/OCA/management-system.git
 manufacture:
