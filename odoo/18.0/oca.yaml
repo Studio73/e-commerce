@@ -218,7 +218,7 @@ l10n-spain:
   defaults:
     depth: 500
   merges:
-  - origin df0f1407113cb590769aeb2257dd4de760581451
+  - origin 305e401654e85a064f606fd779dca41763955e02
   - origin refs/pull/3992/head
   - origin refs/pull/4033/head
   - origin refs/pull/4036/head
@@ -379,7 +379,6 @@ sale-workflow:
   - origin refs/pull/3497/head
   - origin refs/pull/3634/head
   - origin refs/pull/3642/head
-  - origin refs/pull/3665/head
   - origin refs/pull/3713/head
   - origin refs/pull/3715/head
   - origin refs/pull/3581/head
