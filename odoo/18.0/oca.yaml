@@ -320,6 +320,7 @@ product-variant:
   merges:
   - origin 9d1e63a59358c06a134c4b2a571a15dea39e9668
   - origin refs/pull/387/head
+  - origin refs/pull/405/head
   remotes:
     origin: https://github.com/OCA/product-variant.git
 project:
