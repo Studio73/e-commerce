@@ -223,7 +223,7 @@ l10n-spain:
   defaults:
     depth: 1
   merges:
-  - origin 4bb5d604545499f2032a412d905359d428d8b6c6
+  - origin e1f6e76fbb832fb40f155ac689d7786d196a9d11
   remotes:
     origin: https://github.com/OCA/l10n-spain.git
 maintenance:
