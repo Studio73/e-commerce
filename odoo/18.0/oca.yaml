@@ -178,6 +178,7 @@ hr:
   - origin 50dd076f2691c28e4da48f02ed5a882d3afb4e20
   - origin refs/pull/1416/head
   - origin refs/pull/1462/head
+  - origin refs/pull/1445/head
   remotes:
     origin: https://github.com/OCA/hr.git
 hr-attendance:
