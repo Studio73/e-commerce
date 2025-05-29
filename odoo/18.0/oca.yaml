@@ -238,7 +238,7 @@ maintenance:
   defaults:
     depth: 500
   merges:
-  - origin 9818a354c6f4619be5b4cde6f68af7819f980c0e
+  - origin 8d6a065f0076642509e1f3a7ac5e121927a40ea6
   - origin refs/pull/450/head
   - origin refs/pull/484/head
   - origin refs/pull/487/head
@@ -418,9 +418,10 @@ server-ux:
     origin: https://github.com/OCA/server-ux.git
 social:
   defaults:
-    depth: 1
+    depth: 500
   merges:
   - origin fac32f98e919f558a55c3aa6c29dff2a0863a229
+  - origin refs/pull/1661/head
   remotes:
     origin: https://github.com/OCA/social.git
 stock-logistics-barcode:
