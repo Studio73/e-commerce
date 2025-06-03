@@ -258,6 +258,7 @@ manufacture:
     depth: 500
   merges:
   - origin 9d72d0244ae645f4dfc3ace32a080a377566e95f
+  - origin refs/pull/1417/head
   - origin refs/pull/1532/head
   remotes:
     origin: https://github.com/OCA/manufacture.git
