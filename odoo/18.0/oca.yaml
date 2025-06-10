@@ -24,7 +24,7 @@ account-financial-tools:
   defaults:
     depth: 500
   merges:
-  - origin 09ec71abd1a1b0c36a623df3fb25e54a23498e85
+  - origin 8d8182cd6c620c95cbfea4a0fd87c39b623a8444
   - origin refs/pull/2027/head
   remotes:
     origin: https://github.com/OCA/account-financial-tools.git
