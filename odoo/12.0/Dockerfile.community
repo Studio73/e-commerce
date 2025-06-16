@@ -3,5 +3,5 @@ FROM r.studio73.es/odoo/base:${BASE_TAG}
 RUN mkdir -p $SRC/studio73
 COPY --chown=odoo 12.0/studio73.yaml $SRC/studio73/repos.yaml
 RUN --mount=type=ssh,uid=1000 cd $SRC/studio73 && gitaggregate --jobs 8 -c repos.yaml -d common/*
-RUN sed -i 's/git+https:\/\/github\.com\/OCA\/openupgradelib\.git/openupgradelib/g' $SRC/studio73/studio73-private-addons/requirements.txt
+RUN sed -i 's/git+https:\/\/github\.com\/OCA\/openupgradelib\.git/openupgradelib/g' $SRC/studio73/common/studio73-private-addons/requirements.txt
 RUN install-requirements $SRC/studio73
