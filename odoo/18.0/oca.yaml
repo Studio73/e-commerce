@@ -231,19 +231,13 @@ l10n-spain:
     depth: 500
   merges:
   - origin 305e401654e85a064f606fd779dca41763955e02
-  - origin refs/pull/3992/head
-  - origin refs/pull/4033/head
   - origin refs/pull/4036/head
   - origin refs/pull/4047/head
   - origin refs/pull/4065/head
-  - origin refs/pull/4090/head
   - origin refs/pull/4098/head
-  - origin refs/pull/4101/head
   - origin refs/pull/4151/head
-  - origin refs/pull/4152/head
-  - origin refs/pull/4189/head
   - origin refs/pull/4190/head
-  - origin refs/pull/4200/head
+  - origin refs/pull/4234/head
   remotes:
     origin: https://github.com/OCA/l10n-spain.git
 maintenance:
@@ -395,7 +389,7 @@ sale-workflow:
   - origin refs/pull/3634/head
   - origin refs/pull/3642/head
   - origin refs/pull/3713/head
-  - origin refs/pull/3715/head
+  - origin refs/pull/3648/head
   - origin refs/pull/3581/head
   - origin refs/pull/3750/head
   remotes:
