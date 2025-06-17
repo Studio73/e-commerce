@@ -103,6 +103,13 @@ brand:
   - origin 48e13d732a5aae9f86f18e571a12eef29a5d2651
   remotes:
     origin: https://github.com/OCA/brand.git
+calendar:
+  defaults:
+    depth: 1
+  merges:
+  - origin 0f21d113917ec3651c85d8f21cc338f3f52e0919
+  remotes:
+    origin: https://github.com/OCA/calendar.git
 commission:
   defaults:
     depth: 1
