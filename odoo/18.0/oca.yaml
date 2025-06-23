@@ -308,6 +308,8 @@ product-attribute:
   remotes:
     origin: https://github.com/OCA/product-attribute.git
 product-configurator:
+  defaults:
+    depth: 500
   merges:
   - origin a86f199baff8d7c530330b7decb46b77130874b6
   - origin refs/pull/150/head
