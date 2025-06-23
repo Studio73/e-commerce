@@ -48,7 +48,6 @@ account-invoicing:
   merges:
   - origin b11f0dc15b2f5ec1bb2ca4ff05540bff2e479430
   - origin refs/pull/1932/head
-  - origin refs/pull/1939/head
   - origin refs/pull/1942/head
   - origin refs/pull/1959/head
   - origin refs/pull/2004/head
