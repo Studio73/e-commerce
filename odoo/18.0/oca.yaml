@@ -164,7 +164,7 @@ edi:
   defaults:
     depth: 1
   merges:
-  - origin 9834cb3e0733441af3e926fe471bc09030e24614
+  - origin 7b33b38de974494c4f2da65b0554cae9713beec2
   remotes:
     origin: https://github.com/OCA/edi.git
 fleet:
@@ -218,7 +218,7 @@ knowledge:
   defaults:
     depth: 1
   merges:
-  - origin 5c557a77c3605fea29143f8868abf6e9d33317d3
+  - origin 8701dc9cadf43391d7438d7643ab97e0b354ee8d
   remotes:
     origin: https://github.com/OCA/knowledge.git
 l10n-spain:
@@ -335,7 +335,7 @@ purchase-workflow:
   defaults:
     depth: 500
   merges:
-  - origin 653cdc3137a1d4465552597d344d8f3712787303
+  - origin 1a9553ad509bbfd0304a2bc9fba9ffa8b9fdfab6
   - origin refs/pull/2562/head
   remotes:
     origin: https://github.com/OCA/purchase-workflow.git
@@ -406,7 +406,7 @@ server-tools:
   defaults:
     depth: 500
   merges:
-  - origin 2e2a986c61e67f3265895b664757a13b1d71b024
+  - origin 3f748b96e17207c0b0fa2576cb210d2711b1e8b6
   - origin refs/pull/3207/head
   remotes:
     origin: https://github.com/OCA/server-tools.git
