@@ -375,7 +375,7 @@ sale-workflow:
   defaults:
     depth: 500
   merges:
-  - origin fb4b57db32e0879af3c971fefd4220ca982492a9
+  - origin 3a55bc7a0cc9d90b94ee08a80de8684479944278
   - origin refs/pull/3497/head
   - origin refs/pull/3581/head
   - origin refs/pull/3634/head
