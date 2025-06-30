@@ -326,7 +326,7 @@ sale-promotion:
   defaults:
     depth: 500
   merges:
-  - origin f978fb45c4ec697d3df5fd1e036231d78f58d1d8
+  - origin 8a1f1f8701f85e7369057fd8538a89309c436cb3
   - origin refs/pull/225/head
   - origin refs/pull/226/head
   - origin refs/pull/233/head
