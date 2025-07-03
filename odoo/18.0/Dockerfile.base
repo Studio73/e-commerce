@@ -59,7 +59,9 @@ RUN cd /odoo && gitaggregate --jobs 8 --config repos.yaml \
 
 COPY 18.0/oca.yaml /oca/repos.yaml
 RUN cd /oca && gitaggregate --jobs 8 --config repos.yaml
-RUN find /oca -name "requirements.txt" -type f | xargs -r -I {} sh -c 'pip3 install --upgrade-strategy=only-if-needed -c /odoo/odoo/requirements.txt -r {} $0' \
+# Fix conflict between pypdf (oca facturx) && PyPDF2 (Odoo)
+RUN sed -i 's/factur-x/#factur-x/g' /oca/edi/requirements.txt \
+    &&  find /oca -name "requirements.txt" -type f | xargs -r -I {} sh -c 'pip3 install --upgrade-strategy=only-if-needed -c /odoo/odoo/requirements.txt -r {} $0' \
     && find /oca -name "*.po" | grep -v -E "es.po|en_GB.po|fr.po|pt.po|it.po|de.po|ca.po" | xargs -r rm -rf || exit 0 \
     && find /oca -name ".git" | xargs -r rm -rf \
     && find /oca -name "setup" | xargs -r rm -rf \
