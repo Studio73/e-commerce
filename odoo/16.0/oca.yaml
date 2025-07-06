@@ -17,14 +17,14 @@ account-financial-reporting:
   defaults:
     depth: 1
   merges:
-  - origin 18340789d7855de02b3e4ae98099779e4bd57828
+  - origin 0baee690c7da82bba3bfd423f38582ae6e3c4071
   remotes:
     origin: https://github.com/OCA/account-financial-reporting.git
 account-financial-tools:
   defaults:
     depth: 500
   merges:
-  - origin 06380927c7193ff7a394d3dae1edf53312b095e2
+  - origin 311255c82ab297d986d258f36931268de4b79ca9
   - origin refs/pull/1549/head
   remotes:
     origin: https://github.com/OCA/account-financial-tools.git
@@ -46,7 +46,7 @@ account-invoicing:
   defaults:
     depth: 500
   merges:
-  - origin b2477199a0ace899be86d30e704ef8210bbfa6c4
+  - origin b4159d72c1ff0fdca00560bf384390860fe54319
   - origin refs/pull/1512/head
   - origin refs/pull/1563/head
   - origin refs/pull/1646/head
@@ -58,15 +58,14 @@ account-payment:
   defaults:
     depth: 1
   merges:
-  - origin 5edaf6b3795b89b44350a5dec27a60de7032b924
+  - origin e41c02ac502846b869f873a0faf10a09644d2034
   remotes:
     origin: https://github.com/OCA/account-payment.git
 account-reconcile:
   defaults:
-    depth: 500
+    depth: 1
   merges:
-  - origin b7f8348b79fb8875e5bccf35c8f8fe16fdcc652b
-  - origin refs/pull/771/head
+  - origin 0f610a80ddeb068103ad74490c6409f449e0d951
   remotes:
     origin: https://github.com/OCA/account-reconcile.git
 agreement:
@@ -80,7 +79,7 @@ bank-payment:
   defaults:
     depth: 1
   merges:
-  - origin 20f0b2e59cf0a01862c68a04afb25dc96ceceaa8
+  - origin 4432cddb0c747298be581f71ec883197c19c7c94
   remotes:
     origin: https://github.com/OCA/bank-payment.git
 bank-statement-import:
@@ -94,7 +93,7 @@ bank-statement-reconcile:
   defaults:
     depth: 1
   merges:
-  - origin b7f8348b79fb8875e5bccf35c8f8fe16fdcc652b
+  - origin 0f610a80ddeb068103ad74490c6409f449e0d951
   remotes:
     origin: https://github.com/OCA/bank-statement-reconcile.git
 brand:
@@ -109,7 +108,7 @@ commission:
   defaults:
     depth: 1
   merges:
-  - origin e82e3a5a8ea44fef5ca83dbf30873f864c4dfd9e
+  - origin 8b8d3d66d57d9a1bcb94307f649739e8083cf0ff
   remotes:
     origin: https://github.com/OCA/commission.git
 community-data-files:
@@ -130,7 +129,7 @@ credit-control:
   defaults:
     depth: 1
   merges:
-  - origin bf5d352172752d8d68dc971b9c9aad7a2d28ac9c
+  - origin 63730c2082b63ac2cf83f8b1add64420b712ed0f
   remotes:
     origin: https://github.com/OCA/credit-control.git
 crm:
@@ -222,7 +221,7 @@ l10n-spain:
   defaults:
     depth: 500
   merges:
-  - origin 5d20fd7fa55afa057085bb8f1e089f7c13872576
+  - origin 9ebf66c045d868f1ebab41dcd879a628c12ce333
   - origin refs/pull/3725/head
   - origin refs/pull/3726/head
   remotes:
@@ -260,21 +259,21 @@ operating-unit:
   defaults:
     depth: 1
   merges:
-  - origin 7d65b5e3ce0f0a9c49d8b1847c6e28afa4b21ad1
+  - origin 343f1e43ae0b8bd77df11f3d037ba3d173c1c36e
   remotes:
     origin: https://github.com/OCA/operating-unit.git
 partner-contact:
   defaults:
     depth: 1
   merges:
-  - origin 7c93e59bb6f440f57e922233da7fcd3199c647e6
+  - origin db681abce0a470456bfb917866c86252f77345b2
   remotes:
     origin: https://github.com/OCA/partner-contact.git
 product-attribute:
   defaults:
     depth: 1
   merges:
-  - origin 0220b57a2393214b8f0f579931ade2ad5c24646c
+  - origin 22e599dcf88daf0e8cf97cea183561561e820632
   remotes:
     origin: https://github.com/OCA/product-attribute.git
 product-pack:
@@ -303,7 +302,7 @@ purchase-workflow:
   defaults:
     depth: 1
   merges:
-  - origin f47837793b2b5a33301fcd45982c33697ff3672e
+  - origin a575002fced5c8dd31640fece998f608cb28e25d
   remotes:
     origin: https://github.com/OCA/purchase-workflow.git
 queue:
@@ -317,7 +316,7 @@ report-print-send:
   defaults:
     depth: 1
   merges:
-  - origin bd20542086a3b70cff09921345195e523084f864
+  - origin f76ba51b4a56d82881837b1c2b31e4c944eae1b2
   remotes:
     origin: https://github.com/OCA/report-print-send.git
 reporting-engine:
@@ -346,7 +345,7 @@ sale-workflow:
   defaults:
     depth: 500
   merges:
-  - origin a3cd8d483243fd4f7aa16918b52e5ebc0dac8014
+  - origin 965f852a25bebd312a000cf0daed4fe97b40e00e
   - origin refs/pull/2461/head
   - origin refs/pull/2462/head
   - origin refs/pull/2524/head
@@ -380,28 +379,28 @@ server-tools:
   defaults:
     depth: 1
   merges:
-  - origin 13381d989213b43c1a1cb0d339e8ce38d9d60312
+  - origin a450e6f5716a1a8d76ea177faf2a89b3ae487ea7
   remotes:
     origin: https://github.com/OCA/server-tools.git
 server-ux:
   defaults:
     depth: 1
   merges:
-  - origin 0543d0492346fdf225dcdaf8cbd6b1bf5dc6cfed
+  - origin a6a3fb51c0f85f2031da1aba09328c1deb3b2fb4
   remotes:
     origin: https://github.com/OCA/server-ux.git
 social:
   defaults:
     depth: 1
   merges:
-  - origin 8820815c068c5f853898eab419d7206d3b56f67f
+  - origin 1332a8da5fa654d6a8f799a84b963d2e58ca4865
   remotes:
     origin: https://github.com/OCA/social.git
 stock-logistics-availability:
   defaults:
     depth: 1
   merges:
-  - origin 6222a50b751516367bad6b53dabd8934b813b27f
+  - origin ddff4b82005e160823e123b1b523acdef65fc54a
   remotes:
     origin: https://github.com/OCA/stock-logistics-availability.git
 stock-logistics-barcode:
@@ -433,7 +432,7 @@ stock-logistics-workflow:
   defaults:
     depth: 1
   merges:
-  - origin 13c16fcf2a1f6b84a4485fa3564ea6d52fdcafb9
+  - origin eaa3c48fd922d49564fda20f9028893a9b633a00
   remotes:
     origin: https://github.com/OCA/stock-logistics-workflow.git
 web:
