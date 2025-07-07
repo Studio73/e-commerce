@@ -1,2 +1,4 @@
 requirements.txt merge=union
 test-requirements.txt merge=union
+README.md merge=union
+README.rst merge=union
