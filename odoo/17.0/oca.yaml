@@ -446,5 +446,6 @@ website:
   - origin refs/pull/1022/head
   - origin refs/pull/1034/head
   - origin refs/pull/1098/head
+  - origin refs/pull/1117/head
   remotes:
     origin: https://github.com/OCA/website.git
