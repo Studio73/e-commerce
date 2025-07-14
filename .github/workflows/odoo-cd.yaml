@@ -63,21 +63,21 @@ jobs:
             BASE_TAG=${{ inputs.version }}
             pip_index=${{ secrets.STUDIO73_PIP_INDEX }}
             pip_trusted=${{ secrets.STUDIO73_PIP_TRUSTED }}
-    deploy:
-      if: ${{ inputs.push }}
-      runs-on: self-hosted
-      needs: [meta, build]
-      steps:
-        - uses: actions/checkout@v4
-          name: Checkout infrastructure
-          with:
-            repository: studio73/infrastructure
-            ref: master
-            token: ${{ secrets.ORG_TOKEN }}
-        - name: Update Kustomization Tag
-          uses: Studio73/actions/update-kustomize-tag@master
-          with:
-            image: ${{ inputs.image }}
-            tag: ${{ inputs.version }}.${{ needs.meta.outputs.build_date }}
-            tag_regex: "^${{ inputs.version }}\\.[0-9]{2}-[0-9]{2}-[0-9]{2}-[0-9]{6}$"
-            github_token: ${{ secrets.GITHUB_TOKEN }}
+  deploy:
+    if: ${{ inputs.push }}
+    runs-on: self-hosted
+    needs: [meta, build]
+    steps:
+      - uses: actions/checkout@v4
+        name: Checkout infrastructure
+        with:
+          repository: studio73/infrastructure
+          ref: master
+          token: ${{ secrets.ORG_TOKEN }}
+      - name: Update Kustomization Tag
+        uses: Studio73/actions/update-kustomize-tag@master
+        with:
+          image: ${{ inputs.image }}
+          tag: ${{ inputs.version }}.${{ needs.meta.outputs.build_date }}
+          tag_regex: "^${{ inputs.version }}\\.[0-9]{2}-[0-9]{2}-[0-9]{2}-[0-9]{6}$"
+          github_token: ${{ secrets.GITHUB_TOKEN }}
