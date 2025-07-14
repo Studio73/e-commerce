@@ -51,7 +51,7 @@ jobs:
           images: ${{ inputs.image }}
           tags: |
             type=raw,value=${{ inputs.version }}
-            type=raw,value=${{ inputs.version }}.{{ needs.meta.outputs.build_date }}
+            type=raw,value=${{ inputs.version }}.${{ needs.meta.outputs.build_date }}
             type=raw,value=${{ inputs.version }}.{{ sha }}
       - name: Build and push
         uses: docker/build-push-action@v5
