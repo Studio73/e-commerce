@@ -72,7 +72,7 @@ jobs:
         if: inputs.push
         id: inspect
         run: |
-          REMOTE_DIGEST=$(docker manifest inspect ${{ inputs.image }}:${{ inputs.version }} --format '{{.Digest}}' || echo "not_found")
+          REMOTE_DIGEST=$(docker manifest inspect ${{ inputs.image }}:${{ inputs.version }} | jq -r '.manifests[0].digest' || echo "not_found")
           echo "REMOTE_DIGEST=${REMOTE_DIGEST}" >> $GITHUB_ENV
           echo "Remote digest: ${REMOTE_DIGEST}"
           echo "Local build digest: ${{ steps.build.outputs.digest }}"
