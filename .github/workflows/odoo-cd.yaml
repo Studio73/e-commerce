@@ -58,7 +58,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          push: false
+          push: ${{ inputs.push }}
           load: ${{ inputs.push }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
@@ -68,25 +68,6 @@ jobs:
             pip_trusted=${{ secrets.STUDIO73_PIP_TRUSTED }}
           cache-from: type=registry,ref=${{ inputs.image }}:buildcache
           cache-to: type=registry,ref=${{ inputs.image }}:buildcache,mode=max
-      - name: Get remote image digest
-        if: inputs.push
-        id: inspect
-        run: |
-          REMOTE_DIGEST=$(docker manifest inspect ${{ inputs.image }}:${{ inputs.version }} | jq -r '.manifests[0].digest' || echo "not_found")
-          echo "REMOTE_DIGEST=${REMOTE_DIGEST}" >> $GITHUB_ENV
-          echo "Remote digest: ${REMOTE_DIGEST}"
-          echo "Local build digest: ${{ steps.build.outputs.digest }}"
-      - name: Push image only if changed
-        if: inputs.push
-        run: |
-          echo "Remote digest: ${{ env.REMOTE_DIGEST }}"
-          echo "Local build digest: ${{ steps.build.outputs.digest }}"
-          if [ "${{ steps.build.outputs.digest }}" != "${{ env.REMOTE_DIGEST }}" ]; then
-            echo "Pushing new image with digest: ${{ steps.build.outputs.digest }}"
-            docker push --all-tags ${{ inputs.image }}
-          else
-            echo "No changes detected, skipping push."
-          if
 
   deploy:
     if: inputs.push
