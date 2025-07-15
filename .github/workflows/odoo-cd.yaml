@@ -53,19 +53,37 @@ jobs:
             type=raw,value=${{ inputs.version }}
             type=raw,value=${{ inputs.version }}.${{ needs.meta.outputs.build_date }}
             type=raw,value=${{ inputs.version }}.{{ sha }}
-      - name: Build and push
+      - name: Build image
+        id: build
         uses: docker/build-push-action@v5
         with:
           context: .
-          push: ${{ inputs.push }}
+          push: false
+          load: ${{ inputs.push }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
             BASE_TAG=${{ inputs.version }}
             pip_index=${{ secrets.STUDIO73_PIP_INDEX }}
             pip_trusted=${{ secrets.STUDIO73_PIP_TRUSTED }}
+          cache-from: type=registry,ref=${{ inputs.image }}:buildcache
+          cache-to: type=registry,ref=${{ inputs.image }}:buildcache,mode=max
+      - name: Get remote image digest
+        if: inputs.push
+        id: inspect
+        run: |
+          REMOTE_DIGEST=$(docker manifest inspect ${{ inputs.image }}:${{ inputs.version }} --format '{{.Digest}}' || echo "not_found")
+          echo "REMOTE_DIGEST=${REMOTE_DIGEST}" >> $GITHUB_ENV
+          echo "Remote digest: ${REMOTE_DIGEST}"
+          echo "Local build digest: ${{ steps.build.outputs.digest }}"
+      - name: Push image only if changed
+        if: steps.build.outputs.digest != env.REMOTE_DIGEST && inputs.push == 'true'
+        run: |
+          echo "Digests are different. Pushing new image..."
+          docker push --all-tags ${{ inputs.image }}
+
   deploy:
-    if: ${{ inputs.push }}
+    if: inputs.push
     runs-on: self-hosted
     needs: [meta, build]
     steps:
