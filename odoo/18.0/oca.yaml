@@ -222,9 +222,10 @@ knowledge:
     origin: https://github.com/OCA/knowledge.git
 l10n-portugal:
   defaults:
-    depth: 1
+    depth: 500
   merges:
   - origin cb48496935529d0ae97c9a9b0a10ed29daa1fcdb
+  - origin refs/pull/134/head
   remotes:
     origin: https://github.com/OCA/l10n-portugal.git
 l10n-spain:
