@@ -77,10 +77,16 @@ jobs:
           echo "Remote digest: ${REMOTE_DIGEST}"
           echo "Local build digest: ${{ steps.build.outputs.digest }}"
       - name: Push image only if changed
-        if: steps.build.outputs.digest != env.REMOTE_DIGEST && inputs.push == 'true'
+        if: inputs.push
         run: |
-          echo "Digests are different. Pushing new image..."
-          docker push --all-tags ${{ inputs.image }}
+          echo "Remote digest: ${{ env.REMOTE_DIGEST }}"
+          echo "Local build digest: ${{ steps.build.outputs.digest }}"
+          if [ "${{ steps.build.outputs.digest }}" != "${{ env.REMOTE_DIGEST }}" ]; then
+            echo "Pushing new image with digest: ${{ steps.build.outputs.digest }}"
+            docker push --all-tags ${{ inputs.image }}
+          else
+            echo "No changes detected, skipping push."
+          if
 
   deploy:
     if: inputs.push
