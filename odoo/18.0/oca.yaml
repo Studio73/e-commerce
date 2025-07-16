@@ -120,9 +120,10 @@ community-data-files:
     origin: https://github.com/OCA/community-data-files.git
 credit-control:
   defaults:
-    depth: 1
+    depth: 500
   merges:
   - origin 5b2d1e2a941cb7f5ca1e143ccc3ce18f1156c1e6
+  - origin refs/pull/477/head
   remotes:
     origin: https://github.com/OCA/credit-control.git
 crm:
