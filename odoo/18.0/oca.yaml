@@ -181,6 +181,7 @@ hr:
   - origin refs/pull/1416/head
   - origin refs/pull/1445/head
   - origin refs/pull/1462/head
+  - origin refs/pull/1463/head
   - origin refs/pull/1475/head
   remotes:
     origin: https://github.com/OCA/hr.git
