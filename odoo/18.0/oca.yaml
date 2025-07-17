@@ -226,6 +226,7 @@ l10n-portugal:
   merges:
   - origin cb48496935529d0ae97c9a9b0a10ed29daa1fcdb
   - origin refs/pull/134/head
+  - origin refs/pull/135/head
   remotes:
     origin: https://github.com/OCA/l10n-portugal.git
 l10n-spain:
