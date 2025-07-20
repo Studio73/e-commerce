@@ -17,7 +17,7 @@ account-financial-reporting:
   defaults:
     depth: 1
   merges:
-  - origin 8dd1555ccebda501f571449835a357a8c2a45fb8
+  - origin 4745f691503e92f0ea2660e9242d52d1952b164c
   remotes:
     origin: https://github.com/OCA/account-financial-reporting.git
 account-financial-tools:
@@ -46,11 +46,10 @@ account-invoicing:
   defaults:
     depth: 500
   merges:
-  - origin d3593da2e8b867a561b6ae04d6c62630f3b42994
+  - origin e5b2cd07247e13d78b374d5e26b820a2ceeb607c
   - origin refs/pull/1626/head
   - origin refs/pull/1630/head
   - origin refs/pull/1776/head
-  - origin refs/pull/2000/head
   remotes:
     origin: https://github.com/OCA/account-invoicing.git
 account-payment:
@@ -65,7 +64,7 @@ account-reconcile:
   defaults:
     depth: 1
   merges:
-  - origin ec63ffecd6b8346641520f6ceda8bd323bc869e2
+  - origin 478d8f0ecbd4ab4c10f7b82dfee54f4382ee336b
   remotes:
     origin: https://github.com/OCA/account-reconcile.git
 bank-payment:
@@ -79,14 +78,14 @@ bank-statement-import:
   defaults:
     depth: 1
   merges:
-  - origin 702462032b1d8c138b28be9d47feb15efda8c1fe
+  - origin 5f310097deced92dbb06d8bc5aa0812625df86a7
   remotes:
     origin: https://github.com/OCA/bank-statement-import.git
 bank-statement-reconcile:
   defaults:
     depth: 1
   merges:
-  - origin ec63ffecd6b8346641520f6ceda8bd323bc869e2
+  - origin 478d8f0ecbd4ab4c10f7b82dfee54f4382ee336b
   remotes:
     origin: https://github.com/OCA/bank-statement-reconcile.git
 brand:
@@ -114,7 +113,7 @@ credit-control:
   defaults:
     depth: 1
   merges:
-  - origin ac20f2b13f15ade95dffac1c142da0959700051b
+  - origin 5f1f6e18b2c473893f3249e057d24aa8afbfb333
   remotes:
     origin: https://github.com/OCA/credit-control.git
 crm:
@@ -146,7 +145,7 @@ e-commerce:
   defaults:
     depth: 500
   merges:
-  - origin d7b3d00be3e724b14f839e763f6c6237cc93e4f1
+  - origin 41db0f9d98e2ceef8bc84db7262c114a4744e755
   - origin refs/pull/972/head
   remotes:
     origin: https://github.com/OCA/e-commerce.git
@@ -203,7 +202,7 @@ l10n-spain:
   defaults:
     depth: 500
   merges:
-  - origin 8d239b12355197e51ceb70d98a169d2b2b45ef10
+  - origin be22183810d48f717ac5704fa8b7e41f18178c2b
   - origin refs/pull/4172/head
   remotes:
     origin: https://github.com/OCA/l10n-spain.git
@@ -218,7 +217,7 @@ manufacture:
   defaults:
     depth: 500
   merges:
-  - origin a3450f30ec969907660b8ff6d375dbf24189fd54
+  - origin 87f5566c56b42536251e7b008f9355f1d9e70a53
   - origin refs/pull/1454/head
   - origin refs/pull/1465/head
   remotes:
@@ -241,7 +240,7 @@ operating-unit:
   defaults:
     depth: 1
   merges:
-  - origin 167f4e509b6f87694d0d29f968c97e1f9d36df7d
+  - origin 7df521f22e44e54dfaa43afa613abf4e93367415
   remotes:
     origin: https://github.com/OCA/operating-unit.git
 partner-contact:
@@ -295,7 +294,7 @@ purchase-workflow:
   defaults:
     depth: 500
   merges:
-  - origin c6f09787f43d4e531242eeeeebe7938561391231
+  - origin 80d3e67afde53094ceaef2dc1a8556cd3f911c3b
   - origin refs/pull/2114/head
   - origin refs/pull/2428/head
   - origin refs/pull/2544/head
@@ -431,7 +430,7 @@ web:
   defaults:
     depth: 500
   merges:
-  - origin 717d3eae1e79cf6b9f5d78e8c8b5bd60e0346e1d
+  - origin 2d300ebe27ecdd7e0bf0b240c336dafc1ac66981
   - origin refs/pull/2812/head
   - origin refs/pull/2838/head
   - origin refs/pull/2973/head

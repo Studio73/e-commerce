@@ -10,14 +10,14 @@ account-closing:
   defaults:
     depth: 1
   merges:
-  - origin 89473e382a5d0acccfa0bf9b1bdc4dbaa67e8c97
+  - origin 77da57e2f66c9285f25e7f860476dca0dc0e928d
   remotes:
     origin: https://github.com/OCA/account-closing.git
 account-financial-reporting:
   defaults:
     depth: 1
   merges:
-  - origin c7dee05fe133ee56ef9f22611e5df4b8291450a3
+  - origin cdd711dc3648712f7849113db906d5f127751354
   remotes:
     origin: https://github.com/OCA/account-financial-reporting.git
 account-financial-tools:
@@ -338,7 +338,7 @@ report-print-send:
   defaults:
     depth: 1
   merges:
-  - origin a50305e113a66f0c061dafb59335b12ac1b026fb
+  - origin aad397dcf67c0f485289db8d1c7aad53e8fc105b
   remotes:
     origin: https://github.com/OCA/report-print-send.git
 reporting-engine:
@@ -381,7 +381,7 @@ server-auth:
   defaults:
     depth: 1
   merges:
-  - origin 6912ba2b54b0138bb4514d25f14941ffd15ac219
+  - origin 12045c43da5debb8e1946c8c9e8038ab99dbe471
   remotes:
     origin: https://github.com/OCA/server-auth.git
 server-tools:
@@ -419,7 +419,7 @@ stock-logistics-reporting:
   defaults:
     depth: 1
   merges:
-  - origin 12177da47b1be69745787305b4d704db13a41fc4
+  - origin 35b585e6ea194a075f8dfd5dd095ca0d536d2e07
   remotes:
     origin: https://github.com/OCA/stock-logistics-reporting.git
 stock-logistics-transport:
@@ -433,7 +433,7 @@ stock-logistics-warehouse:
   defaults:
     depth: 1
   merges:
-  - origin 1e5a8b77d8ac1981dd9d6ec2e50cb5f5a11a390b
+  - origin b23261c50cda7e2ca775347b63ee29e6f49cbb49
   remotes:
     origin: https://github.com/OCA/stock-logistics-warehouse.git
 stock-logistics-workflow:
