@@ -17,7 +17,7 @@ account-financial-reporting:
   defaults:
     depth: 1
   merges:
-  - origin 013e638886a8d256fc391f9159ad47c7614f2f14
+  - origin d264a732114ddba7d1f966947e8ca2c25e923eea
   remotes:
     origin: https://github.com/OCA/account-financial-reporting.git
 account-financial-tools:
@@ -66,7 +66,7 @@ bank-payment:
   defaults:
     depth: 1
   merges:
-  - origin 06b982e0acb0802fd9e5aecd3bdcdfe6b295e5a4
+  - origin 95f720ae3f565923cc2b348395f9424c6bc876bb
   remotes:
     origin: https://github.com/OCA/bank-payment.git
 bank-statement-import:
@@ -151,7 +151,7 @@ e-commerce:
   defaults:
     depth: 500
   merges:
-  - origin 20d5f853bb032b8f401b989e5e6ef69806fa54e9
+  - origin 0f677da75a6710b95b469c59b85c1287421a4c45
   - origin refs/pull/486/head
   remotes:
     origin: https://github.com/OCA/e-commerce.git
@@ -223,7 +223,7 @@ l10n-spain:
   defaults:
     depth: 1
   merges:
-  - origin 23271052ad78003616278d06d6b5b2f3728dd834
+  - origin e201c9b9641670103faf660ee8b825d7795e9af7
   remotes:
     origin: https://github.com/OCA/l10n-spain.git
 maintenance:
@@ -245,7 +245,7 @@ manufacture:
   defaults:
     depth: 1
   merges:
-  - origin 56e57b61fe21c1407c2345817ee2a14d037508e6
+  - origin b8f2c02442df3b2ccb97492975d302bd52247a59
   remotes:
     origin: https://github.com/OCA/manufacture.git
 manufacture-reporting:
@@ -273,7 +273,7 @@ multi-company:
   defaults:
     depth: 1
   merges:
-  - origin 1996cfff41bb16d7a5603e406afd10d4c9fb89ee
+  - origin bdfea0f16d16aa3653cfe9c6e3dfd048f9cf12f5
   remotes:
     origin: https://github.com/OCA/multi-company.git
 partner-contact:
@@ -323,7 +323,7 @@ purchase-workflow:
   defaults:
     depth: 500
   merges:
-  - origin 21d5fa49ee63b01ed950fe5e6a20fab5896ce38c
+  - origin 945209f62a2d8503a334562ca9543ff8665077df
   - origin refs/pull/1692/head
   remotes:
     origin: https://github.com/OCA/purchase-workflow.git
@@ -331,7 +331,7 @@ queue:
   defaults:
     depth: 1
   merges:
-  - origin 8b115843911bec7eec6e1c3e287e17196ae5e198
+  - origin 88f2fd84d001939603b1619256c5bbd4d8add92b
   remotes:
     origin: https://github.com/OCA/queue.git
 report-print-send:

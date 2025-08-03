@@ -2,13 +2,13 @@ design-themes:
   defaults:
     depth: 1
   merges:
-  - origin fa84525516d5406469babeb1b2c765aafa408fa5
+  - origin 5e192a47ee661c51d5880cdbc45983291fd9ad2d
   remotes:
     origin: https://github.com/odoo/design-themes.git
 odoo:
   defaults:
     depth: 1
   merges:
-  - origin bffaf28377f0adee0c988a98d6b730e7fbe30a6c
+  - origin 7fc2cf32e5f6d1699ed17ef832eec4e9b2679358
   remotes:
     origin: https://github.com/odoo/odoo.git
