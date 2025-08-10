@@ -17,7 +17,7 @@ account-financial-reporting:
   defaults:
     depth: 1
   merges:
-  - origin d264a732114ddba7d1f966947e8ca2c25e923eea
+  - origin 02e2bf08d48cb5d7b6bc15a6957583123f4b8f0e
   remotes:
     origin: https://github.com/OCA/account-financial-reporting.git
 account-financial-tools:
@@ -123,7 +123,7 @@ credit-control:
   defaults:
     depth: 1
   merges:
-  - origin 98377641f9f0ed191ab1b05d18a718743f59f3a7
+  - origin 0419bce06066aa30a5feb4a1467adc17d134a1fd
   remotes:
     origin: https://github.com/OCA/credit-control.git
 crm:
@@ -151,7 +151,7 @@ e-commerce:
   defaults:
     depth: 500
   merges:
-  - origin 0f677da75a6710b95b469c59b85c1287421a4c45
+  - origin 15d096596c363e4e2671fa240a6860adef92e9d5
   - origin refs/pull/486/head
   remotes:
     origin: https://github.com/OCA/e-commerce.git
@@ -159,7 +159,7 @@ edi:
   defaults:
     depth: 500
   merges:
-  - origin 5a6ce114c886803e444f644564762b17fd9eae97
+  - origin c1c9a5d9427fb35be55f54647cc40a7d1346c309
   - origin refs/pull/1111/head
   remotes:
     origin: https://github.com/OCA/edi.git
@@ -323,7 +323,7 @@ purchase-workflow:
   defaults:
     depth: 500
   merges:
-  - origin 945209f62a2d8503a334562ca9543ff8665077df
+  - origin 484a93347beebe3bae61e97d408299562a65daa3
   - origin refs/pull/1692/head
   remotes:
     origin: https://github.com/OCA/purchase-workflow.git
@@ -331,7 +331,7 @@ queue:
   defaults:
     depth: 1
   merges:
-  - origin 88f2fd84d001939603b1619256c5bbd4d8add92b
+  - origin 0c5f515da46a38ad40a8df57e47d4c573709993d
   remotes:
     origin: https://github.com/OCA/queue.git
 report-print-send:
@@ -440,7 +440,7 @@ stock-logistics-workflow:
   defaults:
     depth: 500
   merges:
-  - origin 0dbca6171f70cf7ee4d316f4f968220b41a86250
+  - origin 8a3f777207af23a5f0ef547329f39563ce597acf
   - origin refs/pull/1640/head
   remotes:
     origin: https://github.com/OCA/stock-logistics-workflow.git
